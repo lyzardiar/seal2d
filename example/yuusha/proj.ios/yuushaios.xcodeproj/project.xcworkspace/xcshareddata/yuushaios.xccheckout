@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>372288DE-E5C9-4688-B8CC-FFBEA54B40FB</string>
+	<key>IDESourceControlProjectName</key>
+	<string>yuushaios</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>69A91430572F6BC9F1C06425085D457D5AC7BB01</key>
+		<string>ssh://darkzore.com/home/shan/saber.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>example/yuusha/proj.ios/yuushaios.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>69A91430572F6BC9F1C06425085D457D5AC7BB01</key>
+		<string>../../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://darkzore.com/home/shan/saber.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>69A91430572F6BC9F1C06425085D457D5AC7BB01</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>69A91430572F6BC9F1C06425085D457D5AC7BB01</string>
+			<key>IDESourceControlWCCName</key>
+			<string>saber</string>
+		</dict>
+	</array>
+</dict>
+</plist>
