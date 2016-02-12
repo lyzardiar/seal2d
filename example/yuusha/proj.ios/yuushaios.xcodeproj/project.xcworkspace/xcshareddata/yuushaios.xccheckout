@@ -12,20 +12,24 @@
 	<dict>
 		<key>69A91430572F6BC9F1C06425085D457D5AC7BB01</key>
 		<string>ssh://darkzore.com/home/shan/saber.git</string>
+		<key>DAA550F71C800F22DD71FC47E1793EE6A2B2A6C1</key>
+		<string>https://github.com/tangyiyang/seal2d</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>example/yuusha/proj.ios/yuushaios.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>69A91430572F6BC9F1C06425085D457D5AC7BB01</key>
+		<string>../../../../../../saber</string>
+		<key>DAA550F71C800F22DD71FC47E1793EE6A2B2A6C1</key>
 		<string>../../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://darkzore.com/home/shan/saber.git</string>
+	<string>https://github.com/tangyiyang/seal2d</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>69A91430572F6BC9F1C06425085D457D5AC7BB01</string>
+	<string>DAA550F71C800F22DD71FC47E1793EE6A2B2A6C1</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -35,6 +39,14 @@
 			<string>69A91430572F6BC9F1C06425085D457D5AC7BB01</string>
 			<key>IDESourceControlWCCName</key>
 			<string>saber</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DAA550F71C800F22DD71FC47E1793EE6A2B2A6C1</string>
+			<key>IDESourceControlWCCName</key>
+			<string>seal2d</string>
 		</dict>
 	</array>
 </dict>

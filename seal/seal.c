@@ -69,7 +69,7 @@ void seal_init() {
     
     // SDL core modules
     SDL_Window* window = SDL_CreateWindow(app_name, 0, 0,
-                                          GAME->window_width, GAME->window_height, 0);
+                                          GAME->window_width, GAME->window_height, SDL_WINDOW_ALLOW_HIGHDPI);
     if(!window) {
         SDL_LogError(SDL_LOG_CATEGORY_ASSERT, "window craete failed.\n");
         exit(1);
