@@ -12,17 +12,16 @@ function ball:ctor(vx, vy, ...)
 end
 
 function ball:update(dt)
-	local vx, vy = self.vx, self.vy
-	local x, y = self.x + vx, self.y + vy
+	local dx, dy = self.vx * dt / 1000, self.vy * dt / 1000
+	local x, y = self.x + dx, self.y + dy
 	if x > WINDOW_WIDTH - 16 or x < 0 then
-		self.vx = -vx
-		x = x + self.vx
-
+		self.vx = -self.vx
+		x = x - dx
 	end
 
 	if y > WINDOW_HEIGHT - 16 or y < 0 then
-		self.vy = -vy
-		y = y + self.vy
+		self.vy = -self.vy
+		y = y - dy
 	end
 	self:set_pos(x, y)
 
@@ -38,9 +37,9 @@ function test.sprite()
 	local root = sprite.new_container{ width = WINDOW_WIDTH, height = WINDOW_HEIGHT }
 			math.randomseed(os.time())
 
-	local total_ball = 100
+	local total_ball = 500
 	for i = 1, total_ball do
-		local b = ball.new(math.random(-10, 10), math.random(-10, 10), {x = WINDOW_WIDTH/2, y = WINDOW_HEIGHT/2, frame_name = "smile.png"})
+		local b = ball.new(math.random(-100, 100), math.random(-100, 100), {x = WINDOW_WIDTH/2, y = WINDOW_HEIGHT/2, frame_name = "smile.png"})
 		-- local b = ball.new(5, 3, {x = 30, y = 30, frame_name = "smile.png"})
 		root:add_child(b)
 	end

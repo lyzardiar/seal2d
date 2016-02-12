@@ -19,7 +19,6 @@ int main(int argc, char *argv[]) {
                 case SDL_QUIT:
                     running = SDL_FALSE;
                     break;
-                    
                 default:
                     break;
             }
@@ -29,7 +28,6 @@ int main(int argc, char *argv[]) {
         
         dt = now - last;
         dt = dt > 0 ? dt : 0;
-        printf("dt = %d\n", dt);
         last = now;
         if (dt > 0) {
             seal_update(dt);

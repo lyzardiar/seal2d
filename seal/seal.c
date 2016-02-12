@@ -190,7 +190,34 @@ void seal_event(const SDL_Event* event) {
     lua_settop(GAME->lstate, TOP_FUNC_INDEX);
 }
 
+float record_fps(float dt) {
+#define SAMPLER_TOTAL 60
+    static float fps_samplers[SAMPLER_TOTAL] = {0.0f};
+    static int index = 0;
+    fps_samplers[index] = dt;
+    ++index;
+    if (index == SAMPLER_TOTAL) {
+        index = 0;
+    }
+    
+    float total = 0;
+    for (int i = 0; i < SAMPLER_TOTAL; ++i) {
+        total = total + fps_samplers[i];
+    }
+    
+    return 1000 / (total / SAMPLER_TOTAL);
+}
+
 void seal_update(float dt) {
+    float fps = record_fps(dt);
+
+    static int frames = 0;
+    ++frames;
+    if (frames == 60) {
+        frames = 0;
+        printf("fps = %.2f\n", fps);
+    }
+    
     lua_State* L = GAME->lstate;
 
     lua_pushvalue(L, UPDATE_FUNC_INDEX);
