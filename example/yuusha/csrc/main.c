@@ -33,7 +33,8 @@ int main(int argc, char *argv[]) {
             seal_update(dt);
             seal_draw();
         }
-
+        
+        
         if (dt > 0 && dt < interval) {
             SDL_Delay(interval - dt);
         }

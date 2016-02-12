@@ -68,8 +68,23 @@ void seal_init() {
     GAME->window_height = lua_tonumber(L, 3);
     
     // SDL core modules
+#if __APPLE__
+    #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+        int flags = SDL_WINDOW_ALLOW_HIGHDPI;
+        // iOS device
+    #elif TARGET_OS_MAC
+        // Other kinds of Mac OS
+        int flags = 0;
+    #else
+    #   error "Unknown Apple platform"
+    #endif
+#endif
     SDL_Window* window = SDL_CreateWindow(app_name, 0, 0,
-                                          GAME->window_width, GAME->window_height, SDL_WINDOW_ALLOW_HIGHDPI);
+                                          GAME->window_width, GAME->window_height, flags);
+    
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetSwapInterval(1);
+    
     if(!window) {
         SDL_LogError(SDL_LOG_CATEGORY_ASSERT, "window craete failed.\n");
         exit(1);
@@ -215,7 +230,7 @@ void seal_update(float dt) {
     ++frames;
     if (frames == 60) {
         frames = 0;
-        printf("fps = %.2f\n", fps);
+//        printf("fps = %.2f\n", fps);
     }
     
     lua_State* L = GAME->lstate;
@@ -233,6 +248,8 @@ void seal_draw() {
     lua_pushvalue(L, DRAW_FUNC_INDEX);
     seal_call(L, 0, 0);
     lua_settop(L, TOP_FUNC_INDEX);
+    
+//    SDL_GL_SwapWindow(GAME->window);
 }
 
 void seal_destroy() {
