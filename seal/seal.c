@@ -46,7 +46,7 @@ lua_State* seal_new_lua() {
 }
 
 void seal_init() {
-    SDL_Init(SDL_INIT_EVENTS | SDL_INIT_TIMER | SDL_INIT_TIMER);
+    SDL_Init(SDL_INIT_EVERYTHING);
     IMG_Init(IMG_INIT_PNG);
 
     GAME = (struct game*)SDL_malloc(sizeof(struct game));
@@ -74,21 +74,36 @@ void seal_init() {
         // iOS device
     #elif TARGET_OS_MAC
         // Other kinds of Mac OS
-        int flags = 0;
+        Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
     #else
     #   error "Unknown Apple platform"
     #endif
 #endif
-    SDL_Window* window = SDL_CreateWindow(app_name, 0, 0,
-                                          GAME->window_width, GAME->window_height, flags);
     
+
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,8);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE,8);
+    
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetSwapInterval(1);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    
+//    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    
+    SDL_Window* window = SDL_CreateWindow(app_name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                          GAME->window_width, GAME->window_height, flags);
     
     if(!window) {
         SDL_LogError(SDL_LOG_CATEGORY_ASSERT, "window craete failed.\n");
         exit(1);
     }
+    setup_opengl(window);
+    
     GAME->window = window;
     
     // create the render
@@ -206,31 +221,36 @@ void seal_event(const SDL_Event* event) {
 }
 
 float record_fps(float dt) {
-#define SAMPLER_TOTAL 60
+#define SAMPLER_TOTAL 10
     static float fps_samplers[SAMPLER_TOTAL] = {0.0f};
     static int index = 0;
     fps_samplers[index] = dt;
     ++index;
-    if (index == SAMPLER_TOTAL) {
-        index = 0;
-    }
     
     float total = 0;
     for (int i = 0; i < SAMPLER_TOTAL; ++i) {
         total = total + fps_samplers[i];
     }
     
-    return 1000 / (total / SAMPLER_TOTAL);
+    float fps = 1000.0f / (float)(total / SAMPLER_TOTAL);
+    
+    if (index == SAMPLER_TOTAL) {
+        index = 0;
+        char title[128] = "";
+        snprintf(title, 128, "fps = %.2f", fps);
+        SDL_SetWindowTitle(GAME->window, title);
+    }
+    
+    return fps;
 }
 
 void seal_update(float dt) {
-    float fps = record_fps(dt);
-
+    record_fps(dt);
+    
     static int frames = 0;
     ++frames;
     if (frames == 60) {
         frames = 0;
-//        printf("fps = %.2f\n", fps);
     }
     
     lua_State* L = GAME->lstate;
@@ -243,20 +263,24 @@ void seal_update(float dt) {
 }
 
 void seal_draw() {
-    lua_State* L = GAME->lstate;
+    glClearColor(0,0,1,1);
+    glClear(GL_COLOR_BUFFER_BIT);
     
-    lua_pushvalue(L, DRAW_FUNC_INDEX);
-    seal_call(L, 0, 0);
-    lua_settop(L, TOP_FUNC_INDEX);
+    SDL_GL_SwapWindow(GAME->window);
+
+//    lua_State* L = GAME->lstate;
     
-//    SDL_GL_SwapWindow(GAME->window);
+//    lua_pushvalue(L, DRAW_FUNC_INDEX);
+//    seal_call(L, 0, 0);
+//    lua_settop(L, TOP_FUNC_INDEX);
 }
 
 void seal_destroy() {
 // TODO: clean up every thing here.
     
-//    lua_close(GAME->lstate);
-//    SDL_free(GAME);
+    lua_close(GAME->lstate);
+    SDL_free(GAME);
+    SDL_Quit();
 }
 
 SDL_Window* seal_get_window() {

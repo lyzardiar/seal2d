@@ -1,5 +1,9 @@
 #ifndef __seal__seal__
 #define __seal__seal__
+
+#define GL3_PROTOTYPES 1
+#include <OpenGL/gl3.h>
+
 #include "lua.h"
 #include "lualib.h"
 #include "lauxlib.h"
@@ -7,6 +11,9 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
+
+#include "shader.h"
+#include "vertex.h"
 
 struct game {
     lua_State* lstate;

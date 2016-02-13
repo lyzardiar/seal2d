@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		4D343E411C4F8CCF00C24F35 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D343E401C4F8CCF00C24F35 /* main.c */; };
+		4D77985C1C6F0B5100021ED6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D77985B1C6F0B5100021ED6 /* OpenGL.framework */; };
+		4D7798661C6F0EC800021ED6 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D7798641C6F0EC800021ED6 /* sprite.c */; };
+		4D77986E1C6F229700021ED6 /* shader.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D77986C1C6F229700021ED6 /* shader.c */; };
 		4DA030B31C645D400084DCA2 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA8E871C4F5C2D00ED5325 /* SDL2.framework */; };
 		4DAAFF691C63BDF300EC6FC2 /* lsdl_ttf.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DAAFF681C63BDF300EC6FC2 /* lsdl_ttf.c */; };
 		4DAAFF721C63C80400EC6FC2 /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAAFF611C63BD6500EC6FC2 /* SDL2_ttf.framework */; };
@@ -171,6 +174,12 @@
 
 /* Begin PBXFileReference section */
 		4D343E401C4F8CCF00C24F35 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		4D77985B1C6F0B5100021ED6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		4D7798641C6F0EC800021ED6 /* sprite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sprite.c; sourceTree = "<group>"; };
+		4D7798651C6F0EC800021ED6 /* sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprite.h; sourceTree = "<group>"; };
+		4D7798681C6F0FF900021ED6 /* vertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vertex.h; sourceTree = "<group>"; };
+		4D77986C1C6F229700021ED6 /* shader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shader.c; sourceTree = "<group>"; };
+		4D77986D1C6F229700021ED6 /* shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader.h; sourceTree = "<group>"; };
 		4DA028881C5131C80070AE6B /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../res; sourceTree = "<group>"; };
 		4DA028891C5131C80070AE6B /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../scripts; sourceTree = "<group>"; };
 		4DAAFF551C63BD6500EC6FC2 /* SDL_ttf.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_ttf.xcodeproj; path = "../../../libs/SDL2_ttf-2.0.14/Xcode/SDL_ttf.xcodeproj"; sourceTree = "<group>"; };
@@ -264,6 +273,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D77985C1C6F0B5100021ED6 /* OpenGL.framework in Frameworks */,
 				4DDA8EA41C4F5CA300ED5325 /* CoreFoundation.framework in Frameworks */,
 				4DDA8EA21C4F5C9D00ED5325 /* AudioUnit.framework in Frameworks */,
 				4DDA8EA01C4F5C9900ED5325 /* Carbon.framework in Frameworks */,
@@ -288,13 +298,6 @@
 			);
 			name = csrc;
 			path = ../csrc;
-			sourceTree = "<group>";
-		};
-		4D65BEEF1C6DCA5700B5FA91 /* util */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = util;
 			sourceTree = "<group>";
 		};
 		4DA700531C4E852E0007549F /* Resources */ = {
@@ -415,6 +418,7 @@
 		4DDF63961C4E0585008A44CE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D77985B1C6F0B5100021ED6 /* OpenGL.framework */,
 				4DDA8EA31C4F5CA300ED5325 /* CoreFoundation.framework */,
 				4DDA8EA11C4F5C9D00ED5325 /* AudioUnit.framework */,
 				4DDA8E9F1C4F5C9900ED5325 /* Carbon.framework */,
@@ -431,11 +435,15 @@
 		4DE642B51C5B3BCA003EBBC0 /* seal */ = {
 			isa = PBXGroup;
 			children = (
-				4D65BEEF1C6DCA5700B5FA91 /* util */,
 				4DE642B61C5B3BCA003EBBC0 /* binding */,
 				4DE642BE1C5B3BCA003EBBC0 /* math */,
+				4D77986C1C6F229700021ED6 /* shader.c */,
+				4D77986D1C6F229700021ED6 /* shader.h */,
 				4DE642C11C5B3BCA003EBBC0 /* seal.c */,
 				4DE642C21C5B3BCA003EBBC0 /* seal.h */,
+				4D7798641C6F0EC800021ED6 /* sprite.c */,
+				4D7798651C6F0EC800021ED6 /* sprite.h */,
+				4D7798681C6F0FF900021ED6 /* vertex.h */,
 			);
 			name = seal;
 			path = ../../../seal;
@@ -647,6 +655,7 @@
 				4DDA8E331C4F5AE700ED5325 /* ldblib.c in Sources */,
 				4DDA8E2F1C4F5AE700ED5325 /* lbitlib.c in Sources */,
 				4DDA8E391C4F5AE700ED5325 /* linit.c in Sources */,
+				4D77986E1C6F229700021ED6 /* shader.c in Sources */,
 				4DE642C61C5B3BCA003EBBC0 /* lsdl_render.c in Sources */,
 				4DE642C51C5B3BCA003EBBC0 /* lsdl_image.c in Sources */,
 				4DDA8E3D1C4F5AE700ED5325 /* lmem.c in Sources */,
@@ -658,6 +667,7 @@
 				4DDA8E401C4F5AE700ED5325 /* lopcodes.c in Sources */,
 				4DE642C41C5B3BCA003EBBC0 /* lopen.c in Sources */,
 				4DDA8E4C1C4F5AE700ED5325 /* lutf8lib.c in Sources */,
+				4D7798661C6F0EC800021ED6 /* sprite.c in Sources */,
 				4DDA8E3B1C4F5AE700ED5325 /* llex.c in Sources */,
 				4DDA8E4B1C4F5AE700ED5325 /* lundump.c in Sources */,
 				4DDA8E4D1C4F5AE700ED5325 /* lvm.c in Sources */,
