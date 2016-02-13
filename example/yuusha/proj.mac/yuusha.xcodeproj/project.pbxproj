@@ -13,6 +13,8 @@
 		4D822B781C6F5CE60083122E /* memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D822B761C6F5CE60083122E /* memory.c */; };
 		4D822B7E1C6F61670083122E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D822B7D1C6F61670083122E /* main.c */; };
 		4D822B8A1C6F62490083122E /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D822B861C6F62490083122E /* fs.c */; };
+		4D822B8D1C6F66400083122E /* libglfw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D822B8C1C6F66400083122E /* libglfw3.a */; };
+		4D822B911C6F672D0083122E /* timer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D822B901C6F672D0083122E /* timer.c */; };
 		4DDA8E2C1C4F5AE700ED5325 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA8DED1C4F5AE700ED5325 /* lapi.c */; };
 		4DDA8E2D1C4F5AE700ED5325 /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA8DEF1C4F5AE700ED5325 /* lauxlib.c */; };
 		4DDA8E2E1C4F5AE700ED5325 /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA8DF11C4F5AE700ED5325 /* lbaselib.c */; };
@@ -86,6 +88,9 @@
 		4D822B7D1C6F61670083122E /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		4D822B861C6F62490083122E /* fs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fs.c; sourceTree = "<group>"; };
 		4D822B871C6F62490083122E /* fs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fs.h; sourceTree = "<group>"; };
+		4D822B8C1C6F66400083122E /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglfw3.a; path = ../../../libs/glfw/mac/libs/libglfw3.a; sourceTree = "<group>"; };
+		4D822B8F1C6F67250083122E /* timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timer.h; sourceTree = "<group>"; };
+		4D822B901C6F672D0083122E /* timer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = timer.c; sourceTree = "<group>"; };
 		4DA028881C5131C80070AE6B /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../res; sourceTree = "<group>"; };
 		4DA028891C5131C80070AE6B /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../scripts; sourceTree = "<group>"; };
 		4DDA8DED1C4F5AE700ED5325 /* lapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lapi.c; sourceTree = "<group>"; };
@@ -172,6 +177,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D822B8D1C6F66400083122E /* libglfw3.a in Frameworks */,
 				4D77985C1C6F0B5100021ED6 /* OpenGL.framework in Frameworks */,
 				4DDA8EA41C4F5CA300ED5325 /* CoreFoundation.framework in Frameworks */,
 				4DDA8EA21C4F5C9D00ED5325 /* AudioUnit.framework in Frameworks */,
@@ -208,6 +214,8 @@
 			children = (
 				4D822B861C6F62490083122E /* fs.c */,
 				4D822B871C6F62490083122E /* fs.h */,
+				4D822B8F1C6F67250083122E /* timer.h */,
+				4D822B901C6F672D0083122E /* timer.c */,
 			);
 			path = platform;
 			sourceTree = "<group>";
@@ -299,6 +307,7 @@
 		4DDF63961C4E0585008A44CE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D822B8C1C6F66400083122E /* libglfw3.a */,
 				4D77985B1C6F0B5100021ED6 /* OpenGL.framework */,
 				4DDA8EA31C4F5CA300ED5325 /* CoreFoundation.framework */,
 				4DDA8EA11C4F5C9D00ED5325 /* AudioUnit.framework */,
@@ -455,6 +464,7 @@
 				4DDA8E401C4F5AE700ED5325 /* lopcodes.c in Sources */,
 				4DE642C41C5B3BCA003EBBC0 /* lopen.c in Sources */,
 				4DDA8E4C1C4F5AE700ED5325 /* lutf8lib.c in Sources */,
+				4D822B911C6F672D0083122E /* timer.c in Sources */,
 				4D7798661C6F0EC800021ED6 /* sprite.c in Sources */,
 				4DDA8E3B1C4F5AE700ED5325 /* llex.c in Sources */,
 				4DDA8E4B1C4F5AE700ED5325 /* lundump.c in Sources */,
@@ -560,10 +570,12 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../../../libs/SDL2-2.0.4/include",
-					"../../../libs/SDL2_image-2.0.1",
-					"../../../libs/SDL2_ttf-2.0.14",
 					../../../seal,
+					../../../libs/glfw/mac/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					../../../libs/glfw/mac/libs,
+					/Users/sleepers/Projects/github/seal2d/libs/glfw/mac/libs,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -576,10 +588,12 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../../../libs/SDL2-2.0.4/include",
-					"../../../libs/SDL2_image-2.0.1",
-					"../../../libs/SDL2_ttf-2.0.14",
 					../../../seal,
+					../../../libs/glfw/mac/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					../../../libs/glfw/mac/libs,
+					/Users/sleepers/Projects/github/seal2d/libs/glfw/mac/libs,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -4,7 +4,10 @@
 #include "seal.h"
 
 // user's duty to free
-void* s_read(const char* path, size_t* size, int prefer_external);
+// extra_byte: 0 or 1, if you were to read a string, we ensure another byte
+// which is set '\0' to make a c-string.
+unsigned char* s_read(const char* path, size_t* size, int extra_byte);
+char* s_reads(const char* path);
 
 size_t s_writes(const char* path, const char* string);
 

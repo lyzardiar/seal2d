@@ -17,6 +17,10 @@
 #include <string.h>
 #include <assert.h>
 #include <math.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <float.h>
+#include <stddef.h>
 
 
 #include <OpenGL/gl3.h>
@@ -32,6 +36,8 @@
 #include "vertex.h"
 #include "sprite.h"
 
+#include "platform/fs.h"
+#include "platform/timer.h"
 
 struct game {
     lua_State* lstate;

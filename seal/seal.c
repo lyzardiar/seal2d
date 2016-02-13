@@ -46,7 +46,10 @@ lua_State* seal_new_lua() {
 }
 
 void seal_init() {
-    GAME = (struct game*)malloc(sizeof(struct game));
+    // init basic drawing system before create the game.
+    load_shaders();
+    
+    GAME = (struct game*)s_malloc(sizeof(struct game));
     
     // lua modules
     lua_State* L = seal_new_lua();
@@ -94,6 +97,7 @@ static int traceback (lua_State *L) {
     return 1;
 }
 
+static sprite* spr = NULL;
 void seal_start_game() {
     lua_State *L = GAME->lstate;
     assert(lua_gettop(L) == 0);
@@ -103,6 +107,9 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_PAUSE);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_RESUME);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
+    
+    spr = sprite_alloc(-1.0f, -1.0f, 1.0f, 1.0f);
+
 }
 
 void seal_update(float dt) {
@@ -123,12 +130,15 @@ void seal_update(float dt) {
 }
 
 void seal_draw() {
-    glClearColor(0,0,1,1);
+    glClearColor(0,0,0,1);
     glClear(GL_COLOR_BUFFER_BIT);
     
+    
+    sprite_draw(spr);
 }
 
 void seal_destroy() {
     
     lua_close(GAME->lstate);
+    s_free(GAME);
 }

@@ -4,7 +4,7 @@ function game.start()
 	-- start coding here.
 
 	-- define your scene here.
-	return require("tests.sprite.complex_example").sprite()
+	return require("tests.sprite.hello").sprite()
 end
 
 function game.pause()

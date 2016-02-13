@@ -1,7 +1,8 @@
 #include "platform/fs.h"
 
-void* s_read(const char* path, size_t* size, int prefer_external) {
+unsigned char* s_read(const char* path, size_t* size, int extra_byte) {
 #ifdef __APPLE__
+    assert(extra_byte == 0 || extra_byte == 1);
     FILE* fp = fopen(path, "r");
     if (!fp) {
         fprintf(stderr, "s_read, can't open file.\n");
@@ -11,7 +12,7 @@ void* s_read(const char* path, size_t* size, int prefer_external) {
     size_t file_size = ftell(fp);
     rewind(fp);
     
-    void* buffer = (void*)s_malloc(file_size);
+    unsigned char* buffer = (unsigned char*)s_malloc(file_size + extra_byte);
     memset(buffer, 0, file_size);
     size_t result = fread(buffer, 1, file_size, fp);
     
@@ -21,11 +22,19 @@ void* s_read(const char* path, size_t* size, int prefer_external) {
         fprintf(stderr, "s_read, file reading error.\n");
         return NULL;
     }
-    
-    *size = result;
+    if(extra_byte) {
+        buffer[file_size] = 0;
+    }
+    if (size) {
+        *size = result;
+    }
     fclose(fp);
     return buffer;
 #endif
+}
+
+char* s_reads(const char* path) {
+    return (char*)s_read(path, NULL, 1);
 }
 
 size_t s_writes(const char* path, const char* string) {

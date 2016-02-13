@@ -3,9 +3,10 @@
 
 #include "seal.h"
 
+// 8 + 4 = 12bytes
 typedef struct vertex {
-    float position[2]; // x, y
-    GLuint color[4];   // r, g, b, a
+    GLfloat position[2]; // x, y
+//    GLubyte color[4];   // r, g, b, a
 } vertex;
 
 #endif

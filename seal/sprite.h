@@ -8,7 +8,7 @@ typedef struct sprite {
     float width, height;
     
     GLuint vbo;
-    GLuint program;
+    GLuint vao;
     GLuint tex_id;
     
     vertex vert[6];
