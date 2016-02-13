@@ -48,18 +48,41 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
 //    SET_VERTEX_COLOR(spr->vert[5], 255, 0, 0, 255);
 //    
 
-    GLfloat vertex[2*3] = {
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        0.0f, 1.0f,
+    GLfloat vertexes[] = {
+//        -1.0f, -1.0f,
+//        1.0f,  -1.0f,
+//        0.0f,  1.0f,
+        -1.0f, -1.0f,
+        1.0f,  -1.0f,
+        0.0f,  1.0f,
+        
+//        1.0f, 0.0f, 0.0f, 1.0f,
+//        0.0f, 1.0f, 0.0f, 1.0f,
+//        0.0f, 0.0f, 1.0f, 1.0f,
     };
+    
+    GLfloat colors[] = {
+                1.0f, 0.0f, 0.0f, 1.0f,
+                0.0f, 1.0f, 0.0f, 1.0f,
+                0.0f, 0.0f, 1.0f, 1.0f,
+    };
+    
+    printf("sizeof(sizeof(vertexes)) = %ld\n", sizeof(vertexes));
     glGenBuffers(1, &spr->vbo);
     CHECK_GL_ERROR
     glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
     CHECK_GL_ERROR
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STATIC_DRAW);
 
 //    glBufferData(GL_ARRAY_BUFFER, sizeof(spr->vert), spr->vert, GL_STATIC_DRAW);
+    
+    
+    glGenBuffers(1, &spr->color_vbo);
+    CHECK_GL_ERROR
+    glBindBuffer(GL_ARRAY_BUFFER, spr->color_vbo);
+    CHECK_GL_ERROR
+    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+    
     
     CHECK_GL_ERROR
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -112,19 +135,18 @@ void sprite_draw(sprite* spr) {
     glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
     CHECK_GL_ERROR;
     glEnableVertexAttribArray(0);
-    CHECK_GL_ERROR;
-
-//    glEnableVertexAttribArray(1);
-//    CHECK_GL_ERROR;
-
-//    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(spr->vert), (void*)offsetof(vertex, position));
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    CHECK_GL_ERROR;
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-//    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(spr->vert), (void*)offsetof(vertex, color));
-//    CHECK_GL_ERROR;
     
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    
+    CHECK_GL_ERROR;
+    glBindBuffer(GL_ARRAY_BUFFER, spr->color_vbo);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    CHECK_GL_ERROR;
+    
+    glDrawArrays(GL_TRIANGLES, 0, 3);
     CHECK_GL_ERROR;
 
     glDisableVertexAttribArray(0);
