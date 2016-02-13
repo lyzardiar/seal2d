@@ -1,7 +1,8 @@
-#ifndef __yuusha__vertex__
-#define __yuusha__vertex__
+#ifndef __seal__vertex__
+#define __seal__vertex__
 
-#include <OpenGL/gl.h>
+#include "seal.h"
+
 typedef struct vertex {
     float position[2]; // x, y
     GLuint color[4];   // r, g, b, a

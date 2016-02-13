@@ -16,24 +16,24 @@ int seal_call(lua_State *L, int n, int r) {
         case LUA_OK:
             break;
         case LUA_ERRRUN:
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "!LUA_ERRRUN : %s\n", lua_tostring(L,-1));
-            SDL_assert(SDL_FALSE);
+            fprintf(stderr, "!LUA_ERRRUN : %s\n", lua_tostring(L,-1));
+            assert(0);
             break;
         case LUA_ERRMEM:
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "!LUA_ERRMEM : %s\n", lua_tostring(L,-1));
-            SDL_assert(SDL_FALSE);
+            fprintf(stderr, "!LUA_ERRMEM : %s\n", lua_tostring(L,-1));
+             assert(0);
             break;
         case LUA_ERRERR:
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "!LUA_ERRERR : %s\n", lua_tostring(L,-1));
-            SDL_assert(SDL_FALSE);
+            fprintf(stderr, "!LUA_ERRERR : %s\n", lua_tostring(L,-1));
+             assert(0);
             break;
         case LUA_ERRGCMM:
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "!LUA_ERRGCMM : %s\n", lua_tostring(L,-1));
-            SDL_assert(SDL_FALSE);
+            fprintf(stderr, "!LUA_ERRGCMM : %s\n", lua_tostring(L,-1));
+             assert(0);
             break;
         default:
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "!Unknown Lua error: %d\n", err);
-            SDL_assert(SDL_FALSE);
+            fprintf(stderr, "!Unknown Lua error: %d\n", err);
+            assert(0);
             break;
     }
     return err;
@@ -46,10 +46,7 @@ lua_State* seal_new_lua() {
 }
 
 void seal_init() {
-    SDL_Init(SDL_INIT_EVERYTHING);
-    IMG_Init(IMG_INIT_PNG);
-
-    GAME = (struct game*)SDL_malloc(sizeof(struct game));
+    GAME = (struct game*)malloc(sizeof(struct game));
     
     // lua modules
     lua_State* L = seal_new_lua();
@@ -62,77 +59,26 @@ void seal_init() {
     lua_getglobal(L, "APP_NAME");
     lua_getglobal(L, "WINDOW_WIDTH");
     lua_getglobal(L, "WINDOW_HEIGHT");
-    
+    lua_pop(L, 3);
+
     const char* app_name = lua_tostring(L, 1);
     GAME->window_width = lua_tonumber(L, 2);
     GAME->window_height = lua_tonumber(L, 3);
     
-    // SDL core modules
-#if __APPLE__
-    #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-        int flags = SDL_WINDOW_ALLOW_HIGHDPI;
-        // iOS device
-    #elif TARGET_OS_MAC
-        // Other kinds of Mac OS
-        Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-    #else
-    #   error "Unknown Apple platform"
-    #endif
-#endif
-    
-
-    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,8);
-    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE,8);
-    
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    
-//    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    
-    SDL_Window* window = SDL_CreateWindow(app_name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                          GAME->window_width, GAME->window_height, flags);
-    
-    if(!window) {
-        SDL_LogError(SDL_LOG_CATEGORY_ASSERT, "window craete failed.\n");
-        exit(1);
-    }
-    setup_opengl(window);
-    
-    GAME->window = window;
-    
-    // create the render
-    SDL_Renderer* render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if(!render) {
-        SDL_LogError(SDL_LOG_CATEGORY_ASSERT, "create gl render failed.\n");
-        exit(1);
-    }
-    GAME->gl_render = render;
-    
-    // create the freetype lib
-    if(TTF_Init() == -1) {
-        SDL_LogError(SDL_LOG_CATEGORY_ASSERT, "create ttf lib failed.\n");
-        exit(1);
-    }
-    
-    lua_pop(L, 3);
+    seal_load_file("scripts/startup.lua");
+    seal_start_game();
 }
 
 void seal_load_string(const char* script_data) {
     if(luaL_dostring(GAME->lstate, script_data)) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "run start script Failed.\n");
+        fprintf(stderr, "run start script Failed.\n");
         abort();
     }
 }
 
 void seal_load_file(const char* script_path) {
     if(luaL_dofile(GAME->lstate, script_path)) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "run start script Failed.\n");
+        fprintf(stderr, "run start script Failed.\n");
         abort();
     }
 }
@@ -150,7 +96,7 @@ static int traceback (lua_State *L) {
 
 void seal_start_game() {
     lua_State *L = GAME->lstate;
-    SDL_assert(lua_gettop(L) == 0);
+    assert(lua_gettop(L) == 0);
     lua_pushcfunction(L, traceback);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_UPDATE);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_DRAW);
@@ -159,93 +105,7 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
 }
 
-void seal_set_window(SDL_Window* window) {
-    GAME->window = window;
-}
-
-void seal_event(const SDL_Event* event) {
-    lua_State* L = GAME->lstate;
-    lua_getfield(L, LUA_REGISTRYINDEX, GAME_EVENT);
-    
-    lua_newtable(L);
-    
-    switch (event->type) {
-        case SDL_MOUSEBUTTONUP:
-        case SDL_MOUSEMOTION:
-        case SDL_MOUSEBUTTONDOWN:
-        case SDL_MOUSEWHEEL:
-            setfiled_i(L, "type", event->motion.type);
-            setfiled_i(L, "state", event->motion.state);
-            setfiled_i(L, "x", event->motion.x);
-            setfiled_i(L, "y", event->motion.y);
-            setfiled_i(L, "xrel", event->motion.xrel);
-            setfiled_i(L, "yrel", event->motion.yrel);
-            seal_call(L, 1, 0);
-            break;
-            
-        case SDL_FINGERDOWN:
-        case SDL_FINGERUP:
-        case SDL_FINGERMOTION:
-            setfiled_i(L, "type", event->tfinger.type);
-            setfiled_i(L, "timestamp", event->tfinger.timestamp);
-            setfiled_i(L, "touchId", event->tfinger.touchId);
-            setfiled_i(L, "fingerId", event->tfinger.fingerId);
-            setfiled_f(L, "x", event->tfinger.x * GAME->window_width);
-            setfiled_f(L, "y", event->tfinger.y * GAME->window_height);
-            setfiled_f(L, "dx", event->tfinger.dx * GAME->window_width);
-            setfiled_f(L, "dy", event->tfinger.dy * GAME->window_height);
-            setfiled_f(L, "pressure", event->tfinger.pressure);
-            seal_call(L, 1, 0);
-            break;
-        case SDL_DOLLARGESTURE:
-        case SDL_DOLLARRECORD:
-      
-            break;
-        case SDL_MULTIGESTURE:
-            setfiled_i(L, "type", event->mgesture.type);
-            setfiled_i(L, "timestamp", event->mgesture.timestamp);
-            setfiled_i(L, "touchId", event->mgesture.touchId);
-            setfiled_f(L, "dTheta", event->mgesture.dTheta);
-            setfiled_f(L, "dDist", event->mgesture.dDist);
-            setfiled_f(L, "x", event->mgesture.x);
-            setfiled_f(L, "y", event->mgesture.y);
-            setfiled_i(L, "numFingers", event->mgesture.numFingers);
-            setfiled_i(L, "padding", event->mgesture.padding);
-            seal_call(L, 1, 0);
-
-            break;
-        default:
-            break;
-    }
-    lua_settop(GAME->lstate, TOP_FUNC_INDEX);
-}
-
-float record_fps(float dt) {
-#define SAMPLER_TOTAL 10
-    static float fps_samplers[SAMPLER_TOTAL] = {0.0f};
-    static int index = 0;
-    fps_samplers[index] = dt;
-    ++index;
-    
-    float total = 0;
-    for (int i = 0; i < SAMPLER_TOTAL; ++i) {
-        total = total + fps_samplers[i];
-    }
-    
-    float fps = 1000.0f / (float)(total / SAMPLER_TOTAL);
-    
-    if (index == SAMPLER_TOTAL) {
-        index = 0;
-        char title[128] = "";
-        snprintf(title, 128, "fps = %.2f", fps);
-        SDL_SetWindowTitle(GAME->window, title);
-    }
-    
-    return fps;
-}
-
 void seal_update(float dt) {
-    record_fps(dt);
     
     static int frames = 0;
     ++frames;
@@ -266,28 +126,9 @@ void seal_draw() {
     glClearColor(0,0,1,1);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    SDL_GL_SwapWindow(GAME->window);
-
-//    lua_State* L = GAME->lstate;
-    
-//    lua_pushvalue(L, DRAW_FUNC_INDEX);
-//    seal_call(L, 0, 0);
-//    lua_settop(L, TOP_FUNC_INDEX);
 }
 
 void seal_destroy() {
-// TODO: clean up every thing here.
     
     lua_close(GAME->lstate);
-    SDL_free(GAME);
-    SDL_Quit();
-}
-
-SDL_Window* seal_get_window() {
-    SDL_assert(GAME);
-    return GAME->window;
-}
-
-SDL_Renderer* seal_get_render() {
-    return GAME->gl_render;
 }

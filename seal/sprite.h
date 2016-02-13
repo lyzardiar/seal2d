@@ -1,5 +1,5 @@
-#ifndef __yuusha__sprite__
-#define __yuusha__sprite__
+#ifndef __seal__sprite__
+#define __seal__sprite__
 
 #include "seal.h"
 
@@ -25,4 +25,4 @@ void sprite_set_size(sprite* spr, float width, float height);
 void sprite_update(sprite* spr, float dt);
 void sprite_draw(sprite* spr);
 
-#endif /* defined(__yuusha__sprite__) */
+#endif

@@ -5,18 +5,18 @@
 extern void stackDump (lua_State *L);
 
 int lsealget_window(lua_State* L) {
-    lua_pushlightuserdata(L, seal_get_window());
+//    lua_pushlightuserdata(L, seal_get_window());
     return 1;
 }
 
 int lsealget_render(lua_State* L) {
-    lua_pushlightuserdata(L, seal_get_render());
+//    lua_pushlightuserdata(L, seal_get_render());
     return 1;
 }
 
 int lsealinject(lua_State* L) {
     if(!lua_istable(L, -1)) {
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "seal.start require a table to start.");
+        fprintf(stderr, "seal.start require a table to start.");
         exit(1);
     }
     
@@ -40,7 +40,8 @@ int lsealinject(lua_State* L) {
 }
 
 int lsealget_platform(lua_State* L) {
-    lua_pushstring(L, SDL_GetPlatform());
+    // TODO: write this function someday
+    lua_pushstring(L, "mac");
     return 1;
 }
 

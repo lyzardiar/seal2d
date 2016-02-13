@@ -15,7 +15,7 @@
     } while(0);
 
 sprite* sprite_alloc(float x, float y, float width, float height) {
-    sprite* spr = SDL_malloc(sizeof(sprite));
+    sprite* spr = (sprite*)s_malloc(sizeof(sprite));
     spr->x = x;
     spr->y = y;
     spr->width = width;
@@ -57,8 +57,7 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
 }
 
 void sprite_free(sprite* spr) {
-    
-    SDL_free(spr);
+    s_free(spr);
 }
 
 void sprite_set_texture(sprite* spr, const char* file_name) {

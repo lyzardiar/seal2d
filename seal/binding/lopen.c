@@ -1,11 +1,7 @@
 #include "lauxlib.h"
 
-extern int luaopen_sdl_image_core(lua_State* L);
-extern int luaopen_sdl_texture_core(lua_State* L);
-extern int luaopen_sdl_render_core(lua_State* L);
 extern int luaopen_seal_core(lua_State* L);
 extern int luaopen_affine_core(lua_State* L);
-extern int luaopen_sdl_ttf_core(lua_State* L);
 
 void stackDump (lua_State *L) {
     int i;
@@ -60,10 +56,6 @@ void luaopen_lua_extensions(lua_State *L)
     luaL_Reg lua_modules[] = {
         {"seal.core", luaopen_seal_core},
         {"seal.affine", luaopen_affine_core},
-        {"sdl.image", luaopen_sdl_image_core},
-        {"sdl.texture", luaopen_sdl_texture_core},
-        {"sdl.render", luaopen_sdl_render_core},
-        {"sdl.ttf", luaopen_sdl_ttf_core},
         {NULL, NULL}
     };
     

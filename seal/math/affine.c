@@ -1,10 +1,9 @@
-#include "SDL.h"
 #include "affine.h"
 
 struct affine* af_alloc() {
-    struct affine* af = (struct affine*)SDL_malloc(sizeof(struct affine));
+    struct affine* af = (struct affine*)s_malloc(sizeof(struct affine));
     if(!af) {
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "malloc affine failed for oom.");
+        fprintf(stderr, "malloc affine failed for oom.");
         return NULL;
     }
     af_identify(af);
@@ -12,7 +11,7 @@ struct affine* af_alloc() {
 }
 
 void af_free(struct affine* af) {
-    SDL_free(af);
+    s_free(af);
 }
 
 void af_identify(struct affine* af) {

@@ -1,27 +1,42 @@
 #ifndef __seal__seal__
 #define __seal__seal__
 
-#define GL3_PROTOTYPES 1
+#ifdef DEBUG
+#define s_malloc(size) seal_malloc(size, __FILE__, __LINE__)
+#define s_calloc(size) seal_calloc(size, __FILE__, __LINE__)
+#define s_free(p) do{ seal_free(p); p = NULL;}while(0)
+
+#else
+#define s_malloc malloc
+#define s_calloc calloc
+#define s_free free
+#endif
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include <math.h>
+
+
 #include <OpenGL/gl3.h>
 
 #include "lua.h"
 #include "lualib.h"
 #include "lauxlib.h"
 
-#include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_ttf.h"
+#include "base/list.h"
 
+#include "memory.h"
 #include "shader.h"
 #include "vertex.h"
+#include "sprite.h"
+
 
 struct game {
     lua_State* lstate;
-    SDL_Window* window;
-    SDL_Renderer* gl_render;
-    
-    Uint32 window_width;
-    Uint32 window_height;
+    int window_width;
+    int window_height;
 };
 
 #define GAME_TRACE  "GAME_TRACE"
@@ -36,13 +51,9 @@ void seal_init();
 void seal_load_string(const char* script_data);
 void seal_load_file(const char* script_path);
 void seal_start_game();
-void seal_set_window(SDL_Window* window);
-void seal_event(const SDL_Event* event);
+void seal_main_loop();
 void seal_update(float dt);
 void seal_draw();
 void seal_destroy();
-
-SDL_Window* seal_get_window();
-SDL_Renderer* seal_get_render();
 
 #endif
