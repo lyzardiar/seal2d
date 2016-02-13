@@ -6,5 +6,8 @@ out vec4 color;
 
 void main() {
 //    color = vec4(1.0, 1.0, 0.0, 1.0);
-    color = frag_color;
+        color.r = frag_color.r;
+        color.g = frag_color.g;
+        color.b = frag_color.b;
+        color.a = frag_color.a;
 }

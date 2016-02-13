@@ -49,23 +49,15 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
 //    
 
     GLfloat vertexes[] = {
-//        -1.0f, -1.0f,
-//        1.0f,  -1.0f,
-//        0.0f,  1.0f,
         -1.0f, -1.0f,
         1.0f,  -1.0f,
         0.0f,  1.0f,
         
-//        1.0f, 0.0f, 0.0f, 1.0f,
-//        0.0f, 1.0f, 0.0f, 1.0f,
-//        0.0f, 0.0f, 1.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f,
     };
     
-    GLfloat colors[] = {
-                1.0f, 0.0f, 0.0f, 1.0f,
-                0.0f, 1.0f, 0.0f, 1.0f,
-                0.0f, 0.0f, 1.0f, 1.0f,
-    };
     
     printf("sizeof(sizeof(vertexes)) = %ld\n", sizeof(vertexes));
     glGenBuffers(1, &spr->vbo);
@@ -74,16 +66,6 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
     CHECK_GL_ERROR
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STATIC_DRAW);
 
-//    glBufferData(GL_ARRAY_BUFFER, sizeof(spr->vert), spr->vert, GL_STATIC_DRAW);
-    
-    
-    glGenBuffers(1, &spr->color_vbo);
-    CHECK_GL_ERROR
-    glBindBuffer(GL_ARRAY_BUFFER, spr->color_vbo);
-    CHECK_GL_ERROR
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-    
-    
     CHECK_GL_ERROR
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     CHECK_GL_ERROR
@@ -91,14 +73,7 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
     CHECK_GL_ERROR
     glBindVertexArray(spr->vao);
     CHECK_GL_ERROR
-    
-//    glEnable(GL_CULL_FACE);
-//    CHECK_GL_ERROR
-//    glCullFace(GL_BACK);
-//    CHECK_GL_ERROR
-//    glFrontFace(GL_CW);
-//    CHECK_GL_ERROR
-    
+
     printf("sizeof(spr->vert) = %ld\n", sizeof(spr->vert));
     printf("sizeof(vertex) = %ld\n", sizeof(vertex));
 //    printf("(void*)offsetof(vertex, position) = %d\n", (void*)offsetof(vertex, position));
@@ -135,22 +110,21 @@ void sprite_draw(sprite* spr) {
     glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
     CHECK_GL_ERROR;
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    
-    
     CHECK_GL_ERROR;
-    glBindBuffer(GL_ARRAY_BUFFER, spr->color_vbo);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    CHECK_GL_ERROR;
+    
+    
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    CHECK_GL_ERROR;
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)4);
     CHECK_GL_ERROR;
     
     glDrawArrays(GL_TRIANGLES, 0, 3);
     CHECK_GL_ERROR;
 
     glDisableVertexAttribArray(0);
-//    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     glUseProgram(0);
