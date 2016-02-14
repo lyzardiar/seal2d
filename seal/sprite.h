@@ -2,6 +2,7 @@
 #define __seal__sprite__
 
 #include "seal.h"
+#include "texture.h"
 
 typedef struct sprite {
     float x, y;
@@ -13,6 +14,7 @@ typedef struct sprite {
     GLuint tex_id;
     
     vertex vert[6];
+    struct texture* texture;
 }sprite;
 
 sprite* sprite_alloc(float x, float y, float width, float height);

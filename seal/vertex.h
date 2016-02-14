@@ -6,7 +6,7 @@
 // 8 + 4 = 12bytes
 typedef struct vertex {
     GLfloat position[2]; // x, y
-//    GLubyte color[4];   // r, g, b, a
+    GLubyte color[4];   // r, g, b, a
 } vertex;
 
 #endif

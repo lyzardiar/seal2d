@@ -2,14 +2,22 @@
 #define __seal__seal__
 
 #ifdef DEBUG
-#define s_malloc(size) seal_malloc(size, __FILE__, __LINE__)
-#define s_calloc(size) seal_calloc(size, __FILE__, __LINE__)
-#define s_free(p) do{ seal_free(p); p = NULL;}while(0)
+    // memory functions
+    #define s_malloc(size)  seal_malloc(size, __FILE__, __LINE__)
+    #define s_calloc(size)  seal_calloc(size, __FILE__, __LINE__)
+    #define s_realloc(p)    seal_realloc(size, __FILE__, __LINE__)
+    #define s_free(p)       do{ seal_free(p); p = NULL; } while(0)
+
+    // others
+    #define s_assert(condition) assert(condition)
 
 #else
-#define s_malloc malloc
-#define s_calloc calloc
-#define s_free free
+    #define s_malloc    malloc
+    #define s_calloc    calloc
+    #define s_realloc   realloc
+    #define s_free      free
+
+    #define s_assert(condition)
 #endif
 
 #include <stdio.h>
@@ -21,7 +29,6 @@
 #include <unistd.h>
 #include <float.h>
 #include <stddef.h>
-
 
 #include <OpenGL/gl3.h>
 
@@ -38,6 +45,9 @@
 
 #include "platform/fs.h"
 #include "platform/timer.h"
+
+#include "image/lodepng.h"
+
 
 struct game {
     lua_State* lstate;

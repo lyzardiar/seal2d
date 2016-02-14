@@ -33,38 +33,26 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
     //   C(x+width, y)
     //   D(x+width, y+height)
     // we draw this in counter-clock wise.
-//    SET_VERTEX_POS(spr->vert[0], x+width, y+height);
-//    SET_VERTEX_POS(spr->vert[1], x, y+height);
-//    SET_VERTEX_POS(spr->vert[2], x, y);
-//    SET_VERTEX_POS(spr->vert[3], x, y);
-//    SET_VERTEX_POS(spr->vert[4], x+width, y);
-//    SET_VERTEX_POS(spr->vert[5], x+width, y+height);
-//    
-//    SET_VERTEX_COLOR(spr->vert[0], 255, 0, 0, 255);
-//    SET_VERTEX_COLOR(spr->vert[1], 255, 0, 0, 255);
-//    SET_VERTEX_COLOR(spr->vert[2], 255, 0, 0, 255);
-//    SET_VERTEX_COLOR(spr->vert[3], 255, 0, 0, 255);
-//    SET_VERTEX_COLOR(spr->vert[4], 255, 0, 0, 255);
-//    SET_VERTEX_COLOR(spr->vert[5], 255, 0, 0, 255);
-//    
+    SET_VERTEX_POS(spr->vert[0], x+width, y+height);  // D
+    SET_VERTEX_POS(spr->vert[1], x, y+height);        // A
+    SET_VERTEX_POS(spr->vert[2], x, y);               // B
+    SET_VERTEX_POS(spr->vert[3], x, y);               // B
+    SET_VERTEX_POS(spr->vert[4], x+width, y);         // C
+    SET_VERTEX_POS(spr->vert[5], x+width, y+height);  // D
+    
+    SET_VERTEX_COLOR(spr->vert[0], 255, 0, 0, 255);
+    SET_VERTEX_COLOR(spr->vert[1], 255, 0, 0, 255);
+    SET_VERTEX_COLOR(spr->vert[2], 255, 0, 0, 255);
+    SET_VERTEX_COLOR(spr->vert[3], 255, 0, 0, 255);
+    SET_VERTEX_COLOR(spr->vert[4], 255, 0, 0, 255);
+    SET_VERTEX_COLOR(spr->vert[5], 255, 0, 0, 255);
 
-    GLfloat vertexes[] = {
-        -1.0f, -1.0f,
-        1.0f,  -1.0f,
-        0.0f,  1.0f,
-        
-        0.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f,
-    };
-    
-    
-    printf("sizeof(sizeof(vertexes)) = %ld\n", sizeof(vertexes));
+    printf("sizeof(sizeof(vertexes)) = %ld\n", sizeof(spr->vert));
     glGenBuffers(1, &spr->vbo);
     CHECK_GL_ERROR
     glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
     CHECK_GL_ERROR
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(spr->vert), spr->vert, GL_STATIC_DRAW);
 
     CHECK_GL_ERROR
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -76,12 +64,17 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
 
     printf("sizeof(spr->vert) = %ld\n", sizeof(spr->vert));
     printf("sizeof(vertex) = %ld\n", sizeof(vertex));
+    printf("offsetof(vertex, (vertex, position)) = %ld\n", offsetof(vertex, position));
+    printf("offsetof(vertex, color) = %ld\n", offsetof(vertex, color));
 //    printf("(void*)offsetof(vertex, position) = %d\n", (void*)offsetof(vertex, position));
 //    printf("(void*)offsetof(vertex, color) = %d\n", (void*)offsetof(vertex, color));
+    
+    spr->texture = load_from_png("res/atlas_example.png");
     return spr;
 }
 
 void sprite_free(sprite* spr) {
+    s_free(spr->texture);
     s_free(spr);
 }
 
@@ -111,16 +104,15 @@ void sprite_draw(sprite* spr) {
     CHECK_GL_ERROR;
     glEnableVertexAttribArray(0);
     CHECK_GL_ERROR;
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
     CHECK_GL_ERROR;
-    
     
     glEnableVertexAttribArray(1);
     CHECK_GL_ERROR;
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)4);
+    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(vertex), (void*)offsetof(vertex, color));
     CHECK_GL_ERROR;
     
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
     CHECK_GL_ERROR;
 
     glDisableVertexAttribArray(0);

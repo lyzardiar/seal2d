@@ -10,13 +10,7 @@ struct alloc_entry {
 
 static struct list_head* head = NULL;
 
-void* zore_calloc(unsigned long size, const char* file, int line) {
-    void* p = seal_malloc(size, file, line);
-    memset(p, 0, size);
-    return p;
-}
-
-void* seal_malloc(unsigned long size, const char* file, int line) {
+void add_entry(void* ptr, size_t size, const char* file, int line) {
     struct alloc_entry* entry = (struct alloc_entry*)malloc(sizeof(struct alloc_entry));
     
     entry->file = file;
@@ -33,18 +27,15 @@ void* seal_malloc(unsigned long size, const char* file, int line) {
         list_add_tail(&entry->list, head);
     }
     
-    void* p = (void*)malloc(size);
-    entry->p = p;
-    
-    return p;
+    entry->p = ptr;
 }
 
-void seal_free(void* p) {
+void delete_entry(void* ptr) {
     struct alloc_entry* iter = NULL;
     struct alloc_entry* found = NULL;
     
     list_for_each_entry(iter, struct alloc_entry, head, list) {
-        if (iter->p == p) {
+        if (iter->p == ptr) {
             found = iter;
             break;
         }
@@ -52,6 +43,33 @@ void seal_free(void* p) {
     
     list_del(&found->list);
     free(found);
+}
+
+void* seal_malloc(size_t size, const char* file, int line) {
+    
+    void* p = (void*)malloc(size);
+    add_entry(p, size, file, line);
+    return p;
+}
+
+void* seal_calloc(size_t size, const char* file, int line) {
+    void* p = seal_malloc(size, file, line);
+    memset(p, 0, size);
+    return p;
+}
+
+void* seal_realloc(void* ptr, size_t size, const char* file, int line) {
+    void* p = realloc(ptr, size);
+    if (p != ptr) {
+        delete_entry(ptr);
+        add_entry(p, size, file, line);
+    }
+    return p;
+}
+
+void seal_free(void* ptr) {
+    delete_entry(ptr);
+    free(ptr);
 }
 
 void seal_dump_memory() {

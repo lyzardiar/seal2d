@@ -4,9 +4,13 @@
 #include "seal.h"
 #define STRUCT_NEW(type) (struct type*)z_malloc(sizeof(struct type))
 
-extern void* seal_malloc(unsigned long size, const char* file, int line);
-extern void seal_free(void* p);
-extern void seal_dump_memory();
+void add_entry(void* ptr, size_t size, const char* file, int line);
+void delete_entry(void* ptr);
 
+extern void* seal_malloc(size_t size, const char* file, int line);
+extern void* seal_calloc(size_t size, const char* file, int line);
+extern void* seal_realloc(void* ptr, size_t size, const char* file, int line);
+extern void seal_free(void* ptr);
+extern void seal_dump_memory();
 
 #endif

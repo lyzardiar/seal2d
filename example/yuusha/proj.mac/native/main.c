@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
         long current = gettime();
         
         dt = (current - last)/1000.0f;
-        
+        printf("dt = %.4f\n", dt);
         if (current - last < interval) {
             usleep( (useconds_t)(interval - current + last)*1000 );
         }
