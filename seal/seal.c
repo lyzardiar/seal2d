@@ -108,11 +108,12 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_RESUME);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
     
-    spr = sprite_alloc(-1.0f, -1.0f, 1.0f, 1.0f);
+    spr = sprite_alloc(-1.0f, -1.0f, 0.5f, 0.5f);
 
 }
 
 void seal_update(float dt) {
+    sprite_update(spr, dt);
     
     static int frames = 0;
     ++frames;

@@ -70,6 +70,10 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
 //    printf("(void*)offsetof(vertex, color) = %d\n", (void*)offsetof(vertex, color));
     
     spr->texture = load_from_png("res/atlas_example.png");
+    
+    
+    spr->speed_x = 5.0f;
+    spr->speed_y = 5.0f;
     return spr;
 }
 
@@ -85,6 +89,20 @@ void sprite_set_texture(sprite* spr, const char* file_name) {
 void sprite_set_pos(sprite* spr, float x, float y) {
     spr->x = x;
     spr->y = y;
+    
+    SET_VERTEX_POS(spr->vert[0], x+spr->width, y+spr->height);  // D
+    SET_VERTEX_POS(spr->vert[1], x, y+spr->height);        // A
+    SET_VERTEX_POS(spr->vert[2], x, y);               // B
+    SET_VERTEX_POS(spr->vert[3], x, y);               // B
+    SET_VERTEX_POS(spr->vert[4], x+spr->width, y);         // C
+    SET_VERTEX_POS(spr->vert[5], x+spr->width, y+spr->height);  // D
+    
+    glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
+    CHECK_GL_ERROR
+    glBufferData(GL_ARRAY_BUFFER, sizeof(spr->vert), spr->vert, GL_STATIC_DRAW);
+    
+    CHECK_GL_ERROR
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void sprite_set_size(sprite* spr, float width, float height) {
@@ -93,7 +111,23 @@ void sprite_set_size(sprite* spr, float width, float height) {
 }
 
 void sprite_update(sprite* spr, float dt) {
+    if (dt < FLT_EPSILON) {
+        return;
+    }
+    float dx = spr->speed_x*dt * 0.1;
+    float dy = spr->speed_y*dt * 0.1;
+    if (spr->x + dx >= 1.0f || spr->x + dx <= -1.0f) {
+        spr->speed_x = -spr->speed_x;
+        spr->x -= dx;
+    }
     
+    if (spr->y + dy >= 1.0f || spr->y + dy <= -1.0f) {
+        spr->speed_y = -spr->speed_y;
+        spr->y -= dy;
+    }
+    
+    sprite_set_pos(spr, spr->x + dx, spr->y + dy);
+
 }
 
 void sprite_draw(sprite* spr) {

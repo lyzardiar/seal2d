@@ -62,24 +62,24 @@ int main(int argc, char *argv[]) {
     
     seal_init();
 
-    long interval = (1/60.0f) * 1000;
+    float interval = (1/60.0f) * 1000;
     float dt = interval;
     while (!glfwWindowShouldClose(window))
     {
-        long last = gettime();
 
         glfwPollEvents();
-
+        long last = gettime();
+        
         seal_update(dt);
         seal_draw();
-        
+   
         set_title(window, dt);
         glfwSwapBuffers(window);
-
-        long current = gettime();
         
+        long current = gettime();
         dt = (current - last)/1000.0f;
         printf("dt = %.4f\n", dt);
+        
         if (current - last < interval) {
             usleep( (useconds_t)(interval - current + last)*1000 );
         }

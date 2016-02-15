@@ -15,6 +15,8 @@ typedef struct sprite {
     
     vertex vert[6];
     struct texture* texture;
+    
+    float speed_x, speed_y;
 }sprite;
 
 sprite* sprite_alloc(float x, float y, float width, float height);
