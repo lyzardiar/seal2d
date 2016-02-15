@@ -7,6 +7,7 @@
 typedef struct vertex {
     GLfloat position[2]; // x, y
     GLubyte color[4];   // r, g, b, a
+    float uv[2];
 } vertex;
 
 #endif

@@ -38,7 +38,7 @@ GLFWwindow* init_glfw() {
 //    glfwWindowHint( GLFW_DOUBLEBUFFER,GL_FALSE );
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(1300, 800, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Hello World", NULL, NULL);
     if (!window)
     {
         fprintf(stderr, "Error, glfwCreateWindow failed.\n");
@@ -69,7 +69,6 @@ int main(int argc, char *argv[]) {
     float interval = (1/60.0f) * 1000;
     float dt = interval;
     long last = 0;
-    
     
     struct timeval _lastUpdate;
     gettimeofday(&_lastUpdate, NULL);
