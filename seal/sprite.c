@@ -114,7 +114,7 @@ void sprite_update(sprite* spr, float dt) {
     if (dt < FLT_EPSILON) {
         return;
     }
-    printf("dt = %.4f\n", dt);
+//    printf("dt = %.4f\n", dt);
     float dx = spr->speed_x*dt * 0.1;
     float dy = spr->speed_y*dt * 0.1;
     if (spr->x + dx >= 1.0f || spr->x + dx <= -1.0f) {
