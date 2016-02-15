@@ -8,6 +8,7 @@ extern void luaopen_lua_extensions(lua_State *L);
 #define DRAW_FUNC_INDEX       3
 #define TOP_FUNC_INDEX        3
 
+#define MAX_SPITE 4
 struct game* GAME = NULL;
 
 int seal_call(lua_State *L, int n, int r) {
@@ -97,7 +98,7 @@ static int traceback (lua_State *L) {
     return 1;
 }
 
-sprite* sprites[30] = {};
+sprite* sprites[MAX_SPITE] = {};
 
 void seal_start_game() {
     lua_State *L = GAME->lstate;
@@ -109,14 +110,14 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_RESUME);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
     
-    for(int i = 0; i < 30; ++i) {
+    for(int i = 0; i < MAX_SPITE; ++i) {
         sprite* s = sprite_alloc(-1.0f* random()/(float)RAND_MAX, -1.0f * random()/(float)RAND_MAX, 0.1f, 0.1f);
         sprites[i] = s;
     }
 }
 
 void seal_update(float dt) {
-    for (int i = 0; i < 30; ++i) {
+    for (int i = 0; i < MAX_SPITE; ++i) {
         sprite_update(sprites[i], dt);
     }
     
@@ -136,10 +137,10 @@ void seal_update(float dt) {
 }
 
 void seal_draw() {
-    glClearColor(0,0,0,1);
+    glClearColor(1,1,1,1);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    for (int i = 0; i < 30; ++i) {
+    for (int i = 0; i < MAX_SPITE; ++i) {
         sprite_draw(sprites[i]);
     }
 }

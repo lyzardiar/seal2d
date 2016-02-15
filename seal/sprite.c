@@ -72,8 +72,8 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
     spr->texture = load_from_png("res/atlas_example.png");
     
     
-    spr->speed_x = 5.0f;
-    spr->speed_y = 5.0f;
+    spr->speed_x = 1;
+    spr->speed_y = 1; //5.0f;
     return spr;
 }
 
@@ -115,14 +115,14 @@ void sprite_update(sprite* spr, float dt) {
         return;
     }
 //    printf("dt = %.4f\n", dt);
-    float dx = spr->speed_x*dt * 0.1;
-    float dy = spr->speed_y*dt * 0.1;
-    if (spr->x + dx >= 1.0f || spr->x + dx <= -1.0f) {
+    float dx = spr->speed_x * 0.01;//*dt * 0.1;
+    float dy = spr->speed_y * 0.01;//*dt * 0.1;
+    if (spr->x + dx >= 1.0f || spr->x + dx + spr->width <= -1.0f) {
         spr->speed_x = -spr->speed_x;
         spr->x -= dx;
     }
     
-    if (spr->y + dy >= 1.0f || spr->y + dy <= -1.0f) {
+    if (spr->y + dy >= 1.0f || spr->y + dy  + spr->height <= -1.0f) {
         spr->speed_y = -spr->speed_y;
         spr->y -= dy;
     }

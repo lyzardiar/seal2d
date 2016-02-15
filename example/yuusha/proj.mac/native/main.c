@@ -34,9 +34,11 @@ GLFWwindow* init_glfw() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint( GLFW_DOUBLEBUFFER,GL_FALSE );
+    
+//    glfwWindowHint( GLFW_DOUBLEBUFFER,GL_FALSE );
+
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(1300, 800, "Hello World", NULL, NULL);
     if (!window)
     {
         fprintf(stderr, "Error, glfwCreateWindow failed.\n");
@@ -46,7 +48,8 @@ GLFWwindow* init_glfw() {
     glfwSetErrorCallback(_glfw_error_cb);
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
+    
+//    glfwSwapInterval(1);
 
     
     return window;
@@ -63,7 +66,7 @@ int main(int argc, char *argv[]) {
     
     seal_init();
 
-    float interval = (1/30.0f) * 1000;
+    float interval = (1/60.0f) * 1000;
     float dt = interval;
     long last = 0;
     
@@ -82,19 +85,19 @@ int main(int argc, char *argv[]) {
         
      //    delta只计算draw的时间
         float delta = ((now.tv_sec - _lastUpdate.tv_sec)/1000.0f + (now.tv_usec - _lastUpdate.tv_usec) * 1000.0f)/1000000000.0f;
-        seal_update(0.01666);
+        seal_update(delta);
         seal_draw();
-        set_title(window, 0.01666);
+        set_title(window, delta);
         
-//        glfwSwapBuffers(window);
-        glFlush();
+        glfwSwapBuffers(window);
+//        glFlush();
         
         _lastUpdate = now;
         long current = gettime();
 
         dt = (current - last)/1000.0f;
-        printf("delta = %.4f \n", delta);
-        printf("dt = %.4f\n", dt);
+//        printf("delta = %.4f \n", delta);
+//        printf("dt = %.4f\n", dt);
         last = current;
         if (dt < interval) {
             usleep( (useconds_t)(interval - dt)*1000 );
