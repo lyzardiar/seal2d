@@ -64,24 +64,30 @@ int main(int argc, char *argv[]) {
 
     float interval = (1/60.0f) * 1000;
     float dt = interval;
+    long last = 0;
+    
+    long _lastUpdate = gettime();
+    
     while (!glfwWindowShouldClose(window))
     {
 
         glfwPollEvents();
-        long last = gettime();
         
-        seal_update(dt);
+        long now = gettime();
+        // delta只计算draw的时间
+        float delta = (now - _lastUpdate) /1000.0f;
+        seal_update(delta);
         seal_draw();
-   
-        set_title(window, dt);
+        set_title(window, delta);
         glfwSwapBuffers(window);
         
+        _lastUpdate = now;
         long current = gettime();
+
         dt = (current - last)/1000.0f;
-        printf("dt = %.4f\n", dt);
-        
-        if (current - last < interval) {
-            usleep( (useconds_t)(interval - current + last)*1000 );
+        last = current;
+        if (dt < interval) {
+            usleep( (useconds_t)(interval - dt)*1000 );
         }
     }
     

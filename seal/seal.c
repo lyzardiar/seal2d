@@ -97,7 +97,8 @@ static int traceback (lua_State *L) {
     return 1;
 }
 
-static sprite* spr = NULL;
+sprite* sprites[30] = {};
+
 void seal_start_game() {
     lua_State *L = GAME->lstate;
     assert(lua_gettop(L) == 0);
@@ -108,12 +109,16 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_RESUME);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
     
-    spr = sprite_alloc(-1.0f, -1.0f, 0.5f, 0.5f);
-
+    for(int i = 0; i < 30; ++i) {
+        sprite* s = sprite_alloc(-1.0f* random()/(float)RAND_MAX, -1.0f * random()/(float)RAND_MAX, 0.1f, 0.1f);
+        sprites[i] = s;
+    }
 }
 
 void seal_update(float dt) {
-    sprite_update(spr, dt);
+    for (int i = 0; i < 30; ++i) {
+        sprite_update(sprites[i], dt);
+    }
     
     static int frames = 0;
     ++frames;
@@ -134,8 +139,9 @@ void seal_draw() {
     glClearColor(0,0,0,1);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    
-    sprite_draw(spr);
+    for (int i = 0; i < 30; ++i) {
+        sprite_draw(sprites[i]);
+    }
 }
 
 void seal_destroy() {
