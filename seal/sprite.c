@@ -105,22 +105,22 @@ void sprite_set_texture(sprite* spr, const char* file_name) {
 }
 
 void sprite_set_pos(sprite* spr, float x, float y) {
-//    spr->x = x;
-//    spr->y = y;
-//    
-//    SET_VERTEX_POS(spr->vert[0], x+spr->width, y+spr->height);  // D
-//    SET_VERTEX_POS(spr->vert[1], x, y+spr->height);        // A
-//    SET_VERTEX_POS(spr->vert[2], x, y);               // B
-//    SET_VERTEX_POS(spr->vert[3], x, y);               // B
-//    SET_VERTEX_POS(spr->vert[4], x+spr->width, y);         // C
-//    SET_VERTEX_POS(spr->vert[5], x+spr->width, y+spr->height);  // D
-//    
-//    glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
-//    CHECK_GL_ERROR
-//    glBufferData(GL_ARRAY_BUFFER, sizeof(spr->vert), spr->vert, GL_STATIC_DRAW);
-//    
-//    CHECK_GL_ERROR
-//    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    spr->x = x;
+    spr->y = y;
+    
+    SET_VERTEX_POS(spr->vert[0], x+spr->width, y+spr->height);  // D
+    SET_VERTEX_POS(spr->vert[1], x, y+spr->height);        // A
+    SET_VERTEX_POS(spr->vert[2], x, y);               // B
+    SET_VERTEX_POS(spr->vert[3], x, y);               // B
+    SET_VERTEX_POS(spr->vert[4], x+spr->width, y);         // C
+    SET_VERTEX_POS(spr->vert[5], x+spr->width, y+spr->height);  // D
+    
+    glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
+    CHECK_GL_ERROR
+    glBufferData(GL_ARRAY_BUFFER, sizeof(spr->vert), spr->vert, GL_STATIC_DRAW);
+    
+    CHECK_GL_ERROR
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void sprite_set_size(sprite* spr, float width, float height) {
@@ -188,5 +188,4 @@ void sprite_draw(sprite* spr) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     glUseProgram(0);
-
 }
