@@ -129,9 +129,7 @@ void sprite_set_size(sprite* spr, float width, float height) {
 }
 
 void sprite_update(sprite* spr, float dt) {
-    if (dt < FLT_EPSILON) {
-        return;
-    }
+
 //    printf("dt = %.4f\n", dt);
     float dx = spr->speed_x * 0.01;//*dt * 0.1;
     float dy = spr->speed_y * 0.01;//*dt * 0.1;

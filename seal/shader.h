@@ -8,7 +8,7 @@
 enum {
     COLOR_SHADER = 0,
     
-    MAX_SHADER = 128,
+    MAX_SHADER = 32,
 };
 
 void check_gl_error(const char* file, int line);

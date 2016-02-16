@@ -8,6 +8,7 @@ struct texture {
     unsigned int width, height;
 } texture;
 
+
 struct texture* load_from_png(const char* file_path);
 
 #endif
