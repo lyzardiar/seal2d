@@ -19,15 +19,15 @@ struct array_map {
     struct handle_entry* entries;
 };
 
-struct array_map* hm_new();
-void hm_delete(struct array_map* map);
+struct array_map* array_map_new();
+void array_map_delete(struct array_map* map);
 
-handle_id hm_add(struct array_map* map, void* user_data);
-void* hm_get(struct array_map* map, handle_id id);
-void hm_put(struct array_map* map, handle_id id);
-void hm_foreach(struct array_map* map, array_map_iter iter);
+handle_id array_map_add(struct array_map* map, void* user_data);
+void* array_map_get(struct array_map* map, handle_id id);
+void array_map_put(struct array_map* map, handle_id id);
+void array_map_foreach(struct array_map* map, array_map_iter iter);
 
-void hm_debug_dump(struct array_map* map);
+void array_map_debug_dump(struct array_map* map);
 
 
 #endif

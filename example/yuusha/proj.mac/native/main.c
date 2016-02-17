@@ -2,6 +2,13 @@
 
 #include "GLFW/glfw3.h"
 
+#ifdef UNIT_TEST
+#include "tests/unit_test/test.h"
+void run_unit_tests() {
+    test_array_map();
+}
+#endif
+
 static void
 _glfw_error_cb(int error, const char* desc) {
     printf("glfw: %s\n", desc);
@@ -34,10 +41,7 @@ GLFWwindow* init_glfw() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
-//    glfwWindowHint( GLFW_DOUBLEBUFFER,GL_FALSE );
 
-    /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(800, 600, "Hello World", NULL, NULL);
     if (!window)
     {
@@ -46,12 +50,9 @@ GLFWwindow* init_glfw() {
         exit(-1);
     }
     glfwSetErrorCallback(_glfw_error_cb);
-    /* Make the window's context current */
     glfwMakeContextCurrent(window);
     
-//    glfwSwapInterval(1);
-
-    
+    glfwSwapInterval(1);
     return window;
 }
 
@@ -63,6 +64,9 @@ void exit_glfw(GLFWwindow* window) {
 int main(int argc, char *argv[]) {
 
     GLFWwindow* window = init_glfw();
+#ifdef UNIT_TEST
+    run_unit_tests();
+#endif
     
     seal_init();
 
@@ -82,21 +86,18 @@ int main(int argc, char *argv[]) {
         struct timeval now;
         gettimeofday(&now, NULL);
         
-     //    delta只计算draw的时间
+        // delta只计算draw的时间
         float delta = ((now.tv_sec - _lastUpdate.tv_sec)/1000.0f + (now.tv_usec - _lastUpdate.tv_usec) * 1000.0f)/1000000000.0f;
         seal_update(delta);
         seal_draw();
         set_title(window, delta);
         
         glfwSwapBuffers(window);
-//        glFlush();
         
         _lastUpdate = now;
         long current = gettime();
 
         dt = (current - last)/1000.0f;
-//        printf("delta = %.4f \n", delta);
-//        printf("dt = %.4f\n", dt);
         last = current;
         if (dt < interval) {
             usleep( (useconds_t)(interval - dt)*1000 );

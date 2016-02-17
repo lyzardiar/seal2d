@@ -21,7 +21,8 @@
     } while(0);
 
 sprite* sprite_alloc(float x, float y, float width, float height) {
-    sprite* spr = (sprite*)s_malloc(sizeof(sprite));
+    sprite
+    * spr = (sprite*)s_malloc(sizeof(sprite));
     spr->x = x;
     spr->y = y;
     spr->width = width;
@@ -67,7 +68,7 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
     CHECK_GL_ERROR
     glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
     CHECK_GL_ERROR
-    glBufferData(GL_ARRAY_BUFFER, sizeof(spr->vert), spr->vert, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(spr->vert), spr->vert, GL_DYNAMIC_DRAW);
 
     CHECK_GL_ERROR
     glBindBuffer(GL_ARRAY_BUFFER, 0);

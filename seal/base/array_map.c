@@ -1,11 +1,12 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
 
 #include "array_map.h"
 
 #define DEFAULT_SIZE (32)
 
-struct array_map* hm_new() {
+struct array_map* array_map_new() {
     struct array_map* map = (struct array_map*)malloc(sizeof(struct array_map));
     map->cur_id = 0;
     map->capacity = DEFAULT_SIZE;
@@ -13,14 +14,14 @@ struct array_map* hm_new() {
     return map;
 }
 
-void hm_delete(struct array_map* map) {
+void array_map_delete(struct array_map* map) {
     if (map) {
         free(map->entries);
         free(map);
     }
 }
 
-handle_id hm_add(struct array_map* map, void* user_data) {
+handle_id array_map_add(struct array_map* map, void* user_data) {
     if(!user_data) {
         return 0;
     }
@@ -30,9 +31,9 @@ handle_id hm_add(struct array_map* map, void* user_data) {
     
     ++id;
     
-    if(id > cap * 15/16) {
-        struct handle_entry* new_entries = (struct handle_entry*)calloc(DEFAULT_SIZE, sizeof(struct handle_entry));
-        for (int i = 0; i < cap; ++i) {
+    if(id > cap * 3/4) {
+        struct handle_entry* new_entries = (struct handle_entry*)calloc(cap*2, sizeof(struct handle_entry));
+        for (int i = 0; i < map->capacity; ++i) {
             new_entries[i] = map->entries[i];
         }
         free(map->entries);
@@ -41,7 +42,7 @@ handle_id hm_add(struct array_map* map, void* user_data) {
     }
     
     // a&(n-1) <==> a%n when n is power of 2
-    id = id & (cap-1);
+    id = id & (map->capacity-1);
     if (id == 0) {
         id = 1;
     }
@@ -54,7 +55,7 @@ handle_id hm_add(struct array_map* map, void* user_data) {
     return id;
 }
 
-void* hm_get(struct array_map* map, handle_id id) {
+void* array_map_get(struct array_map* map, handle_id id) {
     if(id == 0 || id > map->capacity) {
         return 0;
     }
@@ -62,25 +63,26 @@ void* hm_get(struct array_map* map, handle_id id) {
     return map->entries[id].user_data;
 }
 
-void hm_put(struct array_map* map, handle_id id) {
+void array_map_put(struct array_map* map, handle_id id) {
     struct handle_entry* entry = &map->entries[id];
     entry->ref--;
 }
 
-void hm_foreach(struct array_map* map, array_map_iter iter) {
+void array_map_foreach(struct array_map* map, array_map_iter iter) {
     if(!iter) {
         return;
     }
     
-    for (int i = 0; i < map->capacity; ++i) {
+    for (int i = 1; i <= map->cur_id; ++i) {
         iter(&map->entries[i]);
     }
 }
 
-void hm_debug_visit(struct handle_entry* entry) {
-
+void array_map_debug_visit(struct handle_entry* entry) {
+    printf("entry = { hid = %d, ref = %d, user_data = %p}\n",
+           entry->hid, entry->ref, entry->user_data);
 }
 
-void hm_debug_dump(struct array_map* map) {
-    hm_foreach(map, hm_debug_visit);
+void array_map_debug_dump(struct array_map* map) {
+    array_map_foreach(map, array_map_debug_visit);
 }
