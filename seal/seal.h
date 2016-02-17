@@ -38,6 +38,8 @@
 
 #include "base/list.h"
 
+#include "math/matrix.h"
+
 #include "memory.h"
 #include "shader.h"
 #include "vertex.h"

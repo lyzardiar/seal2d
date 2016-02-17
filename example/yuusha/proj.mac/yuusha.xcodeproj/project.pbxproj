@@ -118,6 +118,9 @@
 		4DE4D1F31C74078B00410891 /* lparser.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA8E101C4F5AE700ED5325 /* lparser.c */; };
 		4DE4D1F41C74078B00410891 /* lzio.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA8E281C4F5AE700ED5325 /* lzio.c */; };
 		4DE4D1F51C74078B00410891 /* ltable.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA8E181C4F5AE700ED5325 /* ltable.c */; };
+		4DE4D1FE1C74279700410891 /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE4D1FC1C74279700410891 /* render.c */; };
+		4DE4D2011C7461C700410891 /* camera.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE4D1FF1C7461C700410891 /* camera.c */; };
+		4DE4D2041C7467E200410891 /* matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE4D2021C7467E200410891 /* matrix.c */; };
 		4DE642C31C5B3BCA003EBBC0 /* laffine.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642B71C5B3BCA003EBBC0 /* laffine.c */; };
 		4DE642C41C5B3BCA003EBBC0 /* lopen.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642B81C5B3BCA003EBBC0 /* lopen.c */; };
 		4DE642C81C5B3BCA003EBBC0 /* lseal_core.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642BD1C5B3BCA003EBBC0 /* lseal_core.c */; };
@@ -241,6 +244,12 @@
 		4DE4D1B51C74058200410891 /* test_array_map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_array_map.c; sourceTree = "<group>"; };
 		4DE4D1B81C74059400410891 /* test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
 		4DE4D1FA1C74078B00410891 /* yuusha copy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "yuusha copy"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DE4D1FC1C74279700410891 /* render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render.c; sourceTree = "<group>"; };
+		4DE4D1FD1C74279700410891 /* render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render.h; sourceTree = "<group>"; };
+		4DE4D1FF1C7461C700410891 /* camera.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = camera.c; sourceTree = "<group>"; };
+		4DE4D2001C7461C700410891 /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
+		4DE4D2021C7467E200410891 /* matrix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = matrix.c; sourceTree = "<group>"; };
+		4DE4D2031C7467E200410891 /* matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matrix.h; sourceTree = "<group>"; };
 		4DE642B71C5B3BCA003EBBC0 /* laffine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = laffine.c; sourceTree = "<group>"; };
 		4DE642B81C5B3BCA003EBBC0 /* lopen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lopen.c; sourceTree = "<group>"; };
 		4DE642B91C5B3BCA003EBBC0 /* lopen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lopen.h; sourceTree = "<group>"; };
@@ -458,8 +467,6 @@
 				4DE642BE1C5B3BCA003EBBC0 /* math */,
 				4D822B761C6F5CE60083122E /* memory.c */,
 				4D822B771C6F5CE60083122E /* memory.h */,
-				4D77986C1C6F229700021ED6 /* shader.c */,
-				4D77986D1C6F229700021ED6 /* shader.h */,
 				4DE642C11C5B3BCA003EBBC0 /* seal.c */,
 				4DE642C21C5B3BCA003EBBC0 /* seal.h */,
 				4D7798641C6F0EC800021ED6 /* sprite.c */,
@@ -467,6 +474,12 @@
 				4D7798681C6F0FF900021ED6 /* vertex.h */,
 				4D887C481C70BFCA006EA5DA /* texture.c */,
 				4D887C491C70BFCA006EA5DA /* texture.h */,
+				4D77986C1C6F229700021ED6 /* shader.c */,
+				4D77986D1C6F229700021ED6 /* shader.h */,
+				4DE4D1FC1C74279700410891 /* render.c */,
+				4DE4D1FD1C74279700410891 /* render.h */,
+				4DE4D1FF1C7461C700410891 /* camera.c */,
+				4DE4D2001C7461C700410891 /* camera.h */,
 			);
 			name = seal;
 			path = ../../../seal;
@@ -488,6 +501,8 @@
 			children = (
 				4DE642BF1C5B3BCA003EBBC0 /* affine.c */,
 				4DE642C01C5B3BCA003EBBC0 /* affine.h */,
+				4DE4D2021C7467E200410891 /* matrix.c */,
+				4DE4D2031C7467E200410891 /* matrix.h */,
 			);
 			path = math;
 			sourceTree = "<group>";
@@ -668,6 +683,7 @@
 				4D822B7E1C6F61670083122E /* main.c in Sources */,
 				4DDA8E401C4F5AE700ED5325 /* lopcodes.c in Sources */,
 				4DE642C41C5B3BCA003EBBC0 /* lopen.c in Sources */,
+				4DE4D2041C7467E200410891 /* matrix.c in Sources */,
 				4DDA8E4C1C4F5AE700ED5325 /* lutf8lib.c in Sources */,
 				4D822B911C6F672D0083122E /* timer.c in Sources */,
 				4DE4D1B71C74058200410891 /* test_array_map.c in Sources */,
@@ -677,10 +693,12 @@
 				4DDA8E4D1C4F5AE700ED5325 /* lvm.c in Sources */,
 				4DDA8E351C4F5AE700ED5325 /* ldo.c in Sources */,
 				4D822B781C6F5CE60083122E /* memory.c in Sources */,
+				4DE4D1FE1C74279700410891 /* render.c in Sources */,
 				4DDA8E3E1C4F5AE700ED5325 /* loadlib.c in Sources */,
 				4DDA8E3F1C4F5AE700ED5325 /* lobject.c in Sources */,
 				4DDA8E471C4F5AE700ED5325 /* ltablib.c in Sources */,
 				4DDA8E451C4F5AE700ED5325 /* lstrlib.c in Sources */,
+				4DE4D2011C7461C700410891 /* camera.c in Sources */,
 				4DDA8E3C1C4F5AE700ED5325 /* lmathlib.c in Sources */,
 				4DDA8E381C4F5AE700ED5325 /* lgc.c in Sources */,
 				4D887C4A1C70BFCA006EA5DA /* texture.c in Sources */,
