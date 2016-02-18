@@ -44,6 +44,7 @@
 #include "shader.h"
 #include "vertex.h"
 #include "sprite.h"
+#include "camera.h"
 
 #include "platform/fs.h"
 #include "platform/timer.h"
@@ -55,7 +56,11 @@ struct game {
     lua_State* lstate;
     int window_width;
     int window_height;
+    
+    struct camera* global_camera;
 };
+
+#define EXTERN_GAME extern struct game* GAME;
 
 #define GAME_TRACE  "GAME_TRACE"
 #define GAME_UPDATE "GAME_UPDATE"

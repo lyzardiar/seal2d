@@ -63,11 +63,14 @@ void seal_init() {
     lua_getglobal(L, "APP_NAME");
     lua_getglobal(L, "WINDOW_WIDTH");
     lua_getglobal(L, "WINDOW_HEIGHT");
-    lua_pop(L, 3);
 
     const char* app_name = lua_tostring(L, 1);
     GAME->window_width = lua_tonumber(L, 2);
     GAME->window_height = lua_tonumber(L, 3);
+    lua_pop(L, 3);
+
+    // set the camera
+    GAME->global_camera = camera_new(GAME->window_height, GAME->window_height);
     
     seal_load_file("scripts/startup.lua");
     seal_start_game();
@@ -111,12 +114,15 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
     
     for(int i = 0; i < MAX_SPITE; ++i) {
-        sprite* s = sprite_alloc(-1.0f* random()/(float)RAND_MAX, -1.0f * random()/(float)RAND_MAX, 0.5f, 0.5f);
+        sprite* s = sprite_alloc(0, 0, 1, 1);
         sprites[i] = s;
     }
+    
+    camera_pos(GAME->global_camera, 100, 100);
 }
 
 void seal_update(float dt) {
+    camera_update(GAME->global_camera);
     for (int i = 0; i < MAX_SPITE; ++i) {
         sprite_update(sprites[i], dt);
     }

@@ -1,5 +1,7 @@
 #include "sprite.h"
 
+EXTERN_GAME;
+
 #define SET_VERTEX_POS(vert, x, y) \
     do { \
         vert.position[0] = x; \
@@ -112,19 +114,19 @@ void sprite_set_size(sprite* spr, float width, float height) {
 }
 
 void sprite_update(sprite* spr, float dt) {
-    float dx = spr->speed_x * dt * 0.5;
-    float dy = spr->speed_y * dt * 0.5;
-    if (spr->x + dx >= 1.0f || spr->x + dx + spr->width <= -1.0f) {
-        spr->speed_x = -spr->speed_x;
-        spr->x -= dx;
-    }
-    
-    if (spr->y + dy >= 1.0f || spr->y + dy  + spr->height <= -1.0f) {
-        spr->speed_y = -spr->speed_y;
-        spr->y -= dy;
-    }
-    
-    sprite_set_pos(spr, spr->x + dx, spr->y + dy);
+//    float dx = spr->speed_x * dt * 0.5;
+//    float dy = spr->speed_y * dt * 0.5;
+//    if (spr->x + dx >= 1.0f || spr->x + dx + spr->width <= -1.0f) {
+//        spr->speed_x = -spr->speed_x;
+//        spr->x -= dx;
+//    }
+//    
+//    if (spr->y + dy >= 1.0f || spr->y + dy  + spr->height <= -1.0f) {
+//        spr->speed_y = -spr->speed_y;
+//        spr->y -= dy;
+//    }
+//    
+//    sprite_set_pos(spr, spr->x + dx, spr->y + dy);
 }
 
 void sprite_draw(sprite* spr) {
@@ -136,6 +138,8 @@ void sprite_draw(sprite* spr) {
     GLint texture_location = glGetUniformLocation(program, "sampler");
     glUniform1i(texture_location, 0);
     
+    GLint projection = glGetUniformLocation(program, "projection");
+    glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
     
     glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
     glEnableVertexAttribArray(0);
