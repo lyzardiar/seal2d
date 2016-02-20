@@ -119,8 +119,9 @@
 		4DE4D1F41C74078B00410891 /* lzio.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA8E281C4F5AE700ED5325 /* lzio.c */; };
 		4DE4D1F51C74078B00410891 /* ltable.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA8E181C4F5AE700ED5325 /* ltable.c */; };
 		4DE4D1FE1C74279700410891 /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE4D1FC1C74279700410891 /* render.c */; };
-		4DE4D2011C7461C700410891 /* camera.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE4D1FF1C7461C700410891 /* camera.c */; };
 		4DE4D2041C7467E200410891 /* matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE4D2021C7467E200410891 /* matrix.c */; };
+		4DE620FD1C7856AE0073C71A /* camera.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE620FC1C7856AE0073C71A /* camera.c */; };
+		4DE620FE1C7856AE0073C71A /* camera.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE620FC1C7856AE0073C71A /* camera.c */; };
 		4DE642C31C5B3BCA003EBBC0 /* laffine.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642B71C5B3BCA003EBBC0 /* laffine.c */; };
 		4DE642C41C5B3BCA003EBBC0 /* lopen.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642B81C5B3BCA003EBBC0 /* lopen.c */; };
 		4DE642C81C5B3BCA003EBBC0 /* lseal_core.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642BD1C5B3BCA003EBBC0 /* lseal_core.c */; };
@@ -246,10 +247,10 @@
 		4DE4D1FA1C74078B00410891 /* yuusha copy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "yuusha copy"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DE4D1FC1C74279700410891 /* render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render.c; sourceTree = "<group>"; };
 		4DE4D1FD1C74279700410891 /* render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render.h; sourceTree = "<group>"; };
-		4DE4D1FF1C7461C700410891 /* camera.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = camera.c; sourceTree = "<group>"; };
 		4DE4D2001C7461C700410891 /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
 		4DE4D2021C7467E200410891 /* matrix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = matrix.c; sourceTree = "<group>"; };
 		4DE4D2031C7467E200410891 /* matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matrix.h; sourceTree = "<group>"; };
+		4DE620FC1C7856AE0073C71A /* camera.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = camera.c; sourceTree = "<group>"; };
 		4DE642B71C5B3BCA003EBBC0 /* laffine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = laffine.c; sourceTree = "<group>"; };
 		4DE642B81C5B3BCA003EBBC0 /* lopen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lopen.c; sourceTree = "<group>"; };
 		4DE642B91C5B3BCA003EBBC0 /* lopen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lopen.h; sourceTree = "<group>"; };
@@ -478,7 +479,7 @@
 				4D77986D1C6F229700021ED6 /* shader.h */,
 				4DE4D1FC1C74279700410891 /* render.c */,
 				4DE4D1FD1C74279700410891 /* render.h */,
-				4DE4D1FF1C7461C700410891 /* camera.c */,
+				4DE620FC1C7856AE0073C71A /* camera.c */,
 				4DE4D2001C7461C700410891 /* camera.h */,
 			);
 			name = seal;
@@ -646,6 +647,7 @@
 				4DE4D1EF1C74078B00410891 /* texture.c in Sources */,
 				4DE4D1F01C74078B00410891 /* lctype.c in Sources */,
 				4DE4D1F11C74078B00410891 /* lauxlib.c in Sources */,
+				4DE620FE1C7856AE0073C71A /* camera.c in Sources */,
 				4DE4D1F21C74078B00410891 /* affine.c in Sources */,
 				4DE4D1F31C74078B00410891 /* lparser.c in Sources */,
 				4DE4D1F41C74078B00410891 /* lzio.c in Sources */,
@@ -697,8 +699,8 @@
 				4DDA8E3E1C4F5AE700ED5325 /* loadlib.c in Sources */,
 				4DDA8E3F1C4F5AE700ED5325 /* lobject.c in Sources */,
 				4DDA8E471C4F5AE700ED5325 /* ltablib.c in Sources */,
+				4DE620FD1C7856AE0073C71A /* camera.c in Sources */,
 				4DDA8E451C4F5AE700ED5325 /* lstrlib.c in Sources */,
-				4DE4D2011C7461C700410891 /* camera.c in Sources */,
 				4DDA8E3C1C4F5AE700ED5325 /* lmathlib.c in Sources */,
 				4DDA8E381C4F5AE700ED5325 /* lgc.c in Sources */,
 				4D887C4A1C70BFCA006EA5DA /* texture.c in Sources */,

@@ -68,7 +68,6 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
     glGenVertexArrays(1, &spr->vao);
     glBindVertexArray(spr->vao);
 
-
     printf("sizeof(spr->vert) = %ld\n", sizeof(spr->vert));
     printf("sizeof(vertex) = %ld\n", sizeof(vertex));
     printf("offsetof(vertex, (vertex, position)) = %ld\n", offsetof(vertex, position));

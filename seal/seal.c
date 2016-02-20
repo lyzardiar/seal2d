@@ -114,11 +114,11 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
     
     for(int i = 0; i < MAX_SPITE; ++i) {
-        sprite* s = sprite_alloc(0, 0, 1, 1);
+        sprite* s = sprite_alloc(0, 0, 200, 200);
         sprites[i] = s;
     }
     
-    camera_pos(GAME->global_camera, 100, 100);
+    camera_pos(GAME->global_camera, 0, 0);
 }
 
 void seal_update(float dt) {
