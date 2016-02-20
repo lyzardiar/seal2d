@@ -6,6 +6,8 @@ struct camera* camera_new(float width, float height) {
     struct camera* c = (struct camera*)s_malloc(sizeof(struct camera));
     c->x = 0.0f;
     c->y = 0.0f;
+    c->scale_x = 1.0f;
+    c->scale_y = 1.0f;
     c->width = width;
     c->height = height;
     c->dirty = 0;
@@ -27,7 +29,14 @@ void camera_pos(struct camera* self, float x, float y) {
     self->x = x;
     self->y = y;
     
-    self->dirty = 1;
+    self->dirty |= TRANSLATE_DIRTY;
+}
+
+void camera_scale(struct camera* self, float sx, float sy) {
+    self->scale_x = 1.0f;
+    self->scale_y = 1.0f;
+    
+    self->dirty |= SCALE_DIRTY;
 }
 
 void camera_update(struct camera* self) {
