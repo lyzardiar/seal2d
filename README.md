@@ -17,6 +17,3 @@ You need to set the custom working directory in xcode.
 If you got anyquestion, please don't bother to add an issue. thank you. :)
 
 Due to there may be big changes in this project, so I may only provide iOS and Mac platform support right now.
-
-# the Luajit branch
-Please checkout the lua-jit branch to use that if you preffered. The lua branch is FASTER than the luajit branch, looking forward someone may fix that :).
