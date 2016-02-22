@@ -7,4 +7,24 @@ void test_array() {
         array_push_back(a, (void*)i);
     }
     array_debug_print(a);
+    for (int i = 0; i < 10; ++i) {
+        array_push_back(a, (void*)i);
+    }
+    for (int i = 0; i < 10; ++i) {
+        array_push_back(a, (void*)i);
+    }
+    for (int i = 0; i < 10; ++i) {
+        array_push_back(a, (void*)i);
+    }
+    for (int i = 0; i < 10; ++i) {
+        array_push_back(a, (void*)i);
+    }
+    for (int i = 0; i < 10; ++i) {
+        array_push_back(a, (void*)i);
+    }
+    for (int i = 0; i < 10; ++i) {
+        array_push_back(a, (void*)i);
+    }
+    array_debug_print(a);
+
 }

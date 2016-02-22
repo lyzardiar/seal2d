@@ -30,7 +30,6 @@ void array_push_back(struct array* self, void* data) {
     if(self->n+1 > cap*3/4) {
         cap *= 2;
         
-        s_free(self->data);
         self->data = (DATA_TYPE*)s_realloc(self->data, sizeof(DATA_TYPE) * cap);
         
         self->cap = cap;
@@ -61,7 +60,7 @@ int array_empty(struct array* self) {
 }
 
 void array_debug_print(struct array* self) {
-    printf("array: data address = %p\n", self->data);
+    printf("array: data address = %p, n = %ld, cap = %ld\n", self->data, self->n, self->cap);
     printf("array: data is:\n");
     for (int i = 0; i < self->n; ++i) {
         printf("%p ", self->data[i]);
