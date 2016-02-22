@@ -5,7 +5,7 @@
     // memory functions
     #define s_malloc(size)  seal_malloc(size, __FILE__, __LINE__)
     #define s_calloc(size)  seal_calloc(size, __FILE__, __LINE__)
-    #define s_realloc(p)    seal_realloc(size, __FILE__, __LINE__)
+    #define s_realloc(p, size)    seal_realloc(p, size, __FILE__, __LINE__)
     #define s_free(p)       do{ seal_free(p); p = NULL; } while(0)
 
     // others
@@ -37,6 +37,7 @@
 #include "lauxlib.h"
 
 #include "base/list.h"
+#include "base/array.h"
 
 #include "math/matrix.h"
 

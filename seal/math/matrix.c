@@ -23,7 +23,6 @@ struct mat4* orth_matrix(float left, float bottom, float right, float top, float
     m[13] = -(top + bottom) / (top - bottom);
     m[14] = (near + far) / (near - far);
     m[15] = 1.0f;
-    debug_print(mat);
     return mat;
 }
 
@@ -47,7 +46,6 @@ struct mat4* identy_matix() {
     m[14] = 0.0f;
     m[15] = 1.0f;
     
-    debug_print(mat);
     return mat;
 }
 
@@ -63,7 +61,7 @@ void matrix_translate(struct mat4* self, float x, float y, float z) {
     om[14] += z;
 }
 
-void debug_print(struct mat4* self) {
+void matrix_debug_print(struct mat4* self) {
     float* m = self->m;
     printf("------------------------------------------------\n");
     printf("|\t %.5f,\t %.5f,\t %.5f,\t %.5f\t |\n", m[0], m[4], m[8], m[12]);

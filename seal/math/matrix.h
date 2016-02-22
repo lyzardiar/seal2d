@@ -14,5 +14,5 @@ void matrix_free(struct mat4* mat);
 
 void matrix_translate(struct mat4* out, float x, float y, float z);
 
-void debug_print(struct mat4* self);
+void matrix_debug_print(struct mat4* self);
 #endif /* defined(__yuusha__matrix__) */
