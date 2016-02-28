@@ -1,11 +1,10 @@
-#ifndef __yuusha__render__
-#define __yuusha__render__
+#ifndef __seal__render__
+#define __seal__render__
 
 #include "seal.h"
-#include "vertex.h"
 
 struct render {
-    vertex** verts;
+    struct vertex** verts;
     unsigned int num_vertices;
 };
 

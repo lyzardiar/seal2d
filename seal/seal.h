@@ -3,13 +3,13 @@
 
 #ifdef DEBUG
     // memory functions
-    #define s_malloc(size)  seal_malloc(size, __FILE__, __LINE__)
-    #define s_calloc(size)  seal_calloc(size, __FILE__, __LINE__)
-    #define s_realloc(p, size)    seal_realloc(p, size, __FILE__, __LINE__)
-    #define s_free(p)       do{ seal_free(p); p = NULL; } while(0)
+    #define s_malloc(size)          seal_malloc(size, __FILE__, __LINE__)
+    #define s_calloc(size)          seal_calloc(size, __FILE__, __LINE__)
+    #define s_realloc(p, size)      seal_realloc(p, size, __FILE__, __LINE__)
+    #define s_free(p)               seal_free(p)
 
     // others
-    #define s_assert(condition) assert(condition)
+    #define s_assert(condition)     assert(condition)
 
 #else
     #define s_malloc    malloc
@@ -40,10 +40,10 @@
 #include "base/array.h"
 
 #include "math/matrix.h"
+#include "math/geo.h"
 
 #include "memory.h"
 #include "shader.h"
-#include "vertex.h"
 #include "sprite.h"
 #include "camera.h"
 

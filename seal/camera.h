@@ -1,5 +1,5 @@
-#ifndef __yuusha__camera__
-#define __yuusha__camera__
+#ifndef __seal__camera__
+#define __seal__camera__
 
 #include "seal.h"
 
@@ -22,4 +22,4 @@ void camera_free(struct camera* c);
 void camera_pos(struct camera* self, float x, float y);
 void camera_scale(struct camera* self, float sx, float sy);
 void camera_update(struct camera* self);
-#endif /* defined(__yuusha__camera__) */
+#endif

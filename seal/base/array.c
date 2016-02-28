@@ -47,16 +47,32 @@ void* array_at(struct array* self, size_t index) {
     return self->data[index];
 }
 
-void array_clear(struct array* self) {
+void array_clear(struct array* self, int free) {
     if (self->n == 0) {
         return;
     }
+    
+    if (free) {
+        for (size_t i = 0; i < self->n; ++i) {
+            void* p = array_at(self, i);
+            s_free(p);
+        }
+    }
+    
     self->n = 0;
     memset(self->data, 0, self->cap);
 }
 
 int array_empty(struct array* self) {
     return self->n == 0;
+}
+
+size_t array_size(struct array* self) {
+    return self->n;
+}
+
+void* array_data(struct array* self) {
+    return self->data;
 }
 
 void array_debug_print(struct array* self) {

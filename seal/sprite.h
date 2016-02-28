@@ -13,7 +13,7 @@ typedef struct sprite {
     GLuint vao;
     GLuint tex_id;
     
-    vertex vert[6];
+    struct vertex vert[6];
     struct texture* texture;
     
     float speed_x, speed_y;

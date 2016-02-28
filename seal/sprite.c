@@ -2,29 +2,8 @@
 
 EXTERN_GAME;
 
-#define SET_VERTEX_POS(vert, x, y) \
-    do { \
-        vert.position[0] = x; \
-        vert.position[1] = y; \
-    } while(0);
-
-#define SET_VERTEX_COLOR(vert, r, g, b, a) \
-    do { \
-        vert.color[0] = r; \
-        vert.color[1] = g; \
-        vert.color[2] = b; \
-        vert.color[3] = a; \
-    } while(0);
-
-#define SET_VERTEX_UV(vert, u, v) \
-    do { \
-        vert.uv[0] = u; \
-        vert.uv[1] = v; \
-    } while(0);
-
 sprite* sprite_alloc(float x, float y, float width, float height) {
-    sprite
-    * spr = (sprite*)s_malloc(sizeof(sprite));
+    sprite * spr = (sprite*)s_malloc(sizeof(sprite));
     spr->x = x;
     spr->y = y;
     spr->width = width;
@@ -68,12 +47,6 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
     glGenVertexArrays(1, &spr->vao);
     glBindVertexArray(spr->vao);
 
-    printf("sizeof(spr->vert) = %ld\n", sizeof(spr->vert));
-    printf("sizeof(vertex) = %ld\n", sizeof(vertex));
-    printf("offsetof(vertex, (vertex, position)) = %ld\n", offsetof(vertex, position));
-    printf("offsetof(vertex, color) = %ld\n", offsetof(vertex, color));
-    printf("offsetof(vertex, uv) = %ld\n", offsetof(vertex, uv));
-
     spr->texture = load_from_png("res/atlas_example.png");
     
     spr->speed_x = 1;
@@ -113,19 +86,7 @@ void sprite_set_size(sprite* spr, float width, float height) {
 }
 
 void sprite_update(sprite* spr, float dt) {
-//    float dx = spr->speed_x * dt * 0.5;
-//    float dy = spr->speed_y * dt * 0.5;
-//    if (spr->x + dx >= 1.0f || spr->x + dx + spr->width <= -1.0f) {
-//        spr->speed_x = -spr->speed_x;
-//        spr->x -= dx;
-//    }
-//    
-//    if (spr->y + dy >= 1.0f || spr->y + dy  + spr->height <= -1.0f) {
-//        spr->speed_y = -spr->speed_y;
-//        spr->y -= dy;
-//    }
-//    
-//    sprite_set_pos(spr, spr->x + dx, spr->y + dy);
+
 }
 
 void sprite_draw(sprite* spr) {
@@ -142,13 +103,13 @@ void sprite_draw(sprite* spr) {
     
     glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
     
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(vertex), (void*)offsetof(vertex, color));
+    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
     
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, uv));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
     
     glDrawArrays(GL_TRIANGLES, 0, 6);
     
