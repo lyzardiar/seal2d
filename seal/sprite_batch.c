@@ -59,7 +59,7 @@ void sprite_batch_begin(struct sprite_batch* self) {
 }
 
 // generate the render batch
-void sprite_batch_gen_rb(struct sprite_batch* self) {
+void sprite_batch_gen_render_batches(struct sprite_batch* self) {
     size_t total_vertex = array_size(self->glyphs) * 6;
     struct vertex vertex[total_vertex];
     struct glyph* g0 = ((struct glyph*)array_at(self->glyphs, 0));
@@ -68,12 +68,17 @@ void sprite_batch_gen_rb(struct sprite_batch* self) {
     array_push_back(self->render_batches, r);
     int offset = 0;
     int cv = 0;
-    vertex[cv++] = g0->tl;
-    vertex[cv++] = g0->bl;
-    vertex[cv++] = g0->br;
-    vertex[cv++] = g0->br;
+    // tl ------- tr
+    // |          |
+    // |          |
+    // |          |
+    // bl ------- br
     vertex[cv++] = g0->tr;
     vertex[cv++] = g0->tl;
+    vertex[cv++] = g0->bl;
+    vertex[cv++] = g0->bl;
+    vertex[cv++] = g0->br;
+    vertex[cv++] = g0->tr;
     
     r->offset = offset;
     r->tex_id = g0->tex_id;
@@ -94,15 +99,24 @@ void sprite_batch_gen_rb(struct sprite_batch* self) {
                                               array_size(self->render_batches)-1);
             r->n_verts += 6;
         }
+        vertex[cv++] = g->tr;
+        vertex[cv++] = g->tl;
+        vertex[cv++] = g->bl;
+        vertex[cv++] = g->bl;
+        vertex[cv++] = g->br;
+        vertex[cv++] = g->tr;
+        
         offset += 6;
     }
     glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
     CHECK_GL_ERROR
-//    printf("sizeof(struct vertex) * total_vertex = %ld\n", sizeof(struct vertex) * total_vertex);
+    printf("sizeof(struct vertex) * total_vertex = %ld\n", sizeof(struct vertex) * total_vertex);
     glBufferData(GL_ARRAY_BUFFER, sizeof(struct vertex) * total_vertex, vertex, GL_DYNAMIC_DRAW);
         CHECK_GL_ERROR
     glBindBuffer(GL_ARRAY_BUFFER, 0);
         CHECK_GL_ERROR
+    
+    glBindVertexArray(self->vao);
 }
 
 int tex_compare(const void* a, const void* b) {
@@ -118,7 +132,7 @@ int tex_compare(const void* a, const void* b) {
 void sprite_batch_end(struct sprite_batch* self) {
     qsort(array_data(self->glyphs), array_size(self->glyphs), sizeof(void*), tex_compare);
     
-    sprite_batch_gen_rb(self);
+    sprite_batch_gen_render_batches(self);
 }
 
 void sprite_batch_draw(struct sprite_batch* self,
@@ -154,16 +168,28 @@ void sprite_batch_draw(struct sprite_batch* self,
 
 void sprite_batch_render(struct sprite_batch* self) {
     struct array* batch = self->render_batches;
+//    glBindVertexArray(self->vao);
     
-    glBindVertexArray(self->vao);
-        CHECK_GL_ERROR
+    printf("array_size(batch) = %ld\n", array_size(batch));
     for (int i = 0; i < array_size(batch); ++i) {
         struct render_batch* b = array_at(batch, i);
-        glBindTexture(GL_TEXTURE_2D, b->tex_id );
-            CHECK_GL_ERROR;
+        glBindTexture(GL_TEXTURE_2D, b->tex_id);
+        CHECK_GL_ERROR;
+        
+        glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
+        
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
+        
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
+
+        
         glDrawArrays(GL_TRIANGLES, b->offset, b->n_verts);
-            CHECK_GL_ERROR;
+        CHECK_GL_ERROR;
     }
-    glBindVertexArray(0);
-        CHECK_GL_ERROR
+//    glBindVertexArray(0);
+    CHECK_GL_ERROR
 }

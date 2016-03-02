@@ -38,7 +38,8 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
     SET_VERTEX_UV(spr->vert[3], 0.0f, 0.0f);
     SET_VERTEX_UV(spr->vert[4], 1.0f, 0.0f);
     SET_VERTEX_UV(spr->vert[5], 1.0f, 1.0f);
-    printf("sizeof(sizeof(vertexes)) = %ld\n", sizeof(spr->vert));
+    
+    printf("sizeof(spr->vert) = %ld\n", sizeof(spr->vert));
     glGenBuffers(1, &spr->vbo);
     glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(spr->vert), spr->vert, GL_DYNAMIC_DRAW);
@@ -90,5 +91,34 @@ void sprite_update(sprite* spr, float dt) {
 }
 
 void sprite_draw(sprite* spr) {
-
+    GLuint program = get_program(COLOR_SHADER);
+    glUseProgram(program);
+    
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, spr->texture->id);
+    GLint texture_location = glGetUniformLocation(program, "sampler");
+    glUniform1i(texture_location, 0);
+    
+    GLint projection = glGetUniformLocation(program, "projection");
+    glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, spr->vbo);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
+    
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
+    
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
+    
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    glUseProgram(0);
 }
