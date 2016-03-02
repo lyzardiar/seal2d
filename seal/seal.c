@@ -71,6 +71,7 @@ void seal_init() {
 
     // set the camera
     GAME->global_camera = camera_new(GAME->window_height, GAME->window_height);
+    GAME->batch = sprite_batch_new();
     
     seal_load_file("scripts/startup.lua");
     seal_start_game();
@@ -142,14 +143,56 @@ void seal_update(float dt) {
     lua_settop(L, TOP_FUNC_INDEX);
 }
 
+static struct texture* tex = NULL;
+
 void seal_draw() {
     glClearDepth(1.0f);
     glClearColor(1,1,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    for (int i = 0; i < MAX_SPITE; ++i) {
-        sprite_draw(sprites[i]);
+    GLuint program = get_program(COLOR_SHADER);
+    glUseProgram(program);
+    
+    CHECK_GL_ERROR;
+    
+    glActiveTexture(GL_TEXTURE0);
+    GLint texture_location = glGetUniformLocation(program, "sampler");
+    glUniform1i(texture_location, 0);
+    CHECK_GL_ERROR;
+    GLint projection = glGetUniformLocation(program, "projection");
+    glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
+    
+    struct sprite_batch* batch = GAME->batch;
+    sprite_batch_begin(batch);
+    
+    struct rect dst = {
+        0.0f, 0.0f, 50.0f, 50.0f
+    };
+    
+    struct rect uv = {
+        0.0f, 0.0f, 1.0f, 1.0f
+    };
+    
+    struct color color = {
+        255, 255, 255, 255
+    };
+    
+    if(!tex) {
+        tex = texture_load_from_png("res/atlas_example.png");
     }
+
+    sprite_batch_draw(batch, &dst, &uv, &color, tex->id);
+    sprite_batch_end(batch);
+    
+    sprite_batch_render(batch);
+    
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glUseProgram(0);
+
+    
+//    for (int i = 0; i < MAX_SPITE; ++i) {
+//        sprite_draw(sprites[i]);
+//    }
 }
 
 void seal_destroy() {

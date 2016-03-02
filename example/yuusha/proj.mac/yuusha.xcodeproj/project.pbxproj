@@ -20,6 +20,8 @@
 		4D822B911C6F672D0083122E /* timer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D822B901C6F672D0083122E /* timer.c */; };
 		4D887C471C70BE18006EA5DA /* lodepng.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D887C451C70BE18006EA5DA /* lodepng.c */; };
 		4D887C4A1C70BFCA006EA5DA /* texture.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D887C481C70BFCA006EA5DA /* texture.c */; };
+		4DA599571C827A44002C81D7 /* bmfont.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DA599551C827A44002C81D7 /* bmfont.c */; };
+		4DA599581C827A44002C81D7 /* bmfont.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DA599551C827A44002C81D7 /* bmfont.c */; };
 		4DDA8E2C1C4F5AE700ED5325 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA8DED1C4F5AE700ED5325 /* lapi.c */; };
 		4DDA8E2D1C4F5AE700ED5325 /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA8DEF1C4F5AE700ED5325 /* lauxlib.c */; };
 		4DDA8E2E1C4F5AE700ED5325 /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA8DF11C4F5AE700ED5325 /* lbaselib.c */; };
@@ -184,6 +186,8 @@
 		4D887C491C70BFCA006EA5DA /* texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture.h; sourceTree = "<group>"; };
 		4DA028881C5131C80070AE6B /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../res; sourceTree = "<group>"; };
 		4DA028891C5131C80070AE6B /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../scripts; sourceTree = "<group>"; };
+		4DA599551C827A44002C81D7 /* bmfont.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bmfont.c; sourceTree = "<group>"; };
+		4DA599561C827A44002C81D7 /* bmfont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bmfont.h; sourceTree = "<group>"; };
 		4DDA8DED1C4F5AE700ED5325 /* lapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lapi.c; sourceTree = "<group>"; };
 		4DDA8DEE1C4F5AE700ED5325 /* lapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lapi.h; sourceTree = "<group>"; };
 		4DDA8DEF1C4F5AE700ED5325 /* lauxlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lauxlib.c; sourceTree = "<group>"; };
@@ -355,6 +359,15 @@
 			path = image;
 			sourceTree = "<group>";
 		};
+		4DA599541C827A36002C81D7 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				4DA599551C827A44002C81D7 /* bmfont.c */,
+				4DA599561C827A44002C81D7 /* bmfont.h */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
 		4DA700531C4E852E0007549F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -478,6 +491,7 @@
 		4DE642B51C5B3BCA003EBBC0 /* seal */ = {
 			isa = PBXGroup;
 			children = (
+				4DA599541C827A36002C81D7 /* ui */,
 				4DE4D1B31C74056000410891 /* tests */,
 				4D887C441C70BE18006EA5DA /* image */,
 				4D822B7F1C6F621E0083122E /* platform */,
@@ -637,6 +651,7 @@
 				4DE4D1D01C74078B00410891 /* lbaselib.c in Sources */,
 				4DE4D1D11C74078B00410891 /* ltm.c in Sources */,
 				4DE4D1D21C74078B00410891 /* ldblib.c in Sources */,
+				4DA599581C827A44002C81D7 /* bmfont.c in Sources */,
 				4DE4D1D31C74078B00410891 /* lbitlib.c in Sources */,
 				4DE4D1D41C74078B00410891 /* linit.c in Sources */,
 				4DE47B411C7ACAC2001D2F8C /* sprite_batch.c in Sources */,
@@ -700,6 +715,7 @@
 				4DDA8E331C4F5AE700ED5325 /* ldblib.c in Sources */,
 				4DDA8E2F1C4F5AE700ED5325 /* lbitlib.c in Sources */,
 				4DE47B451C7ACBA5001D2F8C /* array.c in Sources */,
+				4DA599571C827A44002C81D7 /* bmfont.c in Sources */,
 				4DDA8E391C4F5AE700ED5325 /* linit.c in Sources */,
 				4D77986E1C6F229700021ED6 /* shader.c in Sources */,
 				4DDA8E3D1C4F5AE700ED5325 /* lmem.c in Sources */,

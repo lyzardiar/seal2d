@@ -45,6 +45,7 @@
 #include "memory.h"
 #include "shader.h"
 #include "sprite.h"
+#include "sprite_batch.h"
 #include "camera.h"
 
 #include "platform/fs.h"
@@ -59,6 +60,7 @@ struct game {
     int window_height;
     
     struct camera* global_camera;
+    struct sprite_batch* batch;
 };
 
 #define EXTERN_GAME extern struct game* GAME;

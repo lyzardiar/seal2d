@@ -1,8 +1,8 @@
 #include "texture.h"
 
-struct texture* load_from_png(const char* file_path) {
+struct texture* texture_load_from_png(const char* file_path) {
     if(!file_path) {
-        fprintf(stderr, "texure, load_from_png, file_path is nil?");
+        fprintf(stderr, "texure, texture_load_from_png, file_path is nil?");
         return NULL;
     }
     

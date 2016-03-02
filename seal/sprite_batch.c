@@ -31,6 +31,7 @@ void sprite_batch_gen_vao(struct sprite_batch* self) {
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
     
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
 
@@ -64,6 +65,7 @@ void sprite_batch_gen_rb(struct sprite_batch* self) {
     struct glyph* g0 = ((struct glyph*)array_at(self->glyphs, 0));
     
     struct render_batch* r = STRUCT_NEW(render_batch);
+    array_push_back(self->render_batches, r);
     int offset = 0;
     int cv = 0;
     vertex[cv++] = g0->tl;
@@ -72,12 +74,12 @@ void sprite_batch_gen_rb(struct sprite_batch* self) {
     vertex[cv++] = g0->br;
     vertex[cv++] = g0->tr;
     vertex[cv++] = g0->tl;
-    offset += 6;
     
     r->offset = offset;
     r->tex_id = g0->tex_id;
     r->n_verts = 6;
-    
+    offset += 6;
+
     for (int i = 1; i < array_size(self->glyphs); ++i) {
         struct glyph* g = ((struct glyph*)array_at(self->glyphs, i));
         struct glyph* g_prev = ((struct glyph*)array_at(self->glyphs, i-1));
@@ -95,8 +97,12 @@ void sprite_batch_gen_rb(struct sprite_batch* self) {
         offset += 6;
     }
     glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
+    CHECK_GL_ERROR
+//    printf("sizeof(struct vertex) * total_vertex = %ld\n", sizeof(struct vertex) * total_vertex);
     glBufferData(GL_ARRAY_BUFFER, sizeof(struct vertex) * total_vertex, vertex, GL_DYNAMIC_DRAW);
+        CHECK_GL_ERROR
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+        CHECK_GL_ERROR
 }
 
 int tex_compare(const void* a, const void* b) {
@@ -130,18 +136,34 @@ void sprite_batch_draw(struct sprite_batch* self,
     
     // bottom right
     SET_VERTEX_POS(g->br, dst_rect->x + dst_rect->width, dst_rect->y);
-    SET_VERTEX_UV(g->br, uv_rect->x + dst_rect->width, uv_rect->y);
+    SET_VERTEX_UV(g->br, uv_rect->x + uv_rect->width, uv_rect->y);
     SET_VERTEX_COLOR(g->br, color->r, color->g, color->b, color->a);
     
     // top left
     SET_VERTEX_POS(g->tl, dst_rect->x, dst_rect->y + dst_rect->height);
-    SET_VERTEX_UV(g->tl, uv_rect->x, uv_rect->y + dst_rect->height);
+    SET_VERTEX_UV(g->tl, uv_rect->x, uv_rect->y + uv_rect->height);
     SET_VERTEX_COLOR(g->tl, color->r, color->g, color->b, color->a);
     
     // top right
     SET_VERTEX_POS(g->tr, dst_rect->x + dst_rect->width, dst_rect->y + dst_rect->height);
-    SET_VERTEX_UV(g->tr, uv_rect->x + dst_rect->width, uv_rect->y + dst_rect->height);
+    SET_VERTEX_UV(g->tr, uv_rect->x + uv_rect->width, uv_rect->y + uv_rect->height);
     SET_VERTEX_COLOR(g->tr, color->r, color->g, color->b, color->a);
     
     array_push_back(self->glyphs, g);
+}
+
+void sprite_batch_render(struct sprite_batch* self) {
+    struct array* batch = self->render_batches;
+    
+    glBindVertexArray(self->vao);
+        CHECK_GL_ERROR
+    for (int i = 0; i < array_size(batch); ++i) {
+        struct render_batch* b = array_at(batch, i);
+        glBindTexture(GL_TEXTURE_2D, b->tex_id );
+            CHECK_GL_ERROR;
+        glDrawArrays(GL_TRIANGLES, b->offset, b->n_verts);
+            CHECK_GL_ERROR;
+    }
+    glBindVertexArray(0);
+        CHECK_GL_ERROR
 }
