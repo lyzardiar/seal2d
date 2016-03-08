@@ -1,3 +1,8 @@
+#include <stdlib.h>
+#include <string.h>
+
+#include "base/list.h"
+
 #include "memory.h"
 
 struct alloc_entry {

@@ -1,3 +1,13 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "memory.h"
+
+#include "platform/fs.h"
+#include "image/lodepng.h"
+
+#include "util.h"
+
 #include "texture.h"
 
 struct texture* texture_load_from_png(const char* file_path) {
@@ -26,7 +36,7 @@ struct texture* texture_load_from_png(const char* file_path) {
     struct texture* tex = s_malloc(sizeof(texture));
     tex->id = 0;
     glGenTextures(1, &tex->id);
-    assert(tex->id != 0);
+    s_assert(tex->id != 0);
     
     glBindTexture(GL_TEXTURE_2D, tex->id);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixel_data);

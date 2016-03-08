@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4D0B96CE1C7BFCD000C8C658 /* geo.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D0B96CC1C7BFCD000C8C658 /* geo.c */; };
 		4D0B96CF1C7BFCD000C8C658 /* geo.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D0B96CC1C7BFCD000C8C658 /* geo.c */; };
+		4D46F8081C8F287D0081A1DC /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D46F8071C8F287D0081A1DC /* libfreetype.a */; };
+		4D46F8091C8F287D0081A1DC /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D46F8071C8F287D0081A1DC /* libfreetype.a */; };
 		4D6D56B81C737F5B00328A62 /* array_map.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D6D56B61C737F5B00328A62 /* array_map.c */; };
 		4D77985C1C6F0B5100021ED6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D77985B1C6F0B5100021ED6 /* OpenGL.framework */; };
 		4D7798661C6F0EC800021ED6 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D7798641C6F0EC800021ED6 /* sprite.c */; };
@@ -165,6 +167,7 @@
 		4D0B96CC1C7BFCD000C8C658 /* geo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = geo.c; sourceTree = "<group>"; };
 		4D0B96CD1C7BFCD000C8C658 /* geo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geo.h; sourceTree = "<group>"; };
 		4D46F8061C8F25D30081A1DC /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
+		4D46F8071C8F287D0081A1DC /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = "../../../libs/freetype-2.6.2/mac/lib/libfreetype.a"; sourceTree = "<group>"; };
 		4D6D56B61C737F5B00328A62 /* array_map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = array_map.c; sourceTree = "<group>"; };
 		4D6D56B71C737F5B00328A62 /* array_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = array_map.h; sourceTree = "<group>"; };
 		4D77985B1C6F0B5100021ED6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -293,6 +296,7 @@
 				4DE4D1BE1C74078B00410891 /* AudioUnit.framework in Frameworks */,
 				4DE4D1BF1C74078B00410891 /* Carbon.framework in Frameworks */,
 				4DE4D1C01C74078B00410891 /* IOKit.framework in Frameworks */,
+				4D46F8091C8F287D0081A1DC /* libfreetype.a in Frameworks */,
 				4DE4D1C11C74078B00410891 /* ForceFeedback.framework in Frameworks */,
 				4DE4D1C21C74078B00410891 /* CoreVideo.framework in Frameworks */,
 				4DE4D1C31C74078B00410891 /* CoreAudio.framework in Frameworks */,
@@ -310,6 +314,7 @@
 				4DDA8EA21C4F5C9D00ED5325 /* AudioUnit.framework in Frameworks */,
 				4DDA8EA01C4F5C9900ED5325 /* Carbon.framework in Frameworks */,
 				4DDA8E9E1C4F5C9200ED5325 /* IOKit.framework in Frameworks */,
+				4D46F8081C8F287D0081A1DC /* libfreetype.a in Frameworks */,
 				4DDA8E9C1C4F5C8E00ED5325 /* ForceFeedback.framework in Frameworks */,
 				4DDA8E9A1C4F5C8200ED5325 /* CoreVideo.framework in Frameworks */,
 				4DDA8E961C4F5C6700ED5325 /* CoreAudio.framework in Frameworks */,
@@ -464,6 +469,7 @@
 		4DDF63961C4E0585008A44CE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D46F8071C8F287D0081A1DC /* libfreetype.a */,
 				4D822B8C1C6F66400083122E /* libglfw3.a */,
 				4D77985B1C6F0B5100021ED6 /* OpenGL.framework */,
 				4DDA8EA31C4F5CA300ED5325 /* CoreFoundation.framework */,
@@ -790,6 +796,7 @@
 					../../../libs/glfw/mac/libs,
 					/Users/sleepers/Projects/github/seal2d/libs/glfw/mac/libs,
 					"/Users/sleepers/Projects/github/seal2d/libs/freetype-2.6.2/objs/.libs",
+					"/Users/sleepers/Projects/github/seal2d/libs/freetype-2.6.2/mac/lib",
 				);
 				PRODUCT_NAME = "yuusha copy";
 			};
@@ -810,6 +817,7 @@
 					../../../libs/glfw/mac/libs,
 					/Users/sleepers/Projects/github/seal2d/libs/glfw/mac/libs,
 					"/Users/sleepers/Projects/github/seal2d/libs/freetype-2.6.2/objs/.libs",
+					"/Users/sleepers/Projects/github/seal2d/libs/freetype-2.6.2/mac/lib",
 				);
 				PRODUCT_NAME = "yuusha copy";
 			};
@@ -899,9 +907,12 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../../../seal,
 					../../../libs/glfw/mac/include,
-					"../../../libs/freetype-2.6.2/include/**",
+					"../../../libs/freetype-2.6.2/mac/include/**",
 				);
-				LIBRARY_SEARCH_PATHS = ../../../libs/glfw/mac/libs;
+				LIBRARY_SEARCH_PATHS = (
+					../../../libs/glfw/mac/libs,
+					"../../../libs/freetype-2.6.2/mac/libs",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -916,9 +927,12 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../../../seal,
 					../../../libs/glfw/mac/include,
-					"../../../libs/freetype-2.6.2/include/**",
+					"../../../libs/freetype-2.6.2/mac/include/**",
 				);
-				LIBRARY_SEARCH_PATHS = ../../../libs/glfw/mac/libs;
+				LIBRARY_SEARCH_PATHS = (
+					../../../libs/glfw/mac/libs,
+					"../../../libs/freetype-2.6.2/mac/libs",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

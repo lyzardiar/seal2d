@@ -12,3 +12,5 @@ Icon
 .Trashes
 
 *local.properties
+*.o
+*.lo

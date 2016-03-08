@@ -1,3 +1,10 @@
+#include "seal.h"
+
+#include "math/matrix.h"
+
+#include "shader.h"
+#include "camera.h"
+
 #include "sprite.h"
 
 EXTERN_GAME;

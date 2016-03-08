@@ -1,6 +1,8 @@
 #ifndef __seal__memory__
 #define __seal__memory__
 
+#include <stdio.h>
+
 #ifdef DEBUG
 // memory functions
 #define s_malloc(size)          seal_malloc(size, __FILE__, __LINE__)

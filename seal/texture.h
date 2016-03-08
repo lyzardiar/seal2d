@@ -1,7 +1,7 @@
 #ifndef __seal__texture__
 #define __seal__texture__
 
-#include "seal.h"
+#include <OpenGL/gl3.h>
 
 struct texture {
     GLuint id;
