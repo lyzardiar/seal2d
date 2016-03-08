@@ -1,6 +1,14 @@
 #include "seal.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <float.h>
+#include <unistd.h>
+
 #include "GLFW/glfw3.h"
+
+#include "timer.h"
 
 #ifdef UNIT_TEST
 #include "tests/unit_test/test.h"

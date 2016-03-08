@@ -164,6 +164,7 @@
 /* Begin PBXFileReference section */
 		4D0B96CC1C7BFCD000C8C658 /* geo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = geo.c; sourceTree = "<group>"; };
 		4D0B96CD1C7BFCD000C8C658 /* geo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geo.h; sourceTree = "<group>"; };
+		4D46F8061C8F25D30081A1DC /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		4D6D56B61C737F5B00328A62 /* array_map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = array_map.c; sourceTree = "<group>"; };
 		4D6D56B71C737F5B00328A62 /* array_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = array_map.h; sourceTree = "<group>"; };
 		4D77985B1C6F0B5100021ED6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -319,6 +320,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D46EDDE1C8F149E0081A1DC /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				4DDA8DDE1C4F5AE700ED5325 /* lua-5.3.2 */,
+			);
+			name = libs;
+			sourceTree = "<group>";
+		};
 		4D822B7A1C6F5DCE0083122E /* base */ = {
 			isa = PBXGroup;
 			children = (
@@ -514,6 +523,7 @@
 				4DE4D2001C7461C700410891 /* camera.h */,
 				4DE47B3E1C7ACAC2001D2F8C /* sprite_batch.c */,
 				4DE47B3F1C7ACAC2001D2F8C /* sprite_batch.h */,
+				4D46F8061C8F25D30081A1DC /* util.h */,
 			);
 			name = seal;
 			path = ../../../seal;
@@ -546,7 +556,7 @@
 		4DF5F5B51C4C8CFC0080A8EB = {
 			isa = PBXGroup;
 			children = (
-				4DDA8DDE1C4F5AE700ED5325 /* lua-5.3.2 */,
+				4D46EDDE1C8F149E0081A1DC /* libs */,
 				4DE642B51C5B3BCA003EBBC0 /* seal */,
 				4D822B7C1C6F61670083122E /* native */,
 				4DA700531C4E852E0007549F /* Resources */,
@@ -779,6 +789,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					../../../libs/glfw/mac/libs,
 					/Users/sleepers/Projects/github/seal2d/libs/glfw/mac/libs,
+					"/Users/sleepers/Projects/github/seal2d/libs/freetype-2.6.2/objs/.libs",
 				);
 				PRODUCT_NAME = "yuusha copy";
 			};
@@ -798,6 +809,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					../../../libs/glfw/mac/libs,
 					/Users/sleepers/Projects/github/seal2d/libs/glfw/mac/libs,
+					"/Users/sleepers/Projects/github/seal2d/libs/freetype-2.6.2/objs/.libs",
 				);
 				PRODUCT_NAME = "yuusha copy";
 			};
@@ -887,11 +899,9 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../../../seal,
 					../../../libs/glfw/mac/include,
+					"../../../libs/freetype-2.6.2/include/**",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					../../../libs/glfw/mac/libs,
-					/Users/sleepers/Projects/github/seal2d/libs/glfw/mac/libs,
-				);
+				LIBRARY_SEARCH_PATHS = ../../../libs/glfw/mac/libs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -906,11 +916,9 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../../../seal,
 					../../../libs/glfw/mac/include,
+					"../../../libs/freetype-2.6.2/include/**",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					../../../libs/glfw/mac/libs,
-					/Users/sleepers/Projects/github/seal2d/libs/glfw/mac/libs,
-				);
+				LIBRARY_SEARCH_PATHS = ../../../libs/glfw/mac/libs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

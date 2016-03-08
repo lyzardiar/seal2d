@@ -1,4 +1,14 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <OpenGL/gl3.h>
+
 #include "shader.h"
+#include "memory.h"
+
+#include "platform/fs.h"
+
+
 
 static GLuint programes[MAX_SHADER] = {0};
 

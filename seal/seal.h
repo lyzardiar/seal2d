@@ -1,58 +1,12 @@
 #ifndef __seal__seal__
 #define __seal__seal__
 
-#ifdef DEBUG
-    // memory functions
-    #define s_malloc(size)          seal_malloc(size, __FILE__, __LINE__)
-    #define s_calloc(size)          seal_calloc(size, __FILE__, __LINE__)
-    #define s_realloc(p, size)      seal_realloc(p, size, __FILE__, __LINE__)
-    #define s_free(p)               seal_free(p)
-
-    // others
-    #define s_assert(condition)     assert(condition)
-
-#else
-    #define s_malloc    malloc
-    #define s_calloc    calloc
-    #define s_realloc   realloc
-    #define s_free      free
-
-    #define s_assert(condition)
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include <math.h>
-#include <sys/time.h>
-#include <unistd.h>
-#include <float.h>
-#include <stddef.h>
-
-#include <OpenGL/gl3.h>
-
 #include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
-
-#include "base/list.h"
-#include "base/array.h"
-
-#include "math/matrix.h"
-#include "math/geo.h"
 
 #include "memory.h"
-#include "shader.h"
-#include "sprite.h"
-#include "sprite_batch.h"
-#include "camera.h"
 
-#include "platform/fs.h"
-#include "platform/timer.h"
-
-#include "image/lodepng.h"
-
+struct camera;
+struct sprite_batch;
 
 struct game {
     lua_State* lstate;

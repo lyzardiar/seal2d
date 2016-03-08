@@ -1,8 +1,14 @@
+#include <stdlib.h>
+#include <string.h>
+
 #include "platform/fs.h"
+
+#include "memory.h"
+#include "util.h"
 
 unsigned char* s_read(const char* path, size_t* size, int extra_byte) {
 #ifdef __APPLE__
-    assert(extra_byte == 0 || extra_byte == 1);
+    s_assert(extra_byte == 0 || extra_byte == 1);
     FILE* fp = fopen(path, "r");
     if (!fp) {
         fprintf(stderr, "s_read, can't open file.\n");

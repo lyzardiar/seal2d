@@ -1,9 +1,10 @@
+#include <stdio.h>
+
 #include "seal.h"
+#include "base/array_map.h"
+#include "util.h"
 
 #include "test.h"
-
-#include "base/array_map.h"
-
 void test_array_map() {
     struct array_map* map = array_map_new();
     unsigned long data[] = { 0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8,0x9,0x0a};
@@ -13,7 +14,7 @@ void test_array_map() {
         array_map_add(map, (void*)data[i]);
     }
     
-    assert(map->cur_id == 10);
+    s_assert(map->cur_id == 10);
     
     for (int i = 0; i < sizeof(data)/sizeof(unsigned long); ++i) {
         array_map_add(map, (void*)data[i]);

@@ -1,7 +1,23 @@
 #ifndef __seal__memory__
 #define __seal__memory__
 
-#include "seal.h"
+#ifdef DEBUG
+// memory functions
+#define s_malloc(size)          seal_malloc(size, __FILE__, __LINE__)
+#define s_calloc(size)          seal_calloc(size, __FILE__, __LINE__)
+#define s_realloc(p, size)      seal_realloc(p, size, __FILE__, __LINE__)
+#define s_free(p)               seal_free(p)
+
+#else
+
+#define s_malloc    malloc
+#define s_calloc    calloc
+#define s_realloc   realloc
+#define s_free      free
+
+#endif
+
+
 #define STRUCT_NEW(type) (struct type*)s_malloc(sizeof(struct type))
 
 void add_entry(void* ptr, size_t size, const char* file, int line);

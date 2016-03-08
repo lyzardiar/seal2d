@@ -1,5 +1,6 @@
 #include "timer.h"
 
+#include <sys/time.h>
 long gettime() {
     struct timeval time;
     gettimeofday(&time, NULL);

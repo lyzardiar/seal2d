@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "matrix.h"
 
 //0,4,8,12,

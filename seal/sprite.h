@@ -1,7 +1,7 @@
 #ifndef __seal__sprite__
 #define __seal__sprite__
 
-#include "seal.h"
+#include "math/geo.h"
 #include "texture.h"
 
 typedef struct sprite {

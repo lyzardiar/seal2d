@@ -1,7 +1,7 @@
 #ifndef __seal__fs__
 #define __seal__fs__
 
-#include "seal.h"
+#include <stdio.h>
 
 // user's duty to free
 // extra_byte: 0 or 1, if you were to read a string, we ensure another byte

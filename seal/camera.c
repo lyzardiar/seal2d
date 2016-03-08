@@ -1,3 +1,6 @@
+#include "seal.h"
+#include "math/matrix.h"
+
 #include "camera.h"
 
 EXTERN_GAME;

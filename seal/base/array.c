@@ -1,3 +1,10 @@
+#include <stdlib.h>
+#include <string.h>
+
+#include "seal.h"
+#include "memory.h"
+#include "util.h"
+
 #include "array.h"
 
 typedef void* DATA_TYPE;

@@ -1,7 +1,7 @@
 #ifndef __seal__camera__
 #define __seal__camera__
 
-#include "seal.h"
+struct mat4;
 
 enum CAMERA_DIRTY_FLAG {
     TRANSLATE_DIRTY = 1,

@@ -1,4 +1,14 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <OpenGL/gl3.h>
+
 #include "sprite_batch.h"
+
+#include "base/array.h"
+#include "memory.h"
+#include "shader.h"
+
 
 struct glyph* glyph_new() {
     return STRUCT_NEW(glyph);

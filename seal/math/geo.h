@@ -1,8 +1,7 @@
 #ifndef __seal__geo__
 #define __seal__geo__
 
-#include "seal.h"
-
+#include <OpenGL/OpenGL.h>
 
 struct vertex {
     GLfloat position[2]; // x, y

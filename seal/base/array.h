@@ -1,7 +1,7 @@
 #ifndef __seal__array__
 #define __seal__array__
 
-#include "seal.h"
+#include <stdio.h>
 
 struct array;
 

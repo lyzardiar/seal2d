@@ -1,4 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include <math.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <float.h>
+#include <stddef.h>
+
+#include "lualib.h"
+#include "lauxlib.h"
+
 #include "seal.h"
+
+#include "shader.h"
+
+#include "sprite.h"
+#include "camera.h"
+#include "sprite_batch.h"
+
+
+#include "math/matrix.h"
+
 #include "lopen.h"
 
 extern void luaopen_lua_extensions(lua_State *L);

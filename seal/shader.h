@@ -1,7 +1,7 @@
 #ifndef __seal__shader__
 #define __seal__shader__
 
-#include "seal.h"
+#include <OpenGL/gl3.h>
 
 #define CHECK_GL_ERROR check_gl_error(__FILE__, __LINE__);
 
