@@ -19,10 +19,10 @@
 #include "camera.h"
 #include "sprite_batch.h"
 
-
 #include "math/matrix.h"
 
 #include "lopen.h"
+#include "ttf_font.h"
 
 extern void luaopen_lua_extensions(lua_State *L);
 
@@ -95,6 +95,10 @@ void seal_init() {
     // set the camera
     GAME->global_camera = camera_new(GAME->window_height, GAME->window_height);
     GAME->batch = sprite_batch_new();
+    
+    // init the font
+    ttf_init();
+    ttf_load_face("res/fonts/marker_felt.ttf");
     
     seal_load_file("scripts/startup.lua");
     seal_start_game();

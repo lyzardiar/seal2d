@@ -178,28 +178,21 @@ void sprite_batch_draw(struct sprite_batch* self,
 
 void sprite_batch_render(struct sprite_batch* self) {
     struct array* batch = self->render_batches;
-//    glBindVertexArray(self->vao);
     
-    printf("array_size(batch) = %ld\n", array_size(batch));
+    glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
+    
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
+    
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
+
     for (int i = 0; i < array_size(batch); ++i) {
         struct render_batch* b = array_at(batch, i);
         glBindTexture(GL_TEXTURE_2D, b->tex_id);
-        CHECK_GL_ERROR;
-        
-        glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
-        
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
-        
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
-
         
         glDrawArrays(GL_TRIANGLES, b->offset, b->n_verts);
-        CHECK_GL_ERROR;
     }
-//    glBindVertexArray(0);
-    CHECK_GL_ERROR
 }
