@@ -97,8 +97,9 @@ void seal_init() {
     GAME->batch = sprite_batch_new();
     
     // init the font
-    ttf_init();
-    ttf_load_face("res/fonts/marker_felt.ttf");
+    ttf_init_module();
+    
+    ttf_font_new("res/fonts/marker_felt.ttf", 20);
     
     seal_load_file("scripts/startup.lua");
     seal_start_game();

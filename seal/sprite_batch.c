@@ -120,7 +120,6 @@ void sprite_batch_gen_render_batches(struct sprite_batch* self) {
     }
     glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
     CHECK_GL_ERROR
-    printf("sizeof(struct vertex) * total_vertex = %ld\n", sizeof(struct vertex) * total_vertex);
     glBufferData(GL_ARRAY_BUFFER, sizeof(struct vertex) * total_vertex, vertex, GL_DYNAMIC_DRAW);
         CHECK_GL_ERROR
     glBindBuffer(GL_ARRAY_BUFFER, 0);
