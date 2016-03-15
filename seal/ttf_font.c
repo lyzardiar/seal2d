@@ -4,7 +4,10 @@
 #include "util.h"
 #include "memory.h"
 
+#include "texture.h"
+
 #include "ttf_font.h"
+
 
 static FT_Library library = NULL;
 
@@ -14,6 +17,80 @@ void ttf_init_module() {
         if (err) {
             fprintf(stderr, "ttf_init init freetype library error: %d\n", err);
         }
+    }
+}
+
+
+#define WIDTH   200
+#define HEIGHT  200
+
+unsigned char image[HEIGHT][WIDTH];
+
+
+void
+draw_bitmap_2( FT_Bitmap*  bitmap,
+            FT_Int      x,
+            FT_Int      y)
+{
+    FT_Int  i, j, p, q;
+    FT_Int  x_max = x + bitmap->width;
+    FT_Int  y_max = y + bitmap->rows;
+    
+    
+    for ( i = x, p = 0; i < x_max; i++, p++ )
+    {
+        for ( j = y, q = 0; j < y_max; j++, q++ )
+        {
+            if ( i < 0      || j < 0       ||
+                i >= WIDTH || j >= HEIGHT )
+                continue;
+            
+            image[j][i] |= bitmap->buffer[q * bitmap->width + p];
+        }
+    }
+}
+
+unsigned char*
+draw_bitmap( FT_Bitmap*  bitmap,
+            FT_Int      x,
+            FT_Int      y)
+{
+    FT_Int  i, j, p, q;
+    FT_Int  x_max = x + bitmap->width;
+    FT_Int  y_max = y + bitmap->rows;
+    
+    unsigned char* buff = s_malloc(x_max * y_max); // rgba8888 = 4byte
+    memset(buff, 0, x_max*y_max);
+    
+    for ( i = x, p = 0; i < x_max; i++, p++ )
+    {
+        for ( j = y, q = 0; j < y_max; j++, q++ )
+        {
+//            if ( i < 0      || j < 0       ||
+//                i >= WIDTH || j >= HEIGHT )
+//                continue;
+          
+
+            buff[ (j*x_max + i) ] |= bitmap->buffer[q * bitmap->width + p];;
+        }
+    }
+    return buff;
+}
+
+
+void
+show_image( void )
+{
+    int  i, j;
+    
+    
+    for ( i = 0; i < HEIGHT; i++ )
+    {
+        for ( j = 0; j < WIDTH; j++ )
+            putchar( image[i][j] == 0 ? ' '
+                    : image[i][j] <= 128 ? ' '
+                    : '*' );
+        putchar( '\n' );
     }
 }
 
@@ -27,20 +104,11 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
     
     FT_Set_Pixel_Sizes(face, 0, (unsigned int)font_size);
     
-    FT_ULong uni_char = 0x0061;
-    FT_UInt index = FT_Get_Char_Index(face, uni_char);
+    FT_ULong uni_char = 0x61;
     
-    if(index == 0) {
-        fprintf(stderr, "load index failed, not fount index for char %ld\n", uni_char);
-        return NULL;
-    }
-    
-    FT_Error err = FT_Load_Glyph(font->face,
-                                 index,
-                                 FT_LOAD_DEFAULT|FT_LOAD_NO_BITMAP);
-    
-    if (err) {
-        fprintf(stderr, "ttf_font_new load glyph error: %d\n", err);
+    FT_Error err = FT_Load_Char(face, uni_char, FT_LOAD_RENDER);
+    if(err) {
+        fprintf(stderr, "ttf_font_new load char error: %d\n", err);
         return NULL;
     }
     
@@ -51,10 +119,21 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
         return NULL;
     }
     
+
+    draw_bitmap_2(&slot->bitmap,
+                  slot->bitmap_left,
+                  HEIGHT - slot->bitmap_top);
+    show_image();
+    
     FT_Bitmap bitmap = slot->bitmap;
-//    for (int i = 0; i < bitmap.width; ++i) {
-//        for (int j = 0; j < bitmap.)
-//    }
+    
+//    int pitch = bitmap.pitch;
+    unsigned int width = bitmap.width;
+    unsigned int height = bitmap.rows;
+    
+    struct texture* tex = texture_load_from_mem(bitmap.buffer, width, height, GL_RGBA);
+    
+    font->tex = tex;
 
     return font;
 }

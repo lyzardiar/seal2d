@@ -6,8 +6,12 @@
 struct texture {
     GLuint id;
     unsigned int width, height;
-} texture;
+};
 
 struct texture* texture_load_from_png(const char* file_path);
+
+struct texture* texture_load_from_mem(const unsigned char* memory,
+                                      unsigned int width,
+                                      unsigned height, GLint mode);
 
 #endif

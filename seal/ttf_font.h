@@ -4,11 +4,14 @@
 #include "ft2build.h"
 #include FT_FREETYPE_H
 
+struct texture;
+
 struct ttf_font {
     const char* path;
     size_t font_size;
     
     FT_Face face;
+    struct texture* tex;
 };
 
 void ttf_init_module();

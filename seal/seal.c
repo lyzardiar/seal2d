@@ -68,6 +68,7 @@ lua_State* seal_new_lua() {
     return L;
 }
 
+struct ttf_font* font = NULL;
 void seal_init() {
     // init basic drawing system before create the game.
     load_shaders();
@@ -98,7 +99,7 @@ void seal_init() {
     // init the font
     ttf_init_module();
     
-    ttf_font_new("res/fonts/marker_felt.ttf", 20);
+    font = ttf_font_new("res/fonts/marker_felt.ttf", 100);
     
     seal_load_file("scripts/startup.lua");
     seal_start_game();
@@ -195,11 +196,11 @@ void seal_draw() {
     sprite_batch_begin(batch);
     CHECK_GL_ERROR
     struct rect dst = {
-        30.0f, 0.0f, 200.0f, 200.0f
+        30.0f, 0.0f, 60, 51.0f
     };
     
     struct rect dst_2 = {
-        30.0f+200.0f, 0.0f, 200.0f, 200.0f
+        30.0f+200.0f, 0.0f, 100.0f, 136.0f
     };
     
     struct rect uv = {
@@ -211,7 +212,9 @@ void seal_draw() {
     };
     
     if(!tex) {
-        tex = texture_load_from_png("res/atlas_example.png");
+//        tex = texture_load_from_png("res/atlas_example.png");
+        tex = font->tex; //texture_load_from_png("res/atlas_example.png");
+
         CHECK_GL_ERROR
     }
 

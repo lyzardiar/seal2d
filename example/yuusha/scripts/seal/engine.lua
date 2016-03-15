@@ -20,12 +20,23 @@ function engine.start(game)
 	 	})
 end
 
+local total = 0
+local cnt = 0
 function engine.update(dt)
-	-- print("update dt = ", dt)
+	if dt < 0 then 
+		return
+	end
+
+	total = total + dt
+	if total > 1 then
+		total = 0
+		cnt = cnt + 1
+		-- print("update cnt = ", cnt)
+	end
 end
 
 function engine.draw()
-	print("draw")
+
 end
 
 function engine.event(e)
