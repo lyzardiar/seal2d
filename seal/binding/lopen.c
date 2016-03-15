@@ -2,6 +2,8 @@
 
 extern int luaopen_seal_core(lua_State* L);
 extern int luaopen_affine_core(lua_State* L);
+extern int luaopen_socket_core(lua_State *L);
+extern int luaopen_mime_core(lua_State *L);
 
 void stackDump (lua_State *L) {
     int i;
@@ -56,6 +58,8 @@ void luaopen_lua_extensions(lua_State *L)
     luaL_Reg lua_modules[] = {
         {"seal.core", luaopen_seal_core},
         {"seal.affine", luaopen_affine_core},
+        {"socket.core", luaopen_socket_core},
+        {"mime.core", luaopen_mime_core},
         {NULL, NULL}
     };
     

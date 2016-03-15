@@ -57,7 +57,10 @@ static luaL_Reg serial_methods[] = {
 /*-------------------------------------------------------------------------*\
 * Initializes module
 \*-------------------------------------------------------------------------*/
-LUASOCKET_API int luaopen_socket_serial(lua_State *L) {
+
+// TODO: figure out why LUASOCKET_API doesn't work
+//LUASOCKET_API int luaopen_socket_serial(lua_State *L) {
+extern int luaopen_socket_serial(lua_State *L) {
     /* create classes */
     auxiliar_newclass(L, "serial{client}", serial_methods);
     /* create class groups */

@@ -12,12 +12,11 @@
 #include "lauxlib.h"
 
 #include "seal.h"
-
 #include "shader.h"
-
 #include "sprite.h"
 #include "camera.h"
 #include "sprite_batch.h"
+#include "util.h"
 
 #include "math/matrix.h"
 
@@ -41,23 +40,23 @@ int seal_call(lua_State *L, int n, int r) {
             break;
         case LUA_ERRRUN:
             fprintf(stderr, "!LUA_ERRRUN : %s\n", lua_tostring(L,-1));
-            assert(0);
+            s_assert(0);
             break;
         case LUA_ERRMEM:
             fprintf(stderr, "!LUA_ERRMEM : %s\n", lua_tostring(L,-1));
-             assert(0);
+             s_assert(0);
             break;
         case LUA_ERRERR:
             fprintf(stderr, "!LUA_ERRERR : %s\n", lua_tostring(L,-1));
-             assert(0);
+             s_assert(0);
             break;
         case LUA_ERRGCMM:
             fprintf(stderr, "!LUA_ERRGCMM : %s\n", lua_tostring(L,-1));
-             assert(0);
+             s_assert(0);
             break;
         default:
             fprintf(stderr, "!Unknown Lua error: %d\n", err);
-            assert(0);
+            s_assert(0);
             break;
     }
     return err;

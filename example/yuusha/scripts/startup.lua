@@ -14,7 +14,12 @@ local function export_module()
 end
 
 local function main()
-	package.path = package.path .. ";scripts/?.lua;res/?.lua"
+	package.path = package.path .. 
+	";scripts/?.lua" ..
+	";scripts/seal/?.lua" ..
+	";scripts/seal/socket/?.lua" ..
+	";res/?.lua"
+
 	export_module()
 
 	local game = require "game"
