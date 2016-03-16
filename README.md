@@ -1,7 +1,7 @@
 # seal2d
 A 2D game engine based on OpenGL, developed with Lua and C.
 
-This project is under heavy development currently, I'm trying to do almost everything in Lua, big changes would be made :D.
+This project is under heavy development currently, **it's a toy right now**.
 
 # build & run
 
@@ -15,5 +15,3 @@ You need to set the custom working directory in xcode.
     5. Hit cmd+R, or click run to run the project. :)
   
 If you got anyquestion, please don't bother to add an issue. thank you. :)
-
-Due to there may be big changes in this project, so I may only provide iOS and Mac platform support right now.
