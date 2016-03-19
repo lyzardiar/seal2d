@@ -14,7 +14,8 @@
 #include "tests/unit_test/test.h"
 void run_unit_tests() {
     //test_array_map();
-    test_array();
+//    test_array();
+    test_2d_array();
 }
 #endif
 

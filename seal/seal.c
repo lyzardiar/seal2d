@@ -143,9 +143,9 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_RESUME);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
     
-    int scale = 5;
+    int scale = 1;
     for(int i = 0; i < MAX_SPITE; ++i) {
-        sprite* s = sprite_alloc(0,-200, 53*scale, 130*scale);
+        sprite* s = sprite_alloc(0, 0, 52*scale, 112*scale);
         sprites[i] = s;
     }
     
@@ -177,7 +177,7 @@ static struct texture* tex = NULL;
 
 void seal_draw() {
     glClearDepth(1.0f);
-    glClearColor(0,0,0,1);
+    glClearColor(1,1,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
 #if 0
