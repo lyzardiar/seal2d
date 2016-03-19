@@ -100,6 +100,7 @@ void seal_init() {
     ttf_init_module();
     
     font = ttf_font_new("res/fonts/marker_felt.ttf", 100);
+    GAME->font = font;
     
     seal_load_file("scripts/startup.lua");
     seal_start_game();
@@ -142,8 +143,9 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_RESUME);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
     
+    int scale = 5;
     for(int i = 0; i < MAX_SPITE; ++i) {
-        sprite* s = sprite_alloc(0, 0, 200, 200);
+        sprite* s = sprite_alloc(0,-200, 53*scale, 130*scale);
         sprites[i] = s;
     }
     
@@ -178,7 +180,7 @@ void seal_draw() {
     glClearColor(0,0,0,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-#if 1
+#if 0
     GLuint program = get_program(COLOR_SHADER);
     glUseProgram(program);
     

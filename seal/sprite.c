@@ -7,6 +7,7 @@
 
 #include "sprite.h"
 
+#include "ttf_font.h"
 EXTERN_GAME;
 
 sprite* sprite_alloc(float x, float y, float width, float height) {
@@ -54,8 +55,9 @@ sprite* sprite_alloc(float x, float y, float width, float height) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glGenVertexArrays(1, &spr->vao);
     glBindVertexArray(spr->vao);
-
-    spr->texture = texture_load_from_png("res/atlas_example.png");
+    
+//    spr->texture = texture_load_from_png("res/atlas_example.png");;
+    spr->texture = GAME->font->tex; //
     
     spr->speed_x = 1;
     spr->speed_y = 1; //5.0f;

@@ -7,6 +7,7 @@
 
 struct camera;
 struct sprite_batch;
+struct ttf_font;
 
 struct game {
     lua_State* lstate;
@@ -15,6 +16,7 @@ struct game {
     
     struct camera* global_camera;
     struct sprite_batch* batch;
+    struct ttf_font* font;
 };
 
 #define EXTERN_GAME extern struct game* GAME;
