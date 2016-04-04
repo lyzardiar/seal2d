@@ -15,6 +15,7 @@ struct game {
     lua_State* lstate;
     int window_width;
     int window_height;
+    const char* app_name;
     
     struct camera* global_camera;
     struct sprite_batch* batch;
@@ -31,7 +32,9 @@ struct game {
 #define GAME_EVENT  "GAME_EVENT"
 
 // seal system
-void seal_init();
+
+struct game* seal_load_game_config();
+void seal_init_graphics();
 void seal_load_string(const char* script_data);
 void seal_load_file(const char* script_path);
 void seal_start_game();

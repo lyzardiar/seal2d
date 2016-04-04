@@ -69,12 +69,9 @@ lua_State* seal_new_lua() {
 }
 
 struct ttf_font* font = NULL;
-void seal_init() {
-    // init basic drawing system before create the game.
-    load_shaders();
-    
+
+struct game* seal_load_game_config() {
     GAME = (struct game*)s_malloc(sizeof(struct game));
-    
     // lua modules
     lua_State* L = seal_new_lua();
     luaopen_lua_extensions(L);
@@ -86,12 +83,20 @@ void seal_init() {
     lua_getglobal(L, "APP_NAME");
     lua_getglobal(L, "WINDOW_WIDTH");
     lua_getglobal(L, "WINDOW_HEIGHT");
-
+    
     const char* app_name = lua_tostring(L, 1);
     GAME->window_width = lua_tonumber(L, 2);
     GAME->window_height = lua_tonumber(L, 3);
+    GAME->app_name = app_name;
     lua_pop(L, 3);
+    
+    return GAME;
+}
 
+void seal_init_graphics() {
+    // init basic drawing system before create the game.
+    load_shaders();
+    
     // set the camera
     GAME->global_camera = camera_new(GAME->window_height, GAME->window_height);
     GAME->batch = sprite_batch_new();

@@ -38,7 +38,7 @@ void set_title(GLFWwindow* window, float dt) {
     }
 }
 
-GLFWwindow* init_glfw() {
+GLFWwindow* init_glfw(int window_width, int window_height, const char* title) {
     GLFWwindow* window;
     
     /* Initialize the library */
@@ -52,7 +52,7 @@ GLFWwindow* init_glfw() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(800, 600, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(window_width, window_height, title, NULL, NULL);
     if (!window)
     {
         fprintf(stderr, "Error, glfwCreateWindow failed.\n");
@@ -72,13 +72,15 @@ void exit_glfw(GLFWwindow* window) {
 }
 
 int main(int argc, char *argv[]) {
+    struct game* game = seal_load_game_config();
+    
 
-    GLFWwindow* window = init_glfw();
+    GLFWwindow* window = init_glfw(game->window_width, game->window_height, game->app_name);
 #ifdef UNIT_TEST
     run_unit_tests();
 #endif
     
-    seal_init();
+    seal_init_graphics();
 
     float interval = (1/60.0f) * 1000;
     float dt = interval;
