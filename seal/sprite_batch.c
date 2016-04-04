@@ -64,7 +64,7 @@ void sprite_batch_free(struct sprite_batch* batch) {
 }
 
 void sprite_batch_begin(struct sprite_batch* self) {
-    array_clear(self->glyphs, 1);
+    array_clear(self->glyphs, 0);
     array_clear(self->render_batches, 1);
 }
 
@@ -131,11 +131,7 @@ void sprite_batch_gen_render_batches(struct sprite_batch* self) {
 int tex_compare(const void* a, const void* b) {
     struct glyph* ga = (struct glyph*)a;
     struct glyph* gb = (struct glyph*)b;
-    if(ga->tex_id == gb->tex_id) {
-        return ga->draw_order - gb->draw_order;
-    } else {
-        return ga->tex_id - gb->tex_id;
-    }
+    return ga->tex_id - gb->tex_id;
 }
 
 void sprite_batch_end(struct sprite_batch* self) {
@@ -145,34 +141,9 @@ void sprite_batch_end(struct sprite_batch* self) {
 }
 
 void sprite_batch_draw(struct sprite_batch* self,
-                       const struct rect* dst_rect,
-                       const struct rect* uv_rect,
-                       const struct color* color,
+                       struct glyph* glyph,
                        const GLuint tex_id) {
-    struct glyph* g = glyph_new();
-    g->tex_id = tex_id;
-    
-    // bottom left
-    SET_VERTEX_POS(g->bl, dst_rect->x, dst_rect->y);
-    SET_VERTEX_UV(g->bl, uv_rect->x, uv_rect->y);
-    SET_VERTEX_COLOR(g->bl, color->r, color->g, color->b, color->a);
-    
-    // bottom right
-    SET_VERTEX_POS(g->br, dst_rect->x + dst_rect->width, dst_rect->y);
-    SET_VERTEX_UV(g->br, uv_rect->x + uv_rect->width, uv_rect->y);
-    SET_VERTEX_COLOR(g->br, color->r, color->g, color->b, color->a);
-    
-    // top left
-    SET_VERTEX_POS(g->tl, dst_rect->x, dst_rect->y + dst_rect->height);
-    SET_VERTEX_UV(g->tl, uv_rect->x, uv_rect->y + uv_rect->height);
-    SET_VERTEX_COLOR(g->tl, color->r, color->g, color->b, color->a);
-    
-    // top right
-    SET_VERTEX_POS(g->tr, dst_rect->x + dst_rect->width, dst_rect->y + dst_rect->height);
-    SET_VERTEX_UV(g->tr, uv_rect->x + uv_rect->width, uv_rect->y + uv_rect->height);
-    SET_VERTEX_COLOR(g->tr, color->r, color->g, color->b, color->a);
-    
-    array_push_back(self->glyphs, g);
+    array_push_back(self->glyphs, glyph);
 }
 
 void sprite_batch_render(struct sprite_batch* self) {

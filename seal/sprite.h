@@ -1,33 +1,45 @@
 #ifndef __seal__sprite__
 #define __seal__sprite__
 
+#include "base/array.h"
+
+#include "math/matrix.h"
 #include "math/geo.h"
+
 #include "texture.h"
+#include "sprite_batch.h"
 
-typedef struct sprite {
-    float x, y;
-    float width, height;
+struct sprite_frame {
+    struct texture* tex;
     
-    GLuint vbo;
-    GLuint color_vbo;
-    GLuint vao;
-    GLuint tex_id;
+    struct rect rect;
+};
+
+struct sprite {
+    // glphy information
+    struct glyph glyph;
     
-    struct vertex vert[6];
-    struct texture* texture;
+    struct mat4 local_srt;
+    struct mat4 world_srt;
     
-    float speed_x, speed_y;
-}sprite;
+    int zorder;
+    
+    struct array* children;
+    
+    struct sprite_frame* frame;
+    // privates
+    int dirty;
+};
 
-sprite* sprite_alloc(float x, float y, float width, float height);
-void sprite_free(sprite* spr);
+struct sprite* sprite_new(struct sprite_frame* frame);
+void sprite_free(struct sprite* spr);
 
-void sprite_set_texture(sprite* spr, const char* file_name);
+void sprite_draw(struct sprite* spr);
 
-void sprite_set_pos(sprite* spr, float x, float y);
-void sprite_set_size(sprite* spr, float width, float height);
+void sprite_set_pos(struct sprite* spr, float x, float y);
+void sprite_set_rotation(struct sprite* spr, float rotation);
+void sprite_set_scale(struct sprite* spr, float scale);
 
-void sprite_update(sprite* spr, float dt);
-void sprite_draw(sprite* spr);
+
 
 #endif

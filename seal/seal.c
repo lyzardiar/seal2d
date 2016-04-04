@@ -131,7 +131,7 @@ static int traceback (lua_State *L) {
     return 1;
 }
 
-sprite* sprites[MAX_SPITE] = {};
+struct sprite* sprites[MAX_SPITE] = {};
 
 void seal_start_game() {
     lua_State *L = GAME->lstate;
@@ -143,9 +143,17 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_RESUME);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
     
-    int scale = 1;
+    
+    struct texture* tex = texture_load_from_png("res/smile_middle.png");
+    struct sprite_frame* frame = STRUCT_NEW(sprite_frame);
+    frame->tex = tex;
+    frame->rect.x = 0;
+    frame->rect.y = 0;
+    frame->rect.width = tex->width;
+    frame->rect.height = tex->height;
+    
     for(int i = 0; i < MAX_SPITE; ++i) {
-        sprite* s = sprite_alloc(0, 0, 52*scale, 112*scale);
+        struct sprite* s = sprite_new(frame);
         sprites[i] = s;
     }
     
@@ -154,9 +162,6 @@ void seal_start_game() {
 
 void seal_update(float dt) {
     camera_update(GAME->global_camera);
-    for (int i = 0; i < MAX_SPITE; ++i) {
-        sprite_update(sprites[i], dt);
-    }
     
     static int frames = 0;
     ++frames;
@@ -180,7 +185,6 @@ void seal_draw() {
     glClearColor(1,1,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-#if 0
     GLuint program = get_program(COLOR_SHADER);
     glUseProgram(program);
     
@@ -197,31 +201,10 @@ void seal_draw() {
     struct sprite_batch* batch = GAME->batch;
     sprite_batch_begin(batch);
     CHECK_GL_ERROR
-    struct rect dst = {
-        30.0f, 0.0f, 60, 51.0f
-    };
     
-    struct rect dst_2 = {
-        30.0f+200.0f, 0.0f, 100.0f, 136.0f
-    };
-    
-    struct rect uv = {
-        0.0f, 0.0f, 1.0f, 1.0f
-    };
-    
-    struct color color = {
-        255, 255, 255, 255
-    };
-    
-    if(!tex) {
-//        tex = texture_load_from_png("res/atlas_example.png");
-        tex = font->tex; //texture_load_from_png("res/atlas_example.png");
-
-        CHECK_GL_ERROR
+    for (int i = 0; i < MAX_SPITE; ++i) {
+        sprite_draw(sprites[i]);
     }
-
-    sprite_batch_draw(batch, &dst, &uv, &color, tex->id);
-    sprite_batch_draw(batch, &dst_2, &uv, &color, tex->id);
 
     CHECK_GL_ERROR
     sprite_batch_end(batch);
@@ -232,11 +215,6 @@ void seal_draw() {
     CHECK_GL_ERROR
     glUseProgram(0);
     CHECK_GL_ERROR
-#else
-    for (int i = 0; i < MAX_SPITE; ++i) {
-        sprite_draw(sprites[i]);
-    }
-#endif
 }
 
 void seal_destroy() {

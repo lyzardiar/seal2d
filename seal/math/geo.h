@@ -6,7 +6,7 @@
 struct vertex {
     GLfloat position[2]; // x, y
     GLubyte color[4];   // r, g, b, a
-    float uv[2];
+    float uv[2];        // u, v
 };
 
 #define SET_VERTEX_POS(vert, x, y) \
@@ -42,8 +42,8 @@ struct color {
 };
 
 struct rect {
-    float x, y;
-    float width, height;
+    int x, y;
+    int width, height;
 };
 
 #endif /* defined(__yuusha__geo__) */

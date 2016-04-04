@@ -11,7 +11,7 @@ unsigned char* s_read(const char* path, size_t* size, int extra_byte) {
     s_assert(extra_byte == 0 || extra_byte == 1);
     FILE* fp = fopen(path, "r");
     if (!fp) {
-        fprintf(stderr, "s_read, can't open file.\n");
+        fprintf(stderr, "s_read, can't open file path = %s.\n", path);
         return NULL;
     }
     fseek(fp, 0L, SEEK_END);

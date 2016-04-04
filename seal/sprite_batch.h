@@ -10,8 +10,7 @@ struct glyph {
     struct vertex tr;
     struct vertex br;
 
-    GLuint tex_id;
-    int draw_order;    
+    GLuint tex_id;  
 };
 
 struct render_batch {
@@ -39,9 +38,7 @@ void sprite_batch_begin(struct sprite_batch* self);
 void sprite_batch_end(struct sprite_batch* self);
 
 void sprite_batch_draw(struct sprite_batch* self,
-                       const struct rect* dst_rect,
-                       const struct rect* uv_rect,
-                       const struct color* color,
+                       struct glyph* glyph,
                        const GLuint tex_id);
 
 void sprite_batch_render(struct sprite_batch* self);

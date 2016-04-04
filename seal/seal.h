@@ -1,5 +1,7 @@
 #ifndef __seal__seal__
 #define __seal__seal__
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "lua.h"
 
