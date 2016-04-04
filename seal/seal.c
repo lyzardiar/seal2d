@@ -12,17 +12,19 @@
 #include "lauxlib.h"
 
 #include "seal.h"
+#include "window.h"
 #include "shader.h"
 #include "sprite.h"
 #include "camera.h"
 #include "sprite_batch.h"
-#include "util.h"
 
 #include "math/matrix.h"
 
+#include "util.h"
 #include "lopen.h"
 #include "ttf_font.h"
 #include "event.h"
+
 
 extern void luaopen_lua_extensions(lua_State *L);
 
@@ -91,6 +93,8 @@ struct game* seal_load_game_config() {
     GAME->app_name = app_name;
     lua_pop(L, 3);
     
+    GAME->window = win_alloc();
+
     return GAME;
 }
 
@@ -110,6 +114,7 @@ void seal_init_graphics() {
     
     seal_load_file("scripts/startup.lua");
     seal_start_game();
+    
 }
 
 void seal_load_string(const char* script_data) {
@@ -192,10 +197,15 @@ void seal_event(struct event* e) {
         case TOUCH_MOVE:
         case TOUCH_END:
         case TOUCH_CANCEL:
+            lua_newtable(L);
             lua_pushinteger(L, e->type);
+            lua_setfield(L, -2, "type");
             lua_pushinteger(L, e->x);
+            lua_setfield(L, -2, "x");
             lua_pushinteger(L, e->y);
-            lua_call(L, 4, 0);
+            lua_setfield(L, -2, "y");
+            lua_call(L, 1, 0);
+            lua_settop(L, TOP_FUNC_INDEX);
             break;
             
         default:
@@ -203,12 +213,13 @@ void seal_event(struct event* e) {
     }
 }
 
-static struct texture* tex = NULL;
-
 void seal_draw() {
     glClearDepth(1.0f);
     glClearColor(1,1,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     GLuint program = get_program(COLOR_SHADER);
     glUseProgram(program);

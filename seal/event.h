@@ -17,12 +17,6 @@ struct event {
     int x, y;
 };
 
-#ifdef PLAT_DESKTOP
-
-void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int modify);
-void glfw_mouse_pos_callback(GLFWwindow* window, double x, double y);
-
-#endif
 
 
 

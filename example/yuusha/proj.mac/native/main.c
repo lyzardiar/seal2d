@@ -9,7 +9,7 @@
 #include "GLFW/glfw3.h"
 
 #include "timer.h"
-#include "event.h"
+#include "window.h"
 
 #ifdef UNIT_TEST
 #include "tests/unit_test/test.h"

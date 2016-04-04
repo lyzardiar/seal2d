@@ -1,4 +1,5 @@
 local seal_core = require "seal.core"
+local consts = require "seal.consts"
 local engine = {
 	-- root = nil,
 }
@@ -39,8 +40,23 @@ function engine.draw()
 
 end
 
-function engine.event(e)
+local TOUCH_BEGIN  = consts.TOUCH_BEGIN
+local TOUCH_MOVE   = consts.TOUCH_MOVE
+local TOUCH_END    = consts.TOUCH_END
+local TOUCH_CANCEL = consts.TOUCH_CANCEL
 
+function engine.event(e)
+	if e.type == TOUCH_BEGIN then
+		print(string.format("begin, (%.2f, %.2f)", e.x, e.y))
+	elseif e.type == TOUCH_MOVE then
+		print(string.format("move, (%.2f, %.2f)", e.x, e.y))
+	elseif e.type == TOUCH_END then
+		print(string.format("end, (%.2f, %.2f)", e.x, e.y))
+	elseif e.type == TOUCH_CANCEL then
+		print(string.format("cancel, (%.2f, %.2f)", e.x, e.y))
+	else
+		assert(false, "invalid event type = ", e.type)
+	end
 end
 
 return engine
