@@ -22,6 +22,7 @@
 
 #include "lopen.h"
 #include "ttf_font.h"
+#include "event.h"
 
 extern void luaopen_lua_extensions(lua_State *L);
 
@@ -181,6 +182,25 @@ void seal_update(float dt) {
 
     seal_call(L, 1, 0);
     lua_settop(L, TOP_FUNC_INDEX);
+}
+
+void seal_event(struct event* e) {
+    lua_State* L = GAME->lstate;
+    lua_getfield(GAME->lstate, LUA_REGISTRYINDEX, GAME_EVENT);
+    switch (e->type) {
+        case TOUCH_BEGIN:
+        case TOUCH_MOVE:
+        case TOUCH_END:
+        case TOUCH_CANCEL:
+            lua_pushinteger(L, e->type);
+            lua_pushinteger(L, e->x);
+            lua_pushinteger(L, e->y);
+            lua_call(L, 4, 0);
+            break;
+            
+        default:
+            break;
+    }
 }
 
 static struct texture* tex = NULL;

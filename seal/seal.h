@@ -10,6 +10,7 @@
 struct camera;
 struct sprite_batch;
 struct ttf_font;
+struct event;
 
 struct game {
     lua_State* lstate;
@@ -42,5 +43,6 @@ void seal_main_loop();
 void seal_update(float dt);
 void seal_draw();
 void seal_destroy();
+void seal_event(struct event* e);
 
 #endif

@@ -9,6 +9,7 @@
 #include "GLFW/glfw3.h"
 
 #include "timer.h"
+#include "event.h"
 
 #ifdef UNIT_TEST
 #include "tests/unit_test/test.h"
@@ -51,7 +52,7 @@ GLFWwindow* init_glfw(int window_width, int window_height, const char* title) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
+    
     window = glfwCreateWindow(window_width, window_height, title, NULL, NULL);
     if (!window)
     {
@@ -59,6 +60,10 @@ GLFWwindow* init_glfw(int window_width, int window_height, const char* title) {
         glfwTerminate();
         exit(-1);
     }
+    
+    glfwSetMouseButtonCallback(window, glfw_mouse_button_callback);
+    glfwSetCursorPosCallback(window, glfw_mouse_pos_callback);
+
     glfwSetErrorCallback(_glfw_error_cb);
     glfwMakeContextCurrent(window);
     

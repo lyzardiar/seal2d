@@ -177,6 +177,8 @@
 		4DE642C81C5B3BCA003EBBC0 /* lseal_core.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642BD1C5B3BCA003EBBC0 /* lseal_core.c */; };
 		4DE642C91C5B3BCA003EBBC0 /* affine.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642BF1C5B3BCA003EBBC0 /* affine.c */; };
 		4DE642CA1C5B3BCA003EBBC0 /* seal.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642C11C5B3BCA003EBBC0 /* seal.c */; };
+		A695D3431CB2827900E4180B /* event.c in Sources */ = {isa = PBXBuildFile; fileRef = A695D3411CB2827900E4180B /* event.c */; };
+		A695D3441CB2827900E4180B /* event.c in Sources */ = {isa = PBXBuildFile; fileRef = A695D3411CB2827900E4180B /* event.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -356,6 +358,9 @@
 		4DE642C11C5B3BCA003EBBC0 /* seal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = seal.c; sourceTree = "<group>"; };
 		4DE642C21C5B3BCA003EBBC0 /* seal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = seal.h; sourceTree = "<group>"; };
 		4DF5F5BE1C4C8CFC0080A8EB /* yuusha */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = yuusha; sourceTree = BUILT_PRODUCTS_DIR; };
+		A695D3411CB2827900E4180B /* event.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = event.c; sourceTree = "<group>"; };
+		A695D3421CB2827900E4180B /* event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = event.h; sourceTree = "<group>"; };
+		A695D3451CB2871C00E4180B /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -501,6 +506,7 @@
 				4D822B871C6F62490083122E /* fs.h */,
 				4D822B8F1C6F67250083122E /* timer.h */,
 				4D822B901C6F672D0083122E /* timer.c */,
+				A695D3451CB2871C00E4180B /* platform.h */,
 			);
 			path = platform;
 			sourceTree = "<group>";
@@ -672,6 +678,8 @@
 				4D46F8061C8F25D30081A1DC /* util.h */,
 				4D46F80D1C8F37480081A1DC /* ttf_font.c */,
 				4D46F80E1C8F37480081A1DC /* ttf_font.h */,
+				A695D3411CB2827900E4180B /* event.c */,
+				A695D3421CB2827900E4180B /* event.h */,
 			);
 			name = seal;
 			path = ../../../seal;
@@ -835,6 +843,7 @@
 				4DBFA6EC1C9DBB9900D52B23 /* io.c in Sources */,
 				4DBFA6ED1C9DBB9900D52B23 /* test_2d_array.c in Sources */,
 				4DBFA6EE1C9DBB9900D52B23 /* ttf_font.c in Sources */,
+				A695D3441CB2827900E4180B /* event.c in Sources */,
 				4DBFA6EF1C9DBB9900D52B23 /* mime.c in Sources */,
 				4DBFA6F01C9DBB9900D52B23 /* udp.c in Sources */,
 				4DBFA6F11C9DBB9900D52B23 /* options.c in Sources */,
@@ -916,6 +925,7 @@
 				4D25D8781C95C06000448F88 /* io.c in Sources */,
 				4DBFA6B81C9DBA9400D52B23 /* test_2d_array.c in Sources */,
 				4D46F80F1C8F38C90081A1DC /* ttf_font.c in Sources */,
+				A695D3431CB2827900E4180B /* event.c in Sources */,
 				4D25D87E1C95C06000448F88 /* mime.c in Sources */,
 				4D25D88A1C95C06000448F88 /* udp.c in Sources */,
 				4D25D8801C95C06000448F88 /* options.c in Sources */,
