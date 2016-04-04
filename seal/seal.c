@@ -33,7 +33,6 @@ extern void luaopen_lua_extensions(lua_State *L);
 #define DRAW_FUNC_INDEX       3
 #define TOP_FUNC_INDEX        3
 
-#define MAX_SPITE 1
 struct game* GAME = NULL;
 
 int seal_call(lua_State *L, int n, int r) {
@@ -142,8 +141,6 @@ static int traceback (lua_State *L) {
     return 1;
 }
 
-struct sprite* sprites[MAX_SPITE] = {};
-
 void seal_start_game() {
     lua_State *L = GAME->lstate;
     assert(lua_gettop(L) == 0);
@@ -163,10 +160,18 @@ void seal_start_game() {
     frame->rect.width = tex->width;
     frame->rect.height = tex->height;
     
-    for(int i = 0; i < MAX_SPITE; ++i) {
-        struct sprite* s = sprite_new(frame);
-        sprites[i] = s;
+    struct sprite* root = sprite_new(frame);
+    
+    int x[4] = {0, 100, 0, 100};
+    int y[4] = {0, 0,  100, 100};
+    for (int i = 0; i < 4; ++i) {
+        struct sprite* child = sprite_new(frame);
+        sprite_set_pos(child, x[i], y[i]);
+        sprite_add_child(root, child);
     }
+
+    
+    GAME->root = root;
     
     camera_pos(GAME->global_camera, 0, 0);
 }
@@ -238,10 +243,8 @@ void seal_draw() {
     sprite_batch_begin(batch);
     CHECK_GL_ERROR
     
-    for (int i = 0; i < MAX_SPITE; ++i) {
-        sprite_draw(sprites[i]);
-    }
-
+    sprite_visit(GAME->root);
+ 
     CHECK_GL_ERROR
     sprite_batch_end(batch);
     CHECK_GL_ERROR
@@ -256,5 +259,8 @@ void seal_draw() {
 void seal_destroy() {
     
     lua_close(GAME->lstate);
+    
+    sprite_free(GAME->window);
+    sprite_free(GAME->root);
     s_free(GAME);
 }

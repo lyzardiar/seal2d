@@ -23,6 +23,7 @@ struct game {
     struct sprite_batch* batch;
     struct ttf_font* font;
     struct window* window;
+    struct sprite* root;   // the root node of the world
 };
 
 #define EXTERN_GAME extern struct game* GAME;

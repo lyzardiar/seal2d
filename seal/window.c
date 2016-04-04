@@ -20,8 +20,6 @@ void win_free(struct window* win) {
 
 #ifdef PLAT_DESKTOP
 void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int modify) {
-    printf("mouse: button = %d, action = %d, modify = %d \n", button, action, modify);
-
     switch (action) {
         case GLFW_PRESS: {
                 struct event e = {TOUCH_MOVE,

@@ -55,6 +55,13 @@ void matrix_free(struct mat4* mat) {
     s_free(mat);
 }
 
+void matrix_set_translate(struct mat4* self, float x, float y, float z) {
+    float* m = self->m;
+    m[12] = x;
+    m[13] = y;
+    m[14] = z;
+}
+
 void matrix_translate(struct mat4* self, float x, float y, float z) {
     float* om = self->m;
     

@@ -26,6 +26,11 @@ void af_identify(struct affine* af) {
     af->y = 0.0f;
 }
 
+void af_set_translate(struct affine* af, float x, float y) {
+    af->x = x;
+    af->y = y;
+}
+
 void af_translate(struct affine* af, float x, float y) {
     af->x += x;
     af->y += y;
@@ -58,5 +63,5 @@ void af_concat(struct affine* m1, struct affine* m2) {
     
     m1->c = m1->c*m2->a + m1->d*m2->c;
     m1->d = m1->c*m2->b + m1->d*m2->d;
-    m1->y = m1->c*m2->x + m1->d*m2->y + m1->y;
+    m1->y = m1->c*m2->y + m1->d*m2->y + m1->y;
 }
