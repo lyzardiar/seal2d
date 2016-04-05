@@ -2,12 +2,14 @@
 #include <stdio.h>
 #include <assert.h>
 
+#include "memory.h"
+
 #include "array_map.h"
 
 #define DEFAULT_SIZE (32)
 
 struct array_map* array_map_new() {
-    struct array_map* map = (struct array_map*)malloc(sizeof(struct array_map));
+    struct array_map* map = (struct array_map*)s_malloc(sizeof(struct array_map));
     map->cur_id = 0;
     map->capacity = DEFAULT_SIZE;
     map->entries = (struct handle_entry*)calloc(DEFAULT_SIZE, sizeof(struct handle_entry));
@@ -16,7 +18,7 @@ struct array_map* array_map_new() {
 
 void array_map_delete(struct array_map* map) {
     if (map) {
-        free(map->entries);
+        s_free(map->entries);
         free(map);
     }
 }

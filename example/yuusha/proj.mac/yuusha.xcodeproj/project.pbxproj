@@ -10,6 +10,12 @@
 		4D0B96CE1C7BFCD000C8C658 /* geo.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D0B96CC1C7BFCD000C8C658 /* geo.c */; };
 		4D1CF5851CB2A04E00A1FFB9 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF5831CB2A04E00A1FFB9 /* window.c */; };
 		4D1CF5861CB2A04E00A1FFB9 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF5831CB2A04E00A1FFB9 /* window.c */; };
+		4D1CF5891CB2B79E00A1FFB9 /* lsprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF5871CB2B79E00A1FFB9 /* lsprite.c */; };
+		4D1CF58A1CB2B79E00A1FFB9 /* lsprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF5871CB2B79E00A1FFB9 /* lsprite.c */; };
+		4D1CF58D1CB2C3AC00A1FFB9 /* ltexture.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF58B1CB2C3AC00A1FFB9 /* ltexture.c */; };
+		4D1CF58E1CB2C3AC00A1FFB9 /* ltexture.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF58B1CB2C3AC00A1FFB9 /* ltexture.c */; };
+		4D1CF5901CB2C3CC00A1FFB9 /* lspriteframe.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF58F1CB2C3CC00A1FFB9 /* lspriteframe.c */; };
+		4D1CF5911CB2C3CC00A1FFB9 /* lspriteframe.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF58F1CB2C3CC00A1FFB9 /* lspriteframe.c */; };
 		4D25D86E1C95C06000448F88 /* auxiliar.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D8401C95C06000448F88 /* auxiliar.c */; };
 		4D25D8701C95C06000448F88 /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D8421C95C06000448F88 /* buffer.c */; };
 		4D25D8721C95C06000448F88 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D8441C95C06000448F88 /* compat.c */; };
@@ -209,6 +215,9 @@
 		4D0B96CD1C7BFCD000C8C658 /* geo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geo.h; sourceTree = "<group>"; };
 		4D1CF5831CB2A04E00A1FFB9 /* window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = window.c; sourceTree = "<group>"; };
 		4D1CF5841CB2A04E00A1FFB9 /* window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = window.h; sourceTree = "<group>"; };
+		4D1CF5871CB2B79E00A1FFB9 /* lsprite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lsprite.c; sourceTree = "<group>"; };
+		4D1CF58B1CB2C3AC00A1FFB9 /* ltexture.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ltexture.c; sourceTree = "<group>"; };
+		4D1CF58F1CB2C3CC00A1FFB9 /* lspriteframe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lspriteframe.c; sourceTree = "<group>"; };
 		4D25D8401C95C06000448F88 /* auxiliar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = auxiliar.c; sourceTree = "<group>"; };
 		4D25D8411C95C06000448F88 /* auxiliar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = auxiliar.h; sourceTree = "<group>"; };
 		4D25D8421C95C06000448F88 /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = buffer.c; sourceTree = "<group>"; };
@@ -698,6 +707,9 @@
 				4DE642B81C5B3BCA003EBBC0 /* lopen.c */,
 				4DE642B91C5B3BCA003EBBC0 /* lopen.h */,
 				4DE642BD1C5B3BCA003EBBC0 /* lseal_core.c */,
+				4D1CF5871CB2B79E00A1FFB9 /* lsprite.c */,
+				4D1CF58B1CB2C3AC00A1FFB9 /* ltexture.c */,
+				4D1CF58F1CB2C3CC00A1FFB9 /* lspriteframe.c */,
 			);
 			path = binding;
 			sourceTree = "<group>";
@@ -838,6 +850,7 @@
 				4DBFA6E11C9DBB9900D52B23 /* lstring.c in Sources */,
 				4DBFA6E21C9DBB9900D52B23 /* lapi.c in Sources */,
 				4DBFA6E31C9DBB9900D52B23 /* compat.c in Sources */,
+				4D1CF58E1CB2C3AC00A1FFB9 /* ltexture.c in Sources */,
 				4DBFA6E41C9DBB9900D52B23 /* lstate.c in Sources */,
 				4DBFA6E51C9DBB9900D52B23 /* sprite_batch.c in Sources */,
 				4DBFA6E61C9DBB9900D52B23 /* main.c in Sources */,
@@ -865,6 +878,7 @@
 				4DBFA6FB1C9DBB9900D52B23 /* memory.c in Sources */,
 				4DBFA6FC1C9DBB9900D52B23 /* timeout.c in Sources */,
 				4DBFA6FD1C9DBB9900D52B23 /* tcp.c in Sources */,
+				4D1CF58A1CB2B79E00A1FFB9 /* lsprite.c in Sources */,
 				4DBFA6FE1C9DBB9900D52B23 /* render.c in Sources */,
 				4DBFA6FF1C9DBB9900D52B23 /* loadlib.c in Sources */,
 				4DBFA7001C9DBB9900D52B23 /* lobject.c in Sources */,
@@ -880,6 +894,7 @@
 				4DBFA70A1C9DBB9900D52B23 /* auxiliar.c in Sources */,
 				4DBFA70B1C9DBB9900D52B23 /* affine.c in Sources */,
 				4D1CF5861CB2A04E00A1FFB9 /* window.c in Sources */,
+				4D1CF5911CB2C3CC00A1FFB9 /* lspriteframe.c in Sources */,
 				4DBFA70C1C9DBB9900D52B23 /* lparser.c in Sources */,
 				4DBFA70D1C9DBB9900D52B23 /* test_array.c in Sources */,
 				4DBFA70E1C9DBB9900D52B23 /* lzio.c in Sources */,
@@ -921,6 +936,7 @@
 				4DDA8E441C4F5AE700ED5325 /* lstring.c in Sources */,
 				4DDA8E2C1C4F5AE700ED5325 /* lapi.c in Sources */,
 				4D25D8721C95C06000448F88 /* compat.c in Sources */,
+				4D1CF58D1CB2C3AC00A1FFB9 /* ltexture.c in Sources */,
 				4DDA8E431C4F5AE700ED5325 /* lstate.c in Sources */,
 				4DE47B401C7ACAC2001D2F8C /* sprite_batch.c in Sources */,
 				4D822B7E1C6F61670083122E /* main.c in Sources */,
@@ -948,6 +964,7 @@
 				4D822B781C6F5CE60083122E /* memory.c in Sources */,
 				4D25D8881C95C06000448F88 /* timeout.c in Sources */,
 				4D25D8861C95C06000448F88 /* tcp.c in Sources */,
+				4D1CF5891CB2B79E00A1FFB9 /* lsprite.c in Sources */,
 				4DE4D1FE1C74279700410891 /* render.c in Sources */,
 				4DDA8E3E1C4F5AE700ED5325 /* loadlib.c in Sources */,
 				4DDA8E3F1C4F5AE700ED5325 /* lobject.c in Sources */,
@@ -963,6 +980,7 @@
 				4D25D86E1C95C06000448F88 /* auxiliar.c in Sources */,
 				4DE642C91C5B3BCA003EBBC0 /* affine.c in Sources */,
 				4D1CF5851CB2A04E00A1FFB9 /* window.c in Sources */,
+				4D1CF5901CB2C3CC00A1FFB9 /* lspriteframe.c in Sources */,
 				4DDA8E421C4F5AE700ED5325 /* lparser.c in Sources */,
 				4DE47B491C7AD8C8001D2F8C /* test_array.c in Sources */,
 				4DDA8E4E1C4F5AE700ED5325 /* lzio.c in Sources */,

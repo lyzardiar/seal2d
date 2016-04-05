@@ -10,7 +10,7 @@
 
 EXTERN_GAME;
 
-struct sprite* sprite_new(struct sprite_frame* frame){
+struct sprite* sprite_alloc(struct sprite_frame* frame){
     struct sprite* s = STRUCT_NEW(sprite);
     
     struct glyph* g = &s->glyph;

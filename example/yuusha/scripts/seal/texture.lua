@@ -1,7 +1,5 @@
-local engine = require "seal.engine"
+local core = require "texture_core"
 
-local sdl_texture = require "sdl.texture"
-local sdl_ttf = require "sdl.ttf"
 local texture = {}
 
 -- cache stuff
@@ -43,8 +41,9 @@ function texture.new(name, type)
 end
 
 local function load_font_texture(self, text, fd)
-	self.__cobj, self.width, self.height = sdl_ttf.load_texture(fd, text)
-	self.text = text
+	assert(false, "implement later.")
+	-- self.__cobj, self.width, self.height = sdl_ttf.load_texture(fd, text)
+	-- self.text = text
 end
 
 function texture.load(name, type, ...)
@@ -89,13 +88,6 @@ function texture.load(name, type, ...)
 		return t
 	else
 
-	end
-end
-
-function texture:dec_ref()
-	self.ref = self.ref - 1
-	if self.ref == 0 then
-		self = nil
 	end
 end
 

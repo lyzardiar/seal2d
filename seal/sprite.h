@@ -14,6 +14,7 @@ struct sprite_frame {
     struct texture* tex;
     
     struct rect rect;
+    int ref;
 };
 
 struct sprite {
@@ -34,7 +35,7 @@ struct sprite {
     int dirty;
 };
 
-struct sprite* sprite_new(struct sprite_frame* frame);
+struct sprite* sprite_alloc(struct sprite_frame* frame);
 void sprite_free(struct sprite* spr);
 
 void sprite_visit(struct sprite* self);
