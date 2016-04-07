@@ -10,12 +10,24 @@
 #include "sprite_batch.h"
 #include "affine.h"
 
+typedef unsigned int sprite_frame_id;
 struct sprite_frame {
-    struct texture* tex;
-    
+    sprite_frame_id id;
     struct rect rect;
-    int ref;
+    unsigned int tex_id;
 };
+
+struct sprite_frame_cache {
+    struct array* frames;
+};
+
+struct sprite_frame_cache* sprite_frame_cache_new();
+void sprite_frame_cache_free(struct sprite_frame_cache* cache);
+
+void sprite_frame_cache_load_from_json(const char* json);
+void sprite_frame_cache_load_from_binary(const char* binary_file);
+struct sprite_frame* sprite_frame_cache_get(sprite_frame_id id);
+struct sprite_frame* sprite_frame_cache_get_with_name(const char* name);
 
 struct sprite {
     // glphy information
@@ -34,6 +46,7 @@ struct sprite {
     // privates
     int dirty;
 };
+
 
 struct sprite* sprite_alloc(struct sprite_frame* frame);
 void sprite_free(struct sprite* spr);

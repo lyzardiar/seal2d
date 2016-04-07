@@ -154,7 +154,7 @@ void seal_start_game() {
     
     struct texture* tex = texture_load_from_png("res/smile_middle.png");
     struct sprite_frame* frame = STRUCT_NEW(sprite_frame);
-    frame->tex = tex;
+    frame->tex_id = tex->id;
     frame->rect.x = 0;
     frame->rect.y = 0;
     frame->rect.width = tex->width;

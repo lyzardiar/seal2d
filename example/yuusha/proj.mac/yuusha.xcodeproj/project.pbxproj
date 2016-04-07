@@ -185,6 +185,14 @@
 		4DE642C81C5B3BCA003EBBC0 /* lseal_core.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642BD1C5B3BCA003EBBC0 /* lseal_core.c */; };
 		4DE642C91C5B3BCA003EBBC0 /* affine.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642BF1C5B3BCA003EBBC0 /* affine.c */; };
 		4DE642CA1C5B3BCA003EBBC0 /* seal.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DE642C11C5B3BCA003EBBC0 /* seal.c */; };
+		A611E71A1CB65F9A001C7E2C /* fpconv.c in Sources */ = {isa = PBXBuildFile; fileRef = A611E7121CB65F9A001C7E2C /* fpconv.c */; };
+		A611E71B1CB65F9A001C7E2C /* fpconv.c in Sources */ = {isa = PBXBuildFile; fileRef = A611E7121CB65F9A001C7E2C /* fpconv.c */; };
+		A611E71E1CB65F9A001C7E2C /* lua_cjson.c in Sources */ = {isa = PBXBuildFile; fileRef = A611E7151CB65F9A001C7E2C /* lua_cjson.c */; };
+		A611E71F1CB65F9A001C7E2C /* lua_cjson.c in Sources */ = {isa = PBXBuildFile; fileRef = A611E7151CB65F9A001C7E2C /* lua_cjson.c */; };
+		A611E7201CB65F9A001C7E2C /* strbuf.c in Sources */ = {isa = PBXBuildFile; fileRef = A611E7161CB65F9A001C7E2C /* strbuf.c */; };
+		A611E7211CB65F9A001C7E2C /* strbuf.c in Sources */ = {isa = PBXBuildFile; fileRef = A611E7161CB65F9A001C7E2C /* strbuf.c */; };
+		A611E7271CB662E0001C7E2C /* lplatform.c in Sources */ = {isa = PBXBuildFile; fileRef = A611E7261CB662E0001C7E2C /* lplatform.c */; };
+		A611E7281CB662E0001C7E2C /* lplatform.c in Sources */ = {isa = PBXBuildFile; fileRef = A611E7261CB662E0001C7E2C /* lplatform.c */; };
 		A695D3431CB2827900E4180B /* event.c in Sources */ = {isa = PBXBuildFile; fileRef = A695D3411CB2827900E4180B /* event.c */; };
 		A695D3441CB2827900E4180B /* event.c in Sources */ = {isa = PBXBuildFile; fileRef = A695D3411CB2827900E4180B /* event.c */; };
 /* End PBXBuildFile section */
@@ -371,6 +379,12 @@
 		4DE642C11C5B3BCA003EBBC0 /* seal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = seal.c; sourceTree = "<group>"; };
 		4DE642C21C5B3BCA003EBBC0 /* seal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = seal.h; sourceTree = "<group>"; };
 		4DF5F5BE1C4C8CFC0080A8EB /* yuusha */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = yuusha; sourceTree = BUILT_PRODUCTS_DIR; };
+		A611E7121CB65F9A001C7E2C /* fpconv.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fpconv.c; path = "../../../libs/lua-cjson/fpconv.c"; sourceTree = "<group>"; };
+		A611E7131CB65F9A001C7E2C /* fpconv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fpconv.h; path = "../../../libs/lua-cjson/fpconv.h"; sourceTree = "<group>"; };
+		A611E7151CB65F9A001C7E2C /* lua_cjson.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lua_cjson.c; path = "../../../libs/lua-cjson/lua_cjson.c"; sourceTree = "<group>"; };
+		A611E7161CB65F9A001C7E2C /* strbuf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = strbuf.c; path = "../../../libs/lua-cjson/strbuf.c"; sourceTree = "<group>"; };
+		A611E7171CB65F9A001C7E2C /* strbuf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = strbuf.h; path = "../../../libs/lua-cjson/strbuf.h"; sourceTree = "<group>"; };
+		A611E7261CB662E0001C7E2C /* lplatform.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lplatform.c; sourceTree = "<group>"; };
 		A695D3411CB2827900E4180B /* event.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = event.c; sourceTree = "<group>"; };
 		A695D3421CB2827900E4180B /* event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = event.h; sourceTree = "<group>"; };
 		A695D3451CB2871C00E4180B /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
@@ -484,6 +498,7 @@
 		4D46EDDE1C8F149E0081A1DC /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				A611E70F1CB65F32001C7E2C /* lua-cjson */,
 				4D25D83E1C95C04500448F88 /* lua-socket */,
 				4D25D83D1C95C02700448F88 /* glfw */,
 				4D25D83C1C95C01C00448F88 /* freetype */,
@@ -710,6 +725,7 @@
 				4D1CF5871CB2B79E00A1FFB9 /* lsprite.c */,
 				4D1CF58B1CB2C3AC00A1FFB9 /* ltexture.c */,
 				4D1CF58F1CB2C3CC00A1FFB9 /* lspriteframe.c */,
+				A611E7261CB662E0001C7E2C /* lplatform.c */,
 			);
 			path = binding;
 			sourceTree = "<group>";
@@ -746,6 +762,18 @@
 				4DBFA7161C9DBB9900D52B23 /* yuusha copy */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A611E70F1CB65F32001C7E2C /* lua-cjson */ = {
+			isa = PBXGroup;
+			children = (
+				A611E7121CB65F9A001C7E2C /* fpconv.c */,
+				A611E7131CB65F9A001C7E2C /* fpconv.h */,
+				A611E7151CB65F9A001C7E2C /* lua_cjson.c */,
+				A611E7161CB65F9A001C7E2C /* strbuf.c */,
+				A611E7171CB65F9A001C7E2C /* strbuf.h */,
+			);
+			name = "lua-cjson";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -791,7 +819,7 @@
 		4DF5F5B61C4C8CFC0080A8EB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = levelmax;
 				TargetAttributes = {
 					4DF5F5BD1C4C8CFC0080A8EB = {
@@ -844,6 +872,7 @@
 				4DBFA6DB1C9DBB9900D52B23 /* shader.c in Sources */,
 				4DBFA6DC1C9DBB9900D52B23 /* lmem.c in Sources */,
 				4DBFA6DD1C9DBB9900D52B23 /* seal.c in Sources */,
+				A611E7211CB65F9A001C7E2C /* strbuf.c in Sources */,
 				4DBFA6DE1C9DBB9900D52B23 /* fs.c in Sources */,
 				4DBFA6DF1C9DBB9900D52B23 /* ldump.c in Sources */,
 				4DBFA6E01C9DBB9900D52B23 /* buffer.c in Sources */,
@@ -856,10 +885,12 @@
 				4DBFA6E61C9DBB9900D52B23 /* main.c in Sources */,
 				4DBFA6E71C9DBB9900D52B23 /* lopcodes.c in Sources */,
 				4DBFA6E81C9DBB9900D52B23 /* lopen.c in Sources */,
+				A611E7281CB662E0001C7E2C /* lplatform.c in Sources */,
 				4DBFA6E91C9DBB9900D52B23 /* matrix.c in Sources */,
 				4DBFA6EA1C9DBB9900D52B23 /* except.c in Sources */,
 				4DBFA6EB1C9DBB9900D52B23 /* lutf8lib.c in Sources */,
 				4DBFA6EC1C9DBB9900D52B23 /* io.c in Sources */,
+				A611E71F1CB65F9A001C7E2C /* lua_cjson.c in Sources */,
 				4DBFA6ED1C9DBB9900D52B23 /* test_2d_array.c in Sources */,
 				4DBFA6EE1C9DBB9900D52B23 /* ttf_font.c in Sources */,
 				A695D3441CB2827900E4180B /* event.c in Sources */,
@@ -884,6 +915,7 @@
 				4DBFA7001C9DBB9900D52B23 /* lobject.c in Sources */,
 				4DBFA7011C9DBB9900D52B23 /* ltablib.c in Sources */,
 				4DBFA7021C9DBB9900D52B23 /* camera.c in Sources */,
+				A611E71B1CB65F9A001C7E2C /* fpconv.c in Sources */,
 				4DBFA7031C9DBB9900D52B23 /* lstrlib.c in Sources */,
 				4DBFA7041C9DBB9900D52B23 /* lmathlib.c in Sources */,
 				4DBFA7051C9DBB9900D52B23 /* lgc.c in Sources */,
@@ -930,6 +962,7 @@
 				4D77986E1C6F229700021ED6 /* shader.c in Sources */,
 				4DDA8E3D1C4F5AE700ED5325 /* lmem.c in Sources */,
 				4DE642CA1C5B3BCA003EBBC0 /* seal.c in Sources */,
+				A611E7201CB65F9A001C7E2C /* strbuf.c in Sources */,
 				4D822B8A1C6F62490083122E /* fs.c in Sources */,
 				4DDA8E361C4F5AE700ED5325 /* ldump.c in Sources */,
 				4D25D8701C95C06000448F88 /* buffer.c in Sources */,
@@ -942,10 +975,12 @@
 				4D822B7E1C6F61670083122E /* main.c in Sources */,
 				4DDA8E401C4F5AE700ED5325 /* lopcodes.c in Sources */,
 				4DE642C41C5B3BCA003EBBC0 /* lopen.c in Sources */,
+				A611E7271CB662E0001C7E2C /* lplatform.c in Sources */,
 				4DE4D2041C7467E200410891 /* matrix.c in Sources */,
 				4D25D8741C95C06000448F88 /* except.c in Sources */,
 				4DDA8E4C1C4F5AE700ED5325 /* lutf8lib.c in Sources */,
 				4D25D8781C95C06000448F88 /* io.c in Sources */,
+				A611E71E1CB65F9A001C7E2C /* lua_cjson.c in Sources */,
 				4DBFA6B81C9DBA9400D52B23 /* test_2d_array.c in Sources */,
 				4D46F80F1C8F38C90081A1DC /* ttf_font.c in Sources */,
 				A695D3431CB2827900E4180B /* event.c in Sources */,
@@ -970,6 +1005,7 @@
 				4DDA8E3F1C4F5AE700ED5325 /* lobject.c in Sources */,
 				4DDA8E471C4F5AE700ED5325 /* ltablib.c in Sources */,
 				4DE620FD1C7856AE0073C71A /* camera.c in Sources */,
+				A611E71A1CB65F9A001C7E2C /* fpconv.c in Sources */,
 				4DDA8E451C4F5AE700ED5325 /* lstrlib.c in Sources */,
 				4DDA8E3C1C4F5AE700ED5325 /* lmathlib.c in Sources */,
 				4DDA8E381C4F5AE700ED5325 /* lgc.c in Sources */,
@@ -1061,6 +1097,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1128,11 +1165,11 @@
 					../../../seal,
 					../../../libs/glfw/mac/include,
 					"../../../libs/freetype-2.6.2/mac/include/**",
+					"../../../libs/lua-5.3.2/src",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					../../../libs/glfw/mac/libs,
 					"../../../libs/freetype-2.6.2/mac/libs",
-					"/Users/sleepers/Projects/github/seal2d/libs/freetype-2.6.2/mac/libs",
 				);
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1151,11 +1188,11 @@
 					../../../seal,
 					../../../libs/glfw/mac/include,
 					"../../../libs/freetype-2.6.2/mac/include/**",
+					"../../../libs/lua-5.3.2/src",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					../../../libs/glfw/mac/libs,
 					"../../../libs/freetype-2.6.2/mac/libs",
-					"/Users/sleepers/Projects/github/seal2d/libs/freetype-2.6.2/mac/libs",
 				);
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";

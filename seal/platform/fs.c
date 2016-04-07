@@ -25,7 +25,7 @@ unsigned char* s_read(const char* path, size_t* size, int extra_byte) {
     if(result != file_size) {
         free(buffer);
         fclose(fp);
-        fprintf(stderr, "s_read, file reading error.\n");
+        fprintf(stderr, "s_read, file reading error, size not match?.\n");
         return NULL;
     }
     if(extra_byte) {

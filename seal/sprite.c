@@ -31,7 +31,7 @@ struct sprite* sprite_alloc(struct sprite_frame* frame){
     SET_VERTEX_COLOR(g->tr, 1.0f, 1.0f, 1.0f, 1.0f);
     SET_VERTEX_UV(g->tr, 1.0f, 1.0f);
     
-    g->tex_id = frame->tex->id;
+    g->tex_id = frame->tex_id;
     s->frame = frame;
     s->parent = NULL;
     s->dirty = 1;
@@ -106,7 +106,7 @@ void sprite_visit(struct sprite* self) {
 }
 
 void sprite_draw(struct sprite* self) {
-    sprite_batch_draw(GAME->batch, &self->glyph, self->frame->tex->id);
+    sprite_batch_draw(GAME->batch, &self->glyph, self->frame->tex_id);
 }
 
 void sprite_set_pos(struct sprite* self, float x, float y) {

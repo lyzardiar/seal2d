@@ -1,11 +1,17 @@
+--[[
+	spriteframe never frees, it will not take up too much memory.
+]]
+
+local platform = require "seal.platform"
+local cjson = require "cjson"
+
 local sprite_frame = {}
 
 local function gc(self)
 	sprite_frame_free(self.__cobj)
 end
 
--- memory managed by Lua
-function sprite_frame.new(frame_name, atlas_name)
+function sprite_frame.new_frame(frame_name, atlas_name)
 	local self = {}
 	setmetatable(self, {__index = sprite_frame, __gc = gc})
 
@@ -20,6 +26,12 @@ local frame_id_map = {}
 
 local function gen_fid(frame_name, atlas_name)
 	return atlas_name .. "-" .. frame_name
+end
+
+function sprite_frame.load_from_json(json_path)
+	local data = platform.read_s(json_path)
+	local frames = cjson.decode(data)
+	print_r(frames)
 end
 
 function sprite_frame.get(frame_name, atlas_name)
@@ -43,6 +55,11 @@ function sprite_frame.put(frame)
 		frame_id_map[frame] = nil
 		collectgarbage()
 	end
+end
+
+function sprite_frame.load(frame_config_file)
+
+	local frames = cjson.decode()
 end
 
 return sprite_frame
