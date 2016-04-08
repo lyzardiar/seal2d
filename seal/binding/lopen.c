@@ -2,6 +2,9 @@
 
 extern int luaopen_seal_core(lua_State* L);
 extern int luaopen_seal_platform(lua_State* L);
+extern int luaopen_seal_texture(lua_State* L);
+extern int luaopen_seal_sprite(lua_State* L);
+
 extern int luaopen_affine_core(lua_State* L);
 extern int luaopen_socket_core(lua_State *L);
 extern int luaopen_mime_core(lua_State *L);
@@ -55,12 +58,39 @@ void setfiled_s(lua_State *L, const char* key, const char* s) {
     lua_settable(L, -3);
 }
 
+lua_Integer getfield_i(lua_State* L, const char* key) {
+    lua_pushstring(L, key);
+    lua_gettable(L, -2);
+    lua_Integer value = luaL_checkinteger(L, -1);
+    lua_pop(L, 1);
+    return value;
+}
+lua_Number  getfield_f(lua_State* L, const char* key) {
+    lua_pushstring(L, key);
+    lua_gettable(L, -2);
+    lua_Integer value = luaL_checknumber(L, -1);
+    lua_pop(L, 1);
+    return value;
+}
+
+const char* getfiled_s(lua_State* L, const char* key) {
+    lua_pushstring(L, key);
+    lua_gettable(L, -2);
+    const char* value = luaL_checkstring(L, -1);
+    lua_pop(L, 1);
+    return value;
+
+}
+
 void luaopen_lua_extensions(lua_State *L)
 {
     // load extensions
     luaL_Reg lua_modules[] = {
         {"seal.core", luaopen_seal_core},
         {"seal.platform", luaopen_seal_platform},
+        {"seal.texture", luaopen_seal_texture},
+        {"seal.sprite_core", luaopen_seal_sprite},
+        
         {"seal.affine", luaopen_affine_core},
         {"socket.core", luaopen_socket_core},
         {"mime.core", luaopen_mime_core},

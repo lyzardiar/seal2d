@@ -12,22 +12,18 @@
 
 typedef unsigned int sprite_frame_id;
 struct sprite_frame {
+    struct rect frame_rect;
+    struct rect source_rect;
+    struct size source_size;
+    int rotated;
+    int trimmed;
+
     sprite_frame_id id;
-    struct rect rect;
     unsigned int tex_id;
 };
 
-struct sprite_frame_cache {
-    struct array* frames;
-};
-
-struct sprite_frame_cache* sprite_frame_cache_new();
-void sprite_frame_cache_free(struct sprite_frame_cache* cache);
-
-void sprite_frame_cache_load_from_json(const char* json);
-void sprite_frame_cache_load_from_binary(const char* binary_file);
-struct sprite_frame* sprite_frame_cache_get(sprite_frame_id id);
-struct sprite_frame* sprite_frame_cache_get_with_name(const char* name);
+struct sprite_frame* sprite_frame_load(struct rect* rect, const char* atlas);
+void sprite_frame_unload(struct sprite_frame* sprite_frame);
 
 struct sprite {
     // glphy information

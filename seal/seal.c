@@ -101,6 +101,8 @@ void seal_init_graphics() {
     // init basic drawing system before create the game.
     load_shaders();
     
+    GAME->texture_cache = texture_cache_new();
+    
     // set the camera
     GAME->global_camera = camera_new(GAME->window_height, GAME->window_height);
     GAME->batch = sprite_batch_new();
@@ -155,10 +157,10 @@ void seal_start_game() {
     struct texture* tex = texture_load_from_png("res/smile_middle.png");
     struct sprite_frame* frame = STRUCT_NEW(sprite_frame);
     frame->tex_id = tex->id;
-    frame->rect.x = 0;
-    frame->rect.y = 0;
-    frame->rect.width = tex->width;
-    frame->rect.height = tex->height;
+//    frame->rect.x = 0;
+//    frame->rect.y = 0;
+//    frame->rect.width = tex->width;
+//    frame->rect.height = tex->height;
     
     struct sprite* root = sprite_alloc(frame);
     
@@ -259,7 +261,8 @@ void seal_destroy() {
     
     lua_close(GAME->lstate);
     
-    sprite_free(GAME->window);
+    texture_cache_free(GAME->texture_cache);
+    win_free(GAME->window);
     sprite_free(GAME->root);
     s_free(GAME);
 }

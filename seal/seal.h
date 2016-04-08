@@ -9,6 +9,7 @@
 
 struct camera;
 struct sprite_batch;
+struct texture_cache;
 struct ttf_font;
 struct event;
 struct window;
@@ -21,6 +22,7 @@ struct game {
     
     struct camera* global_camera;
     struct sprite_batch* batch;
+    struct texture_cache* texture_cache;
     struct ttf_font* font;
     struct window* window;
     struct sprite* root;   // the root node of the world

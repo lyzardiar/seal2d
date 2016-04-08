@@ -3,63 +3,41 @@
 ]]
 
 local platform = require "seal.platform"
+local core = require "seal.sprite_core"
 local cjson = require "cjson"
 
 local sprite_frame = {}
 
 local function gc(self)
-	sprite_frame_free(self.__cobj)
+	core.unload_spriteframe(self.__cobj)
 end
 
-function sprite_frame.new_frame(frame_name, atlas_name)
-	local self = {}
-	setmetatable(self, {__index = sprite_frame, __gc = gc})
+local frame_cache = {}
+local frame_id_name_map = {}
 
-	self.__cobj = sprite_frame_load(frame_name, atlas_name)
-	self.ref = 0
-
-	return self
-end
-
-local frames = {}
-local frame_id_map = {}
-
-local function gen_fid(frame_name, atlas_name)
-	return atlas_name .. "-" .. frame_name
+local function new_frame(...)
+	local obj = {}
+	obj.__cobj = core.load_spriteframe(...)
+	return setmetatable(obj, {__gc = gc})
 end
 
 function sprite_frame.load_from_json(json_path)
 	local data = platform.read_s(json_path)
 	local frames = cjson.decode(data)
-	print_r(frames)
+	local frame_data = frames.frames
+	local meta = frames.meta
+
+	for frame_name, data in pairs(frame_data) do
+		print("frame_name = ", frame_name)
+		print("type of data = ", type(data))
+		print_r(data)
+		local frame = new_frame(data, meta)
+		frame_cache[meta.image .. "-" .. frame_name] = frame
+	end
 end
 
 function sprite_frame.get(frame_name, atlas_name)
-	local id = gen_fid(frame_name, atlas_name)
-	local f = frames[id]
-	if not f then
-		f = sprite_frame.new(frame_name, atlas_name)
-		frames[id] = f
-		f.ref = 0
-		frame_id_map[f] = id
-	end
-	f.ref = f.ref + 1
-	return f
-end
-
-function sprite_frame.put(frame)
-	frame.ref = frame.ref - 1
-	if frame.ref == 0 then
-		local id = frame_id_map[frame]
-		frames[id] = nil
-		frame_id_map[frame] = nil
-		collectgarbage()
-	end
-end
-
-function sprite_frame.load(frame_config_file)
-
-	local frames = cjson.decode()
+	return frame_cache[atlas_name .. "-" .. meta.image]
 end
 
 return sprite_frame

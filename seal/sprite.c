@@ -7,14 +7,25 @@
 #include "texture.h"
 #include "sprite.h"
 
-
 EXTERN_GAME;
+
+struct sprite_frame* sprite_frame_load(struct rect* rect, const char* atlas) {
+    struct sprite_frame* frame = STRUCT_NEW(sprite_frame);
+//    frame->rect = *rect;
+    
+    frame->tex_id = texture_cache_load(GAME->texture_cache, atlas)->id;
+    return frame;
+}
+
+void sprite_frame_unload(struct sprite_frame* sprite_frame) {
+    s_free(sprite_frame);
+}
 
 struct sprite* sprite_alloc(struct sprite_frame* frame){
     struct sprite* s = STRUCT_NEW(sprite);
     
     struct glyph* g = &s->glyph;
-    struct rect* rect = &frame->rect;
+    struct rect* rect = &frame->source_rect;
     SET_VERTEX_POS(g->bl, 0.0f, 0.0f);
     SET_VERTEX_COLOR(g->bl, 1.0f, 1.0f, 1.0f, 1.0f);
     SET_VERTEX_UV(g->bl, 0.0f, 0.0f);
@@ -63,8 +74,8 @@ void sprite_update_transform(struct sprite* self) {
         
         float x = self->world_srt.x;
         float y = self->world_srt.y;
-        float w = self->frame->rect.width;
-        float h = self->frame->rect.height;
+        float w = self->frame->source_rect.width;
+        float h = self->frame->source_rect.height;
     
         struct glyph* g = &self->glyph;
         SET_VERTEX_POS(g->bl, x, y);

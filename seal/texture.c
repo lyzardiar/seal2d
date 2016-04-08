@@ -5,11 +5,41 @@
 
 #include "platform/fs.h"
 #include "image/lodepng.h"
+#include "base/hashmap.h"
 
 #include "util.h"
 #include "shader.h"
 
 #include "texture.h"
+
+static int hash_str(void* key) {
+    return hashmapHash(key, strlen(key));
+}
+
+static bool hash_equal(void* a, void* b) {
+    return strcmp(a, b) == 0;
+}
+
+struct texture_cache* texture_cache_new() {
+    struct texture_cache* cache = STRUCT_NEW(texture_cache);
+    cache->cache = hashmapCreate(32, hash_str, hash_equal);
+    return cache;
+}
+
+void texture_cache_free(struct texture_cache* self) {
+    hashmapFree(self->cache);
+    s_free(self);
+}
+
+struct texture* texture_cache_load(struct texture_cache* self, const char* key) {
+    struct texture* tex = hashmapGet(self->cache, (void*)key);
+    if (!tex) {
+        tex = texture_load_from_png(key);
+        hashmapPut(self->cache, (void*)key, tex);
+    }
+    return tex;
+}
+
 
 struct texture* texture_load_from_png(const char* file_path) {
     if(!file_path) {
@@ -36,7 +66,6 @@ struct texture* texture_load_from_png(const char* file_path) {
     struct texture* tex = texture_load_from_mem(pixel_data, width, height, GL_RGBA);
  
     // TODO: third party use the standard malloc, we may replace that with s_malloc some day.
-    
     free(pixel_data);
     return tex;
 }

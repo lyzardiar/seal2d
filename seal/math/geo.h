@@ -46,4 +46,8 @@ struct rect {
     int width, height;
 };
 
+struct size {
+    int width, height;
+};
+
 #endif /* defined(__yuusha__geo__) */
