@@ -20,6 +20,9 @@ int lsealinject(lua_State* L) {
         exit(1);
     }
     
+    lua_getfield(L, -1, "init");
+    lua_setfield(L, LUA_REGISTRYINDEX, GAME_INIT);
+    
     lua_getfield(L, -1, "update");
     lua_setfield(L, LUA_REGISTRYINDEX, GAME_UPDATE);
     

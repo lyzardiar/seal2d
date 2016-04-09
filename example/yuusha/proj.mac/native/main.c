@@ -86,6 +86,8 @@ int main(int argc, char *argv[]) {
 #endif
     
     seal_init_graphics();
+    
+    seal_start_game();
 
     float interval = (1/60.0f) * 1000;
     float dt = interval;

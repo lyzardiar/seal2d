@@ -99,23 +99,20 @@ struct game* seal_load_game_config() {
 
 void seal_init_graphics() {
     // init basic drawing system before create the game.
+    // TODO: we may set the shaders from Lua. it's better.
     load_shaders();
     
+    // baisc graphic modules
     GAME->texture_cache = texture_cache_new();
-    
-    // set the camera
     GAME->global_camera = camera_new(GAME->window_height, GAME->window_height);
     GAME->batch = sprite_batch_new();
     
     // init the font
     ttf_init_module();
-    
-    font = ttf_font_new("res/fonts/marker_felt.ttf", 100);
+    font = ttf_font_new("res/fonts/marker_felt.ttf", 100);  //TODO: load this in Lua.
     GAME->font = font;
     
     seal_load_file("scripts/startup.lua");
-    seal_start_game();
-    
 }
 
 void seal_load_string(const char* script_data) {
@@ -147,6 +144,16 @@ void seal_start_game() {
     lua_State *L = GAME->lstate;
     assert(lua_gettop(L) == 0);
     lua_pushcfunction(L, traceback);
+    stackDump(L);
+    lua_getfield(L,LUA_REGISTRYINDEX, GAME_INIT);
+    stackDump(L);
+    seal_call(L, 0, 1);
+    stackDump(L);
+    struct sprite* root = lua_touserdata(L, -1);
+    stackDump(L);
+    GAME->root = root;
+    lua_pop(L, 1);
+    stackDump(L);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_UPDATE);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_DRAW);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_PAUSE);
@@ -154,27 +161,30 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
     
     
-    struct texture* tex = texture_load_from_png("res/smile_middle.png");
-    struct sprite_frame* frame = STRUCT_NEW(sprite_frame);
-    frame->tex_id = tex->id;
-    frame->source_size.width = 100;
-    frame->source_size.height = 100;
-    frame->source_rect.x = 0;
-    frame->source_rect.y = 0;
-    frame->source_rect.width = 100;
-    frame->source_rect.height = 100;
     
-    struct sprite* root = sprite_new(frame);
     
-    int x[4] = {0, 100, 0, 100};
-    int y[4] = {0, 0,  100, 100};
-    for (int i = 0; i < 4; ++i) {
-        struct sprite* child = sprite_new(frame);
-        sprite_set_pos(child, x[i], y[i]);
-        sprite_add_child(root, child);
-    }
     
-    GAME->root = root;
+//    struct texture* tex = texture_load_from_png("res/smile_middle.png");
+//    struct sprite_frame* frame = STRUCT_NEW(sprite_frame);
+//    frame->tex_id = tex->id;
+//    frame->source_size.width = 100;
+//    frame->source_size.height = 100;
+//    frame->source_rect.x = 0;
+//    frame->source_rect.y = 0;
+//    frame->source_rect.width = 100;
+//    frame->source_rect.height = 100;
+    
+//    struct sprite* root = sprite_new(frame);
+    
+//    int x[4] = {0, 100, 0, 100};
+//    int y[4] = {0, 0,  100, 100};
+//    for (int i = 0; i < 4; ++i) {
+//        struct sprite* child = sprite_new(frame);
+//        sprite_set_pos(child, x[i], y[i]);
+//        sprite_add_child(root, child);
+//    }
+//    
+//    GAME->root = root;
     
     camera_pos(GAME->global_camera, 0, 0);
 }

@@ -126,3 +126,11 @@ void sprite_set_pos(struct sprite* self, float x, float y) {
     
     self->dirty = 1;
 }
+
+void sprite_set_rotation(struct sprite* self, float rotation) {
+    // TODO
+    self->dirty = 1;
+}
+void sprite_set_scale(struct sprite* self, float scale) {
+    // TODO
+}

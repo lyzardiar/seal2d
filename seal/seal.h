@@ -31,6 +31,7 @@ struct game {
 #define EXTERN_GAME extern struct game* GAME;
 
 #define GAME_TRACE  "GAME_TRACE"
+#define GAME_INIT   "GAME_INIT"
 #define GAME_UPDATE "GAME_UPDATE"
 #define GAME_DRAW   "GAME_DRAW"
 #define GAME_PAUSE  "GAME_PAUSE"

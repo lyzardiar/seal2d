@@ -1,6 +1,6 @@
-local core = require "sprite.core"
+local sprite_core = require "sprite_core"
 
-local spriete_frame = require "sprite_frame"
+local sprite_frame = require "seal.sprite_frame"
 local sprite = {}
 
 local function gc(self)
@@ -18,13 +18,17 @@ end
 function sprite:ctor(frame_name, atlas_name)
 	local frame = sprite_frame.get(frame_name, atlas_name)
 
-	local __cobj = core.new(frame_name)
+	local __cobj = sprite_core.new(frame.__cobj)
 
 	self.__cobj = __cobj
 end
 
 function sprite:set_pos(x, y)
 	sprite_set_pos(self.__cobj, x, y)
+end
+
+function sprite:add_child(child)
+	sprite_add_child(self.__cobj, child.__cobj)
 end
 
 return sprite

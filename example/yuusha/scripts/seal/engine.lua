@@ -1,4 +1,4 @@
-local seal_core = require "seal.core"
+local engine_core = require "engine_core"
 local consts = require "seal.consts"
 local engine = {
 	-- root = nil,
@@ -9,13 +9,14 @@ local engine = {
 function engine.start(game)
 	-- root = assert(game.start())
 	-- engine.root = root
-	game.start()
+	-- game.init()
 
-	seal_core.inject({
+	engine_core.inject({
 	 		update = assert(engine.update),
 	 		draw   = assert(engine.draw),
 	 		event  = assert(engine.event),
 
+	 		init   = assert(game.init),
 	 		pause  = assert(game.pause),
 	 		resume = assert(game.resume),
 	 	})

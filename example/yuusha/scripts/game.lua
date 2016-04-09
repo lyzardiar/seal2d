@@ -1,10 +1,11 @@
 local game = {}
 	
-function game.start()
+function game.init()
 	-- start coding here.
 
 	-- define your scene here.
-	return require("tests.sprite.hello_world").sprite()
+	print("call game.init")
+	return require("tests.game.hello_world").entry()
 end
 
 function game.pause()
