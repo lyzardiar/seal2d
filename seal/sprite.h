@@ -1,6 +1,8 @@
 #ifndef __seal__sprite__
 #define __seal__sprite__
 
+#include "platform/types.h"
+
 #include "base/array.h"
 
 #include "math/matrix.h"
@@ -10,20 +12,21 @@
 #include "sprite_batch.h"
 #include "affine.h"
 
-typedef unsigned int sprite_frame_id;
 struct sprite_frame {
     struct rect frame_rect;
     struct rect source_rect;
     struct size source_size;
-    int rotated;
-    int trimmed;
 
-    sprite_frame_id id;
-    unsigned int tex_id;
+    GLuint tex_id;
+    
+    bool rotated;
+    bool trimmed;
 };
 
-struct sprite_frame* sprite_frame_load(struct rect* rect, const char* atlas);
-void sprite_frame_unload(struct sprite_frame* sprite_frame);
+struct sprite_frame* sprite_frame_new();
+void sprite_frame_free(struct sprite_frame* self);
+
+void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id);
 
 struct sprite {
     // glphy information
@@ -44,7 +47,7 @@ struct sprite {
 };
 
 
-struct sprite* sprite_alloc(struct sprite_frame* frame);
+struct sprite* sprite_new(struct sprite_frame* frame);
 void sprite_free(struct sprite* spr);
 
 void sprite_visit(struct sprite* self);

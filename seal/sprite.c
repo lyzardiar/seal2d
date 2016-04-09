@@ -9,19 +9,20 @@
 
 EXTERN_GAME;
 
-struct sprite_frame* sprite_frame_load(struct rect* rect, const char* atlas) {
-    struct sprite_frame* frame = STRUCT_NEW(sprite_frame);
-//    frame->rect = *rect;
-    
-    frame->tex_id = texture_cache_load(GAME->texture_cache, atlas)->id;
-    return frame;
+struct sprite_frame* sprite_frame_new() {
+    struct sprite_frame* f = STRUCT_NEW(sprite_frame);
+    return f;
 }
 
-void sprite_frame_unload(struct sprite_frame* sprite_frame) {
-    s_free(sprite_frame);
+void sprite_frame_free(struct sprite_frame* self) {
+    s_free(self);
 }
 
-struct sprite* sprite_alloc(struct sprite_frame* frame){
+void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id) {
+    self->tex_id = tex_id;
+}
+
+struct sprite* sprite_new(struct sprite_frame* frame){
     struct sprite* s = STRUCT_NEW(sprite);
     
     struct glyph* g = &s->glyph;
@@ -74,8 +75,8 @@ void sprite_update_transform(struct sprite* self) {
         
         float x = self->world_srt.x;
         float y = self->world_srt.y;
-        float w = self->frame->source_rect.width;
-        float h = self->frame->source_rect.height;
+        float w = self->frame->source_size.width;
+        float h = self->frame->source_size.height;
     
         struct glyph* g = &self->glyph;
         SET_VERTEX_POS(g->bl, x, y);

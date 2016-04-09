@@ -42,7 +42,7 @@ end
 -- frame_name must be unique in all of the texture
 function sprite:ctor(frame_name)
 	
-	local __cobj = core.alloc(frame_name)
+	local __cobj = core.new(frame_name)
 
 	self.__cobj = __cobj
 end

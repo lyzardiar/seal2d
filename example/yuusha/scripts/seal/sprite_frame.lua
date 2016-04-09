@@ -17,7 +17,7 @@ local frame_id_name_map = {}
 
 local function new_frame(...)
 	local obj = {}
-	obj.__cobj = core.load_spriteframe(...)
+	obj.__cobj = core.spriteframe_load(...)
 	return setmetatable(obj, {__gc = gc})
 end
 
@@ -31,7 +31,8 @@ function sprite_frame.load_from_json(json_path)
 		print("frame_name = ", frame_name)
 		print("type of data = ", type(data))
 		print_r(data)
-		local frame = new_frame(data, meta)
+		print_r(meta)
+		local frame = new_frame(data)
 		frame_cache[meta.image .. "-" .. frame_name] = frame
 	end
 end

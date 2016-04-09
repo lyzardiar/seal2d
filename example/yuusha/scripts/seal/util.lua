@@ -36,6 +36,7 @@ local log_level_tag = {
 	[3] = 'W',
 	[4] = 'E',
  }
+
 function util.log(level, ...)
 	print(log_level_tag .. '\t', ...)
 end
@@ -46,6 +47,11 @@ function util.table_cnt(t)
 		total = total + 1
 	end
 	return total
+end
+
+-- TODO: implement a ordered pairs.
+function util.opairs(t)
+
 end
 
 function util.print_r(root)

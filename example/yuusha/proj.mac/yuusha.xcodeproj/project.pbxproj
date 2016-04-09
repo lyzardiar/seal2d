@@ -389,6 +389,7 @@
 		A695D3411CB2827900E4180B /* event.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = event.c; sourceTree = "<group>"; };
 		A695D3421CB2827900E4180B /* event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = event.h; sourceTree = "<group>"; };
 		A695D3451CB2871C00E4180B /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
+		A6C981661CB9223C00FCEBFF /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -538,6 +539,7 @@
 				4D822B8F1C6F67250083122E /* timer.h */,
 				4D822B901C6F672D0083122E /* timer.c */,
 				A695D3451CB2871C00E4180B /* platform.h */,
+				A6C981661CB9223C00FCEBFF /* types.h */,
 			);
 			path = platform;
 			sourceTree = "<group>";

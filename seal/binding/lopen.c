@@ -61,14 +61,15 @@ void setfiled_s(lua_State *L, const char* key, const char* s) {
 lua_Integer getfield_i(lua_State* L, const char* key) {
     lua_pushstring(L, key);
     lua_gettable(L, -2);
-    lua_Integer value = luaL_checkinteger(L, -1);
+    lua_Integer value = lua_tointeger(L, -1);
     lua_pop(L, 1);
     return value;
 }
-lua_Number  getfield_f(lua_State* L, const char* key) {
+
+lua_Number getfield_f(lua_State* L, const char* key) {
     lua_pushstring(L, key);
     lua_gettable(L, -2);
-    lua_Integer value = luaL_checknumber(L, -1);
+    lua_Integer value = lua_tonumber(L, -1);
     lua_pop(L, 1);
     return value;
 }
@@ -76,7 +77,7 @@ lua_Number  getfield_f(lua_State* L, const char* key) {
 const char* getfiled_s(lua_State* L, const char* key) {
     lua_pushstring(L, key);
     lua_gettable(L, -2);
-    const char* value = luaL_checkstring(L, -1);
+    const char* value = lua_tostring(L, -1);
     lua_pop(L, 1);
     return value;
 

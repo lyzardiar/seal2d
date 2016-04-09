@@ -40,6 +40,15 @@ struct texture* texture_cache_load(struct texture_cache* self, const char* key) 
     return tex;
 }
 
+void texture_cache_unload(struct texture_cache* self, const char* key) {
+    struct texture* tex = hashmapGet(self->cache, (void*)key);
+    if (!tex) {
+        hashmapPut(self->cache, (void*)key, NULL);
+        texture_unload(tex);
+    } else {
+        fprintf(stderr, "texture %s has already been removed", key);
+    }
+}
 
 struct texture* texture_load_from_png(const char* file_path) {
     if(!file_path) {
@@ -94,4 +103,9 @@ struct texture* texture_load_from_mem(const unsigned char* pixel,
     tex->width = width;
     tex->height = height;
     return tex;
+}
+
+void texture_unload(struct texture* self) {
+    glDeleteTextures(1, &self->id);
+    s_free(self);
 }
