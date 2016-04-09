@@ -31,6 +31,7 @@ void texture_cache_free(struct texture_cache* self) {
     s_free(self);
 }
 
+// TODO : export load from binary data in Lua.
 struct texture* texture_cache_load(struct texture_cache* self, const char* key) {
     struct texture* tex = hashmapGet(self->cache, (void*)key);
     if (!tex) {

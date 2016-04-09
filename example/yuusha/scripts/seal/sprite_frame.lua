@@ -6,6 +6,8 @@ local platform = require "seal.platform"
 local core = require "seal.sprite_core"
 local cjson = require "cjson"
 
+local texture_core = require "seal.texture_core"
+
 local sprite_frame = {}
 
 local function gc(self)
@@ -26,13 +28,19 @@ function sprite_frame.load_from_json(json_path)
 	local frames = cjson.decode(data)
 	local frame_data = frames.frames
 	local meta = frames.meta
+	print_r(meta)
+	
+	-- TODO : hard code here, fix with the path searching.
 
+	local tex_id = texture_core.load_from_cache("res/" .. meta.image)
+
+	-- local texture_filename = meta.
 	for frame_name, data in pairs(frame_data) do
 		print("frame_name = ", frame_name)
 		print("type of data = ", type(data))
 		print_r(data)
-		print_r(meta)
 		local frame = new_frame(data)
+		core.spriteframe_set_texture_id(frame.__cobj, tex_id)
 		frame_cache[meta.image .. "-" .. frame_name] = frame
 	end
 end

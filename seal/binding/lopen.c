@@ -89,7 +89,7 @@ void luaopen_lua_extensions(lua_State *L)
     luaL_Reg lua_modules[] = {
         {"seal.core", luaopen_seal_core},
         {"seal.platform", luaopen_seal_platform},
-        {"seal.texture", luaopen_seal_texture},
+        {"seal.texture_core", luaopen_seal_texture},
         {"seal.sprite_core", luaopen_seal_sprite},
         
         {"seal.affine", luaopen_affine_core},

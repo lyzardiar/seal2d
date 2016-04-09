@@ -1,5 +1,6 @@
 local core = require "sprite.core"
 
+local spriete_frame = require "sprite_frame"
 local sprite = {}
 
 local function gc(self)
@@ -13,35 +14,10 @@ function sprite.new(...)
 	return self
 end
 
---[[
-	Data Structure Design
-
-	SpriteFrame -> {
-		name,
-		texture_file_name,
-		tex_id,	 			->check valid before we use the texture. 
-		x, y,
-		width, height,
-	}
-
-	sprite frame only contains data.
-
-	Texture -> {
-		tex_id, -> this is the id created by the OpenGL
-
-		width, height,
-		file_name,
-	}
-	
-	every sprite requires a frame to create, make it simple
-	Sprite -> {
-	
-	}
-]]
-
 -- frame_name must be unique in all of the texture
-function sprite:ctor(frame_name)
-	
+function sprite:ctor(frame_name, atlas_name)
+	local frame = sprite_frame.get(frame_name, atlas_name)
+
 	local __cobj = core.new(frame_name)
 
 	self.__cobj = __cobj

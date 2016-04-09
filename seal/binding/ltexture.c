@@ -1,13 +1,27 @@
 #include "lua.h"
 #include "lauxlib.h"
 
+#include "seal.h"
 #include "texture.h"
 
+EXTERN_GAME;
+
 int ltexture_cache_load(lua_State* L) {
+//TODO:     we have process the only the `image` currently
+//          *****+image [ui.png]
+    
+//          +format [RGBA8888]
+//
+//          +size+h [256.0]
+//          |    +w [256.0]
+//          +version [1.0]
+//          +scale [1]
+    
+    struct texture_cache* cache = GAME->texture_cache;
     const char* file_name = luaL_checkstring(L, -1);
     if (file_name) {
-        struct texture* tex = texture_load_from_png(file_name);
-        lua_pushlightuserdata(L, tex);
+        struct texture* tex = texture_cache_load(cache, file_name);
+        lua_pushinteger(L, tex->id);
         return 1;
     }
     
@@ -28,8 +42,8 @@ int luaopen_seal_texture(lua_State* L) {
     luaL_checkversion(L);
 #endif
     luaL_Reg lib[] = {
-        { "cache_load", ltexture_cache_load },
-        { "cache_unload", ltexture_cache_unload},
+        { "load_from_cache", ltexture_cache_load },
+        { "unload_from_cache", ltexture_cache_unload},
         { NULL, NULL },
     };
     
