@@ -1,5 +1,6 @@
 local engine_core = require "engine_core"
 local consts = require "seal.consts"
+local timer = require "timer"
 local engine = {
 	-- root = nil,
 }
@@ -29,12 +30,7 @@ function engine.update(dt)
 		return
 	end
 
-	total = total + dt
-	if total > 1 then
-		total = 0
-		cnt = cnt + 1
-		-- print("update cnt = ", cnt)
-	end
+	timer.update(dt)
 end
 
 function engine.draw()

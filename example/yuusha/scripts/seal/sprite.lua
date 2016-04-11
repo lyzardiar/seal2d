@@ -4,7 +4,8 @@ local sprite_frame = require "seal.sprite_frame"
 local sprite = {}
 
 local function gc(self)
-	sprite_free(self.__cobj)
+	print("release sprite")
+	sprite_core.free(self.__cobj)
 end
 
 function sprite.new(...) 

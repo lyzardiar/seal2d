@@ -99,4 +99,12 @@ function util.contains(rect, x, y)
 			y <= rect.y + rect.height
 end
 
+function util.nkeys(t)
+	local total = 0
+	for k,v in pairs(t) do
+		total = total + 1
+	end
+	return total
+end
+
 return util

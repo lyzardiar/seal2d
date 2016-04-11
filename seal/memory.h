@@ -2,13 +2,14 @@
 #define __seal__memory__
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #ifdef DEBUG
 // memory functions
 #define s_malloc(size)          seal_malloc(size, __FILE__, __LINE__)
 #define s_calloc(size)          seal_calloc(size, __FILE__, __LINE__)
 #define s_realloc(p, size)      seal_realloc(p, size, __FILE__, __LINE__)
-#define s_free(p)               seal_free(p)
+#define s_free(p)               seal_free((p))
 
 #else
 

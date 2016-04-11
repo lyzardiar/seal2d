@@ -160,32 +160,6 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_RESUME);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
     
-    
-    
-    
-    
-//    struct texture* tex = texture_load_from_png("res/smile_middle.png");
-//    struct sprite_frame* frame = STRUCT_NEW(sprite_frame);
-//    frame->tex_id = tex->id;
-//    frame->source_size.width = 100;
-//    frame->source_size.height = 100;
-//    frame->source_rect.x = 0;
-//    frame->source_rect.y = 0;
-//    frame->source_rect.width = 100;
-//    frame->source_rect.height = 100;
-    
-//    struct sprite* root = sprite_new(frame);
-    
-//    int x[4] = {0, 100, 0, 100};
-//    int y[4] = {0, 0,  100, 100};
-//    for (int i = 0; i < 4; ++i) {
-//        struct sprite* child = sprite_new(frame);
-//        sprite_set_pos(child, x[i], y[i]);
-//        sprite_add_child(root, child);
-//    }
-//    
-//    GAME->root = root;
-    
     camera_pos(GAME->global_camera, 0, 0);
 }
 
@@ -275,6 +249,8 @@ void seal_destroy() {
     
     texture_cache_free(GAME->texture_cache);
     win_free(GAME->window);
-    sprite_free(GAME->root);
+    
+// memory is managed by Lua, don't need to free
+//    sprite_free(GAME->root);
     s_free(GAME);
 }

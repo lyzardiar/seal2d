@@ -18,8 +18,12 @@ local function main()
 	";scripts/?.lua" ..
 	";scripts/seal/?.lua" ..
 	";scripts/seal/socket/?.lua" ..
+	";scripts/seal/cov/?.lua" .. 
 	";res/?.lua"
 
+	require "luacov"
+	require "luacov.tick"
+	
 	export_module()
 
 	local game = require "game"

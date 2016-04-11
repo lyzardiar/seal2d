@@ -54,12 +54,12 @@ void* array_at(struct array* self, size_t index) {
     return self->data[index];
 }
 
-void array_clear(struct array* self, int free) {
+void array_clear(struct array* self, int cleanup) {
     if (self->n == 0) {
         return;
     }
     
-    if (free) {
+    if (cleanup) {
         for (size_t i = 0; i < self->n; ++i) {
             void* p = array_at(self, i);
             s_free(p);

@@ -83,7 +83,6 @@ void sprite_update_transform(struct sprite* self) {
         SET_VERTEX_POS(g->br, x + w, y);
         SET_VERTEX_POS(g->tl, x, y + h);
         SET_VERTEX_POS(g->tr, x + w, y + h);
-
     }
 }
 

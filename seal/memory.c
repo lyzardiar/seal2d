@@ -46,8 +46,10 @@ void delete_entry(void* ptr) {
         }
     }
     
-    list_del(&found->list);
-    free(found);
+    if (found) {
+        list_del(&found->list);
+        free(found);
+    }
 }
 
 void* seal_malloc(size_t size, const char* file, int line) {
