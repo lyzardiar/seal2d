@@ -9,7 +9,16 @@ function hello_world.entry()
 	-- TODO: redesign this interface(sprite.new)
 	local root = sprite.new("cloud.png", "ui.png")
 	game.root = root
+
+	hello_world.test()
+
 	return root.__cobj
+end
+
+local luaunit = require "luaunit"
+function hello_world.test()
+	require("tests.unit_test.simple_oop_test")()
+	os.exit( luaunit.LuaUnit.run("-v") )
 end
 
 

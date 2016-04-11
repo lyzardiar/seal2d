@@ -17,8 +17,9 @@ local function main()
 	package.path = package.path .. 
 	";scripts/?.lua" ..
 	";scripts/seal/?.lua" ..
-	";scripts/seal/socket/?.lua" ..
-	";scripts/seal/cov/?.lua" .. 
+	";scripts/seal/thirdparty/socket/?.lua" ..
+	";scripts/seal/thirdparty/cov/?.lua" .. 
+	";scripts/seal/thirdparty/luaunit/?.lua" ..
 	";res/?.lua"
 
 	require "luacov"

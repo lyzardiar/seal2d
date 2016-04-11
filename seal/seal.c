@@ -144,16 +144,14 @@ void seal_start_game() {
     lua_State *L = GAME->lstate;
     assert(lua_gettop(L) == 0);
     lua_pushcfunction(L, traceback);
-    stackDump(L);
+
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_INIT);
-    stackDump(L);
     seal_call(L, 0, 1);
-    stackDump(L);
+
     struct sprite* root = lua_touserdata(L, -1);
-    stackDump(L);
     GAME->root = root;
     lua_pop(L, 1);
-    stackDump(L);
+
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_UPDATE);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_DRAW);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_PAUSE);

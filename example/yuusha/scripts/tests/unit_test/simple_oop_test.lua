@@ -1,7 +1,6 @@
 local fruit = class('fruit')
 
 function fruit:ctor(name)
-	print('call fruit:ctor')
 	self.name = name
 end
 
@@ -20,10 +19,6 @@ end
 local apple = class('apple', fruit)
 
 function apple:ctor(name)
-	print('call apple ctor')
-	print_r(apple)
-	print('aplle super is')
-	print_r(apple.__super)
 	apple.__super.ctor(self, name)
 end
 
@@ -46,27 +41,24 @@ function pine_apple:get_price()
 	return self.price
 end
 
-local function test()
-	print_r(fruit)
+local luaunit = require "luaunit"
+function test_simple_oop()
 	local f = fruit.new('sample-fruit')
-	print_r(f)
-	print_r(getmetatable(f))
-	print(f:get_name())
-
 	f:set_name('name-changed-sample-fruit')
-	print(f:get_name())
+
+	luaunit.assertEquals(f:get_name(), "name-changed-sample-fruit")
 
 	local a = apple.new('sample-apple')
-	print(a:get_name())
-	a:set_name('name-changed-sample-apple')
-	print(a:get_name())
+	luaunit.assertEquals(a:get_name(), "sample-apple")
 
-	print(a:get_type())
+	a:set_name('name-changed-sample-apple')
+	luaunit.assertEquals(a:get_name(), "name-changed-sample-apple")
 
 	local p = pine_apple.new('sample-pine_apple', 5.0)
-	print("name of p = ", p:get_name())
-	print("type of p = ", p:get_type())
-	print("price = ", p:get_price())
+	
+	luaunit.assertEquals(p:get_name(), "sample-pine_apple")
+	luaunit.assertEquals(p:get_type(), "apple")
+	luaunit.assertEquals(p:get_price(), 5.0)
 end
 
-return test
+return test_simple_oop

@@ -99,11 +99,6 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
     int ox = slot->bitmap_left;
     int oy = (int)(asent - slot->bitmap_top);
     
-    printf("ox, oy = %d, %d\n", ox, oy);
-    
-//    int ctx_h = (int)(face->size->metrics.height >> 6);
-//    int ctx_w = (int)(slot->advance.x >> 6);
-
     unsigned char* buff = draw_bitmap(&slot->bitmap, ox, oy);
     
     struct texture* tex = texture_load_from_mem(buff,
