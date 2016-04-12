@@ -22,27 +22,49 @@ void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id) {
     self->tex_id = tex_id;
 }
 
+void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float texture_height) {
+    struct rect* frame_rect = &self->frame_rect;
+    self->uv.u = frame_rect->x / texture_width;
+    self->uv.v = frame_rect->y / texture_height;
+    self->uv.w = frame_rect->width / texture_width;
+    self->uv.h = frame_rect->height / texture_height;
+}
+
 struct sprite* sprite_new(struct sprite_frame* frame){
     struct sprite* s = STRUCT_NEW(sprite);
     
+    struct uv* uv = &frame->uv;
     struct glyph* g = &s->glyph;
     struct rect* rect = &frame->source_rect;
     SET_VERTEX_POS(g->bl, 0.0f, 0.0f);
     SET_VERTEX_COLOR(g->bl, 1.0f, 1.0f, 1.0f, 1.0f);
-    SET_VERTEX_UV(g->bl, 0.0f, 0.0f);
+
     
     SET_VERTEX_POS(g->br, rect->width, 0.0f);
     SET_VERTEX_COLOR(g->br, 1.0f, 1.0f, 1.0f, 1.0f);
-    SET_VERTEX_UV(g->br, 1.0f, 0.0f);
+
     
     SET_VERTEX_POS(g->tl, 0.0f, rect->height);
     SET_VERTEX_COLOR(g->tl, 1.0f, 1.0f, 1.0f, 1.0f);
-    SET_VERTEX_UV(g->tl, 0.0f, 1.0f);
+
     
     SET_VERTEX_POS(g->tr, rect->width, rect->height);
     SET_VERTEX_COLOR(g->tr, 1.0f, 1.0f, 1.0f, 1.0f);
-    SET_VERTEX_UV(g->tr, 1.0f, 1.0f);
+
     
+        SET_VERTEX_UV(g->bl, uv->u,         uv->v);
+        SET_VERTEX_UV(g->br, uv->u + uv->w, uv->v);
+        SET_VERTEX_UV(g->tl, uv->u,         uv->v + uv->h);
+        SET_VERTEX_UV(g->tr, uv->u + uv->w, uv->v + uv->h);
+
+    printf("coord = %.2f, %.2f, %.2f, %.2f\n", uv->u, uv->v, uv->u + uv->w, uv->v + uv->h);
+//    printf("uv = %.2f, %.2f, %.2f, %.2f\n", uv->u, uv->v, uv->w, uv->h);
+
+//    SET_VERTEX_UV(g->bl, 0, 0);
+//    SET_VERTEX_UV(g->br, 1, 0);
+//    SET_VERTEX_UV(g->tl, 0, 1);
+//    SET_VERTEX_UV(g->tr, 1, 1);
+//    
     g->tex_id = frame->tex_id;
     s->frame = frame;
     s->parent = NULL;

@@ -21,6 +21,7 @@ local frame_id_name_map = {}
 local function new_frame(...)
 	local obj = {}
 	obj.__cobj = sprite_core.spriteframe_load(...)
+	print("new_frame obj.__cobj = ", obj.__cobj)
 	setmetatable(obj, {__gc = gc})
 	return obj
 end
@@ -33,11 +34,11 @@ function sprite_frame.load_from_json(json_path)
 	
 	-- TODO : hard code here, fix with the path searching.
 
-	local tex_id = texture_core.load_from_cache("res/" .. meta.image)
+	local tex_id = texture_core.load_from_cache("res/images/" .. meta.image)
 
 	-- local texture_filename = meta.
 	for frame_name, data in pairs(frame_data) do
-		local frame = new_frame(data)
+		local frame = new_frame(data, meta)
 		sprite_core.spriteframe_set_texture_id(frame.__cobj, tex_id)
 		frame_cache[meta.image .. "-" .. frame_name] = frame
 	end
@@ -46,10 +47,12 @@ function sprite_frame.load_from_json(json_path)
 end
 
 function sprite_frame.get(frame_name, atlas_name)
-	-- print('call sprite_frame.get, frame_name, atlas_name = ', frame_name, atlas_name)
-	-- print("the frame cache is")
-	-- print("the key is ", atlas_name .. "-" .. frame_name)
-	return frame_cache[atlas_name .. "-" .. frame_name]
+	local f = frame_cache[atlas_name .. "-" .. frame_name]
+	if not f then
+		print_r(frame_cache)
+		assert(false, "frame: %s cannot be found.", atlas_name .. "-" .. frame_name)
+	end
+	return f
 end
 
 return sprite_frame

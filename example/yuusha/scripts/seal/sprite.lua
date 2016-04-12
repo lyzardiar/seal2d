@@ -3,6 +3,8 @@ local sprite_core = require "sprite_core"
 local sprite_frame = require "seal.sprite_frame"
 local sprite = {}
 
+local all_sprites = {}
+
 local function gc(self)
 	print("release sprite")
 	sprite_core.free(self.__cobj)
@@ -12,6 +14,7 @@ function sprite.new(...)
 	local self = {}
 	setmetatable(self, {__index = sprite, __gc = gc})
 	self:ctor(...)
+	all_sprites[self] = self
 	return self
 end
 
@@ -25,11 +28,11 @@ function sprite:ctor(frame_name, atlas_name)
 end
 
 function sprite:set_pos(x, y)
-	sprite_set_pos(self.__cobj, x, y)
+	sprite_core.set_pos(self.__cobj, x, y)
 end
 
 function sprite:add_child(child)
-	sprite_add_child(self.__cobj, child.__cobj)
+	sprite_core.add_child(self.__cobj, child.__cobj)
 end
 
 return sprite

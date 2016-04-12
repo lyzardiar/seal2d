@@ -21,12 +21,15 @@ struct sprite_frame {
     
     bool rotated;
     bool trimmed;
+    
+    struct uv uv;
 };
 
 struct sprite_frame* sprite_frame_new();
 void sprite_frame_free(struct sprite_frame* self);
 
 void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id);
+void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float texture_height);
 
 struct sprite {
     // glphy information

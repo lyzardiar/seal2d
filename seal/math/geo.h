@@ -46,6 +46,11 @@ struct rect {
     int width, height;
 };
 
+struct uv {
+    float u,v;
+    float w,h;
+};
+
 struct size {
     int width, height;
 };

@@ -28,7 +28,9 @@
 
 int lsprite_load_spriteframe(lua_State* L) {
     luaL_checktype(L, 1, LUA_TTABLE);
+    luaL_checktype(L, 2, LUA_TTABLE);
     
+    // read the info in the frame
     struct sprite_frame* frame = sprite_frame_new();
     memset(frame, 0, sizeof(struct sprite_frame));
     
@@ -62,9 +64,17 @@ int lsprite_load_spriteframe(lua_State* L) {
     size->width = (int)getfield_i(L, "w");
     size->height = (int)getfield_i(L, "h");
     lua_pop(L, 1);
+    
+    // read the info in the meta
+    lua_pushstring(L, "size");
+    lua_gettable(L, 2);
 
+    float texture_width = getfield_f(L, "w");
+    float texture_height = getfield_f(L, "h");
+
+    sprite_frame_init_uv(frame, texture_width, texture_height);
+    
     lua_pop(L, -1);
-        
     lua_pushlightuserdata(L, frame);
     return 1;
 }
@@ -96,11 +106,13 @@ int lsprite_free(lua_State* L) {
 }
 
 int lsprite_set_pos(lua_State* L) {
+    stackDump(L);
     struct sprite* self = lua_touserdata(L, 1);
     lua_Number x = luaL_checknumber(L, 2);
     lua_Number y = luaL_checknumber(L, 3);
     sprite_set_pos(self, x, y);
-    
+
+
     return 0;
 }
 
@@ -117,6 +129,7 @@ int lsprite_set_scale(lua_State* L) {
 }
 
 int lsprite_add_child(lua_State* L) {
+    stackDump(L);
 
     luaL_argcheck(L, lua_isuserdata(L, 1), 1, "sprite expected for arg 1");
     luaL_argcheck(L, lua_isuserdata(L, 2), 2, "sprite expected for arg 2");
@@ -140,6 +153,8 @@ int luaopen_seal_sprite(lua_State* L) {
         
         { "new", lsprite_new },
         { "free", lsprite_free },
+        { "set_pos", lsprite_set_pos},
+        { "add_child", lsprite_add_child},
         { NULL, NULL },
     };
     
