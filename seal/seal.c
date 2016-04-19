@@ -214,29 +214,20 @@ void seal_draw() {
     GLuint program = get_program(COLOR_SHADER);
     glUseProgram(program);
     
-    CHECK_GL_ERROR;
-    
     glActiveTexture(GL_TEXTURE0);
-    CHECK_GL_ERROR
     GLint texture_location = glGetUniformLocation(program, "sampler");
     glUniform1i(texture_location, 0);
-    CHECK_GL_ERROR;
+
     GLint projection = glGetUniformLocation(program, "projection");
     glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
-    CHECK_GL_ERROR
+
     struct sprite_batch* batch = GAME->batch;
     sprite_batch_begin(batch);
-    CHECK_GL_ERROR
-    
     sprite_visit(GAME->root);
- 
-    CHECK_GL_ERROR
     sprite_batch_end(batch);
-    CHECK_GL_ERROR
+    
     sprite_batch_render(batch);
-    CHECK_GL_ERROR
     glBindTexture(GL_TEXTURE_2D, 0);
-    CHECK_GL_ERROR
     glUseProgram(0);
     CHECK_GL_ERROR
 }
