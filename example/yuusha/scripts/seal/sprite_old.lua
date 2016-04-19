@@ -12,7 +12,6 @@ local contains = util.contains
 local sprite = {}
 
 local function gc(self)
-	print('free sprite.', self)
 	if self.frame then
 		self.frame.texture:dec_ref()
 	end

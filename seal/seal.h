@@ -46,7 +46,7 @@ void seal_load_string(const char* script_data);
 void seal_load_file(const char* script_path);
 void seal_start_game();
 void seal_main_loop();
-void seal_update(float dt);
+void seal_update();
 void seal_draw();
 void seal_destroy();
 void seal_event(struct event* e);

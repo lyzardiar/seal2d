@@ -140,7 +140,11 @@ static int traceback (lua_State *L) {
     return 1;
 }
 
+static struct timeval _lastUpdate;
+
 void seal_start_game() {
+    gettimeofday(&_lastUpdate, NULL);
+    
     lua_State *L = GAME->lstate;
     assert(lua_gettop(L) == 0);
     lua_pushcfunction(L, traceback);
@@ -161,14 +165,22 @@ void seal_start_game() {
     camera_pos(GAME->global_camera, 0, 0);
 }
 
-void seal_update(float dt) {
-    camera_update(GAME->global_camera);
+
+void seal_update() {
+    struct timeval now;
+    gettimeofday(&now, NULL);
     
-    static int frames = 0;
-    ++frames;
-    if (frames == 60) {
-        frames = 0;
+    // delta只计算draw的时间
+    float dt = ((now.tv_sec - _lastUpdate.tv_sec) +
+                   (now.tv_usec - _lastUpdate.tv_usec))/1000000.0f;
+
+    _lastUpdate = now;
+
+    if (dt < FLT_EPSILON) {
+        return;
     }
+
+    camera_update(GAME->global_camera);
     
     lua_State* L = GAME->lstate;
 

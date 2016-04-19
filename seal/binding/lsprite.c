@@ -106,13 +106,10 @@ int lsprite_free(lua_State* L) {
 }
 
 int lsprite_set_pos(lua_State* L) {
-    stackDump(L);
     struct sprite* self = lua_touserdata(L, 1);
     lua_Number x = luaL_checknumber(L, 2);
     lua_Number y = luaL_checknumber(L, 3);
     sprite_set_pos(self, x, y);
-
-
     return 0;
 }
 
@@ -129,7 +126,6 @@ int lsprite_set_scale(lua_State* L) {
 }
 
 int lsprite_add_child(lua_State* L) {
-    stackDump(L);
 
     luaL_argcheck(L, lua_isuserdata(L, 1), 1, "sprite expected for arg 1");
     luaL_argcheck(L, lua_isuserdata(L, 2), 2, "sprite expected for arg 2");

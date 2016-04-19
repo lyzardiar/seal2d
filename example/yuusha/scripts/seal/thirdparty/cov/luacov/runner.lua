@@ -418,7 +418,6 @@ function runner.resume()
 
    statsfile = stats.start()
    runner.statsfile = statsfile
-   print("statsfile = ", statsfile)
 
    if not tick then
       -- As __gc hooks are called in reverse order of their creation,

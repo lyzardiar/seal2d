@@ -21,7 +21,6 @@ local frame_id_name_map = {}
 local function new_frame(...)
 	local obj = {}
 	obj.__cobj = sprite_core.spriteframe_load(...)
-	print("new_frame obj.__cobj = ", obj.__cobj)
 	setmetatable(obj, {__gc = gc})
 	return obj
 end

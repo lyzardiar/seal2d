@@ -6,7 +6,6 @@ local sprite = {}
 local all_sprites = {}
 
 local function gc(self)
-	print("release sprite")
 	sprite_core.free(self.__cobj)
 end
 

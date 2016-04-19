@@ -52,19 +52,12 @@ struct sprite* sprite_new(struct sprite_frame* frame){
     SET_VERTEX_COLOR(g->tr, 1.0f, 1.0f, 1.0f, 1.0f);
 
     
-        SET_VERTEX_UV(g->bl, uv->u,         uv->v);
-        SET_VERTEX_UV(g->br, uv->u + uv->w, uv->v);
-        SET_VERTEX_UV(g->tl, uv->u,         uv->v + uv->h);
-        SET_VERTEX_UV(g->tr, uv->u + uv->w, uv->v + uv->h);
+    SET_VERTEX_UV(g->bl, uv->u,         uv->v);
+    SET_VERTEX_UV(g->br, uv->u + uv->w, uv->v);
+    SET_VERTEX_UV(g->tl, uv->u,         uv->v + uv->h);
+    SET_VERTEX_UV(g->tr, uv->u + uv->w, uv->v + uv->h);
 
-    printf("coord = %.2f, %.2f, %.2f, %.2f\n", uv->u, uv->v, uv->u + uv->w, uv->v + uv->h);
-//    printf("uv = %.2f, %.2f, %.2f, %.2f\n", uv->u, uv->v, uv->w, uv->h);
 
-//    SET_VERTEX_UV(g->bl, 0, 0);
-//    SET_VERTEX_UV(g->br, 1, 0);
-//    SET_VERTEX_UV(g->tl, 0, 1);
-//    SET_VERTEX_UV(g->tr, 1, 1);
-//    
     g->tex_id = frame->tex_id;
     s->frame = frame;
     s->parent = NULL;

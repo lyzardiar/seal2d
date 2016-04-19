@@ -49,5 +49,4 @@ void camera_update(struct camera* self) {
     
     matrix_translate(self->camer_mat, -self->x/GAME->window_width*2, -self->y/GAME->window_height*2, 1.0);
     self->dirty = 0;
-    matrix_debug_print(self->camer_mat);
 }

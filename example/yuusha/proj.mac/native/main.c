@@ -89,37 +89,26 @@ int main(int argc, char *argv[]) {
     
     seal_start_game();
 
-    float interval = (1/60.0f) * 1000;
-    float dt = interval;
+    long interval = (1/60.0f) * 1000;
+    long dt = interval;
     long last = 0;
-    
-    struct timeval _lastUpdate;
-    gettimeofday(&_lastUpdate, NULL);
     
     while (!glfwWindowShouldClose(window))
     {
-        
         last = gettime();
-        glfwPollEvents();
-        
-        struct timeval now;
-        gettimeofday(&now, NULL);
-        
-        // delta只计算draw的时间
-        float delta = ((now.tv_sec - _lastUpdate.tv_sec)/1000.0f + (now.tv_usec - _lastUpdate.tv_usec) * 1000.0f)/1000000000.0f;
-        seal_update(delta);
+        seal_update();
         seal_draw();
-        set_title(window, delta);
         
         glfwSwapBuffers(window);
-        
-        _lastUpdate = now;
+
+        glfwPollEvents();
+
         long current = gettime();
 
-        dt = (current - last)/1000.0f;
-        last = current;
+        dt = current - last;
+
         if (dt < interval) {
-            usleep( (useconds_t)(interval - dt)*1000 );
+            usleep( (useconds_t)(interval - dt)*1000);
         }
     }
     
