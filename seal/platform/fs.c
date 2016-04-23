@@ -1,6 +1,8 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "platform/platform.h"
 #include "platform/fs.h"
 
 #include "memory.h"
@@ -68,5 +70,15 @@ size_t s_writef(const char* path, const void* data, size_t size) {
     }
     fclose(fp);
     return write_size;
+#endif
+}
+
+#ifdef PLAT_MAC
+extern const char* get_write_path_mac();
+#endif
+
+const char* s_get_write_path() {
+#ifdef PLAT_MAC
+    return get_write_path_mac();
 #endif
 }

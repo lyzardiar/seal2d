@@ -10,7 +10,7 @@ function hello_world.entry()
 	local root = sprite.new("smile_middle.png", "ui.png")
 	game.root = root
 
-	hello_world.test()
+	-- hello_world.test()
 
 	local pos = {
 		{x = 100, y = 0},
@@ -26,11 +26,11 @@ function hello_world.entry()
 	return root.__cobj
 end
 
-local luaunit = require "luaunit"
-function hello_world.test()
-	require("tests.unit_test.simple_oop_test")()
+-- local luaunit = require "luaunit"
+-- function hello_world.test()
+	-- require("tests.unit_test.simple_oop_test")()
 	-- os.exit( luaunit.LuaUnit.run("-v") )
-end
+-- end
 
 
 return hello_world

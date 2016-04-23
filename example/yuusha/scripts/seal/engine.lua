@@ -1,6 +1,6 @@
 local engine_core = require "engine_core"
 local consts = require "seal.consts"
-local timer = require "timer"
+local timer = require "seal.timer"
 local engine = {
 	-- root = nil,
 }

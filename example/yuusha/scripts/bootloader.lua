@@ -24,8 +24,8 @@ local function main()
 	";scripts/seal/thirdparty/luaunit/?.lua" ..
 	";res/?.lua"
 
-	require "luacov"
-	require "luacov.tick"
+	-- require "luacov"
+	-- require "luacov.tick"
 	
 	export_module()
 
