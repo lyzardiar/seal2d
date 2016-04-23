@@ -62,4 +62,6 @@ void sprite_set_scale(struct sprite* self, float scale);
 
 void sprite_add_child(struct sprite* self, struct sprite* child);
 
+void sprite_remove_all_child(struct sprite* self);
+
 #endif

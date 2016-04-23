@@ -2,15 +2,17 @@ local sprite_frame = require "seal.sprite_frame"
 local sprite = require "seal.sprite"
 local game = require "game"
 
-local hello_world = {}
+local hello_world = {
+	i = "this is a copy",
+}
 function hello_world.entry()
 	sprite_frame.load_from_json("res/images/ui.json")
 
 	-- TODO: redesign this interface(sprite.new)
 	local root = sprite.new("smile_middle.png", "ui.png")
-	game.root = root
+	game.set_root(root)
 
-	-- hello_world.test()
+	hello_world.print_hello()
 
 	local pos = {
 		{x = 100, y = 0},
@@ -24,6 +26,10 @@ function hello_world.entry()
 	end
 
 	return root.__cobj
+end
+
+function hello_world.print_hello()
+	print("say some thing that is different. " .. hello_world.i)
 end
 
 -- local luaunit = require "luaunit"

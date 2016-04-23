@@ -158,6 +158,10 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
     return succeed ? 1 : 0;
 }
 
+void seal_reload_scripts() {
+    load_game_scripts(GAME->lstate, "res/code.zip");
+}
+
 struct game* seal_load_game_config() {
     GAME = (struct game*)s_malloc(sizeof(struct game));
     // lua modules
@@ -203,8 +207,12 @@ void seal_init_graphics() {
     ttf_init_module();
     font = ttf_font_new("res/fonts/marker_felt.ttf", 100);  //TODO: loahis in Lua.
     GAME->font = font;
-    
+#if 1
     seal_load_string("require(\"bootloader\").start()");
+#else
+    seal_load_file("scripts/bootloader.lua");
+#endif
+
 }
 
 void seal_load_string(const char* script_data) {

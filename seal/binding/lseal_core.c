@@ -48,6 +48,11 @@ int lsealget_platform(lua_State* L) {
     return 1;
 }
 
+int lseal_reload_script(lua_State* L) {
+    seal_reload_scripts();
+    return 0;
+}
+
 int luaopen_seal_core(lua_State* L) {
     
 #ifdef luaL_checkversion
@@ -58,6 +63,7 @@ int luaopen_seal_core(lua_State* L) {
         { "get_window", lsealget_window},
         { "get_render", lsealget_render},
         { "get_platform", lsealget_platform},
+        { "reload_script", lseal_reload_script},
         { NULL, NULL },
     };
     
