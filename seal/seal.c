@@ -24,6 +24,8 @@
 #include "lopen.h"
 #include "ttf_font.h"
 #include "event.h"
+#include "platform/fs.h"
+#include "unzip.h"
 
 
 extern void luaopen_lua_extensions(lua_State *L);
@@ -72,6 +74,92 @@ lua_State* seal_new_lua() {
 
 struct ttf_font* font = NULL;
 
+int load_game_scripts(lua_State* L, const char* zipfile) {
+    size_t size = 0;
+    unsigned char* filedata = s_read(zipfile, &size, 0);
+    if (!filedata) {
+        fprintf(stderr, "unable to read zipfile = %s\n", zipfile);
+        return 1;
+    }
+    
+    unzFile unzfile = unzOpenBuffer(filedata, size);
+    if(!unzfile) {
+        fprintf(stderr, "open zip from buffer failed.\n");
+        return 1;
+    }
+    
+    lua_getglobal(L, "package");
+    lua_getfield(L, -1, "preload");
+    
+    int total = 0;
+    char filename[1024] = "";
+    int err = unzGoToFirstFile(unzfile);
+    if (err) {
+        fprintf(stderr, "go to first file failed");
+        return 1;
+    }
+    
+    bool succeed = true;
+    while (true) {
+        unz_file_info info;
+        err = unzGetCurrentFileInfo(unzfile, &info, filename, 1024, NULL, 0, NULL, 0);
+        if (err) {
+            fprintf(stderr, "get current file info failed, filename = %s\n", filename);
+            succeed = false;
+            break;
+        }
+        
+        unz_file_pos file_pos;
+        err = unzGetFilePos(unzfile, &file_pos);
+        
+        err = unzGoToFilePos(unzfile, &file_pos);
+        
+        err = unzOpenCurrentFile(unzfile);
+        unsigned long size = info.uncompressed_size;
+    
+        unsigned char* buffer = s_malloc(size);
+        unsigned int readed = unzReadCurrentFile(unzfile, buffer, (unsigned int)size);
+        
+        if(readed != size) {
+            succeed = false;
+            fprintf(stderr, "read zip file failed? error size, required = %ld, readed = %d, fielname = %s\n",
+                        size, readed, filename);
+            goto error;
+        }
+        
+        err = luaL_loadbuffer(L, (const char*)buffer, size, filename);
+        
+        if(err) {
+            fprintf(stderr, "error loadL_loadbuffer, filename = %s\n", filename);
+            goto error;
+        }
+        
+        lua_setfield(L, -2, filename);
+        
+        printf("load file = %s ok.\n", filename);
+        total = total + 1;
+        
+        if(unzGoToNextFile(unzfile) == UNZ_END_OF_LIST_OF_FILE) {
+            succeed = true;
+            break;
+        }
+        
+        unzCloseCurrentFile(unzfile);
+        s_free(buffer);
+        continue;
+    error:
+        succeed = false;
+        unzCloseCurrentFile(unzfile);
+        s_free(buffer);
+        break;
+    }
+    
+    lua_pop(L, -1);
+    stackDump(L);
+    printf("total loaded = %d\n", total);
+    return succeed ? 1 : 0;
+}
+
 struct game* seal_load_game_config() {
     GAME = (struct game*)s_malloc(sizeof(struct game));
     // lua modules
@@ -79,18 +167,28 @@ struct game* seal_load_game_config() {
     luaopen_lua_extensions(L);
     GAME->lstate = L;
     
-    // load the game settings from config.lua
-    seal_load_file("scripts/config.lua");
+    if(!load_game_scripts(L, "res/code.zip")) {
+        fprintf(stderr, "load code from zip failed.\n");
+        exit(-1);
+    }
     
-    lua_getglobal(L, "APP_NAME");
-    lua_getglobal(L, "WINDOW_WIDTH");
-    lua_getglobal(L, "WINDOW_HEIGHT");
-    
-    const char* app_name = lua_tostring(L, 1);
-    GAME->window_width = lua_tonumber(L, 2);
-    GAME->window_height = lua_tonumber(L, 3);
-    GAME->app_name = app_name;
-    lua_pop(L, 3);
+//     load the game settings from config.lua
+//    seal_load_file("scripts/config.lua");
+//
+//    lua_getglobal(L, "WINDOW_WIDTH");
+//    stackDump(L);
+//
+//    lua_getglobal(L, "WINDOW_HEIGHT");
+//    stackDump(L);
+//
+//    const char* app_name = lua_tostring(L, 1);
+//    GAME->window_width = lua_tonumber(L, 2);
+//    GAME->window_height = lua_tonumber(L, 3);
+//    GAME->app_name = app_name;
+//    lua_pop(L, 3);
+    GAME->window_width = 1136;
+    GAME->window_height = 640;
+    GAME->app_name = "test";
     
     GAME->window = win_alloc();
 
@@ -109,15 +207,15 @@ void seal_init_graphics() {
     
     // init the font
     ttf_init_module();
-    font = ttf_font_new("res/fonts/marker_felt.ttf", 100);  //TODO: load this in Lua.
+    font = ttf_font_new("res/fonts/marker_felt.ttf", 100);  //TODO: loahis in Lua.
     GAME->font = font;
     
-    seal_load_file("scripts/startup.lua");
+    seal_load_string("require(\"bootloader\").start()");
 }
 
 void seal_load_string(const char* script_data) {
     if(luaL_dostring(GAME->lstate, script_data)) {
-        fprintf(stderr, "run start script Failed.\n");
+        fprintf(stderr, "run start script Failed. %s\n", lua_tostring(GAME->lstate, -1));
         abort();
     }
 }

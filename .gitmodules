@@ -1,0 +1,3 @@
+[submodule "tools/script_complier/lua-hammer"]
+	path = tools/script_complier/lua-hammer
+	url = https://github.com/tangyiyang/lua-hammer

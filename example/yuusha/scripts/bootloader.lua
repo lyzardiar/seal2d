@@ -1,5 +1,7 @@
 -- this function will inject some functions into _G
 -- if you don't like this style, just comment this function
+local bootloader = {}
+
 local function export_module()
 	local util = require "seal.util"
 	local modules = {
@@ -31,7 +33,11 @@ local function main()
 	require("seal.engine").start(game)
 end
 
-xpcall(main, function(err)
-		print(err)
-		print(debug.traceback("", 2))
-	end)
+function bootloader.start()
+	xpcall(main, function(err)
+			print(err)
+			print(debug.traceback("", 2))
+		end)
+end
+
+return bootloader
