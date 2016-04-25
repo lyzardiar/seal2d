@@ -148,3 +148,7 @@ void sprite_set_rotation(struct sprite* self, float rotation) {
 void sprite_set_scale(struct sprite* self, float scale) {
     // TODO
 }
+
+void sprite_run_action(struct sprite* self, struct action* action) {
+    
+}

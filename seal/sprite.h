@@ -12,6 +12,8 @@
 #include "sprite_batch.h"
 #include "affine.h"
 
+struct action;
+
 struct sprite_frame {
     struct rect frame_rect;
     struct rect source_rect;
@@ -61,5 +63,7 @@ void sprite_set_rotation(struct sprite* self, float rotation);
 void sprite_set_scale(struct sprite* self, float scale);
 
 void sprite_add_child(struct sprite* self, struct sprite* child);
+
+void sprite_run_action(struct sprite* self, struct action* action);
 
 #endif

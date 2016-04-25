@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D0281451CC693A2001986C8 /* action.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D0281431CC693A2001986C8 /* action.c */; };
 		4D0B96CE1C7BFCD000C8C658 /* geo.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D0B96CC1C7BFCD000C8C658 /* geo.c */; };
 		4D1CF5851CB2A04E00A1FFB9 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF5831CB2A04E00A1FFB9 /* window.c */; };
 		4D1CF5891CB2B79E00A1FFB9 /* lsprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF5871CB2B79E00A1FFB9 /* lsprite.c */; };
@@ -120,6 +121,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4D0281431CC693A2001986C8 /* action.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = action.c; sourceTree = "<group>"; };
+		4D0281441CC693A2001986C8 /* action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = action.h; sourceTree = "<group>"; };
 		4D0B96CC1C7BFCD000C8C658 /* geo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = geo.c; sourceTree = "<group>"; };
 		4D0B96CD1C7BFCD000C8C658 /* geo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geo.h; sourceTree = "<group>"; };
 		4D1CF5831CB2A04E00A1FFB9 /* window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = window.c; sourceTree = "<group>"; };
@@ -603,6 +606,8 @@
 				A695D3421CB2827900E4180B /* event.h */,
 				4D1CF5831CB2A04E00A1FFB9 /* window.c */,
 				4D1CF5841CB2A04E00A1FFB9 /* window.h */,
+				4D0281431CC693A2001986C8 /* action.c */,
+				4D0281441CC693A2001986C8 /* action.h */,
 			);
 			name = seal;
 			path = ../../../seal;
@@ -786,6 +791,7 @@
 				4DBFA6B81C9DBA9400D52B23 /* test_2d_array.c in Sources */,
 				4D46F80F1C8F38C90081A1DC /* ttf_font.c in Sources */,
 				A695D3431CB2827900E4180B /* event.c in Sources */,
+				4D0281451CC693A2001986C8 /* action.c in Sources */,
 				4D25D87E1C95C06000448F88 /* mime.c in Sources */,
 				4D25D88A1C95C06000448F88 /* udp.c in Sources */,
 				A6E74CB31CCA2271009392C8 /* ioapi_mem.c in Sources */,
