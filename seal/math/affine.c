@@ -18,17 +18,31 @@ void af_free(struct affine* af) {
 
 void af_identify(struct affine* af) {
     af->a = 1.0f;
-    af->b = 0.0f;
+    af->b = 1.0f;
     af->x = 0.0f;
     
     af->c = 1.0f;
-    af->d = 0.0f;
+    af->d = 1.0f;
     af->y = 0.0f;
 }
 
 void af_set_translate(struct affine* af, float x, float y) {
     af->x = x;
     af->y = y;
+}
+
+void af_set_scale(struct affine* af, float scale_x, float scale_y) {
+    af->a = scale_x;
+    af->d = scale_y;
+}
+
+void af_set_rotation(struct affine* af, float rotate) {
+    float sin = sinf(rotate*M_PI/180.0f);
+    float cos = cosf(rotate*M_PI/180.0f);
+    af->a *= cos;
+    af->b *= sin;
+    af->c *= -sin;
+    af->d *= cos;
 }
 
 void af_translate(struct affine* af, float x, float y) {

@@ -92,7 +92,11 @@ void sprite_update_transform(struct sprite* self) {
         float y = self->world_srt.y;
         float w = self->frame->source_size.width;
         float h = self->frame->source_size.height;
-    
+//
+        //  [a, b, x]   [x]   a*x + b*y = 1
+        //  [c, d, y] * [y] =
+        //  [0, 0, 1]   [1]
+        
         struct glyph* g = &self->glyph;
         SET_VERTEX_POS(g->bl, x, y);
         SET_VERTEX_POS(g->br, x + w, y);
@@ -142,11 +146,14 @@ void sprite_set_pos(struct sprite* self, float x, float y) {
 }
 
 void sprite_set_rotation(struct sprite* self, float rotation) {
-    // TODO
+    af_set_rotation(&self->local_srt, rotation);
+    
     self->dirty = 1;
 }
 void sprite_set_scale(struct sprite* self, float scale) {
-    // TODO
+    af_set_scale(&self->local_srt, scale, scale);
+    
+    self->dirty = 1;
 }
 
 void sprite_run_action(struct sprite* self, struct action* action) {

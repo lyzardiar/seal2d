@@ -17,6 +17,8 @@ void af_free(struct affine* af);
 void af_identify(struct affine* af);
 
 void af_set_translate(struct affine* af, float x, float y);
+void af_set_scale(struct affine* af, float scale_x, float scale_y);
+void af_set_rotation(struct affine* af, float rotate);
 
 void af_translate(struct affine* af, float x, float y);
 void af_scale(struct affine* af, float scale_x, float scale_y);

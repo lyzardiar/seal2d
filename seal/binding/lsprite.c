@@ -114,14 +114,16 @@ int lsprite_set_pos(lua_State* L) {
 }
 
 int lsprite_set_rotation(lua_State* L) {
-    //TODO
-//    struct sprite* self = lua_touserdata(L, 1);
-//    lua_Number rotation = luaL_checknumber(L, 2);
-
+    struct sprite* self = lua_touserdata(L, 1);
+    lua_Number rotation = luaL_checknumber(L, 2);
+    sprite_set_rotation(self, rotation);
     return 0;
 }
+
 int lsprite_set_scale(lua_State* L) {
-    //TODO
+    struct sprite* self = lua_touserdata(L, 1);
+    lua_Number scale = luaL_checknumber(L, 2);
+    sprite_set_scale(self, scale);
     return 0;
 }
 
@@ -150,6 +152,8 @@ int luaopen_seal_sprite(lua_State* L) {
         { "new", lsprite_new },
         { "free", lsprite_free },
         { "set_pos", lsprite_set_pos},
+        { "set_rotation", lsprite_set_rotation},
+        { "set_scale", lsprite_set_scale },
         { "add_child", lsprite_add_child},
         { NULL, NULL },
     };

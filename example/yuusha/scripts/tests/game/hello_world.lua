@@ -17,12 +17,18 @@ function hello_world.entry()
 		{x = 100, y = 100},
 		{x = 0, y = 100}
 	}
-	for i = 1, 3 do
-		local child = sprite.new("test_trimed.png", "ui.png")
-		child:set_pos(pos[i].x, pos[i].y)
-		root:add_child(child)
-	end
 
+	-- local children = {}
+	-- for i = 1, 3 do
+		-- local child = sprite.new("test_trimed.png", "ui.png")
+		-- child:set_pos(pos[i].x, pos[i].y)
+		-- root:add_child(child)
+		-- children[i] = child
+	-- end
+	-- children[1]:set_scale(2)
+
+	-- root:set_scale(2)
+	root:set_rotation(30)
 	return root.__cobj
 end
 
