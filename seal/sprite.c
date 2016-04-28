@@ -120,6 +120,10 @@ void sprite_remove_child(struct sprite* self, struct sprite* child) {
     array_set(self->children, child->child_index, NULL);
 }
 
+void sprite_remove_all_child(struct sprite* self) {
+    
+}
+
 void sprite_visit(struct sprite* self) {
     struct array* children = self->children;
     for (int i = 0 ;i < array_size(children); ++i) {

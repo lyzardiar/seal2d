@@ -14,6 +14,13 @@ struct ttf_font;
 struct event;
 struct window;
 
+enum GAME_STATE {
+    GAME_STATE_INIT = 0,
+    GAME_STATE_RUNNING,
+    GAME_STATE_PAUSED,
+    GAME_STATE_STOPPED,
+};
+
 struct game {
     lua_State* lstate;
     int window_width;
@@ -26,6 +33,8 @@ struct game {
     struct ttf_font* font;
     struct window* window;
     struct sprite* root;   // the root node of the world
+    
+    int game_state;
 };
 
 #define EXTERN_GAME extern struct game* GAME;
@@ -50,5 +59,7 @@ void seal_update();
 void seal_draw();
 void seal_destroy();
 void seal_event(struct event* e);
+
+void seal_reload_scripts();
 
 #endif

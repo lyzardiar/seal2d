@@ -2,19 +2,6 @@
 -- if you don't like this style, just comment this function
 local bootloader = {}
 
-local function export_module()
-	local util = require "seal.util"
-	local modules = {
-				util = util,
-			}
-
-	for mod_name, mod in pairs(modules) do
-		for k, v in pairs(mod) do
-			_G[k] = v
-		end
-	end
-end
-
 local function main()
 	package.path = package.path .. 
 	";scripts/?.lua" ..
@@ -24,10 +11,8 @@ local function main()
 	";scripts/seal/thirdparty/luaunit/?.lua" ..
 	";res/?.lua"
 
-	require "luacov"
-	require "luacov.tick"
-	
-	export_module()
+	-- require "luacov"
+	-- require "luacov.tick"
 
 	local game = require "game"
 	require("seal.engine").start(game)

@@ -122,7 +122,7 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
         
         if(readed != size) {
             succeed = false;
-            fprintf(stderr, "read zip file failed? error size, required = %ld, readed = %d, fielname = %s\n",
+            fprintf(stderr, "read zip file failed? error size, required = %ld, readed = %d, filename = %s\n",
                         size, readed, filename);
             goto error;
         }
@@ -136,7 +136,6 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
         
         lua_setfield(L, -2, filename);
         
-        printf("load file = %s ok.\n", filename);
         total = total + 1;
         
         if(unzGoToNextFile(unzfile) == UNZ_END_OF_LIST_OF_FILE) {
@@ -156,8 +155,11 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
     
     lua_pop(L, -1);
     stackDump(L);
-    printf("total loaded = %d\n", total);
     return succeed ? 1 : 0;
+}
+
+void seal_reload_scripts() {
+    load_game_scripts(GAME->lstate, "res/code.zip");
 }
 
 struct game* seal_load_game_config() {
@@ -173,22 +175,18 @@ struct game* seal_load_game_config() {
     }
     
 //     load the game settings from config.lua
-//    seal_load_file("scripts/config.lua");
-//
-//    lua_getglobal(L, "WINDOW_WIDTH");
-//    stackDump(L);
-//
-//    lua_getglobal(L, "WINDOW_HEIGHT");
-//    stackDump(L);
-//
-//    const char* app_name = lua_tostring(L, 1);
-//    GAME->window_width = lua_tonumber(L, 2);
-//    GAME->window_height = lua_tonumber(L, 3);
-//    GAME->app_name = app_name;
-//    lua_pop(L, 3);
-    GAME->window_width = 1136;
-    GAME->window_height = 640;
-    GAME->app_name = "test";
+    seal_load_file("scripts/config.lua");
+    lua_getglobal(L, "APP_NAME");
+    lua_getglobal(L, "WINDOW_WIDTH");
+    lua_getglobal(L, "WINDOW_HEIGHT");
+
+    GAME->app_name = lua_tostring(L, 1);
+    GAME->window_width = lua_tonumber(L, 2);
+    GAME->window_height = lua_tonumber(L, 3);
+    lua_pop(L, 3);
+//    GAME->window_width = 1136;
+//    GAME->window_height = 640;
+//    GAME->app_name = "test";
     
     GAME->window = win_alloc();
 
@@ -209,8 +207,12 @@ void seal_init_graphics() {
     ttf_init_module();
     font = ttf_font_new("res/fonts/marker_felt.ttf", 100);  //TODO: loahis in Lua.
     GAME->font = font;
-    
+#if 1
     seal_load_string("require(\"bootloader\").start()");
+#else
+    seal_load_file("scripts/bootloader.lua");
+#endif
+
 }
 
 void seal_load_string(const char* script_data) {

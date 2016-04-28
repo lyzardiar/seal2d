@@ -2,7 +2,7 @@ require("lua-hammer.hammer").exports()
 
 local options = {
 	"script_path",
-	"out",
+	"outdir",
 }
 
 local zip_cmd = "zip"
@@ -16,23 +16,32 @@ local function assert_p(t, param)
 	return t
 end
 
-local function main(...)
-	-- parse the paths
-    local path = assert_p(cmdline.get_opt({...}, "script_path"), "script_path")["script_path"]
+local function dir_full_path(path)
     local fullpath
     if path[1] ~= '/' then
-    	local pwd = os.capture("pwd")
-    	fullpath = string.format("%s/%s", pwd, path)
+        local pwd = os.capture("pwd")
+        fullpath = string.format("%s/%s", pwd, path)
     else
-    	fullpath = path
+        fullpath = path
+    end
+    return fullpath
+end
+
+local function main(...)
+	-- parse the paths
+    local function cmdline_arg(key, ...)
+        return assert_p(cmdline.get_opt({...}, key), key)
     end
 
+    local path = cmdline_arg("script_path", ...)["script_path"]
+    local outdir = cmdline.get_opt({...}, "outdir")["outdir"]
+
     -- get all the lua files
-    local files = os.capture(string.format("%s %s | grep .lua$", find_cmd, fullpath))
+    local files = os.capture(string.format("%s %s | grep .lua$", find_cmd, dir_full_path(path)))
     local file_table = string.split(files, " ")
 
     -- do some cleanup and ensure the workdir
-    os.execute("rm -rf ./tmp && mkdir -p tmp")
+    os.execute("rm -rf ./tmp code.zip && mkdir -p tmp")
 
     -- start working
     local function last_word_of_path(s)
@@ -47,11 +56,10 @@ local function main(...)
 		local s = string.find(t, "^/")
 		t = string.sub(t, s+1)
 		return  string.sub(path, string.find(path, "[_%w]+.lua$")),
-				string.gsub(string.gsub(t, "/", "."), ".lua", "")	-- replace '/' with . and strip .lua
+				string.gsub(string.gsub(t, "/", "."), ".lua$", "")	-- replace '/' with . and strip .lua
     end
 
     for _, path in pairs(file_table) do
-
     	os.execute(string.format("cp %s tmp/", path))
 
     	local from, to = parse_filename(path)
@@ -61,6 +69,9 @@ local function main(...)
     -- pack and cleanup
 	os.execute(string.format("cd tmp/ && zip ../code.zip * && cd -"))
 	os.execute(string.format("rm -rf tmp"))
+    if outdir then
+        os.execute("mv code.zip " .. dir_full_path(outdir))
+    end
 end
 
 main(...)
