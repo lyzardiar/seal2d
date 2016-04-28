@@ -18,10 +18,10 @@ void af_free(struct affine* af) {
 
 void af_identify(struct affine* af) {
     af->a = 1.0f;
-    af->b = 1.0f;
+    af->b = 0.0f;
     af->x = 0.0f;
     
-    af->c = 1.0f;
+    af->c = 0.0f;
     af->d = 1.0f;
     af->y = 0.0f;
 }
@@ -40,8 +40,8 @@ void af_set_rotation(struct affine* af, float rotate) {
     float sin = sinf(rotate*M_PI/180.0f);
     float cos = cosf(rotate*M_PI/180.0f);
     af->a *= cos;
-    af->b *= sin;
-    af->c *= -sin;
+    af->b *= -sin;
+    af->c *= sin;
     af->d *= cos;
 }
 
@@ -78,4 +78,12 @@ void af_concat(struct affine* m1, struct affine* m2) {
     m1->c = m1->c*m2->a + m1->d*m2->c;
     m1->d = m1->c*m2->b + m1->d*m2->d;
     m1->y = m1->c*m2->y + m1->d*m2->y + m1->y;
+}
+
+//    [a, b, x]   [x']    [a*x' + b*y' + x]
+//    [c, d, y] * [y'] =  [c*x' + d*y' + y]
+//    [0, 0, 1]   [1]     [1]
+void af_mul(struct affine* af, float *x, float *y) {
+    *x = af->a*(*x) + af->b*(*y) + af->x;
+    *y = af->c*(*x) + af->d*(*y) + af->y;
 }

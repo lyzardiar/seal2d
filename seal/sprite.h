@@ -47,6 +47,11 @@ struct sprite {
     size_t child_index;
     
     struct sprite_frame* frame;
+    
+    float x, y;
+    float scale_x, scale_y;
+    float rotation;
+    
     // privates
     int dirty;
 };

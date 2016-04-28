@@ -1,8 +1,4 @@
--- this function will inject some functions into _G
--- if you don't like this style, just comment this function
-local bootloader = {}
-
-local function main()
+local function pmain()
 	package.path = package.path .. 
 	";scripts/?.lua" ..
 	";scripts/seal/?.lua" ..
@@ -18,11 +14,9 @@ local function main()
 	require("seal.engine").start(game)
 end
 
-function bootloader.start()
-	xpcall(main, function(err)
+function main()
+	xpcall(pmain, function(err)
 			print(err)
 			print(debug.traceback("", 2))
 		end)
 end
-
-return bootloader

@@ -169,12 +169,7 @@ struct game* seal_load_game_config() {
     luaopen_lua_extensions(L);
     GAME->lstate = L;
     
-    if(!load_game_scripts(L, "res/code.zip")) {
-        fprintf(stderr, "load code from zip failed.\n");
-        exit(-1);
-    }
-    
-//     load the game settings from config.lua
+    // load the game settings from config.lua
     seal_load_file("scripts/config.lua");
     lua_getglobal(L, "APP_NAME");
     lua_getglobal(L, "WINDOW_WIDTH");
@@ -184,9 +179,6 @@ struct game* seal_load_game_config() {
     GAME->window_width = lua_tonumber(L, 2);
     GAME->window_height = lua_tonumber(L, 3);
     lua_pop(L, 3);
-//    GAME->window_width = 1136;
-//    GAME->window_height = 640;
-//    GAME->app_name = "test";
     
     GAME->window = win_alloc();
 
@@ -205,13 +197,11 @@ void seal_init_graphics() {
     
     // init the font
     ttf_init_module();
-    font = ttf_font_new("res/fonts/marker_felt.ttf", 100);  //TODO: loahis in Lua.
+    font = ttf_font_new("res/fonts/marker_felt.ttf", 100);  //TODO: load this in Lua.
     GAME->font = font;
-#if 1
-    seal_load_string("require(\"bootloader\").start()");
-#else
+    
     seal_load_file("scripts/bootloader.lua");
-#endif
+    seal_load_string("main()");
 
 }
 

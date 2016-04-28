@@ -25,5 +25,7 @@ void af_scale(struct affine* af, float scale_x, float scale_y);
 void af_rotate(struct affine* af, float rotate);
 void af_concat(struct affine* m1, struct affine* m2);
 
+void af_mul(struct affine* af, float *x, float *y);
+
 
 #endif

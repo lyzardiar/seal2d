@@ -30,7 +30,7 @@ function hello_world.entry()
 	-- children[1]:set_scale(2)
 
 	-- root:set_scale(2)
-	root:set_rotation(30)
+	-- root:set_rotation(30)
 	return root.__cobj
 end
 
