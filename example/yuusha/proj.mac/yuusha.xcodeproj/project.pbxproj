@@ -935,8 +935,10 @@
 					"../../../libs/freetype-2.6.2/mac/libs",
 					"../../../libs/lua-zlib/mac/libs",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = "-Wno-shorten-64-to-32 ";
 			};
 			name = Debug;
 		};
@@ -960,8 +962,10 @@
 					"../../../libs/freetype-2.6.2/mac/libs",
 					"../../../libs/lua-zlib/mac/libs",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = "-Wno-shorten-64-to-32 ";
 			};
 			name = Release;
 		};

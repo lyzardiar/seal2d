@@ -82,10 +82,7 @@ void sprite_update_transform(struct sprite* self) {
     if (self->dirty) {
         
         struct affine* local = &self->local_srt;
-        af_identify(local);
-        af_set_translate(local, self->x, self->y);
-        af_set_scale(local, self->scale_x, self->scale_y);
-        af_set_rotation(local, self->rotation);
+        af_srt(local, self->x, self->y, self->scale_x, self->scale_y, self->rotation);
         
         struct affine tmp;
         af_identify(&tmp);
@@ -127,6 +124,8 @@ void sprite_update_transform(struct sprite* self) {
         SET_VERTEX_POS(g->br, x1, y1);
         SET_VERTEX_POS(g->tl, x2, y2);
         SET_VERTEX_POS(g->tr, x3, y3);
+        
+        self->dirty = 0;
     }
 }
 
