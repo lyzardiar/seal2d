@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "DAA550F71C800F22DD71FC47E1793EE6A2B2A6C1",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "DAA550F71C800F22DD71FC47E1793EE6A2B2A6C1" : 0,
+    "69A91430572F6BC9F1C06425085D457D5AC7BB01" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "224BE90D-B1D4-4C89-B876-8B22BF4188C9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "DAA550F71C800F22DD71FC47E1793EE6A2B2A6C1" : "seal2d",
+    "69A91430572F6BC9F1C06425085D457D5AC7BB01" : "saber"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "yuusha",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "example\/yuusha\/proj.mac\/yuusha.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "ssh:\/\/darkzore.com\/home\/shan\/saber.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "69A91430572F6BC9F1C06425085D457D5AC7BB01"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/tangyiyang\/seal2d",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DAA550F71C800F22DD71FC47E1793EE6A2B2A6C1"
+    }
+  ]
+}
