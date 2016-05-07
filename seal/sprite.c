@@ -63,6 +63,8 @@ struct sprite* sprite_new(struct sprite_frame* frame){
     s->parent = NULL;
     s->dirty = 1;
     s->zorder = 0;
+    s->scale_x = s->scale_y = 1;
+    s->x = s->y = 0;
     
     s->children = array_new(16);
     
@@ -78,26 +80,52 @@ void sprite_free(struct sprite* spr) {
 // update the coordinate from local to world
 void sprite_update_transform(struct sprite* self) {
     if (self->dirty) {
+        
+        struct affine* local = &self->local_srt;
+        af_srt(local, self->x, self->y, self->scale_x, self->scale_y, self->rotation);
+        
         struct affine tmp;
         af_identify(&tmp);
         
         // TODO: the root has no father, here we may write better code
         if (self->parent) {
-            af_concat(&tmp, &(self->parent->local_srt));
+            af_concat(&tmp, &(self->parent->world_srt));
         }
         af_concat(&tmp, &self->local_srt);
         self->world_srt = tmp;
         
-        float x = self->world_srt.x;
-        float y = self->world_srt.y;
-        float w = self->frame->source_size.width;
-        float h = self->frame->source_size.height;
-    
+        float left = self->x;
+        float right = self->x + self->frame->frame_rect.width;
+        float bottom = self->y;
+        float top = self->y + self->frame->frame_rect.height;
+        
+        //  p3--------p2
+        //  |         |
+        //  |         |
+        //  |         |
+        //  p0--------p1
+        float x0 = left;
+        float y0 = bottom;
+        float x1 = right;
+        float y1 = bottom;
+        float x2 = left;
+        float y2 = top;
+        float x3 = right;
+        float y3 = top;
+        
+        struct affine* world = &self->world_srt;
+        af_mul(world, &x0, &y0);
+        af_mul(world, &x1, &y1);
+        af_mul(world, &x2, &y2);
+        af_mul(world, &x3, &y3);
+        
         struct glyph* g = &self->glyph;
-        SET_VERTEX_POS(g->bl, x, y);
-        SET_VERTEX_POS(g->br, x + w, y);
-        SET_VERTEX_POS(g->tl, x, y + h);
-        SET_VERTEX_POS(g->tr, x + w, y + h);
+        SET_VERTEX_POS(g->bl, x0, y0);
+        SET_VERTEX_POS(g->br, x1, y1);
+        SET_VERTEX_POS(g->tl, x2, y2);
+        SET_VERTEX_POS(g->tr, x3, y3);
+        
+        self->dirty = 0;
     }
 }
 
@@ -114,6 +142,10 @@ void sprite_add_child(struct sprite* self, struct sprite* child) {
 void sprite_remove_child(struct sprite* self, struct sprite* child) {
     s_assert(child);
     array_set(self->children, child->child_index, NULL);
+}
+
+void sprite_remove_all_child(struct sprite* self) {
+    
 }
 
 void sprite_visit(struct sprite* self) {
@@ -136,15 +168,23 @@ void sprite_draw(struct sprite* self) {
 }
 
 void sprite_set_pos(struct sprite* self, float x, float y) {
-    af_set_translate(&self->local_srt, x, y);
+    self->x = x;
+    self->y = y;
     
     self->dirty = 1;
 }
 
 void sprite_set_rotation(struct sprite* self, float rotation) {
-    // TODO
+    self->rotation = rotation;
+    
     self->dirty = 1;
 }
 void sprite_set_scale(struct sprite* self, float scale) {
-    // TODO
+    self->scale_x = self->scale_y = scale;
+    
+    self->dirty = 1;
+}
+
+void sprite_run_action(struct sprite* self, struct action* action) {
+    
 }

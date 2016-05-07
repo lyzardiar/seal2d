@@ -30,6 +30,14 @@ function sprite:set_pos(x, y)
 	sprite_core.set_pos(self.__cobj, x, y)
 end
 
+function sprite:set_scale(scale)
+	sprite_core.set_scale(self.__cobj, scale)
+end
+
+function sprite:set_rotation(rotation)
+	sprite_core.set_rotation(self.__cobj, rotation)
+end
+
 function sprite:add_child(child)
 	sprite_core.add_child(self.__cobj, child.__cobj)
 end

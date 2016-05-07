@@ -1,3 +1,4 @@
+local consts = require "consts"
 local game = {}
 
 function game.init()

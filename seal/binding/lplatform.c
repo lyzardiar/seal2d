@@ -26,6 +26,10 @@ int lplatform_read_s(lua_State* L) {
     return 0;
 }
 
+int lplatform_get_write_path(lua_State* L) {
+    lua_pushstring(L, s_get_write_path());
+    return 1;
+}
 
 int luaopen_seal_platform(lua_State* L) {
 #ifdef luaL_checkversion
@@ -34,6 +38,7 @@ int luaopen_seal_platform(lua_State* L) {
     luaL_Reg lib[] = {
         { "read_s", lplatform_read_s },
         { "write_s", lplatform_write_s },
+        { "get_write_path", lplatform_get_write_path},
         { NULL, NULL },
     };
     

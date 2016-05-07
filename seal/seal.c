@@ -158,6 +158,10 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
     return succeed ? 1 : 0;
 }
 
+void seal_reload_scripts() {
+    load_game_scripts(GAME->lstate, "res/code.zip");
+}
+
 struct game* seal_load_game_config() {
     GAME = (struct game*)s_malloc(sizeof(struct game));
     // lua modules
@@ -165,12 +169,7 @@ struct game* seal_load_game_config() {
     luaopen_lua_extensions(L);
     GAME->lstate = L;
     
-    if(!load_game_scripts(L, "res/code.zip")) {
-        fprintf(stderr, "load code from zip failed.\n");
-        exit(-1);
-    }
-    
-//     load the game settings from config.lua
+    // load the game settings from config.lua
     seal_load_file("scripts/config.lua");
     lua_getglobal(L, "APP_NAME");
     lua_getglobal(L, "WINDOW_WIDTH");
@@ -180,9 +179,6 @@ struct game* seal_load_game_config() {
     GAME->window_width = lua_tonumber(L, 2);
     GAME->window_height = lua_tonumber(L, 3);
     lua_pop(L, 3);
-//    GAME->window_width = 1136;
-//    GAME->window_height = 640;
-//    GAME->app_name = "test";
     
     GAME->window = win_alloc();
 
@@ -201,10 +197,12 @@ void seal_init_graphics() {
     
     // init the font
     ttf_init_module();
-    font = ttf_font_new("res/fonts/marker_felt.ttf", 100);  //TODO: loahis in Lua.
+    font = ttf_font_new("res/fonts/marker_felt.ttf", 100);  //TODO: load this in Lua.
     GAME->font = font;
     
-    seal_load_string("require(\"bootloader\").start()");
+    seal_load_file("scripts/bootloader.lua");
+    seal_load_string("main()");
+
 }
 
 void seal_load_string(const char* script_data) {
