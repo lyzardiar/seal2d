@@ -1,3 +1,5 @@
 APP_NAME = "yuusha"
 WINDOW_WIDTH = 1136
 WINDOW_HEIGHT = 640
+NK_GUI_FONT_PATH = "fonts/DroidSans.ttf"
+NK_GUI_FONT_SIZE = 14

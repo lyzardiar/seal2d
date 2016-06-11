@@ -6,19 +6,20 @@
 #include <float.h>
 #include <unistd.h>
 
-#include "GLFW/glfw3.h"
-
 #include "timer.h"
 #include "window.h"
 
-#ifdef UNIT_TEST
-#include "tests/unit_test/test.h"
-void run_unit_tests() {
-    //test_array_map();
-//    test_array();
-    test_2d_array();
-}
-#endif
+#include "GLFW/glfw3.h"
+#define NK_INCLUDE_FIXED_TYPES
+#define NK_INCLUDE_STANDARD_IO
+#define NK_INCLUDE_DEFAULT_ALLOCATOR
+#define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
+#define NK_INCLUDE_FONT_BAKING
+#define NK_INCLUDE_DEFAULT_FONT
+#define NK_IMPLEMENTATION
+#define NK_GLFW_GL3_IMPLEMENTATION
+#include "nuklear/nuklear.h"
+#include "nuklear/nuklear_glfw_gl3.h"
 
 static void
 _glfw_error_cb(int error, const char* desc) {
@@ -79,34 +80,40 @@ void exit_glfw(GLFWwindow* window) {
 int main(int argc, char *argv[]) {
     struct game* game = seal_load_game_config();
     
-
-    GLFWwindow* window = init_glfw(game->window_width, game->window_height, game->app_name);
-#ifdef UNIT_TEST
-    run_unit_tests();
-#endif
+    int window_width = game->config.window_width;
+    int window_height = game->config.window_height;
     
-    seal_init_graphics();
-    
-    seal_start_game();
-
     long interval = (1/60.0f) * 1000;
     long dt = interval;
     long last = 0;
     
+    GLFWwindow* window = init_glfw(window_width,
+                                   window_height,
+                                   game->config.app_name);
+
+    struct nk_context* ctx = nk_glfw3_init(window, NK_GLFW3_INSTALL_CALLBACKS);
+    game->nk_gui_ctx = ctx;
+    
+    seal_init_graphics();
+    seal_start_game();
+    
+    // init the nklear font here.
+    struct nk_font_atlas *atlas;
+    nk_glfw3_font_stash_begin(&atlas);
+    nk_font_atlas_add_from_file(atlas, game->config.nk_gui_font_path, game->config.nk_gui_font_size, 0);
+    nk_glfw3_font_stash_end();
+
     while (!glfwWindowShouldClose(window))
     {
+        glfwPollEvents();
         last = gettime();
         seal_update();
-        seal_draw();
+        seal_draw(window);
         
         glfwSwapBuffers(window);
-
-        glfwPollEvents();
-
+        
         long current = gettime();
-
         dt = current - last;
-
         if (dt < interval) {
             usleep( (useconds_t)(interval - dt)*1000);
         }

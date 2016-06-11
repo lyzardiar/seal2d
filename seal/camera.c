@@ -15,10 +15,10 @@ struct camera* camera_new(float width, float height) {
     c->height = height;
     c->dirty = 0;
 
-    c->camer_mat = orth_matrix(-GAME->window_width/2,
-                               -GAME->window_height/2,
-                               GAME->window_width/2,
-                               GAME->window_height/2,
+    c->camer_mat = orth_matrix(-GAME->config.window_width/2,
+                               -GAME->config.window_height/2,
+                               GAME->config.window_width/2,
+                               GAME->config.window_height/2,
                                -1.0f, 1.0f);
     return c;
 }
@@ -47,6 +47,6 @@ void camera_update(struct camera* self) {
         return;
     }
     
-    matrix_translate(self->camer_mat, -self->x/GAME->window_width*2, -self->y/GAME->window_height*2, 1.0);
+    matrix_translate(self->camer_mat, -self->x/GAME->config.window_width*2, -self->y/GAME->config.window_height*2, 1.0);
     self->dirty = 0;
 }

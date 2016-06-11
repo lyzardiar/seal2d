@@ -24,7 +24,7 @@ void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int 
         case GLFW_PRESS: {
                 struct event e = {TOUCH_MOVE,
                                  GAME->window->cursor_x,
-                                 GAME->window_height - GAME->window->cursor_y};
+                                 GAME->config.window_height - GAME->window->cursor_y};
                 seal_event(&e);
                 GAME->window->is_touch_down = 1;
             }
@@ -33,7 +33,7 @@ void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int 
         case GLFW_RELEASE: {
                 struct event e = {TOUCH_END,
                     GAME->window->cursor_x,
-                    GAME->window_height - GAME->window->cursor_y};
+                    GAME->config.window_height - GAME->window->cursor_y};
                 seal_event(&e);
                 GAME->window->is_touch_down = 0;
             }

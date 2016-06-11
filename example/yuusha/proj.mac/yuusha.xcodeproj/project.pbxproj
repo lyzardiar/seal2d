@@ -107,6 +107,7 @@
 		A6E74CB01CCA1D2A009392C8 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = A6E74CAD1CCA1D2A009392C8 /* unzip.c */; };
 		A6E74CB31CCA2271009392C8 /* ioapi_mem.c in Sources */ = {isa = PBXBuildFile; fileRef = A6E74CB11CCA2271009392C8 /* ioapi_mem.c */; };
 		A6E8D3F11CCB5C8D004536D9 /* fs_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6E8D3F01CCB5C8D004536D9 /* fs_mac.mm */; };
+		B63A0F3A1D0B99F300CE6B7F /* lnuklear.c in Sources */ = {isa = PBXBuildFile; fileRef = B63A0F391D0B99F300CE6B7F /* lnuklear.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -301,6 +302,9 @@
 		A6E74CB11CCA2271009392C8 /* ioapi_mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ioapi_mem.c; path = "../../../libs/lua-zlib/ioapi_mem.c"; sourceTree = "<group>"; };
 		A6E74CB21CCA2271009392C8 /* ioapi_mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ioapi_mem.h; path = "../../../libs/lua-zlib/ioapi_mem.h"; sourceTree = "<group>"; };
 		A6E8D3F01CCB5C8D004536D9 /* fs_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = fs_mac.mm; sourceTree = "<group>"; };
+		B60387F31D0B027000A27714 /* nuklear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuklear.h; sourceTree = "<group>"; };
+		B60387F41D0B043700A27714 /* nuklear_glfw_gl3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuklear_glfw_gl3.h; sourceTree = "<group>"; };
+		B63A0F391D0B99F300CE6B7F /* lnuklear.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lnuklear.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -394,6 +398,7 @@
 		4D46EDDE1C8F149E0081A1DC /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				B60387F21D0B027000A27714 /* nuklear */,
 				A6E74C991CCA0E71009392C8 /* lua-zlib */,
 				A611E70F1CB65F32001C7E2C /* lua-cjson */,
 				4D25D83E1C95C04500448F88 /* lua-socket */,
@@ -626,6 +631,7 @@
 				4D1CF5871CB2B79E00A1FFB9 /* lsprite.c */,
 				4D1CF58B1CB2C3AC00A1FFB9 /* ltexture.c */,
 				A611E7261CB662E0001C7E2C /* lplatform.c */,
+				B63A0F391D0B99F300CE6B7F /* lnuklear.c */,
 			);
 			path = binding;
 			sourceTree = "<group>";
@@ -688,6 +694,16 @@
 				A6E74C9A1CCA0E7F009392C8 /* libz.a */,
 			);
 			name = "lua-zlib";
+			sourceTree = "<group>";
+		};
+		B60387F21D0B027000A27714 /* nuklear */ = {
+			isa = PBXGroup;
+			children = (
+				B60387F41D0B043700A27714 /* nuklear_glfw_gl3.h */,
+				B60387F31D0B027000A27714 /* nuklear.h */,
+			);
+			name = nuklear;
+			path = ../../../libs/nuklear;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -795,6 +811,7 @@
 				4DBFA6B81C9DBA9400D52B23 /* test_2d_array.c in Sources */,
 				4D46F80F1C8F38C90081A1DC /* ttf_font.c in Sources */,
 				A695D3431CB2827900E4180B /* event.c in Sources */,
+				B63A0F3A1D0B99F300CE6B7F /* lnuklear.c in Sources */,
 				4D0281451CC693A2001986C8 /* action.c in Sources */,
 				4D25D87E1C95C06000448F88 /* mime.c in Sources */,
 				4D25D88A1C95C06000448F88 /* udp.c in Sources */,
@@ -925,6 +942,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../../../seal,
+					../../../libs/,
 					../../../libs/glfw/mac/include,
 					"../../../libs/freetype-2.6.2/mac/include/**",
 					"../../../libs/lua-zlib/mac/include",
@@ -952,6 +970,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../../../seal,
+					../../../libs/,
 					../../../libs/glfw/mac/include,
 					"../../../libs/freetype-2.6.2/mac/include/**",
 					"../../../libs/lua-zlib/mac/include",

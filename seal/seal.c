@@ -25,8 +25,18 @@
 #include "ttf_font.h"
 #include "event.h"
 #include "platform/fs.h"
+#include "platform/platform.h"
 #include "unzip.h"
 
+#define NK_INCLUDE_FIXED_TYPES
+#include "nuklear/nuklear.h"
+
+#ifdef PLAT_DESKTOP
+#include "nuklear/nuklear_glfw_gl3.h"
+#endif
+
+#define MAX_VERTEX_BUFFER 512 * 1024
+#define MAX_ELEMENT_BUFFER 128 * 1024
 
 extern void luaopen_lua_extensions(lua_State *L);
 
@@ -91,7 +101,6 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
     lua_getglobal(L, "package");
     lua_getfield(L, -1, "preload");
     
-    int total = 0;
     char filename[1024] = "";
     int err = unzGoToFirstFile(unzfile);
     if (err) {
@@ -111,38 +120,28 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
         
         unz_file_pos file_pos;
         err = unzGetFilePos(unzfile, &file_pos);
-        
         err = unzGoToFilePos(unzfile, &file_pos);
-        
         err = unzOpenCurrentFile(unzfile);
         unsigned long size = info.uncompressed_size;
-    
         unsigned char* buffer = s_malloc(size);
         unsigned int readed = unzReadCurrentFile(unzfile, buffer, (unsigned int)size);
-        
         if(readed != size) {
             succeed = false;
             fprintf(stderr, "read zip file failed? error size, required = %ld, readed = %d, filename = %s\n",
                         size, readed, filename);
             goto error;
         }
-        
         err = luaL_loadbuffer(L, (const char*)buffer, size, filename);
-        
         if(err) {
             fprintf(stderr, "error loadL_loadbuffer, filename = %s\n", filename);
             goto error;
         }
-        
         lua_setfield(L, -2, filename);
-        
-        total = total + 1;
         
         if(unzGoToNextFile(unzfile) == UNZ_END_OF_LIST_OF_FILE) {
             succeed = true;
             break;
         }
-        
         unzCloseCurrentFile(unzfile);
         s_free(buffer);
         continue;
@@ -174,11 +173,17 @@ struct game* seal_load_game_config() {
     lua_getglobal(L, "APP_NAME");
     lua_getglobal(L, "WINDOW_WIDTH");
     lua_getglobal(L, "WINDOW_HEIGHT");
-
-    GAME->app_name = lua_tostring(L, 1);
-    GAME->window_width = lua_tonumber(L, 2);
-    GAME->window_height = lua_tonumber(L, 3);
-    lua_pop(L, 3);
+    lua_getglobal(L, "NK_GUI_FONT_PATH");
+    lua_getglobal(L, "NK_GUI_FONT_SIZE");
+    
+    struct game_config* config = &GAME->config;
+    config->app_name = lua_tostring(L, 1);
+    config->window_width = lua_tonumber(L, 2);
+    config->window_height = lua_tonumber(L, 3);
+    config->nk_gui_font_path = lua_tostring(L, 4);
+    config->nk_gui_font_size = lua_tonumber(L, 5);
+    
+    lua_pop(L, 5);
     
     GAME->window = win_alloc();
 
@@ -192,7 +197,7 @@ void seal_init_graphics() {
     
     // baisc graphic modules
     GAME->texture_cache = texture_cache_new();
-    GAME->global_camera = camera_new(GAME->window_height, GAME->window_height);
+    GAME->global_camera = camera_new(GAME->config.window_height, GAME->config.window_height);
     GAME->batch = sprite_batch_new();
     
     // init the font
@@ -200,9 +205,9 @@ void seal_init_graphics() {
     font = ttf_font_new("res/fonts/marker_felt.ttf", 100);  //TODO: load this in Lua.
     GAME->font = font;
     
+    // the bootloader
     seal_load_file("scripts/bootloader.lua");
     seal_load_string("main()");
-
 }
 
 void seal_load_string(const char* script_data) {
@@ -305,7 +310,7 @@ void seal_event(struct event* e) {
     }
 }
 
-void seal_draw() {
+void seal_draw(void* win_ctx) {
     glClearDepth(1.0f);
     glClearColor(1,1,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -331,7 +336,10 @@ void seal_draw() {
     sprite_batch_render(batch);
     glBindTexture(GL_TEXTURE_2D, 0);
     glUseProgram(0);
+    
     CHECK_GL_ERROR
+    
+    nk_draw(win_ctx);
 }
 
 void seal_destroy() {
@@ -344,4 +352,32 @@ void seal_destroy() {
 // memory is managed by Lua, don't need to free
 //    sprite_free(GAME->root);
     s_free(GAME);
+}
+
+void nk_draw(void* win_ctx) {
+    struct nk_context* ctx = GAME->nk_gui_ctx;
+    nk_glfw3_new_frame();
+    
+    /* GUI */
+    struct nk_panel layout;
+    if (nk_begin(ctx, &layout, "Demo", nk_rect(50, 50, 230, 250),
+                 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
+                 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE)) {
+        enum {EASY, HARD};
+        static int op = EASY;
+        static int property = 20;
+        nk_layout_row_static(ctx, 30, 80, 1);
+        if (nk_button_label(ctx, "button", NK_BUTTON_DEFAULT))
+            fprintf(stdout, "button pressed\n");
+        
+        nk_layout_row_dynamic(ctx, 30, 2);
+        if (nk_option_label(ctx, "easy", op == EASY)) op = EASY;
+        if (nk_option_label(ctx, "hard", op == HARD)) op = HARD;
+        
+        nk_layout_row_dynamic(ctx, 25, 1);
+        nk_property_int(ctx, "Compression:", 0, &property, 100, 10, 1);
+    }
+    nk_end(ctx);
+    
+    nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
 }

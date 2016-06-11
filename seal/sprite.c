@@ -64,6 +64,7 @@ struct sprite* sprite_new(struct sprite_frame* frame){
     s->dirty = 1;
     s->zorder = 0;
     s->scale_x = s->scale_y = 1;
+    s->rotation = 0;
     s->x = s->y = 0;
     
     s->children = array_new(16);
