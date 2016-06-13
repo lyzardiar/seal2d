@@ -274,7 +274,7 @@ void seal_update() {
     if (dt < FLT_EPSILON) {
         return;
     }
-
+    
     camera_update(GAME->global_camera);
     
     lua_State* L = GAME->lstate;

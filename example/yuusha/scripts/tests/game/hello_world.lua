@@ -12,17 +12,32 @@ function hello_world.entry()
 
 	-- -- hello_world.test()
 
-	-- local pos = {
-	-- 	{x = 100, y = 0},
-	-- 	{x = 100, y = 100},
-	-- 	{x = 0, y = 100}
-	-- }
-	-- for i = 1, 3 do
-	-- 	local child = sprite.new("test_trimed.png", "ui.png")
-	-- 	child:set_pos(pos[i].x, pos[i].y)
-	-- 	root:add_child(child)
-	-- end
+	local timer = require("seal.timer")
 
+	local x, y = 0, 0
+	root:set_pos(x, y)
+
+	local vx, vy = 10, 10
+	timer.new {
+		interval = 0,
+		callback = function(dt)
+		
+			if x >= WINDOW_WIDTH - 200 or x <= -200 then
+				vx = -vx
+			end
+
+			if y >= WINDOW_HEIGHT - 200 or y <= -200 then
+				vy = -vy
+			end
+
+			x = x + vx * dt
+			y = y + vy * dt
+
+			root:set_pos(x, y)
+		end,
+
+		loop = -1,
+	}	
 	return root.__cobj
 end
 

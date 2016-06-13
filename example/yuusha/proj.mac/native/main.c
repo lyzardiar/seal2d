@@ -114,6 +114,7 @@ int main(int argc, char *argv[]) {
         
         long current = gettime();
         dt = current - last;
+        
         if (dt < interval) {
             usleep( (useconds_t)(interval - dt)*1000);
         }

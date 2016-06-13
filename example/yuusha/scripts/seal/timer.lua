@@ -36,7 +36,7 @@ function timer:step(dt)
 
 	if self.loop < 0 then
 		if next_dt > self.interval then
-			self.callback()
+			self.callback(dt)
 			self.now = 0
 		else
 			self.now = next_dt
@@ -47,7 +47,7 @@ function timer:step(dt)
 			if self.loop == 0 then
 				self.stopped = true
 			end
-			self.callback()
+			self.callback(dt)
 			self.now = 0
 		else
 			self.now = next_dt
