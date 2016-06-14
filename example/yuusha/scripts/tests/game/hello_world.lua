@@ -3,19 +3,25 @@ local sprite = require "seal.sprite"
 local game = require "game"
 
 local hello_world = {}
-function hello_world.entry()
-	sprite_frame.load_from_json("res/images/ui.json")
 
-	-- TODO: redesign this interface(sprite.new)
-	local root = sprite.new("smile_middle.png", "ui.png")
+function hello_world.entry()
+	local root = sprite.new_container()
 	game.root = root
 
-	-- -- hello_world.test()
+	local child = hello_world.create_sprite()
+	root:add_child(child)
+	return root.__cobj
+end
+
+function hello_world.create_sprite()
+	sprite_frame.load_from_json("res/images/ui.json")
+
+	local sprite = sprite.new("smile_middle.png", "ui.png")
 
 	local timer = require("seal.timer")
 
 	local x, y = 0, 0
-	root:set_pos(x, y)
+	sprite:set_pos(x, y)
 
 	local vx, vy = 10, 10
 	timer.new {
@@ -33,12 +39,13 @@ function hello_world.entry()
 			x = x + vx * dt
 			y = y + vy * dt
 
-			root:set_pos(x, y)
+			sprite:set_pos(x, y)
 		end,
 
 		loop = -1,
 	}	
-	return root.__cobj
+
+	return sprite
 end
 
 

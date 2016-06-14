@@ -38,8 +38,7 @@ void sprite_batch_begin(struct sprite_batch* self);
 void sprite_batch_end(struct sprite_batch* self);
 
 void sprite_batch_draw(struct sprite_batch* self,
-                       struct glyph* glyph,
-                       const GLuint tex_id);
+                       struct glyph* glyph);
 
 void sprite_batch_render(struct sprite_batch* self);
 #endif

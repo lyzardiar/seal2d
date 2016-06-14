@@ -8,23 +8,7 @@
 #include "memory.h"
 #include "util.h"
 
-//void PrintTable(lua_State *L)
-//{
-//    lua_pushnil(L);
-//    
-//    while(lua_next(L, -2) != 0)
-//    {
-//        if(lua_isstring(L, -1))
-//            printf("%s = %s\n", lua_tostring(L, -2), lua_tostring(L, -1));
-//        else if(lua_isnumber(L, -1))
-//            printf("%s = %.2f\n", lua_tostring(L, -2), lua_tonumber(L, -1));
-//        else if(lua_istable(L, -1))
-//            PrintTable(L);
-//        
-//        lua_pop(L, 1);
-//    }
-//}
-//
+EXTERN_GAME;
 
 int lsprite_load_spriteframe(lua_State* L) {
     luaL_checktype(L, 1, LUA_TTABLE);
@@ -100,6 +84,28 @@ int lsprite_new(lua_State* L) {
     return 1;
 }
 
+int lsprite_new_container(lua_State* L) {
+    lua_Number x, y, width, height;
+    if(lua_gettop(L) == 4) {
+        x = luaL_checknumber(L, 1);
+        y = luaL_checknumber(L, 2);
+        width = luaL_checknumber(L, 3);
+        height = luaL_checknumber(L, 4);
+    } else {
+        x = y = 0;
+        width = GAME->config.window_width;
+        height = GAME->config.window_height;
+    }
+    
+    struct rect r = {
+        x, y, width, height
+    };
+    
+    struct sprite* s = sprite_new_container(&r);
+    lua_pushlightuserdata(L, s);
+    return 1;
+}
+
 int lsprite_free(lua_State* L) {
     s_free(lua_touserdata(L, 1));
     return 0;
@@ -150,11 +156,12 @@ int luaopen_seal_sprite(lua_State* L) {
         { "spriteframe_set_texture_id", lsprite_set_texture_id},
         
         { "new", lsprite_new },
+        { "new_container", lsprite_new_container },
         { "free", lsprite_free },
-        { "set_pos", lsprite_set_pos},
-        { "set_rotation", lsprite_set_rotation},
+        { "set_pos", lsprite_set_pos },
+        { "set_rotation", lsprite_set_rotation },
         { "set_scale", lsprite_set_scale },
-        { "add_child", lsprite_add_child},
+        { "add_child", lsprite_add_child },
         { NULL, NULL },
     };
     

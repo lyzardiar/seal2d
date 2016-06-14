@@ -143,8 +143,7 @@ void sprite_batch_end(struct sprite_batch* self) {
 }
 
 void sprite_batch_draw(struct sprite_batch* self,
-                       struct glyph* glyph,
-                       const GLuint tex_id) {
+                       struct glyph* glyph) {
     array_push_back(self->glyphs, glyph);
 }
 

@@ -30,47 +30,67 @@ void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float 
     self->uv.h = frame_rect->height / texture_height;
 }
 
-struct sprite* sprite_new(struct sprite_frame* frame){
-    struct sprite* s = STRUCT_NEW(sprite);
+static void set_glyph(struct sprite* g, struct rect* r) {
     
-    struct uv* uv = &frame->uv;
-    struct glyph* g = &s->glyph;
-    struct rect* rect = &frame->source_rect;
+}
+
+static void sprite_init(struct sprite* self, float width, float height) {
+    self->frame = NULL;
+    self->parent = NULL;
+    self->dirty = 1;
+    self->zorder = 0;
+    self->scale_x = self->scale_y = 1;
+    self->rotation = 0;
+    self->x = self->y = 0;
+    self->width = width;
+    self->height = height;
+    
+    self->children = array_new(16);
+    
+    af_identify(&self->local_srt);
+    af_identify(&self->world_srt);
+}
+
+static void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLuint tex_id) {
+    struct glyph* g = &self->glyph;
+    
     SET_VERTEX_POS(g->bl, 0.0f, 0.0f);
     SET_VERTEX_COLOR(g->bl, 1.0f, 1.0f, 1.0f, 1.0f);
-
     
     SET_VERTEX_POS(g->br, rect->width, 0.0f);
     SET_VERTEX_COLOR(g->br, 1.0f, 1.0f, 1.0f, 1.0f);
-
     
     SET_VERTEX_POS(g->tl, 0.0f, rect->height);
     SET_VERTEX_COLOR(g->tl, 1.0f, 1.0f, 1.0f, 1.0f);
-
     
     SET_VERTEX_POS(g->tr, rect->width, rect->height);
     SET_VERTEX_COLOR(g->tr, 1.0f, 1.0f, 1.0f, 1.0f);
-
     
-    SET_VERTEX_UV(g->bl, uv->u,         uv->v);
-    SET_VERTEX_UV(g->br, uv->u + uv->w, uv->v);
-    SET_VERTEX_UV(g->tl, uv->u,         uv->v + uv->h);
-    SET_VERTEX_UV(g->tr, uv->u + uv->w, uv->v + uv->h);
-
-
-    g->tex_id = frame->tex_id;
-    s->frame = frame;
-    s->parent = NULL;
-    s->dirty = 1;
-    s->zorder = 0;
-    s->scale_x = s->scale_y = 1;
-    s->rotation = 0;
-    s->x = s->y = 0;
+    if (uv) {
+        SET_VERTEX_UV(g->bl, uv->u,         uv->v);
+        SET_VERTEX_UV(g->br, uv->u + uv->w, uv->v);
+        SET_VERTEX_UV(g->tl, uv->u,         uv->v + uv->h);
+        SET_VERTEX_UV(g->tr, uv->u + uv->w, uv->v + uv->h);
+    }
     
-    s->children = array_new(16);
+    g->tex_id = tex_id;
+}
+
+struct sprite* sprite_new(struct sprite_frame* frame){
+    struct sprite* s = STRUCT_NEW(sprite);
+    s->type = SPRITE_TYPE_PIC;
     
-    af_identify(&s->local_srt);
-    af_identify(&s->world_srt);
+    sprite_init(s, frame->source_rect.width, frame->source_rect.height);
+    sprite_set_glyph(s, &frame->source_rect, &frame->uv, frame->tex_id);
+    return s;
+}
+
+struct sprite* sprite_new_container(struct rect* r) {
+    struct sprite* s = STRUCT_NEW(sprite);
+    s->type = SPRITE_TYPE_CONTAINER;
+    
+    sprite_init(s, r->width, r->height);
+    sprite_set_glyph(s, r, NULL, 0);
     return s;
 }
 
@@ -96,9 +116,9 @@ void sprite_update_transform(struct sprite* self) {
         self->world_srt = tmp;
         
         float left = self->x;
-        float right = self->x + self->frame->frame_rect.width;
+        float right = self->x + self->width;
         float bottom = self->y;
-        float top = self->y + self->frame->frame_rect.height;
+        float top = self->y + self->height;
         
         //  p3--------p2
         //  |         |
@@ -161,11 +181,21 @@ void sprite_visit(struct sprite* self) {
     }
     
     sprite_update_transform(self);
-    sprite_draw(self);
+    
+    switch (self->type) {
+        case SPRITE_TYPE_PIC:
+            sprite_draw_pic(self);
+            break;
+        case SPRITE_TYPE_CONTAINER:
+            // do nothing.
+            break;
+        default:
+            break;
+    }
 }
 
-void sprite_draw(struct sprite* self) {
-    sprite_batch_draw(GAME->batch, &self->glyph, self->frame->tex_id);
+void sprite_draw_pic(struct sprite* self) {
+    sprite_batch_draw(GAME->batch, &self->glyph);
 }
 
 void sprite_set_pos(struct sprite* self, float x, float y) {

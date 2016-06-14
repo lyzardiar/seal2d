@@ -257,7 +257,9 @@ void seal_start_game() {
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_RESUME);
     lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
     
-    camera_pos(GAME->global_camera, 0, 0);
+    camera_pos(GAME->global_camera,
+               GAME->config.window_width/2,
+               GAME->config.window_height/2);
 }
 
 

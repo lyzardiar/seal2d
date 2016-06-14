@@ -103,8 +103,7 @@ void luaopen_lua_extensions(lua_State *L)
     luaL_Reg* lib = lua_modules;
     lua_getglobal(L, "package");
     lua_getfield(L, -1, "preload");
-    for (; lib->func; lib++)
-    {
+    for (; lib->func; lib++) {
         lua_pushcfunction(L, lib->func);
         lua_setfield(L, -2, lib->name);
     }

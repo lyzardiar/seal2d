@@ -14,6 +14,11 @@
 
 struct action;
 
+enum sprite_type {
+    SPRITE_TYPE_PIC = 0,
+    SPRITE_TYPE_CONTAINER = 1,
+};
+
 struct sprite_frame {
     struct rect frame_rect;
     struct rect source_rect;
@@ -46,22 +51,26 @@ struct sprite {
     struct array* children; // NULL indicates the children has been removed.
     size_t child_index;
     
-    struct sprite_frame* frame;
-    
     float x, y;
     float scale_x, scale_y;
     float rotation;
+    float width, height;
     
-    // privates
     int dirty;
+    
+    enum sprite_type type;
+    
+    // for sprite only
+    struct sprite_frame* frame;
 };
 
 
 struct sprite* sprite_new(struct sprite_frame* frame);
+struct sprite* sprite_new_container(struct rect* r);
 void sprite_free(struct sprite* spr);
 
 void sprite_visit(struct sprite* self);
-void sprite_draw(struct sprite* self);
+void sprite_draw_pic(struct sprite* self);
 
 void sprite_set_pos(struct sprite* self, float x, float y);
 void sprite_set_rotation(struct sprite* self, float rotation);

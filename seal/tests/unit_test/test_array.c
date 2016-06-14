@@ -26,5 +26,4 @@ void test_array() {
         array_push_back(a, (void*)i);
     }
     array_debug_print(a);
-
 }
