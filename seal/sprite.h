@@ -12,7 +12,7 @@
 #include "sprite_batch.h"
 #include "affine.h"
 
-struct action;
+struct anim;
 
 enum sprite_type {
     SPRITE_TYPE_PIC = 0,
@@ -71,6 +71,8 @@ void sprite_free(struct sprite* spr);
 
 void sprite_visit(struct sprite* self);
 void sprite_draw_pic(struct sprite* self);
+
+void sprite_set_anim(struct sprite* self, struct anim* anim);
 
 void sprite_set_pos(struct sprite* self, float x, float y);
 void sprite_set_rotation(struct sprite* self, float rotation);

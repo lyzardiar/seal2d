@@ -221,7 +221,3 @@ void sprite_set_scale(struct sprite* self, float scale) {
     
     self->dirty = 1;
 }
-
-void sprite_run_action(struct sprite* self, struct action* action) {
-    
-}
