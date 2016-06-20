@@ -133,6 +133,13 @@ int lsprite_set_scale(lua_State* L) {
     return 0;
 }
 
+int lsprite_get_pos(lua_State* L) {
+    struct sprite* self = lua_touserdata(L, 1);
+    lua_pushnumber(L, self->x);
+    lua_pushnumber(L, self->y);
+    return 2;
+}
+
 int lsprite_add_child(lua_State* L) {
 
     luaL_argcheck(L, lua_isuserdata(L, 1), 1, "sprite expected for arg 1");
@@ -161,6 +168,7 @@ int luaopen_seal_sprite(lua_State* L) {
         { "set_pos", lsprite_set_pos },
         { "set_rotation", lsprite_set_rotation },
         { "set_scale", lsprite_set_scale },
+        { "get_pos", lsprite_get_pos},
         { "add_child", lsprite_add_child },
         { NULL, NULL },
     };

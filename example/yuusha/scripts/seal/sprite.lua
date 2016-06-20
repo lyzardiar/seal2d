@@ -47,4 +47,8 @@ function sprite:add_child(child)
 	sprite_core.add_child(self.__cobj, child.__cobj)
 end
 
+function sprite:get_pos()
+	return sprite_core.get_pos(self.__cobj)
+end
+
 return sprite

@@ -30,6 +30,7 @@
 		4D25D88E1C95C06000448F88 /* usocket.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D86A1C95C06000448F88 /* usocket.c */; };
 		4D46F80B1C8F2B0A0081A1DC /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D46F80A1C8F2B0A0081A1DC /* libfreetype.a */; };
 		4D46F80F1C8F38C90081A1DC /* ttf_font.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D46F80D1C8F37480081A1DC /* ttf_font.c */; };
+		4D62D7901D1305BC003B9A87 /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D62D78E1D1305BC003B9A87 /* render.c */; };
 		4D6D56B81C737F5B00328A62 /* array_map.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D6D56B61C737F5B00328A62 /* array_map.c */; };
 		4D77985C1C6F0B5100021ED6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D77985B1C6F0B5100021ED6 /* OpenGL.framework */; };
 		4D7798661C6F0EC800021ED6 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D7798641C6F0EC800021ED6 /* sprite.c */; };
@@ -168,6 +169,8 @@
 		4D46F80A1C8F2B0A0081A1DC /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = "../../../libs/freetype-2.6.2/mac/libs/libfreetype.a"; sourceTree = "<group>"; };
 		4D46F80D1C8F37480081A1DC /* ttf_font.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ttf_font.c; sourceTree = "<group>"; };
 		4D46F80E1C8F37480081A1DC /* ttf_font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttf_font.h; sourceTree = "<group>"; };
+		4D62D78E1D1305BC003B9A87 /* render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render.c; sourceTree = "<group>"; };
+		4D62D78F1D1305BC003B9A87 /* render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render.h; sourceTree = "<group>"; };
 		4D6D56B61C737F5B00328A62 /* array_map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = array_map.c; sourceTree = "<group>"; };
 		4D6D56B71C737F5B00328A62 /* array_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = array_map.h; sourceTree = "<group>"; };
 		4D77985B1C6F0B5100021ED6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -616,6 +619,8 @@
 				4D1CF5841CB2A04E00A1FFB9 /* window.h */,
 				4D0281431CC693A2001986C8 /* action.c */,
 				4D0281441CC693A2001986C8 /* action.h */,
+				4D62D78E1D1305BC003B9A87 /* render.c */,
+				4D62D78F1D1305BC003B9A87 /* render.h */,
 			);
 			name = seal;
 			path = ../../../seal;
@@ -775,6 +780,7 @@
 				4DE642C81C5B3BCA003EBBC0 /* lseal_core.c in Sources */,
 				A6E74CB01CCA1D2A009392C8 /* unzip.c in Sources */,
 				4D25D88C1C95C06000448F88 /* unix.c in Sources */,
+				4D62D7901D1305BC003B9A87 /* render.c in Sources */,
 				4DDA8E411C4F5AE700ED5325 /* loslib.c in Sources */,
 				4DDA8E2E1C4F5AE700ED5325 /* lbaselib.c in Sources */,
 				4DDA8E481C4F5AE700ED5325 /* ltm.c in Sources */,

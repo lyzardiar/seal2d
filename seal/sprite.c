@@ -102,6 +102,12 @@ void sprite_free(struct sprite* spr) {
 void sprite_update_transform(struct sprite* self) {
     if (self->dirty) {
         
+        int n_chid = array_size(self->children);
+        for (int i = 0; i < n_chid; ++i) {
+            struct sprite* s = (struct sprite*)array_at(self->children, i);
+            s->dirty = 1;
+        }
+        
         struct affine* local = &self->local_srt;
         af_srt(local, self->x, self->y, self->scale_x, self->scale_y, self->rotation);
         
