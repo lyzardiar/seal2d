@@ -62,6 +62,8 @@ struct sprite {
     
     // for sprite only
     struct sprite_frame* frame;
+    
+    struct anim* anim;
 };
 
 
@@ -69,9 +71,11 @@ struct sprite* sprite_new(struct sprite_frame* frame);
 struct sprite* sprite_new_container(struct rect* r);
 void sprite_free(struct sprite* spr);
 
-void sprite_visit(struct sprite* self);
+void sprite_visit(struct sprite* self, float dt);
+
 void sprite_draw_pic(struct sprite* self);
 
+void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame);
 void sprite_set_anim(struct sprite* self, struct anim* anim);
 
 void sprite_set_pos(struct sprite* self, float x, float y);

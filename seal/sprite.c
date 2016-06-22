@@ -6,6 +6,7 @@
 #include "sprite_batch.h"
 #include "texture.h"
 #include "sprite.h"
+#include "anim.h"
 
 EXTERN_GAME;
 
@@ -30,9 +31,6 @@ void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float 
     self->uv.h = frame_rect->height / texture_height;
 }
 
-static void set_glyph(struct sprite* g, struct rect* r) {
-    
-}
 
 static void sprite_init(struct sprite* self, float width, float height) {
     self->frame = NULL;
@@ -44,6 +42,7 @@ static void sprite_init(struct sprite* self, float width, float height) {
     self->x = self->y = 0;
     self->width = width;
     self->height = height;
+    self->anim = NULL;
     
     self->children = array_new(16);
     
@@ -81,7 +80,7 @@ struct sprite* sprite_new(struct sprite_frame* frame){
     s->type = SPRITE_TYPE_PIC;
     
     sprite_init(s, frame->source_rect.width, frame->source_rect.height);
-    sprite_set_glyph(s, &frame->source_rect, &frame->uv, frame->tex_id);
+    sprite_set_sprite_frame(s, frame);
     return s;
 }
 
@@ -94,8 +93,12 @@ struct sprite* sprite_new_container(struct rect* r) {
     return s;
 }
 
-void sprite_free(struct sprite* spr) {
-    s_free(spr);
+void sprite_free(struct sprite* self) {
+    if(self->anim) {
+        anim_free(self->anim);
+    }
+    
+    s_free(self);
 }
 
 // update the coordinate from local to world
@@ -175,18 +178,23 @@ void sprite_remove_all_child(struct sprite* self) {
     
 }
 
-void sprite_visit(struct sprite* self) {
+void sprite_visit(struct sprite* self, float dt) {
     struct array* children = self->children;
     for (int i = 0 ;i < array_size(children); ++i) {
         struct sprite* child = (struct sprite*)array_at(children, i);
         if (child) { // NULL indicates that the child has been removed
             
             // recursively visit the children.
-            sprite_visit(child);
+            sprite_visit(child, dt);
         }
     }
     
     sprite_update_transform(self);
+    
+    if (self->anim) {
+        anim_update(self->anim, dt);
+        sprite_set_sprite_frame(self, anim_current_frame(self->anim));
+    }
     
     switch (self->type) {
         case SPRITE_TYPE_PIC:
@@ -202,6 +210,20 @@ void sprite_visit(struct sprite* self) {
 
 void sprite_draw_pic(struct sprite* self) {
     sprite_batch_draw(GAME->batch, &self->glyph);
+}
+
+void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame) {
+    sprite_set_glyph(self, &frame->source_rect, &frame->uv, frame->tex_id);
+    self->frame = frame;
+}
+
+void sprite_set_anim(struct sprite* self, struct anim* anim) {
+    if (self->anim != anim) {
+        anim_free(self->anim);
+    
+        self->anim = anim;
+        anim_play(anim);
+    }
 }
 
 void sprite_set_pos(struct sprite* self, float x, float y) {

@@ -277,6 +277,7 @@ void seal_update() {
         return;
     }
     
+    GAME->global_dt = dt;
     camera_update(GAME->global_camera);
     
     lua_State* L = GAME->lstate;
@@ -286,6 +287,8 @@ void seal_update() {
 
     seal_call(L, 1, 0);
     lua_settop(L, TOP_FUNC_INDEX);
+    
+    
 }
 
 void seal_event(struct event* e) {
@@ -332,7 +335,7 @@ void seal_draw(void* win_ctx) {
 
     struct sprite_batch* batch = GAME->batch;
     sprite_batch_begin(batch);
-    sprite_visit(GAME->root);
+    sprite_visit(GAME->root, GAME->global_dt);
     sprite_batch_end(batch);
     
     sprite_batch_render(batch);

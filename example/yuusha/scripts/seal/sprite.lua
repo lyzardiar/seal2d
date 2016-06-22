@@ -51,4 +51,8 @@ function sprite:get_pos()
 	return sprite_core.get_pos(self.__cobj)
 end
 
+function sprite:set_anim(frames)
+	sprite_core.set_anim(self.__cobj, frames, #frames)
+end
+
 return sprite

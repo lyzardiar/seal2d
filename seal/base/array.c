@@ -27,13 +27,13 @@ struct array* array_new(int cap) {
     return a;
 }
 
-struct array* copy(struct array* self) {
+struct array* array_copy(struct array* self) {
     struct array* a = STRUCT_NEW(array);
     a->n = self->n;
     a->cap = self->cap;
     
     a->data = (DATA_TYPE*)s_malloc(sizeof(DATA_TYPE) * (a->cap));
-    memcpy(a->data, self->data, self->cap)；
+    memcpy(a->data, self->data, self->cap);
     
     return a;
 }

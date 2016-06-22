@@ -111,6 +111,14 @@ int lsprite_free(lua_State* L) {
     return 0;
 }
 
+int lsprite_set_anim(lua_State* L) {
+    luaL_checktype(L, 1, LUA_TTABLE);
+    int n = luaL_checknumber(L, 2);
+    
+    
+    return 0;
+}
+
 int lsprite_set_pos(lua_State* L) {
     struct sprite* self = lua_touserdata(L, 1);
     lua_Number x = luaL_checknumber(L, 2);
@@ -165,6 +173,7 @@ int luaopen_seal_sprite(lua_State* L) {
         { "new", lsprite_new },
         { "new_container", lsprite_new_container },
         { "free", lsprite_free },
+        { "set_anim", lsprite_set_anim },
         { "set_pos", lsprite_set_pos },
         { "set_rotation", lsprite_set_rotation },
         { "set_scale", lsprite_set_scale },

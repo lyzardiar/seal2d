@@ -6,6 +6,7 @@ local hello_world = {}
 
 function hello_world.entry()
 	sprite_frame.load_from_json("res/images/ui.json")
+	sprite_frame.load_from_json("res/images/anim_pirate.json")
 
 	local root = sprite.new_container()
 	game.root = root
@@ -19,6 +20,15 @@ function hello_world.entry()
 		sprites[#sprites+1] = child
 	end
 
+	local frames = {}
+	for i = 0, 4 do
+		local name = "attack_" .. i
+		local f = sprite_frame.get(name, "anim_pirate.png")
+		frames[#frames+1] = f.__cobj
+	end
+
+	sprites[1]:set_anim(f)
+
 	local timer = require("seal.timer")
 	local vx, vy = 10, 10
 	timer.new {
@@ -30,7 +40,9 @@ function hello_world.entry()
 		end,
 
 		loop = -1,
-	}	
+	}
+
+
 
 	return root.__cobj
 end
