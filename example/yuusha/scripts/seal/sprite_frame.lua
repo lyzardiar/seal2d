@@ -41,8 +41,6 @@ function sprite_frame.load_from_json(json_path)
 		sprite_core.spriteframe_set_texture_id(frame.__cobj, tex_id)
 		frame_cache[meta.image .. "-" .. frame_name] = frame
 	end
-
-
 end
 
 function sprite_frame.get(frame_name, atlas_name)

@@ -18,12 +18,23 @@ struct array* array_new(int cap) {
     if(cap <= 0) {
         return NULL;
     }
-    struct array* a = (struct array*)s_malloc(sizeof(struct array));
+    struct array* a = STRUCT_NEW(array);
     a->n = 0;
     a->cap = cap;
     
     a->data = (DATA_TYPE*)s_malloc(sizeof(DATA_TYPE) * (a->cap));
     memset(a->data, 0, a->cap);
+    return a;
+}
+
+struct array* copy(struct array* self) {
+    struct array* a = STRUCT_NEW(array);
+    a->n = self->n;
+    a->cap = self->cap;
+    
+    a->data = (DATA_TYPE*)s_malloc(sizeof(DATA_TYPE) * (a->cap));
+    memcpy(a->data, self->data, self->cap)；
+    
     return a;
 }
 
