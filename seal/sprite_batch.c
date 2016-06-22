@@ -43,8 +43,6 @@ void sprite_batch_gen_vao(struct sprite_batch* self) {
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    
-
 }
 
 struct sprite_batch* sprite_batch_new() {

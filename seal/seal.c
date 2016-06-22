@@ -262,8 +262,30 @@ void seal_start_game() {
                GAME->config.window_height/2);
 }
 
+#include "nanovg.h"
 
-void seal_update() {
+const static float x0 = 20;
+const static float y2 = 200;
+const static float width = 0;
+const static float height = 200;
+const static float x_offset = 20;
+const static float y_offset = 0;
+
+struct line {
+    float x0,y0,x1,y1;
+};
+
+struct line lines[] = {
+    {x0, y2, x0, y2+height},
+    {x0 + x_offset * 1, y2 + y_offset, x0 + width + x_offset * 1, y2+height+ y_offset},
+    {x0 + x_offset * 2, y2 + y_offset, x0 + width + x_offset * 2, y2+height+ y_offset},
+    {x0 + x_offset * 3, y2 + y_offset, x0 + width + x_offset * 3, y2+height+ y_offset},
+    {x0 + x_offset * 4, y2 + y_offset, x0 + width + x_offset * 4, y2+height+ y_offset},
+    {x0 + x_offset * 5, y2 + y_offset, x0 + width + x_offset * 5, y2+height+ y_offset},
+};
+
+
+void seal_update(struct NVGcontext* vg) {
     struct timeval now;
     gettimeofday(&now, NULL);
     
@@ -286,6 +308,36 @@ void seal_update() {
 
     seal_call(L, 1, 0);
     lua_settop(L, TOP_FUNC_INDEX);
+    
+//    glClearDepth(1.0f);
+//    glClearColor(1,1,1,1);
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    
+//    nvgBeginFrame(vg, GAME->config.window_width, GAME->config.window_height, 1.0f);
+//    
+//    
+//    float speed = 10;
+//    
+//    nvgBeginPath(vg);
+//
+//    
+//    
+//    float dx = speed * dt;
+//    for (int i = 0; i < sizeof(lines)/sizeof(struct line); ++i) {
+//        struct line* l = &lines[i];
+//        nvgMoveTo(vg, l->x0 + dx, l->y0 );
+//        nvgLineTo(vg, l->x1 + dx, l->y1 );
+//        l->x0 = l->x0 + dx;
+//        l->x1 = l->x1 + dx;
+//    }
+//    
+//    nvgFillColor(vg, nvgRGBA(0, 0, 0, 255));
+//    
+//    nvgClosePath(vg);
+//    
+//    nvgFill(vg);
+//    nvgEndFrame(vg);
+    
 }
 
 void seal_event(struct event* e) {

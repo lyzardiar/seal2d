@@ -1,8 +1,16 @@
 {"frames": {
 
+"line.png":
+{
+	"frame": {"x":104,"y":2,"w":3,"h":130},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":3,"h":130},
+	"sourceSize": {"w":3,"h":130}
+},
 "smile_middle.png":
 {
-	"frame": {"x":104,"y":2,"w":100,"h":100},
+	"frame": {"x":2,"y":104,"w":100,"h":100},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
@@ -21,8 +29,8 @@
 	"version": "1.0",
 	"image": "ui.png",
 	"format": "RGBA8888",
-	"size": {"w":206,"h":104},
+	"size": {"w":109,"h":206},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:389e7b53759e5ce256dc45d6cbb9b34e:1/1$"
+	"smartupdate": "$TexturePacker:SmartUpdate:b579132129bda051f60b74ea58d11a80:1/1$"
 }
 }

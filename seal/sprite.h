@@ -16,7 +16,7 @@ struct action;
 
 enum sprite_type {
     SPRITE_TYPE_PIC = 0,
-    SPRITE_TYPE_CONTAINER = 1,
+    SPRITE_TYPE_CONTAINER,
 };
 
 struct sprite_frame {
@@ -39,9 +39,6 @@ void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id);
 void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float texture_height);
 
 struct sprite {
-    // glphy information
-    struct glyph glyph;
-    
     struct affine local_srt;
     struct affine world_srt;
     
@@ -61,16 +58,24 @@ struct sprite {
     enum sprite_type type;
     
     // for sprite only
+    // glphy information for rect sprites, this may waste some bytes. fix here someday.
     struct sprite_frame* frame;
+    struct glyph glyph;
+    
+    // for the primitive like lines & triangels
+    float* points;
 };
 
 
 struct sprite* sprite_new(struct sprite_frame* frame);
 struct sprite* sprite_new_container(struct rect* r);
+struct sprite* sprite_new_line(float* points);
+
 void sprite_free(struct sprite* spr);
 
 void sprite_visit(struct sprite* self);
 void sprite_draw_pic(struct sprite* self);
+void sprite_draw_line(struct sprite* self);
 
 void sprite_set_pos(struct sprite* self, float x, float y);
 void sprite_set_rotation(struct sprite* self, float rotation);

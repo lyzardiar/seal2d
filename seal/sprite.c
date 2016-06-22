@@ -30,10 +30,6 @@ void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float 
     self->uv.h = frame_rect->height / texture_height;
 }
 
-static void set_glyph(struct sprite* g, struct rect* r) {
-    
-}
-
 static void sprite_init(struct sprite* self, float width, float height) {
     self->frame = NULL;
     self->parent = NULL;
@@ -44,6 +40,7 @@ static void sprite_init(struct sprite* self, float width, float height) {
     self->x = self->y = 0;
     self->width = width;
     self->height = height;
+    self->points = NULL;
     
     self->children = array_new(16);
     
@@ -94,13 +91,21 @@ struct sprite* sprite_new_container(struct rect* r) {
     return s;
 }
 
-void sprite_free(struct sprite* spr) {
-    s_free(spr);
+void sprite_free(struct sprite* self) {
+    if(self->points) {
+        s_free(self->points);
+    }
+    
+    s_free(self);
 }
 
 // update the coordinate from local to world
 void sprite_update_transform(struct sprite* self) {
     if (self->dirty) {
+        for (int i = 0; i < array_size(self->children); ++i) {
+            struct sprite* child = (struct sprite*)array_at(self->children, i);
+            child->dirty = 1;
+        }
         
         int n_chid = array_size(self->children);
         for (int i = 0; i < n_chid; ++i) {
@@ -126,7 +131,7 @@ void sprite_update_transform(struct sprite* self) {
         float bottom = self->y;
         float top = self->y + self->height;
         
-        //  p3--------p2
+        //  p2--------p3
         //  |         |
         //  |         |
         //  |         |
@@ -207,7 +212,7 @@ void sprite_draw_pic(struct sprite* self) {
 void sprite_set_pos(struct sprite* self, float x, float y) {
     self->x = x;
     self->y = y;
-    
+
     self->dirty = 1;
 }
 

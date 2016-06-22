@@ -100,6 +100,7 @@
 		A611E71E1CB65F9A001C7E2C /* lua_cjson.c in Sources */ = {isa = PBXBuildFile; fileRef = A611E7151CB65F9A001C7E2C /* lua_cjson.c */; };
 		A611E7201CB65F9A001C7E2C /* strbuf.c in Sources */ = {isa = PBXBuildFile; fileRef = A611E7161CB65F9A001C7E2C /* strbuf.c */; };
 		A611E7271CB662E0001C7E2C /* lplatform.c in Sources */ = {isa = PBXBuildFile; fileRef = A611E7261CB662E0001C7E2C /* lplatform.c */; };
+		A65E1FC81D16BC070039B22B /* nanovg.c in Sources */ = {isa = PBXBuildFile; fileRef = A65E1FC01D16BC070039B22B /* nanovg.c */; };
 		A695D3431CB2827900E4180B /* event.c in Sources */ = {isa = PBXBuildFile; fileRef = A695D3411CB2827900E4180B /* event.c */; };
 		A6E74C9B1CCA0E7F009392C8 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E74C9A1CCA0E7F009392C8 /* libz.a */; };
 		A6E74C9D1CCA0EF1009392C8 /* lua_zlib.c in Sources */ = {isa = PBXBuildFile; fileRef = A6E74C9C1CCA0EF1009392C8 /* lua_zlib.c */; };
@@ -289,6 +290,15 @@
 		A611E7161CB65F9A001C7E2C /* strbuf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = strbuf.c; path = "../../../libs/lua-cjson/strbuf.c"; sourceTree = "<group>"; };
 		A611E7171CB65F9A001C7E2C /* strbuf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = strbuf.h; path = "../../../libs/lua-cjson/strbuf.h"; sourceTree = "<group>"; };
 		A611E7261CB662E0001C7E2C /* lplatform.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lplatform.c; sourceTree = "<group>"; };
+		A65E1FBA1D16BC070039B22B /* nanovg_gl2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanovg_gl2.h; sourceTree = "<group>"; };
+		A65E1FBB1D16BC070039B22B /* nanovg_gl3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanovg_gl3.h; sourceTree = "<group>"; };
+		A65E1FBF1D16BC070039B22B /* fontstash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fontstash.h; sourceTree = "<group>"; };
+		A65E1FC01D16BC070039B22B /* nanovg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nanovg.c; sourceTree = "<group>"; };
+		A65E1FC11D16BC070039B22B /* nanovg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanovg.h; sourceTree = "<group>"; };
+		A65E1FC21D16BC070039B22B /* nanovg_gl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanovg_gl.h; sourceTree = "<group>"; };
+		A65E1FC31D16BC070039B22B /* nanovg_gl_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanovg_gl_utils.h; sourceTree = "<group>"; };
+		A65E1FC41D16BC070039B22B /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
+		A65E1FC51D16BC070039B22B /* stb_truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_truetype.h; sourceTree = "<group>"; };
 		A695D3411CB2827900E4180B /* event.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = event.c; sourceTree = "<group>"; };
 		A695D3421CB2827900E4180B /* event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = event.h; sourceTree = "<group>"; };
 		A695D3451CB2871C00E4180B /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
@@ -398,6 +408,7 @@
 		4D46EDDE1C8F149E0081A1DC /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				A65E1FB71D16BC070039B22B /* nanovg */,
 				B60387F21D0B027000A27714 /* nuklear */,
 				A6E74C991CCA0E71009392C8 /* lua-zlib */,
 				A611E70F1CB65F32001C7E2C /* lua-cjson */,
@@ -681,6 +692,39 @@
 			name = "lua-cjson";
 			sourceTree = "<group>";
 		};
+		A65E1FB71D16BC070039B22B /* nanovg */ = {
+			isa = PBXGroup;
+			children = (
+				A65E1FB91D16BC070039B22B /* obsolete */,
+				A65E1FBE1D16BC070039B22B /* src */,
+			);
+			name = nanovg;
+			path = ../../../libs/nanovg;
+			sourceTree = "<group>";
+		};
+		A65E1FB91D16BC070039B22B /* obsolete */ = {
+			isa = PBXGroup;
+			children = (
+				A65E1FBA1D16BC070039B22B /* nanovg_gl2.h */,
+				A65E1FBB1D16BC070039B22B /* nanovg_gl3.h */,
+			);
+			path = obsolete;
+			sourceTree = "<group>";
+		};
+		A65E1FBE1D16BC070039B22B /* src */ = {
+			isa = PBXGroup;
+			children = (
+				A65E1FBF1D16BC070039B22B /* fontstash.h */,
+				A65E1FC01D16BC070039B22B /* nanovg.c */,
+				A65E1FC11D16BC070039B22B /* nanovg.h */,
+				A65E1FC21D16BC070039B22B /* nanovg_gl.h */,
+				A65E1FC31D16BC070039B22B /* nanovg_gl_utils.h */,
+				A65E1FC41D16BC070039B22B /* stb_image.h */,
+				A65E1FC51D16BC070039B22B /* stb_truetype.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		A6E74C991CCA0E71009392C8 /* lua-zlib */ = {
 			isa = PBXGroup;
 			children = (
@@ -776,6 +820,7 @@
 				A6E74CB01CCA1D2A009392C8 /* unzip.c in Sources */,
 				4D25D88C1C95C06000448F88 /* unix.c in Sources */,
 				4DDA8E411C4F5AE700ED5325 /* loslib.c in Sources */,
+				A65E1FC81D16BC070039B22B /* nanovg.c in Sources */,
 				4DDA8E2E1C4F5AE700ED5325 /* lbaselib.c in Sources */,
 				4DDA8E481C4F5AE700ED5325 /* ltm.c in Sources */,
 				4DDA8E331C4F5AE700ED5325 /* ldblib.c in Sources */,

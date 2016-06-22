@@ -5,7 +5,11 @@
 
 #include "lua.h"
 
+
 #include "memory.h"
+
+
+struct NVGcontext;
 
 struct camera;
 struct sprite_batch;
@@ -65,7 +69,7 @@ void seal_load_string(const char* script_data);
 void seal_load_file(const char* script_path);
 void seal_start_game();
 void seal_main_loop();
-void seal_update();
+void seal_update(struct NVGcontext* vg);
 void seal_draw(void* win_ctx);
 void seal_destroy();
 void seal_event(struct event* e);
