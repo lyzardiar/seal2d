@@ -351,7 +351,7 @@ void seal_destroy() {
     lua_close(GAME->lstate);
     
     texture_cache_free(GAME->texture_cache);
-    sprite_frame_free(GAME->sprite_frame_cache);
+    sprite_frame_cache_free(GAME->sprite_frame_cache);
     win_free(GAME->window);
     
 // memory is managed by Lua, don't need to free
