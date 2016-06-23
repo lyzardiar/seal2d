@@ -9,6 +9,7 @@
 
 struct camera;
 struct sprite_batch;
+struct sprite_frame_cache;
 struct texture_cache;
 struct ttf_font;
 struct event;
@@ -44,6 +45,9 @@ struct game {
     struct window* window;
     struct sprite* root;   // the root node of the world
     struct nk_context* nk_gui_ctx; // global context of the nuklear lib
+    
+    struct sprite_frame_cache* sprite_frame_cache;
+    
     
     int game_state;
 };

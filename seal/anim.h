@@ -15,6 +15,7 @@ struct sprite_frame;
 struct anim {
     unsigned int __id;
     unsigned int __cur_frame;
+    unsigned int __total_frame;
     int __state;
     float __now;
 
@@ -22,7 +23,6 @@ struct anim {
     float interval;
     float speed;
     void (*callback)(struct anim*);
-
 };
 
 struct anim* anim_new(struct array* sprite_frames);

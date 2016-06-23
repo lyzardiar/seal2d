@@ -22,12 +22,12 @@ function hello_world.entry()
 
 	local frames = {}
 	for i = 0, 4 do
-		local name = "attack_" .. i
+		local name = "attack_" .. i .. ".png"
 		local f = sprite_frame.get(name, "anim_pirate.png")
-		frames[#frames+1] = f.__cobj
+		frames[#frames+1] = f
 	end
 
-	sprites[1]:set_anim(f)
+	sprites[1]:set_anim(frames)
 
 	local timer = require("seal.timer")
 	local vx, vy = 10, 10

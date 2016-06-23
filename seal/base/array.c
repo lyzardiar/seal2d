@@ -27,13 +27,35 @@ struct array* array_new(int cap) {
     return a;
 }
 
+#include "sprite.h"
 struct array* array_copy(struct array* self) {
     struct array* a = STRUCT_NEW(array);
     a->n = self->n;
     a->cap = self->cap;
     
-    a->data = (DATA_TYPE*)s_malloc(sizeof(DATA_TYPE) * (a->cap));
-    memcpy(a->data, self->data, self->cap);
+   
+    
+    a->data = (DATA_TYPE*)s_calloc(sizeof(DATA_TYPE) * (a->cap));
+
+    memcpy(a->data, self->data, self->n * sizeof(DATA_TYPE));
+    
+    
+    printf("the origin data is: \n");
+    for (int i = 0; i < self->n; ++i) {
+        printf("0x%x ", array_at(self, i));
+    }
+    
+    printf("\n the other is :\n");
+    for (int i = 0; i < self->n; ++i) {
+        printf("0x%x ", array_at(a, i));
+    }
+    
+    for (int i = 0; i < self->n; ++i) {
+        struct sprite_frame* f = array_at(a, i);
+        char info[256] = "";
+        sprite_frame_tostring(f, info);
+        printf("frame = %s\n", info);
+    }
     
     return a;
 }

@@ -26,9 +26,9 @@ end
 
 -- frame_name must be unique in all of the texture
 function sprite:ctor(frame_name, atlas_name)
-	local frame = sprite_frame.get(frame_name, atlas_name)
+	local __frame = sprite_frame.get(frame_name, atlas_name)
 
-	self.__cobj = sprite_core.new(frame.__cobj)
+	self.__cobj = sprite_core.new(__frame)
 end
 
 function sprite:set_pos(x, y)
@@ -52,7 +52,7 @@ function sprite:get_pos()
 end
 
 function sprite:set_anim(frames)
-	sprite_core.set_anim(self.__cobj, frames, #frames)
+	sprite_core.set_anim(self.__cobj, frames)
 end
 
 return sprite

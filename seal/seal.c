@@ -197,6 +197,7 @@ void seal_init_graphics() {
     
     // baisc graphic modules
     GAME->texture_cache = texture_cache_new();
+    GAME->sprite_frame_cache = sprite_frame_cache_new();
     GAME->global_camera = camera_new(GAME->config.window_height, GAME->config.window_height);
     GAME->batch = sprite_batch_new();
     
@@ -287,8 +288,6 @@ void seal_update() {
 
     seal_call(L, 1, 0);
     lua_settop(L, TOP_FUNC_INDEX);
-    
-    
 }
 
 void seal_event(struct event* e) {
@@ -352,6 +351,7 @@ void seal_destroy() {
     lua_close(GAME->lstate);
     
     texture_cache_free(GAME->texture_cache);
+    sprite_frame_free(GAME->sprite_frame_cache);
     win_free(GAME->window);
     
 // memory is managed by Lua, don't need to free

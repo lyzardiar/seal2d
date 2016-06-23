@@ -1,7 +1,6 @@
 #ifndef __seal__sprite__
 #define __seal__sprite__
-
-#include "platform/types.h"
+#include <stdbool.h>
 
 #include "base/array.h"
 
@@ -20,6 +19,7 @@ enum sprite_type {
 };
 
 struct sprite_frame {
+    
     struct rect frame_rect;
     struct rect source_rect;
     struct size source_size;
@@ -30,13 +30,26 @@ struct sprite_frame {
     bool trimmed;
     
     struct uv uv;
+    
+    char* key;
 };
 
-struct sprite_frame* sprite_frame_new();
+struct sprite_frame_cache {
+    struct Hashmap* cache;
+    unsigned int nframes;
+};
+
+struct sprite_frame_cache* sprite_frame_cache_new();
+void sprite_frame_cache_free(struct sprite_frame_cache* cache);
+void sprite_frame_cache_add(struct sprite_frame_cache* self, struct sprite_frame* frame);
+struct sprite_frame* sprite_frame_cache_get(struct sprite_frame_cache* self, const char* key);
+
+struct sprite_frame* sprite_frame_new(const char* key);
 void sprite_frame_free(struct sprite_frame* self);
 
 void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id);
 void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float texture_height);
+void sprite_frame_tostring(struct sprite_frame* self, char* buff);
 
 struct sprite {
     // glphy information

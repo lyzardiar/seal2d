@@ -8,7 +8,6 @@ static unsigned int __anim_id = 0;
 struct anim* anim_new(struct array* sprite_frames) {
     struct anim* anim = STRUCT_NEW(anim);
     
-    anim->sprite_frames = sprite_frames;
     anim->interval = 1.0f/30.0f;
     anim->callback = NULL;
     anim->sprite_frames = array_copy(sprite_frames);
@@ -18,6 +17,7 @@ struct anim* anim_new(struct array* sprite_frames) {
     anim->__id = ++__anim_id;
     anim->__now = 0.0f;
     anim->__cur_frame = 0;
+    anim->__total_frame = array_size(anim->sprite_frames);
     anim->__state = ANIM_STATE_PLAY;
     return anim;
 }
@@ -33,9 +33,9 @@ void anim_update(struct anim* self, float dt) {
     }
     
     float next = self->__now + dt * self->speed;
-    if(fabs(next - self->interval) >= FLT_EPSILON) {
+    if(next >= self->interval) {
         self->__now = 0.0f;
-        self->__cur_frame++;
+        self->__cur_frame = (++self->__cur_frame) % self->__total_frame;
     } else {
         self->__now = next;
     }

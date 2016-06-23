@@ -1,21 +1,59 @@
+#include <string.h>
+
+#include "base/hashmap.h"
 #include "seal.h"
-
-#include "util.h"
-
 #include "memory.h"
+
 #include "sprite_batch.h"
 #include "texture.h"
 #include "sprite.h"
 #include "anim.h"
 
+#include "util.h"
+
 EXTERN_GAME;
 
-struct sprite_frame* sprite_frame_new() {
+static int hash_str(void* key) {
+    return hashmapHash(key, strlen(key));
+}
+
+static bool hash_equal(void* a, void* b) {
+    return strcmp(a, b) == 0;
+}
+
+struct sprite_frame_cache* sprite_frame_cache_new() {
+    struct sprite_frame_cache* c = STRUCT_NEW(sprite_frame_cache);
+    c->cache = hashmapCreate(128, hash_str, hash_equal);
+    c->nframes = 0;
+    return c;
+}
+
+void sprite_frame_cache_free(struct sprite_frame_cache* self) {
+    hashmapFree(self->cache);
+    s_free(self);
+}
+
+void sprite_frame_cache_add(struct sprite_frame_cache* self, struct sprite_frame* frame) {
+    hashmapPut(self->cache, frame->key, frame);
+}
+
+struct sprite_frame* sprite_frame_cache_get(struct sprite_frame_cache* self, const char* key) {
+    return hashmapGet(self->cache, (void*)key);
+}
+
+struct sprite_frame* sprite_frame_new(const char* key) {
     struct sprite_frame* f = STRUCT_NEW(sprite_frame);
+    memset(f, 0, sizeof(struct sprite_frame));
+    int len = strlen(key);
+    f->key = s_calloc(len+1);
+    strcpy(f->key, key);
+    
+    sprite_frame_cache_add(GAME->sprite_frame_cache, f);
     return f;
 }
 
 void sprite_frame_free(struct sprite_frame* self) {
+    s_free(self->key);
     s_free(self);
 }
 
@@ -31,6 +69,25 @@ void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float 
     self->uv.h = frame_rect->height / texture_height;
 }
 
+void sprite_frame_tostring(struct sprite_frame* self, char* buff) {
+    
+    sprintf(buff, "{key = \"%s\",\n"
+            "frame_rect = {%d, %d, %d, %d},\n"
+            "source_rect = {%d, %d, %d, %d},\n"
+            "size = {%d, %d},\n"
+            "text_id = %d,\n"
+            "rotated = %s,\n"
+            "trimmed = %s,\n"
+            "uv = {%.2f, %.2f, %.2f, %.2f}}\n",
+            self->key,
+            self->frame_rect.x, self->frame_rect.y, self->frame_rect.width, self->frame_rect.height,
+            self->source_rect.x, self->source_rect.y, self->source_rect.width, self->source_rect.height,
+            self->source_size.width, self->source_size.height,
+            self->tex_id,
+            stringfy_bool(self->rotated),
+            stringfy_bool(self->trimmed),
+            self->uv.u, self->uv.v, self->uv.w, self->uv.h);
+}
 
 static void sprite_init(struct sprite* self, float width, float height) {
     self->frame = NULL;
@@ -219,8 +276,10 @@ void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame) {
 
 void sprite_set_anim(struct sprite* self, struct anim* anim) {
     if (self->anim != anim) {
-        anim_free(self->anim);
-    
+        if(self->anim) {
+            anim_free(self->anim);
+        }
+        
         self->anim = anim;
         anim_play(anim);
     }
