@@ -1,7 +1,6 @@
 #ifndef __seal__sprite__
 #define __seal__sprite__
-
-#include "platform/types.h"
+#include <stdbool.h>
 
 #include "base/array.h"
 
@@ -12,7 +11,7 @@
 #include "sprite_batch.h"
 #include "affine.h"
 
-struct action;
+struct anim;
 
 enum sprite_type {
     SPRITE_TYPE_PIC = 0,
@@ -20,6 +19,7 @@ enum sprite_type {
 };
 
 struct sprite_frame {
+    
     struct rect frame_rect;
     struct rect source_rect;
     struct size source_size;
@@ -30,13 +30,26 @@ struct sprite_frame {
     bool trimmed;
     
     struct uv uv;
+    
+    char* key;
 };
 
-struct sprite_frame* sprite_frame_new();
+struct sprite_frame_cache {
+    struct Hashmap* cache;
+    unsigned int nframes;
+};
+
+struct sprite_frame_cache* sprite_frame_cache_new();
+void sprite_frame_cache_free(struct sprite_frame_cache* cache);
+void sprite_frame_cache_add(struct sprite_frame_cache* self, struct sprite_frame* frame);
+struct sprite_frame* sprite_frame_cache_get(struct sprite_frame_cache* self, const char* key);
+
+struct sprite_frame* sprite_frame_new(const char* key);
 void sprite_frame_free(struct sprite_frame* self);
 
 void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id);
 void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float texture_height);
+void sprite_frame_tostring(struct sprite_frame* self, char* buff);
 
 struct sprite {
     struct affine local_srt;
@@ -61,9 +74,7 @@ struct sprite {
     // glphy information for rect sprites, this may waste some bytes. fix here someday.
     struct sprite_frame* frame;
     struct glyph glyph;
-    
-    // for the primitive like lines & triangels
-    float* points;
+    struct anim* anim;
 };
 
 
@@ -73,16 +84,18 @@ struct sprite* sprite_new_line(float* points);
 
 void sprite_free(struct sprite* spr);
 
-void sprite_visit(struct sprite* self);
+void sprite_visit(struct sprite* self, float dt);
+
 void sprite_draw_pic(struct sprite* self);
 void sprite_draw_line(struct sprite* self);
+
+void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame);
+void sprite_set_anim(struct sprite* self, struct anim* anim);
 
 void sprite_set_pos(struct sprite* self, float x, float y);
 void sprite_set_rotation(struct sprite* self, float rotation);
 void sprite_set_scale(struct sprite* self, float scale);
 
 void sprite_add_child(struct sprite* self, struct sprite* child);
-
-void sprite_run_action(struct sprite* self, struct action* action);
 
 #endif

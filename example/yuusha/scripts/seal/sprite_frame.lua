@@ -8,21 +8,10 @@ local texture_core = require "texure_core"
 
 local cjson = require "cjson"
 
-
 local sprite_frame = {}
 
-local function gc(self)
-	sprite_core.unload_spriteframe(self.__cobj)
-end
-
-local frame_cache = {}
-local frame_id_name_map = {}
-
-local function new_frame(...)
-	local obj = {}
-	obj.__cobj = sprite_core.spriteframe_load(...)
-	setmetatable(obj, {__gc = gc})
-	return obj
+local function make_frame_name(...)
+	return string.format("%s-%s", ...)
 end
 
 function sprite_frame.load_from_json(json_path)
@@ -37,21 +26,14 @@ function sprite_frame.load_from_json(json_path)
 
 	-- local texture_filename = meta.
 	for frame_name, data in pairs(frame_data) do
-		local frame = new_frame(data, meta)
-		sprite_core.spriteframe_set_texture_id(frame.__cobj, tex_id)
-		frame_cache[meta.image .. "-" .. frame_name] = frame
+		local key = make_frame_name(meta.image, frame_name)
+		local frame = sprite_core.load_sprite_frame(data, meta, key)
+		sprite_core.set_frame_texture_id(frame, tex_id)
 	end
-
-
 end
 
-function sprite_frame.get(frame_name, atlas_name)
-	local f = frame_cache[atlas_name .. "-" .. frame_name]
-	if not f then
-		print_r(frame_cache)
-		assert(false, "frame: %s cannot be found.", atlas_name .. "-" .. frame_name)
-	end
-	return f
+function sprite_frame.get(...)
+	return sprite_core.get_frame_from_cache(make_frame_name(...))
 end
 
 return sprite_frame

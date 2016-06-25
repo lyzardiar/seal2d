@@ -4,19 +4,28 @@
 #include "lauxlib.h"
 
 #include "lopen.h"
+#include "anim.h"
 #include "sprite.h"
 #include "memory.h"
 #include "util.h"
 
 EXTERN_GAME;
 
+int lsprite_frame_cache_get(lua_State* L) {
+    const char* key = luaL_checkstring(L, 1);
+    struct sprite_frame* frame = sprite_frame_cache_get(GAME->sprite_frame_cache, key);
+    lua_pushlightuserdata(L, frame);
+    return 1;
+}
+
 int lsprite_load_spriteframe(lua_State* L) {
     luaL_checktype(L, 1, LUA_TTABLE);
     luaL_checktype(L, 2, LUA_TTABLE);
     
+    const char* key = luaL_checkstring(L, 3);
+    
     // read the info in the frame
-    struct sprite_frame* frame = sprite_frame_new();
-    memset(frame, 0, sizeof(struct sprite_frame));
+    struct sprite_frame* frame = sprite_frame_new(key);
     
     frame->rotated = (int)getfield_i(L, "rotated");
     frame->trimmed = (int)getfield_i(L, "trimmed");
@@ -111,6 +120,28 @@ int lsprite_free(lua_State* L) {
     return 0;
 }
 
+int lsprite_set_anim(lua_State* L) {
+    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    luaL_checktype(L, 2, LUA_TTABLE);
+    
+    int len = luaL_len(L, 2);
+    struct array* frames = array_new(len);
+    for (int i = 1; i <= len; ++i) {
+        lua_rawgeti(L, -1, i);
+        struct sprite_frame* frame = lua_touserdata(L, -1);
+        array_push_back(frames, frame);
+        lua_pop(L, 1);
+    }
+    
+    stackDump(L);
+    
+    struct anim* anim = anim_new(frames);
+    sprite_set_anim(self, anim);
+    
+    array_free(frames);
+    return 0;
+}
+
 int lsprite_set_pos(lua_State* L) {
     struct sprite* self = lua_touserdata(L, 1);
     lua_Number x = luaL_checknumber(L, 2);
@@ -158,13 +189,17 @@ int luaopen_seal_sprite(lua_State* L) {
     luaL_checkversion(L);
 #endif
     luaL_Reg lib[] = {
-        { "spriteframe_load", lsprite_load_spriteframe },
-        { "spriteframe_unload", lsprite_unload_spriteframe },
-        { "spriteframe_set_texture_id", lsprite_set_texture_id},
+        
+        { "get_frame_from_cache", lsprite_frame_cache_get},
+        
+        { "load_sprite_frame", lsprite_load_spriteframe },
+        { "unload_sprite_frame", lsprite_unload_spriteframe },
+        { "set_frame_texture_id", lsprite_set_texture_id},
         
         { "new", lsprite_new },
         { "new_container", lsprite_new_container },
         { "free", lsprite_free },
+        { "set_anim", lsprite_set_anim },
         { "set_pos", lsprite_set_pos },
         { "set_rotation", lsprite_set_rotation },
         { "set_scale", lsprite_set_scale },

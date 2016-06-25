@@ -9,10 +9,10 @@ local function gc(self)
 	sprite_core.free(self.__cobj)
 end
 
-function sprite.new(...) 
+function sprite.new(atlas_name, frame_name) 
 	local self = {}
 	setmetatable(self, {__index = sprite, __gc = gc})
-	self:ctor(...)
+	self:ctor(atlas_name, frame_name)
 	all_sprites[self] = self
 	return self
 end
@@ -25,10 +25,10 @@ function sprite.new_container(...)
 end
 
 -- frame_name must be unique in all of the texture
-function sprite:ctor(frame_name, atlas_name)
-	local frame = sprite_frame.get(frame_name, atlas_name)
+function sprite:ctor(...)
+	local __frame = sprite_frame.get(...)
 
-	self.__cobj = sprite_core.new(frame.__cobj)
+	self.__cobj = sprite_core.new(__frame)
 end
 
 function sprite:set_pos(x, y)
@@ -49,6 +49,10 @@ end
 
 function sprite:get_pos()
 	return sprite_core.get_pos(self.__cobj)
+end
+
+function sprite:set_anim(frames)
+	sprite_core.set_anim(self.__cobj, frames)
 end
 
 return sprite

@@ -197,6 +197,7 @@ void seal_init_graphics() {
     
     // baisc graphic modules
     GAME->texture_cache = texture_cache_new();
+    GAME->sprite_frame_cache = sprite_frame_cache_new();
     GAME->global_camera = camera_new(GAME->config.window_height, GAME->config.window_height);
     GAME->batch = sprite_batch_new();
     
@@ -299,6 +300,7 @@ void seal_update(struct NVGcontext* vg) {
         return;
     }
     
+    GAME->global_dt = dt;
     camera_update(GAME->global_camera);
     
     lua_State* L = GAME->lstate;
@@ -384,7 +386,7 @@ void seal_draw(void* win_ctx) {
 
     struct sprite_batch* batch = GAME->batch;
     sprite_batch_begin(batch);
-    sprite_visit(GAME->root);
+    sprite_visit(GAME->root, GAME->global_dt);
     sprite_batch_end(batch);
     
     sprite_batch_render(batch);
@@ -401,6 +403,7 @@ void seal_destroy() {
     lua_close(GAME->lstate);
     
     texture_cache_free(GAME->texture_cache);
+    sprite_frame_cache_free(GAME->sprite_frame_cache);
     win_free(GAME->window);
     
 // memory is managed by Lua, don't need to free
@@ -424,7 +427,7 @@ void nk_draw(void* win_ctx) {
         if (nk_button_label(ctx, "button", NK_BUTTON_DEFAULT))
             fprintf(stdout, "button pressed\n");
         
-        nk_layout_row_dynamic(ctx, 30, 2);
+        nk_layout_row_dynamic(ctx, 30, 2); 
         if (nk_option_label(ctx, "easy", op == EASY)) op = EASY;
         if (nk_option_label(ctx, "hard", op == HARD)) op = HARD;
         

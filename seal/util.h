@@ -3,6 +3,8 @@
 
 #include <assert.h>
 
+#define stringfy_bool(v) (v ? "true" : "false")
+
 #ifdef DEBUG
 // others
 #define s_assert(condition)     assert(condition)

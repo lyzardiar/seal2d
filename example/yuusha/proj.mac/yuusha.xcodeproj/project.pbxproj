@@ -12,6 +12,7 @@
 		4D1CF5851CB2A04E00A1FFB9 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF5831CB2A04E00A1FFB9 /* window.c */; };
 		4D1CF5891CB2B79E00A1FFB9 /* lsprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF5871CB2B79E00A1FFB9 /* lsprite.c */; };
 		4D1CF58D1CB2C3AC00A1FFB9 /* ltexture.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF58B1CB2C3AC00A1FFB9 /* ltexture.c */; };
+		4D1FECBE1D1850EF0077444D /* anim.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1FECBC1D1850EF0077444D /* anim.c */; };
 		4D25D86E1C95C06000448F88 /* auxiliar.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D8401C95C06000448F88 /* auxiliar.c */; };
 		4D25D8701C95C06000448F88 /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D8421C95C06000448F88 /* buffer.c */; };
 		4D25D8721C95C06000448F88 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D8441C95C06000448F88 /* compat.c */; };
@@ -132,6 +133,8 @@
 		4D1CF5841CB2A04E00A1FFB9 /* window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = window.h; sourceTree = "<group>"; };
 		4D1CF5871CB2B79E00A1FFB9 /* lsprite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lsprite.c; sourceTree = "<group>"; };
 		4D1CF58B1CB2C3AC00A1FFB9 /* ltexture.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ltexture.c; sourceTree = "<group>"; };
+		4D1FECBC1D1850EF0077444D /* anim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = anim.c; sourceTree = "<group>"; };
+		4D1FECBD1D1850EF0077444D /* anim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = anim.h; sourceTree = "<group>"; };
 		4D25D8401C95C06000448F88 /* auxiliar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = auxiliar.c; sourceTree = "<group>"; };
 		4D25D8411C95C06000448F88 /* auxiliar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = auxiliar.h; sourceTree = "<group>"; };
 		4D25D8421C95C06000448F88 /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = buffer.c; sourceTree = "<group>"; };
@@ -302,7 +305,6 @@
 		A695D3411CB2827900E4180B /* event.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = event.c; sourceTree = "<group>"; };
 		A695D3421CB2827900E4180B /* event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = event.h; sourceTree = "<group>"; };
 		A695D3451CB2871C00E4180B /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
-		A6C981661CB9223C00FCEBFF /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		A6E74C9A1CCA0E7F009392C8 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = "../../../libs/lua-zlib/mac/libs/libz.a"; sourceTree = "<group>"; };
 		A6E74C9C1CCA0EF1009392C8 /* lua_zlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lua_zlib.c; path = "../../../libs/lua-zlib/lua_zlib.c"; sourceTree = "<group>"; };
 		A6E74CAB1CCA1D2A009392C8 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ioapi.c; path = "../../../libs/lua-zlib/ioapi.c"; sourceTree = "<group>"; };
@@ -451,7 +453,6 @@
 				4D822B8F1C6F67250083122E /* timer.h */,
 				4D822B901C6F672D0083122E /* timer.c */,
 				A695D3451CB2871C00E4180B /* platform.h */,
-				A6C981661CB9223C00FCEBFF /* types.h */,
 			);
 			path = platform;
 			sourceTree = "<group>";
@@ -627,6 +628,8 @@
 				4D1CF5841CB2A04E00A1FFB9 /* window.h */,
 				4D0281431CC693A2001986C8 /* action.c */,
 				4D0281441CC693A2001986C8 /* action.h */,
+				4D1FECBC1D1850EF0077444D /* anim.c */,
+				4D1FECBD1D1850EF0077444D /* anim.h */,
 			);
 			name = seal;
 			path = ../../../seal;
@@ -827,6 +830,7 @@
 				4DDA8E2F1C4F5AE700ED5325 /* lbitlib.c in Sources */,
 				A6E8D3F11CCB5C8D004536D9 /* fs_mac.mm in Sources */,
 				4DE47B451C7ACBA5001D2F8C /* array.c in Sources */,
+				4D1FECBE1D1850EF0077444D /* anim.c in Sources */,
 				4DA599571C827A44002C81D7 /* bmfont.c in Sources */,
 				4D25D88E1C95C06000448F88 /* usocket.c in Sources */,
 				4DDA8E391C4F5AE700ED5325 /* linit.c in Sources */,
