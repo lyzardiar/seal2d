@@ -279,6 +279,7 @@ void sprite_draw_pic(struct sprite* self) {
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame) {
     sprite_set_glyph(self, &frame->source_rect, &frame->uv, frame->tex_id);
     self->frame = frame;
+    self->dirty = 1;
 }
 
 void sprite_set_anim(struct sprite* self, struct anim* anim) {
