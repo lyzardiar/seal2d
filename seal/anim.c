@@ -8,7 +8,7 @@ static unsigned int __anim_id = 0;
 struct anim* anim_new(struct array* sprite_frames) {
     struct anim* anim = STRUCT_NEW(anim);
     
-    anim->interval = 1.0f/30.0f;
+    anim->interval = 2.0f;
     anim->callback = NULL;
     anim->sprite_frames = array_copy(sprite_frames);
     anim->speed = 1.0f;

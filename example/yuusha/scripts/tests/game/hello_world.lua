@@ -12,35 +12,36 @@ function hello_world.entry()
 	game.root = root
 
 	local sprites = {}
-	for i = 1, 2 do
-		local child = sprite.new("smile_middle.png", "ui.png")
-		child:set_pos((i-1)*50, 0)
+	for i = 0, 4 do
+		local child = sprite.new("anim_pirate.png", string.format("attack_%d.png", i))
+		child:set_pos(i* 100, 200)
 		root:add_child(child)
 
 		sprites[#sprites+1] = child
 	end
 
-	local frames = {}
-	for i = 0, 4 do
-		local name = "attack_" .. i .. ".png"
-		local f = sprite_frame.get(name, "anim_pirate.png")
-		frames[#frames+1] = f
-	end
+	-- local frames = {}
+	-- for i = 0, 4 do
+	-- 	local name = "attack_" .. i .. ".png"
+	-- 	local f = sprite_frame.get( "anim_pirate.png", name)
+	-- 	frames[#frames+1] = f
+	-- end
 
-	sprites[1]:set_anim(frames)
+	-- root:set_pos(200, 200)
+	-- sprites[1]:set_anim(frames)
 
-	local timer = require("seal.timer")
-	local vx, vy = 10, 10
-	timer.new {
-		interval = 0,
-		callback = function(dt)
-			local x, y = root:get_pos()
-			x = x + vx * dt
-			root:set_pos(x, y)
-		end,
+	-- local timer = require("seal.timer")
+	-- local vx, vy = 10, 10
+	-- timer.new {
+	-- 	interval = 0,
+	-- 	callback = function(dt)
+	-- 		local x, y = root:get_pos()
+	-- 		x = x + vx * dt
+	-- 		root:set_pos(x, y)
+	-- 	end,
 
-		loop = -1,
-	}
+	-- 	loop = -1,
+	-- }
 
 
 

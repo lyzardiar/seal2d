@@ -10,8 +10,8 @@ local cjson = require "cjson"
 
 local sprite_frame = {}
 
-local function make_frame_name(image, frame)
-	return string.format("%s-%s", image, frame)
+local function make_frame_name(...)
+	return string.format("%s-%s", ...)
 end
 
 function sprite_frame.load_from_json(json_path)
@@ -32,8 +32,8 @@ function sprite_frame.load_from_json(json_path)
 	end
 end
 
-function sprite_frame.get(frame_name, image_name)
-	return sprite_core.get_frame_from_cache(make_frame_name(image_name, frame_name))
+function sprite_frame.get(...)
+	return sprite_core.get_frame_from_cache(make_frame_name(...))
 end
 
 return sprite_frame

@@ -64,7 +64,7 @@ void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id) {
 void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float texture_height) {
     struct rect* frame_rect = &self->frame_rect;
     self->uv.u = frame_rect->x / texture_width;
-    self->uv.v = frame_rect->y / texture_height;
+    self->uv.v = 1.0f - (frame_rect->y + frame_rect->height) / texture_height; // left corner is (0, 0)
     self->uv.w = frame_rect->width / texture_width;
     self->uv.h = frame_rect->height / texture_height;
 }
@@ -236,6 +236,18 @@ void sprite_remove_all_child(struct sprite* self) {
 }
 
 void sprite_visit(struct sprite* self, float dt) {
+    if (self->anim) {
+        anim_update(self->anim, dt);
+        sprite_set_sprite_frame(self, anim_current_frame(self->anim));
+    }
+    
+    if (self->frame) {
+        char buff[256] = "";
+        sprite_frame_tostring(self->frame, buff);
+        printf("frame = %s\n", buff);
+    }
+
+    
     struct array* children = self->children;
     for (int i = 0 ;i < array_size(children); ++i) {
         struct sprite* child = (struct sprite*)array_at(children, i);
@@ -247,11 +259,6 @@ void sprite_visit(struct sprite* self, float dt) {
     }
     
     sprite_update_transform(self);
-    
-    if (self->anim) {
-        anim_update(self->anim, dt);
-        sprite_set_sprite_frame(self, anim_current_frame(self->anim));
-    }
     
     switch (self->type) {
         case SPRITE_TYPE_PIC:
