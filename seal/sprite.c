@@ -179,7 +179,6 @@ void sprite_update_transform(struct sprite* self) {
             af_concat(&tmp, &(self->parent->world_srt));
         }
         af_concat(&tmp, &self->local_srt);
-        self->world_srt = tmp;
         
         float left = self->x;
         float right = self->x + self->width;
@@ -240,13 +239,6 @@ void sprite_visit(struct sprite* self, float dt) {
         anim_update(self->anim, dt);
         sprite_set_sprite_frame(self, anim_current_frame(self->anim));
     }
-    
-    if (self->frame) {
-        char buff[256] = "";
-        sprite_frame_tostring(self->frame, buff);
-        printf("frame = %s\n", buff);
-    }
-
     
     struct array* children = self->children;
     for (int i = 0 ;i < array_size(children); ++i) {

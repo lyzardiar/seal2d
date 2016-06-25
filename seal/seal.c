@@ -375,7 +375,7 @@ void nk_draw(void* win_ctx) {
         if (nk_button_label(ctx, "button", NK_BUTTON_DEFAULT))
             fprintf(stdout, "button pressed\n");
         
-        nk_layout_row_dynamic(ctx, 30, 2);
+        nk_layout_row_dynamic(ctx, 30, 2); 
         if (nk_option_label(ctx, "easy", op == EASY)) op = EASY;
         if (nk_option_label(ctx, "hard", op == HARD)) op = HARD;
         

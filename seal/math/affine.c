@@ -120,3 +120,8 @@ void af_mul(struct affine* af, float *x, float *y) {
     *x = rx;
     *y = ry;
 }
+
+void af_tostring(struct affine* af, char* buff) {
+    sprintf(buff, "{a = %.2f, b = %.2f, c = %.2f, d = %.2f, x = %.2f, y = %.2f}",
+            af->a, af->b, af->c, af->d, af->x, af->y);
+}

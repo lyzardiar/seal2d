@@ -10,25 +10,24 @@ function hello_world.entry()
 
 	local root = sprite.new_container()
 	game.root = root
-
 	local sprites = {}
-	for i = 0, 4 do
+	for i = 1, 1 do
 		local child = sprite.new("anim_pirate.png", string.format("attack_%d.png", i))
-		child:set_pos(i* 100, 200)
 		root:add_child(child)
 
 		sprites[#sprites+1] = child
 	end
 
-	-- local frames = {}
-	-- for i = 0, 4 do
-	-- 	local name = "attack_" .. i .. ".png"
-	-- 	local f = sprite_frame.get( "anim_pirate.png", name)
-	-- 	frames[#frames+1] = f
-	-- end
+	local frames = {}
+	for i = 0, 4 do
+		local name = "attack_" .. i .. ".png"
+		local f = sprite_frame.get( "anim_pirate.png", name)
+		frames[#frames+1] = f
+	end
 
-	-- root:set_pos(200, 200)
-	-- sprites[1]:set_anim(frames)
+	sprites[1]:set_anim(frames)
+	sprites[1]:set_pos(500, 0)
+	-- root:set_pos(500, 0)
 
 	-- local timer = require("seal.timer")
 	-- local vx, vy = 10, 10
@@ -42,8 +41,6 @@ function hello_world.entry()
 
 	-- 	loop = -1,
 	-- }
-
-
 
 	return root.__cobj
 end
