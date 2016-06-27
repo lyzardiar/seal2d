@@ -69,8 +69,6 @@ void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float 
     self->uv.h = frame_rect->height / texture_height;
 }
 
-<<<<<<< HEAD
-=======
 void sprite_frame_tostring(struct sprite_frame* self, char* buff) {
     
     sprintf(buff, "{key = \"%s\",\n"
