@@ -4,14 +4,6 @@
 #include "math/geo.h"
 
 // represent a sprite, minimize texture switch.
-struct glyph {
-    struct vertex tl;
-    struct vertex bl;
-    struct vertex tr;
-    struct vertex br;
-
-    GLuint tex_id;  
-};
 
 struct render_batch {
     GLuint offset;
