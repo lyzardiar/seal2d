@@ -8,10 +8,16 @@
 #include "texture.h"
 #include "sprite.h"
 #include "anim.h"
+#include "render.h"
 
 #include "util.h"
 
 EXTERN_GAME;
+
+static struct render* R = NULL;
+void sprite_init_render(struct render* render) {
+    R = render;
+}
 
 static int hash_str(void* key) {
     return hashmapHash(key, strlen(key));
@@ -269,7 +275,9 @@ void sprite_visit(struct sprite* self, float dt) {
 }
 
 void sprite_draw_pic(struct sprite* self) {
-    sprite_batch_draw(GAME->batch, &self->glyph);
+    render_use_shader(R, SHADER_COLOR);
+    render_use_texture(R, self->frame->tex_id);
+    render_buffer_append(R, &self->glyph);
 }
 
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame) {

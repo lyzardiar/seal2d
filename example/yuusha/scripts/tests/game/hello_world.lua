@@ -8,25 +8,32 @@ function hello_world.entry()
 	sprite_frame.load_from_json("res/images/ui.json")
 	sprite_frame.load_from_json("res/images/anim_pirate.json")
 
-	local root = sprite.new_container()
-	game.root = root
-	local sprites = {}
-	for i = 1, 1 do
-		local child = sprite.new("anim_pirate.png", string.format("attack_%d.png", i))
-		root:add_child(child)
 
-		sprites[#sprites+1] = child
-	end
+	local root = sprite.new("anim_pirate.png", "attack_1.png")
+	root:set_pos(200, 200)
+	return root.__cobj
 
-	local frames = {}
-	for i = 0, 4 do
-		local name = "attack_" .. i .. ".png"
-		local f = sprite_frame.get( "anim_pirate.png", name)
-		frames[#frames+1] = f
-	end
 
-	sprites[1]:set_anim(frames)
-	sprites[1]:set_pos(500, 0)
+
+	-- local root = sprite.new_container()
+	-- game.root = root
+	-- local sprites = {}
+	-- for i = 1, 1 do
+	-- 	local child = sprite.new("anim_pirate.png", string.format("attack_%d.png", i))
+	-- 	root:add_child(child)
+
+	-- 	sprites[#sprites+1] = child
+	-- end
+
+	-- local frames = {}
+	-- for i = 0, 4 do
+	-- 	local name = "attack_" .. i .. ".png"
+	-- 	local f = sprite_frame.get( "anim_pirate.png", name)
+	-- 	frames[#frames+1] = f
+	-- end
+
+	-- sprites[1]:set_anim(frames)
+	-- sprites[1]:set_pos(500, 0)
 	-- root:set_pos(500, 0)
 
 	-- local timer = require("seal.timer")
@@ -42,7 +49,7 @@ function hello_world.entry()
 	-- 	loop = -1,
 	-- }
 
-	return root.__cobj
+	-- return root.__cobj
 end
 
 function hello_world.print_hello()

@@ -12,6 +12,7 @@
 #include "affine.h"
 
 struct anim;
+struct render;
 
 enum sprite_type {
     SPRITE_TYPE_PIC = 0,
@@ -77,6 +78,7 @@ struct sprite {
     struct anim* anim;
 };
 
+void sprite_init_render(struct render* render);
 
 struct sprite* sprite_new(struct sprite_frame* frame);
 struct sprite* sprite_new_container(struct rect* r);
