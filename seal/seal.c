@@ -319,6 +319,8 @@ void seal_draw() {
     
     sprite_visit(GAME->root, GAME->global_dt);
     
+    render_commit(R);
+    
     CHECK_GL_ERROR
 }
 

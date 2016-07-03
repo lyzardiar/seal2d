@@ -28,7 +28,10 @@ struct render {
     
     struct vertex_buffer* vertex_buffer;
     struct rect scissors;
+    
     unsigned int render_state;
+    
+    unsigned int drawcall;
 };
 
 struct vertex_buffer* vertex_buffer_new();
