@@ -24,6 +24,13 @@ function sprite.new_container(...)
 	return self
 end
 
+function sprite.new_clip(...)
+	local self = {}
+	setmetatable(self, {__index = sprite, __gc = gc})
+	self.__cobj = sprite_core.new_clip(...)
+	return self
+end
+
 -- frame_name must be unique in all of the texture
 function sprite:ctor(...)
 	local __frame = sprite_frame.get(...)

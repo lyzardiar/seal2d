@@ -156,7 +156,6 @@ void render_commit(struct render* self) {
         struct rect* scissors = &self->scissors;
         glScissor(scissors->x, scissors->y, scissors->width, scissors->height);
         CHECK_GL_ERROR;
-        
     }
     
     if (self->render_state) {
@@ -212,6 +211,11 @@ void render_set_scissors(struct render* self, struct rect* rect) {
 }
 
 void render_clear_scissors(struct render* self) {
+    render_commit(self);
+    
+    glScissor(0, 0, GAME->config.window_width, GAME->config.window_height);
+    glDisable(GL_SCISSOR_TEST);
+    
     self->scissors.x = 0;
     self->scissors.y = 0;
     self->scissors.y = GAME->config.window_width;

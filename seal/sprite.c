@@ -249,7 +249,7 @@ void sprite_visit(struct sprite* self, float dt) {
             // do nothing.
             break;
         case SPRITE_TYPE_CLIP:
-            
+            sprite_draw_clip(self);
             break;
         default:
             break;
@@ -264,6 +264,15 @@ void sprite_visit(struct sprite* self, float dt) {
             sprite_visit(child, dt);
         }
     }
+    
+    switch (self->type) {
+        case SPRITE_TYPE_CLIP:
+            sprite_clean_clip(self);
+            break;
+            
+        default:
+            break;
+    }
 }
 
 void sprite_draw_pic(struct sprite* self) {
@@ -273,8 +282,12 @@ void sprite_draw_pic(struct sprite* self) {
 }
 
 void sprite_draw_clip(struct sprite* self) {
-//    struct rect = {self->x, self->}
-//    render_set_scissors(self, self->)
+    struct rect r = {self->world_srt.x, self->world_srt.y, self->width, self->height};
+    render_set_scissors(R, &r);
+}
+
+void sprite_clean_clip(struct sprite* self) {
+    render_clear_scissors(R);
 }
 
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame) {

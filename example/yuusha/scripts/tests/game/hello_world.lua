@@ -12,6 +12,9 @@ function hello_world.entry()
 	local root = sprite.new("ui.png", "smile_middle.png")
 	root:set_pos(100, 100)
 
+	local clip = sprite.new_clip(0, 0, 120, 120)
+	root:add_child(clip)
+
 	local child_1 = sprite.new("ui.png", "smile_middle.png")
 	child_1:set_pos(100, 100)
 	root:add_child(child_1)
