@@ -9,12 +9,19 @@ function hello_world.entry()
 	sprite_frame.load_from_json("res/images/anim_pirate.json")
 
 
-	local root = sprite.new("anim_pirate.png", "attack_1.png")
-	root:set_pos(200, 200)
+	local root = sprite.new("ui.png", "smile_middle.png")
+	root:set_pos(100, 100)
+
+	local child_1 = sprite.new("ui.png", "smile_middle.png")
+	child_1:set_pos(100, 100)
+	root:add_child(child_1)
+
+	local child_2 = sprite.new("ui.png", "smile_middle.png")
+	child_2:set_pos(100, 100)
+	child_1:add_child(child_2)
+
 	return root.__cobj
-
-
-
+	
 	-- local root = sprite.new_container()
 	-- game.root = root
 	-- local sprites = {}

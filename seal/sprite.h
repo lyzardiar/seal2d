@@ -17,6 +17,7 @@ struct render;
 enum sprite_type {
     SPRITE_TYPE_PIC = 0,
     SPRITE_TYPE_CONTAINER,
+    SPRITE_TYPE_CLIP,
 };
 
 struct sprite_frame {
@@ -53,6 +54,7 @@ void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float 
 void sprite_frame_tostring(struct sprite_frame* self, char* buff);
 
 struct sprite {
+    unsigned int __id;
     struct affine local_srt;
     struct affine world_srt;
     
@@ -89,7 +91,7 @@ void sprite_free(struct sprite* spr);
 void sprite_visit(struct sprite* self, float dt);
 
 void sprite_draw_pic(struct sprite* self);
-void sprite_draw_line(struct sprite* self);
+void sprite_draw_clip(struct sprite* self);
 
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame);
 void sprite_set_anim(struct sprite* self, struct anim* anim);
