@@ -150,14 +150,6 @@ void render_commit(struct render* self) {
         printf("3 commit texture.\n");
     }
     
-    if (self->render_state & RENDER_STATE_SCISSORS_BIT) {
-        glEnable(GL_SCISSOR_TEST);
-        CHECK_GL_ERROR;
-        struct rect* scissors = &self->scissors;
-        glScissor(scissors->x, scissors->y, scissors->width, scissors->height);
-        CHECK_GL_ERROR;
-    }
-    
     if (self->render_state) {
         GLint projection = glGetUniformLocation(self->cur_program, "projection");
         CHECK_GL_ERROR;
@@ -206,13 +198,17 @@ void render_buffer_append(struct render* self, struct glyph* glyph) {
 }
 
 void render_set_scissors(struct render* self, struct rect* rect) {
-    self->scissors = *rect;
-    self->render_state |= RENDER_STATE_SCISSORS_BIT;
+    if (self->render_state) {
+        render_commit(self);
+    }
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(rect->x, rect->y, rect->width, rect->height);
 }
 
 void render_clear_scissors(struct render* self) {
-    render_commit(self);
-    
+    if (self->render_state) {
+        render_commit(self);
+    }
     glScissor(0, 0, GAME->config.window_width, GAME->config.window_height);
     glDisable(GL_SCISSOR_TEST);
     

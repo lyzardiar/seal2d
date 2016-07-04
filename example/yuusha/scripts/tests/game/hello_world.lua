@@ -10,18 +10,19 @@ function hello_world.entry()
 
 
 	local root = sprite.new("ui.png", "smile_middle.png")
-	root:set_pos(100, 100)
+	root:set_pos(0, 0)
 
-	local clip = sprite.new_clip(0, 0, 120, 120)
+	local clip = sprite.new_clip(0, 0, 150, 150)
+	clip:set_pos(100, 100)
 	root:add_child(clip)
 
 	local child_1 = sprite.new("ui.png", "smile_middle.png")
-	child_1:set_pos(100, 100)
-	root:add_child(child_1)
+	child_1:set_pos(-50, -50)
+	clip:add_child(child_1)
 
 	local child_2 = sprite.new("ui.png", "smile_middle.png")
 	child_2:set_pos(100, 100)
-	child_1:add_child(child_2)
+	clip:add_child(child_2)
 
 	return root.__cobj
 	
@@ -66,3 +67,4 @@ function hello_world.print_hello()
 end
 
 return hello_world
+-- 
