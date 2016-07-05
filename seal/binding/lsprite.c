@@ -131,7 +131,7 @@ int lsprite_new_clip(lua_State* L) {
 }
 
 int lsprite_free(lua_State* L) {
-    s_free(lua_touserdata(L, 1));
+    sprite_free(lua_touserdata(L, 1));
     return 0;
 }
 

@@ -46,7 +46,7 @@ void vertex_buffer_free(struct vertex_buffer* self) {
     s_free(self);
 }
 
-void vertex_buffer_add(struct vertex_buffer* self, struct glyph* glyph) {
+static void vertex_buffer_add(struct vertex_buffer* self, const struct glyph* glyph) {
     int offset = (self->n_objs++) * VERTEXES_PER_OBJECT;
     struct vertex* buf = self->data + offset;
     buf[0] = glyph->tr;
@@ -142,7 +142,7 @@ void render_clear_state(struct render* self) {
     self->vertex_buffer->n_objs = 0;
 }
 
-void render_buffer_append(struct render* self, struct glyph* glyph) {
+void render_buffer_append(struct render* self, const struct glyph* glyph) {
     struct vertex_buffer* buffer = self->vertex_buffer;
     if (buffer->n_objs >= MAX_OBJECTS) {
         render_commit(self);

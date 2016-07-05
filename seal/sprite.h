@@ -21,7 +21,6 @@ enum sprite_type {
 };
 
 struct sprite_frame {
-    
     struct rect frame_rect;
     struct rect source_rect;
     struct size source_size;
@@ -87,14 +86,13 @@ struct sprite* sprite_new_container(struct rect* r);
 struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* points);
 
-void sprite_free(struct sprite* spr);
+void sprite_free(struct sprite* self);
 
 void sprite_visit(struct sprite* self, float dt);
 
 void sprite_draw_pic(struct sprite* self);
 void sprite_draw_clip(struct sprite* self);
 void sprite_clean_clip(struct sprite* self);
-
 
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame);
 void sprite_set_anim(struct sprite* self, struct anim* anim);
