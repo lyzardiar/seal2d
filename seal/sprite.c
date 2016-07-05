@@ -8,10 +8,19 @@
 #include "texture.h"
 #include "sprite.h"
 #include "anim.h"
+#include "render.h"
+#include "event.h"
 
 #include "util.h"
 
+
 EXTERN_GAME;
+
+static unsigned int __sprite_id = 0;
+static struct render* R = NULL;
+void sprite_init_render(struct render* render) {
+    R = render;
+}
 
 static int hash_str(void* key) {
     return hashmapHash(key, strlen(key));
@@ -90,6 +99,7 @@ void sprite_frame_tostring(struct sprite_frame* self, char* buff) {
 }
 
 static void sprite_init(struct sprite* self, float width, float height) {
+    self->__id = ++__sprite_id;
     self->frame = NULL;
     self->parent = NULL;
     self->dirty = 1;
@@ -100,6 +110,7 @@ static void sprite_init(struct sprite* self, float width, float height) {
     self->width = width;
     self->height = height;
     self->anim = NULL;
+    self->swallow = true;
     
     self->children = array_new(16);
     
@@ -150,6 +161,18 @@ struct sprite* sprite_new_container(struct rect* r) {
     return s;
 }
 
+struct sprite* sprite_new_clip(struct rect* r) {
+    struct sprite* s = STRUCT_NEW(sprite);
+    s->type = SPRITE_TYPE_CLIP;
+    
+    sprite_init(s, r->width, r->height);
+    sprite_set_glyph(s, r, NULL, 0);
+    
+    s->x = r->x;
+    s->y = r->y;
+    return s;
+}
+
 void sprite_free(struct sprite* self) {
     if(self->anim) {
         anim_free(self->anim);
@@ -166,56 +189,31 @@ void sprite_update_transform(struct sprite* self) {
             child->dirty = 1;
         }
         
-        int n_chid = array_size(self->children);
-        for (int i = 0; i < n_chid; ++i) {
-            struct sprite* s = (struct sprite*)array_at(self->children, i);
-            s->dirty = 1;
-        }
-        
         struct affine* local = &self->local_srt;
         af_srt(local, self->x, self->y, self->scale_x, self->scale_y, self->rotation);
         
         struct affine tmp;
         af_identify(&tmp);
+        af_concat(&tmp, &self->local_srt);
         
-        // TODO: the root has no father, here we may write better code
         if (self->parent) {
             af_concat(&tmp, &(self->parent->world_srt));
         }
-        af_concat(&tmp, &self->local_srt);
         
-        float left = self->x;
-        float right = self->x + self->width;
-        float bottom = self->y;
-        float top = self->y + self->height;
-        
-        //  p2--------p3
-        //  |         |
-        //  |         |
-        //  |         |
-        //  p0--------p1
-        float x0 = left;
-        float y0 = bottom;
-        float x1 = right;
-        float y1 = bottom;
-        float x2 = left;
-        float y2 = top;
-        float x3 = right;
-        float y3 = top;
-        
-        struct affine* world = &self->world_srt;
-        af_mul(world, &x0, &y0);
-        af_mul(world, &x1, &y1);
-        af_mul(world, &x2, &y2);
-        af_mul(world, &x3, &y3);
+        float left = tmp.x;
+        float right = tmp.x + self->width;
+        float bottom = tmp.y;
+        float top = tmp.y + self->height;
         
         struct glyph* g = &self->glyph;
-        SET_VERTEX_POS(g->bl, x0, y0);
-        SET_VERTEX_POS(g->br, x1, y1);
-        SET_VERTEX_POS(g->tl, x2, y2);
-        SET_VERTEX_POS(g->tr, x3, y3);
+        SET_VERTEX_POS(g->bl, left, bottom);
+        SET_VERTEX_POS(g->br, right, bottom);
+        SET_VERTEX_POS(g->tl, left, top);
+        SET_VERTEX_POS(g->tr, right, top);
         
         self->dirty = 0;
+        
+        self->world_srt = tmp;
     }
 }
 
@@ -238,10 +236,58 @@ void sprite_remove_all_child(struct sprite* self) {
     
 }
 
+void sprite_touch(struct sprite* self, struct touch_event* touch_event) {
+    struct array* children = self->children;
+    for (int i = 0 ;i < array_size(children); ++i) {
+        struct sprite* child = (struct sprite*)array_at(children, i);
+        if (child) { // NULL indicates that the child has been removed
+            
+            // recursively visit the children.
+            sprite_touch(child, touch_event);
+        }
+    }
+    
+    if(touch_event->swallowd) {
+        return;
+    }
+    
+    if (sprite_contains(self, touch_event->x, touch_event->y)) {
+        if (self->swallow) {
+            touch_event->swallowd = true;
+        }
+    }
+}
+
+bool sprite_contains(struct sprite* self, float x, float y) {
+    struct rect world = {
+        self->glyph.bl.position[0],
+        self->glyph.bl.position[1],
+        self->width,
+        self->height,
+    };
+    return rect_contains(&world, x, y);
+}
+
 void sprite_visit(struct sprite* self, float dt) {
     if (self->anim) {
         anim_update(self->anim, dt);
         sprite_set_sprite_frame(self, anim_current_frame(self->anim));
+    }
+    
+    sprite_update_transform(self);
+    
+    switch (self->type) {
+        case SPRITE_TYPE_PIC:
+            sprite_draw_pic(self);
+            break;
+        case SPRITE_TYPE_CONTAINER:
+            // do nothing.
+            break;
+        case SPRITE_TYPE_CLIP:
+            sprite_draw_clip(self);
+            break;
+        default:
+            break;
     }
     
     struct array* children = self->children;
@@ -254,22 +300,29 @@ void sprite_visit(struct sprite* self, float dt) {
         }
     }
     
-    sprite_update_transform(self);
-    
     switch (self->type) {
-        case SPRITE_TYPE_PIC:
-            sprite_draw_pic(self);
+        case SPRITE_TYPE_CLIP:
+            sprite_clean_clip(self);
             break;
-        case SPRITE_TYPE_CONTAINER:
-            // do nothing.
-            break;
+            
         default:
             break;
     }
 }
 
 void sprite_draw_pic(struct sprite* self) {
-    sprite_batch_draw(GAME->batch, &self->glyph);
+    render_use_shader(R, SHADER_COLOR);
+    render_use_texture(R, self->frame->tex_id);
+    render_buffer_append(R, &self->glyph);
+}
+
+void sprite_draw_clip(struct sprite* self) {
+    struct rect r = {self->world_srt.x, self->world_srt.y, self->width, self->height};
+    render_set_scissors(R, &r);
+}
+
+void sprite_clean_clip(struct sprite* self) {
+    render_clear_scissors(R);
 }
 
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame) {

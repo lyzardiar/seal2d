@@ -93,7 +93,7 @@ int lsprite_new(lua_State* L) {
     return 1;
 }
 
-int lsprite_new_container(lua_State* L) {
+static void check_rect(lua_State* L, struct rect* r) {
     lua_Number x, y, width, height;
     if(lua_gettop(L) == 4) {
         x = luaL_checknumber(L, 1);
@@ -106,17 +106,32 @@ int lsprite_new_container(lua_State* L) {
         height = GAME->config.window_height;
     }
     
-    struct rect r = {
-        x, y, width, height
-    };
+    r->x = x;
+    r->y = y;
+    r->width = width;
+    r->height = height;
+}
+
+int lsprite_new_container(lua_State* L) {
+    struct rect r;
+    check_rect(L, &r);
     
     struct sprite* s = sprite_new_container(&r);
     lua_pushlightuserdata(L, s);
     return 1;
 }
 
+int lsprite_new_clip(lua_State* L) {
+    struct rect r;
+    check_rect(L, &r);
+    
+    struct sprite* s = sprite_new_clip(&r);
+    lua_pushlightuserdata(L, s);
+    return 1;
+}
+
 int lsprite_free(lua_State* L) {
-    s_free(lua_touserdata(L, 1));
+    sprite_free(lua_touserdata(L, 1));
     return 0;
 }
 
@@ -198,6 +213,7 @@ int luaopen_seal_sprite(lua_State* L) {
         
         { "new", lsprite_new },
         { "new_container", lsprite_new_container },
+        { "new_clip", lsprite_new_clip },
         { "free", lsprite_free },
         { "set_anim", lsprite_set_anim },
         { "set_pos", lsprite_set_pos },

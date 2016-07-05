@@ -2,6 +2,7 @@
 #define __seal__seal__
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "lua.h"
 
@@ -18,7 +19,9 @@ struct texture_cache;
 struct ttf_font;
 struct event;
 struct window;
+struct render;
 struct nk_context;
+struct touch_event;
 
 enum GAME_STATE {
     GAME_STATE_INIT = 0,
@@ -49,6 +52,8 @@ struct game {
     struct window* window;
     struct sprite* root;   // the root node of the world
     struct nk_context* nk_gui_ctx; // global context of the nuklear lib
+    struct shader* shader;
+    struct render* render;
     
     struct sprite_frame_cache* sprite_frame_cache;
     
@@ -74,10 +79,10 @@ void seal_load_string(const char* script_data);
 void seal_load_file(const char* script_path);
 void seal_start_game();
 void seal_main_loop();
-void seal_update(struct NVGcontext* vg);
-void seal_draw(void* win_ctx);
+void seal_update();
+void seal_draw();
 void seal_destroy();
-void seal_event(struct event* e);
+void seal_touch_event(struct touch_event* e);
 
 void seal_reload_scripts();
 

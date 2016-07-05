@@ -115,21 +115,22 @@ int main(int argc, char *argv[]) {
     nk_font_atlas_add_from_file(atlas, game->config.nk_gui_font_path, game->config.nk_gui_font_size, 0);
     nk_glfw3_font_stash_end();
     /************************ nuklear context end ************************/
-    
-    /************************ nanovg begin ************************/
-    NVGcontext* vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
-    float pxRatio = (float)window_width / (float)window_height;
-    /************************ nanovg end ************************/
-    
- 
-
-    
+//    
+//    /************************ nanovg begin ************************/
+//    NVGcontext* vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
+//    float pxRatio = (float)window_width / (float)window_height;
+//    /************************ nanovg end ************************/
+//    
+// 
     while (!glfwWindowShouldClose(window))
     {
+        
         glfwPollEvents();
         last = gettime();
-        seal_update(vg);
-        seal_draw(window);
+        
+        
+        seal_update();
+        seal_draw();
 
         glfwSwapBuffers(window);
         

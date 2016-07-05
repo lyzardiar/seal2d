@@ -12,13 +12,11 @@
 #define TOUCH_END    (2)
 #define TOUCH_CANCEL (3)
 
-struct event {
+struct touch_event {
     int type;
     int x, y;
+    bool responsed;
+    bool swallowd;
 };
-
-
-
-
 
 #endif

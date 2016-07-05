@@ -5,24 +5,27 @@
 
 #define CHECK_GL_ERROR check_gl_error(__FILE__, __LINE__);
 
-enum {
-    COLOR_SHADER = 0,
+enum SHADER_TYPE {
+    SHADER_COLOR = 0,
     
-    MAX_SHADER = 32,
+    MAX_SHADER = 64,
+};
+
+struct shader {
+    GLuint shader_programs[MAX_SHADER];
 };
 
 void check_gl_error(const char* file, int line);
 
-void load_shaders();
+struct shader* shader_new();
+void shader_free(struct shader* self);
 
-GLuint get_program(int shader_index);
+GLint shader_get_uniform(struct shader* self, GLint program, const char* name);
 
-void use_program(GLuint program);
-void unused_program(GLuint program);
 
-GLuint craete_shader_from_file(GLenum shader_type, const char* file_path);
-GLuint create_shader(GLenum shader_type, const char* shader_data);
-GLuint create_program(GLuint vs, GLuint fs);
+//        GLint texture_location = glGetUniformLocation(self->cur_program, "sampler");
+//        glUniform1i(texture_location, 0);
+GLuint shader_get_program(struct shader* self, enum SHADER_TYPE shader_index);
 
 
 #endif

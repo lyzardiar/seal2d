@@ -7,7 +7,6 @@ struct sprite_frame;
 
 #define MAX_FRAME (60)
 
-
 #define ANIM_STATE_PLAY 0
 #define ANIM_STATE_PAUSED 1
 #define ANIM_STATE_STOPPED 2

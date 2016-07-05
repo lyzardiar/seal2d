@@ -12,11 +12,12 @@
 #include "lauxlib.h"
 
 #include "seal.h"
+#include "geo.h"
 #include "window.h"
 #include "shader.h"
 #include "sprite.h"
 #include "camera.h"
-#include "sprite_batch.h"
+#include "render.h"
 
 #include "math/matrix.h"
 
@@ -191,15 +192,14 @@ struct game* seal_load_game_config() {
 }
 
 void seal_init_graphics() {
-    // init basic drawing system before create the game.
-    // TODO: we may set the shaders from Lua. it's better.
-    load_shaders();
     
     // baisc graphic modules
     GAME->texture_cache = texture_cache_new();
     GAME->sprite_frame_cache = sprite_frame_cache_new();
     GAME->global_camera = camera_new(GAME->config.window_height, GAME->config.window_height);
-    GAME->batch = sprite_batch_new();
+    GAME->render = render_new();
+    
+    sprite_init_render(GAME->render);
     
     // init the font
     ttf_init_module();
@@ -263,30 +263,7 @@ void seal_start_game() {
                GAME->config.window_height/2);
 }
 
-#include "nanovg.h"
-
-const static float x0 = 20;
-const static float y2 = 200;
-const static float width = 0;
-const static float height = 200;
-const static float x_offset = 20;
-const static float y_offset = 0;
-
-struct line {
-    float x0,y0,x1,y1;
-};
-
-struct line lines[] = {
-    {x0, y2, x0, y2+height},
-    {x0 + x_offset * 1, y2 + y_offset, x0 + width + x_offset * 1, y2+height+ y_offset},
-    {x0 + x_offset * 2, y2 + y_offset, x0 + width + x_offset * 2, y2+height+ y_offset},
-    {x0 + x_offset * 3, y2 + y_offset, x0 + width + x_offset * 3, y2+height+ y_offset},
-    {x0 + x_offset * 4, y2 + y_offset, x0 + width + x_offset * 4, y2+height+ y_offset},
-    {x0 + x_offset * 5, y2 + y_offset, x0 + width + x_offset * 5, y2+height+ y_offset},
-};
-
-
-void seal_update(struct NVGcontext* vg) {
+void seal_update() {
     struct timeval now;
     gettimeofday(&now, NULL);
     
@@ -310,92 +287,22 @@ void seal_update(struct NVGcontext* vg) {
 
     seal_call(L, 1, 0);
     lua_settop(L, TOP_FUNC_INDEX);
-    
-//    glClearDepth(1.0f);
-//    glClearColor(1,1,1,1);
-//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//    
-//    nvgBeginFrame(vg, GAME->config.window_width, GAME->config.window_height, 1.0f);
-//    
-//    
-//    float speed = 10;
-//    
-//    nvgBeginPath(vg);
-//
-//    
-//    
-//    float dx = speed * dt;
-//    for (int i = 0; i < sizeof(lines)/sizeof(struct line); ++i) {
-//        struct line* l = &lines[i];
-//        nvgMoveTo(vg, l->x0 + dx, l->y0 );
-//        nvgLineTo(vg, l->x1 + dx, l->y1 );
-//        l->x0 = l->x0 + dx;
-//        l->x1 = l->x1 + dx;
-//    }
-//    
-//    nvgFillColor(vg, nvgRGBA(0, 0, 0, 255));
-//    
-//    nvgClosePath(vg);
-//    
-//    nvgFill(vg);
-//    nvgEndFrame(vg);
-    
 }
 
-void seal_event(struct event* e) {
-    lua_State* L = GAME->lstate;
-    lua_getfield(GAME->lstate, LUA_REGISTRYINDEX, GAME_EVENT);
-    switch (e->type) {
-        case TOUCH_BEGIN:
-        case TOUCH_MOVE:
-        case TOUCH_END:
-        case TOUCH_CANCEL:
-            lua_newtable(L);
-            lua_pushinteger(L, e->type);
-            lua_setfield(L, -2, "type");
-            lua_pushinteger(L, e->x);
-            lua_setfield(L, -2, "x");
-            lua_pushinteger(L, e->y);
-            lua_setfield(L, -2, "y");
-            lua_call(L, 1, 0);
-            lua_settop(L, TOP_FUNC_INDEX);
-            break;
-            
-        default:
-            break;
-    }
+void seal_touch_event(struct touch_event* touch_event) {
+    
+    sprite_touch(GAME->root, touch_event);
 }
 
-void seal_draw(void* win_ctx) {
-    glClearDepth(1.0f);
-    glClearColor(1,1,1,1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void seal_draw() {
+    struct render* R = GAME->render;
+    render_clear(R, MAKE_COLOR(255, 255, 255, 255));
     
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    GLuint program = get_program(COLOR_SHADER);
-    glUseProgram(program);
-    
-    glActiveTexture(GL_TEXTURE0);
-    GLint texture_location = glGetUniformLocation(program, "sampler");
-    glUniform1i(texture_location, 0);
-
-    GLint projection = glGetUniformLocation(program, "projection");
-    glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
-
-    struct sprite_batch* batch = GAME->batch;
-    sprite_batch_begin(batch);
     sprite_visit(GAME->root, GAME->global_dt);
-    sprite_batch_end(batch);
     
-    sprite_batch_render(batch);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glUseProgram(0);
+    render_commit(R);
     
     CHECK_GL_ERROR
-    
-    nk_draw(win_ctx);
 }
 
 void seal_destroy() {
@@ -406,8 +313,7 @@ void seal_destroy() {
     sprite_frame_cache_free(GAME->sprite_frame_cache);
     win_free(GAME->window);
     
-// memory is managed by Lua, don't need to free
-//    sprite_free(GAME->root);
+    sprite_free(GAME->root);
     s_free(GAME);
 }
 
