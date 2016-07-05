@@ -124,8 +124,11 @@ int main(int argc, char *argv[]) {
 // 
     while (!glfwWindowShouldClose(window))
     {
+        
         glfwPollEvents();
         last = gettime();
+        
+        
         seal_update();
         seal_draw();
 

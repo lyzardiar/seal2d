@@ -16,3 +16,5 @@ Icon
 *.lo
 
 *build/
+
+xcshareddata/

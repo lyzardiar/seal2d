@@ -13,6 +13,7 @@
 
 struct anim;
 struct render;
+struct touch_event;
 
 enum sprite_type {
     SPRITE_TYPE_PIC = 0,
@@ -77,6 +78,8 @@ struct sprite {
     struct sprite_frame* frame;
     struct glyph glyph;
     struct anim* anim;
+    
+    bool swallow;
 };
 
 void sprite_init_render(struct render* render);
@@ -88,7 +91,9 @@ struct sprite* sprite_new_line(float* points);
 
 void sprite_free(struct sprite* self);
 
+void sprite_touch(struct sprite* self, struct touch_event* touch_event);
 void sprite_visit(struct sprite* self, float dt);
+bool sprite_contains(struct sprite* self, float x, float y);
 
 void sprite_draw_pic(struct sprite* self);
 void sprite_draw_clip(struct sprite* self);

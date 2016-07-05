@@ -1,6 +1,7 @@
 #ifndef __seal__geo__
 #define __seal__geo__
 
+#include <stdbool.h>
 #include <OpenGL/OpenGL.h>
 
 struct vertex {
@@ -67,5 +68,7 @@ struct uv {
 struct size {
     int width, height;
 };
+
+bool rect_contains(struct rect* rect, float x, float y);
 
 #endif /* defined(__yuusha__geo__) */

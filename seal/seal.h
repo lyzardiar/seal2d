@@ -2,6 +2,7 @@
 #define __seal__seal__
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "lua.h"
 
@@ -20,6 +21,7 @@ struct event;
 struct window;
 struct render;
 struct nk_context;
+struct touch_event;
 
 enum GAME_STATE {
     GAME_STATE_INIT = 0,
@@ -80,7 +82,7 @@ void seal_main_loop();
 void seal_update();
 void seal_draw();
 void seal_destroy();
-void seal_event(struct event* e);
+void seal_touch_event(struct touch_event* e);
 
 void seal_reload_scripts();
 

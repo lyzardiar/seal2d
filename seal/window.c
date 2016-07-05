@@ -22,19 +22,23 @@ void win_free(struct window* win) {
 void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int modify) {
     switch (action) {
         case GLFW_PRESS: {
-                struct event e = {TOUCH_MOVE,
+                struct touch_event e = {TOUCH_BEGIN,
                                  GAME->window->cursor_x,
-                                 GAME->config.window_height - GAME->window->cursor_y};
-                seal_event(&e);
+                                 GAME->config.window_height - GAME->window->cursor_y,
+                                 false,
+                                 false};
+                seal_touch_event(&e);
                 GAME->window->is_touch_down = 1;
             }
             break;
             
         case GLFW_RELEASE: {
-                struct event e = {TOUCH_END,
+                struct touch_event e = {TOUCH_END,
                     GAME->window->cursor_x,
-                    GAME->config.window_height - GAME->window->cursor_y};
-                seal_event(&e);
+                    GAME->config.window_height - GAME->window->cursor_y,
+                    false,
+                    false};
+                seal_touch_event(&e);
                 GAME->window->is_touch_down = 0;
             }
             break;
@@ -49,8 +53,8 @@ void glfw_mouse_pos_callback(GLFWwindow* window, double x, double y) {
     win->cursor_x = x;
     win->cursor_y = y;
     if (win->is_touch_down) {
-        struct event e = {TOUCH_MOVE, x, y};
-        seal_event(&e);
+        struct touch_event e = {TOUCH_MOVE, x, y, false, false};
+        seal_touch_event(&e);
     }
 }
 

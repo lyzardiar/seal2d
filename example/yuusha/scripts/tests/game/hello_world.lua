@@ -8,7 +8,6 @@ function hello_world.entry()
 	sprite_frame.load_from_json("res/images/ui.json")
 	sprite_frame.load_from_json("res/images/anim_pirate.json")
 
-
 	local root = sprite.new("ui.png", "smile_middle.png")
 	root:set_pos(0, 0)
 

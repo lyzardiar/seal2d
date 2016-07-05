@@ -9,8 +9,10 @@
 #include "sprite.h"
 #include "anim.h"
 #include "render.h"
+#include "event.h"
 
 #include "util.h"
+
 
 EXTERN_GAME;
 
@@ -108,6 +110,7 @@ static void sprite_init(struct sprite* self, float width, float height) {
     self->width = width;
     self->height = height;
     self->anim = NULL;
+    self->swallow = true;
     
     self->children = array_new(16);
     
@@ -231,6 +234,38 @@ void sprite_remove_child(struct sprite* self, struct sprite* child) {
 
 void sprite_remove_all_child(struct sprite* self) {
     
+}
+
+void sprite_touch(struct sprite* self, struct touch_event* touch_event) {
+    struct array* children = self->children;
+    for (int i = 0 ;i < array_size(children); ++i) {
+        struct sprite* child = (struct sprite*)array_at(children, i);
+        if (child) { // NULL indicates that the child has been removed
+            
+            // recursively visit the children.
+            sprite_touch(child, touch_event);
+        }
+    }
+    
+    if(touch_event->swallowd) {
+        return;
+    }
+    
+    if (sprite_contains(self, touch_event->x, touch_event->y)) {
+        if (self->swallow) {
+            touch_event->swallowd = true;
+        }
+    }
+}
+
+bool sprite_contains(struct sprite* self, float x, float y) {
+    struct rect world = {
+        self->glyph.bl.position[0],
+        self->glyph.bl.position[1],
+        self->width,
+        self->height,
+    };
+    return rect_contains(&world, x, y);
 }
 
 void sprite_visit(struct sprite* self, float dt) {

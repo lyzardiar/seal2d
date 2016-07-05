@@ -289,28 +289,9 @@ void seal_update() {
     lua_settop(L, TOP_FUNC_INDEX);
 }
 
-void seal_event(struct event* e) {
-    lua_State* L = GAME->lstate;
-    lua_getfield(GAME->lstate, LUA_REGISTRYINDEX, GAME_EVENT);
-    switch (e->type) {
-        case TOUCH_BEGIN:
-        case TOUCH_MOVE:
-        case TOUCH_END:
-        case TOUCH_CANCEL:
-            lua_newtable(L);
-            lua_pushinteger(L, e->type);
-            lua_setfield(L, -2, "type");
-            lua_pushinteger(L, e->x);
-            lua_setfield(L, -2, "x");
-            lua_pushinteger(L, e->y);
-            lua_setfield(L, -2, "y");
-            lua_call(L, 1, 0);
-            lua_settop(L, TOP_FUNC_INDEX);
-            break;
-            
-        default:
-            break;
-    }
+void seal_touch_event(struct touch_event* touch_event) {
+    
+    sprite_touch(GAME->root, touch_event);
 }
 
 void seal_draw() {
@@ -332,8 +313,7 @@ void seal_destroy() {
     sprite_frame_cache_free(GAME->sprite_frame_cache);
     win_free(GAME->window);
     
-// memory is managed by Lua, don't need to free
-//    sprite_free(GAME->root);
+    sprite_free(GAME->root);
     s_free(GAME);
 }
 
