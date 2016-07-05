@@ -5,13 +5,9 @@ local sprite = {}
 
 local all_sprites = {}
 
-local function gc(self)
-	sprite_core.free(self.__cobj)
-end
-
 function sprite.new(atlas_name, frame_name) 
 	local self = {}
-	setmetatable(self, {__index = sprite, __gc = gc})
+	setmetatable(self, {__index = sprite})
 	self:ctor(atlas_name, frame_name)
 	all_sprites[self] = self
 	return self
@@ -19,14 +15,14 @@ end
 
 function sprite.new_container(...)
 	local self = {}
-	setmetatable(self, {__index = sprite, __gc = gc})
+	setmetatable(self, {__index = sprite})
 	self.__cobj = sprite_core.new_container(...)
 	return self
 end
 
 function sprite.new_clip(...)
 	local self = {}
-	setmetatable(self, {__index = sprite, __gc = gc})
+	setmetatable(self, {__index = sprite})
 	self.__cobj = sprite_core.new_clip(...)
 	return self
 end
