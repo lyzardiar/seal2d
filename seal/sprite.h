@@ -79,6 +79,8 @@ struct sprite {
     struct glyph glyph;
     struct anim* anim;
     
+    unsigned int lua_callback_index;
+    
     bool swallow;
 };
 

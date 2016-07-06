@@ -155,7 +155,6 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
     }
     
     lua_pop(L, -1);
-    stackDump(L);
     return succeed ? 1 : 0;
 }
 
@@ -199,7 +198,7 @@ void seal_init_graphics() {
     GAME->sprite_frame_cache = sprite_frame_cache_new();
     GAME->global_camera = camera_new(GAME->config.window_height, GAME->config.window_height);
     GAME->render = render_new();
-    GAME->lua_handler = lua_handler_new();
+    GAME->lua_handler = lua_handler_new(GAME->lstate);
     
     sprite_init_render(GAME->render);
     

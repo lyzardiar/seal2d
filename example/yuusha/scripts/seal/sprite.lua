@@ -34,6 +34,10 @@ function sprite:ctor(...)
 	self.__cobj = sprite_core.new(__frame)
 end
 
+function sprite:register_handler(func)
+	sprite_core.register_handler(self.__cobj, func)
+end
+
 function sprite:set_pos(x, y)
 	sprite_core.set_pos(self.__cobj, x, y)
 end

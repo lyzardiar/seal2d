@@ -10,6 +10,7 @@
 #include "anim.h"
 #include "render.h"
 #include "event.h"
+#include "lua_handler.h"
 
 #include "util.h"
 
@@ -241,7 +242,6 @@ void sprite_touch(struct sprite* self, struct touch_event* touch_event) {
     for (int i = 0 ;i < array_size(children); ++i) {
         struct sprite* child = (struct sprite*)array_at(children, i);
         if (child) { // NULL indicates that the child has been removed
-            
             // recursively visit the children.
             sprite_touch(child, touch_event);
         }
@@ -255,6 +255,9 @@ void sprite_touch(struct sprite* self, struct touch_event* touch_event) {
         if (self->swallow) {
             touch_event->swallowd = true;
         }
+        
+        //TODO: this call is ugly, refactor someday.
+        lua_handler_exe_func(GAME->lua_handler, GAME->lstate, self, NULL);
     }
 }
 

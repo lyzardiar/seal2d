@@ -137,17 +137,8 @@ int lsprite_free(lua_State* L) {
 }
 
 int lsprite_register_handler(lua_State* L) {
-    if (lua_isfunction(L, 2)) {
-        lua_getfield(L,LUA_REGISTRYINDEX, LUA_FUNCTION_HANDLER_KEY);
-        stackDump(L);
-        lua_pushinteger(L, 100);
-        stackDump(L);
-        lua_pushvalue(L, 1);
-        stackDump(L);
-        lua_rawset(L, -1);
-        stackDump(L);
-        lua_pop(L, 1);
-    }
+    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    lua_handler_set_func(GAME->lua_handler, L, self, 2);
     
     return 0;
 }
@@ -164,8 +155,6 @@ int lsprite_set_anim(lua_State* L) {
         array_push_back(frames, frame);
         lua_pop(L, 1);
     }
-    
-    stackDump(L);
     
     struct anim* anim = anim_new(frames);
     sprite_set_anim(self, anim);

@@ -84,6 +84,7 @@ void seal_main_loop();
 void seal_update();
 void seal_draw();
 void seal_destroy();
+int  seal_call(lua_State *L, int n, int r);
 void seal_touch_event(struct touch_event* e);
 
 void seal_reload_scripts();

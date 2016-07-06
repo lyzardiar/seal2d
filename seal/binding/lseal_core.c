@@ -4,16 +4,6 @@
 
 extern void stackDump (lua_State *L);
 
-int lsealget_window(lua_State* L) {
-//    lua_pushlightuserdata(L, seal_get_window());
-    return 1;
-}
-
-int lsealget_render(lua_State* L) {
-//    lua_pushlightuserdata(L, seal_get_render());
-    return 1;
-}
-
 int lsealinject(lua_State* L) {
     if(!lua_istable(L, -1)) {
         fprintf(stderr, "seal.start require a table to start.");
@@ -42,12 +32,6 @@ int lsealinject(lua_State* L) {
     return 0;
 }
 
-int lsealget_platform(lua_State* L) {
-    // TODO: write this function someday
-    lua_pushstring(L, "mac");
-    return 1;
-}
-
 int lseal_reload_script(lua_State* L) {
     seal_reload_scripts();
     return 0;
@@ -60,9 +44,6 @@ int luaopen_seal_core(lua_State* L) {
 #endif
     luaL_Reg lib[] = {
         { "inject",     lsealinject},
-        { "get_window", lsealget_window},
-        { "get_render", lsealget_render},
-        { "get_platform", lsealget_platform},
         { "reload_script", lseal_reload_script},
         { NULL, NULL },
     };
