@@ -6,7 +6,6 @@
 
 #include "lua.h"
 
-
 #include "memory.h"
 
 
@@ -22,6 +21,7 @@ struct window;
 struct render;
 struct nk_context;
 struct touch_event;
+struct lua_handler;
 
 enum GAME_STATE {
     GAME_STATE_INIT = 0,
@@ -50,10 +50,11 @@ struct game {
     struct texture_cache* texture_cache;
     struct ttf_font* font;
     struct window* window;
-    struct sprite* root;   // the root node of the world
-    struct nk_context* nk_gui_ctx; // global context of the nuklear lib
+    struct sprite* root;             // the root node of the world
+    struct nk_context* nk_gui_ctx;   // global context of the nuklear lib
     struct shader* shader;
     struct render* render;
+    struct lua_handler* lua_handler;
     
     struct sprite_frame_cache* sprite_frame_cache;
     
@@ -63,13 +64,14 @@ struct game {
 
 #define EXTERN_GAME extern struct game* GAME;
 
-#define GAME_TRACE  "GAME_TRACE"
-#define GAME_INIT   "GAME_INIT"
-#define GAME_UPDATE "GAME_UPDATE"
-#define GAME_DRAW   "GAME_DRAW"
-#define GAME_PAUSE  "GAME_PAUSE"
-#define GAME_RESUME "GAME_RESUME"
-#define GAME_EVENT  "GAME_EVENT"
+#define GAME_TRACE       "GAME_TRACE"
+#define GAME_INIT        "GAME_INIT"
+#define GAME_UPDATE      "GAME_UPDATE"
+#define GAME_DRAW        "GAME_DRAW"
+#define GAME_PAUSE       "GAME_PAUSE"
+#define GAME_RESUME      "GAME_RESUME"
+#define GAME_EVENT       "GAME_EVENT"
+#define GAME_HANDLERS    "GAME_HANDLERS"
 
 // seal system
 

@@ -8,6 +8,7 @@
 #include "sprite.h"
 #include "memory.h"
 #include "util.h"
+#include "lua_handler.h"
 
 EXTERN_GAME;
 
@@ -135,6 +136,22 @@ int lsprite_free(lua_State* L) {
     return 0;
 }
 
+int lsprite_register_handler(lua_State* L) {
+    if (lua_isfunction(L, 2)) {
+        lua_getfield(L,LUA_REGISTRYINDEX, LUA_FUNCTION_HANDLER_KEY);
+        stackDump(L);
+        lua_pushinteger(L, 100);
+        stackDump(L);
+        lua_pushvalue(L, 1);
+        stackDump(L);
+        lua_rawset(L, -1);
+        stackDump(L);
+        lua_pop(L, 1);
+    }
+    
+    return 0;
+}
+
 int lsprite_set_anim(lua_State* L) {
     struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
     luaL_checktype(L, 2, LUA_TTABLE);
@@ -215,6 +232,7 @@ int luaopen_seal_sprite(lua_State* L) {
         { "new_container", lsprite_new_container },
         { "new_clip", lsprite_new_clip },
         { "free", lsprite_free },
+        { "register_handler", lsprite_register_handler },
         { "set_anim", lsprite_set_anim },
         { "set_pos", lsprite_set_pos },
         { "set_rotation", lsprite_set_rotation },

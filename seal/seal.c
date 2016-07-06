@@ -18,6 +18,7 @@
 #include "sprite.h"
 #include "camera.h"
 #include "render.h"
+#include "lua_handler.h"
 
 #include "math/matrix.h"
 
@@ -198,6 +199,7 @@ void seal_init_graphics() {
     GAME->sprite_frame_cache = sprite_frame_cache_new();
     GAME->global_camera = camera_new(GAME->config.window_height, GAME->config.window_height);
     GAME->render = render_new();
+    GAME->lua_handler = lua_handler_new();
     
     sprite_init_render(GAME->render);
     
@@ -245,18 +247,18 @@ void seal_start_game() {
     assert(lua_gettop(L) == 0);
     lua_pushcfunction(L, traceback);
 
-    lua_getfield(L,LUA_REGISTRYINDEX, GAME_INIT);
+    lua_getfield(L, LUA_REGISTRYINDEX, GAME_INIT);
     seal_call(L, 0, 1);
 
     struct sprite* root = lua_touserdata(L, -1);
     GAME->root = root;
     lua_pop(L, 1);
 
-    lua_getfield(L,LUA_REGISTRYINDEX, GAME_UPDATE);
-    lua_getfield(L,LUA_REGISTRYINDEX, GAME_DRAW);
-    lua_getfield(L,LUA_REGISTRYINDEX, GAME_PAUSE);
-    lua_getfield(L,LUA_REGISTRYINDEX, GAME_RESUME);
-    lua_getfield(L,LUA_REGISTRYINDEX, GAME_EVENT);
+    lua_getfield(L, LUA_REGISTRYINDEX, GAME_UPDATE);
+    lua_getfield(L, LUA_REGISTRYINDEX, GAME_DRAW);
+    lua_getfield(L, LUA_REGISTRYINDEX, GAME_PAUSE);
+    lua_getfield(L, LUA_REGISTRYINDEX, GAME_RESUME);
+    lua_getfield(L, LUA_REGISTRYINDEX, GAME_EVENT);
     
     camera_pos(GAME->global_camera,
                GAME->config.window_width/2,

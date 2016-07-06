@@ -1,6 +1,7 @@
 #ifndef __seal__event__
 #define __seal__event__
 
+#include <stdbool.h>
 #include "platform/platform.h"
 
 #ifdef PLAT_DESKTOP
