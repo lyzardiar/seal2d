@@ -8,21 +8,6 @@
 
 #include "memory.h"
 
-#define NK_INCLUDE_FIXED_TYPES
-#define NK_INCLUDE_STANDARD_IO
-#define NK_INCLUDE_DEFAULT_ALLOCATOR
-#define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
-#define NK_INCLUDE_FONT_BAKING
-#define NK_INCLUDE_DEFAULT_FONT
-#define NK_IMPLEMENTATION
-
-#ifdef PLAT_DESKTOP
-    #define NK_GLFW_GL3_IMPLEMENTATION
-    #include "nuklear/nuklear_glfw_gl3.h"
-    #define NK_INCLUDE_FIXED_TYPES
-    #include "nuklear/nuklear.h"
-#endif
-
 struct camera;
 struct sprite_batch;
 struct sprite_frame_cache;
@@ -31,9 +16,9 @@ struct ttf_font;
 struct event;
 struct window;
 struct render;
-struct nk_context;
 struct touch_event;
 struct lua_handler;
+struct nuk_node;
 
 enum GAME_STATE {
     GAME_STATE_INIT = 0,
@@ -68,9 +53,7 @@ struct game {
     struct render* render;
     struct lua_handler* lua_handler;
     struct sprite_frame_cache* sprite_frame_cache;
-    
-    // third party lib contexts
-    struct nk_context* nk_gui_ctx;   // global context of the nuklear lib
+    struct nuk_node* nuk_node;
 
     int game_state;
 };

@@ -19,6 +19,7 @@
 #include "sprite.h"
 #include "camera.h"
 #include "render.h"
+#include "nuk_node.h"
 #include "lua_handler.h"
 
 #include "util.h"
@@ -28,15 +29,6 @@
 #include "platform/fs.h"
 #include "platform/platform.h"
 #include "unzip.h"
-
-#ifdef PLAT_DESKTOP
-    #define NK_GLFW_GL3_IMPLEMENTATION
-    #include "nuklear/nuklear.h"
-    #include "nuklear/nuklear_glfw_gl3.h"
-#endif
-
-#define MAX_VERTEX_BUFFER 512 * 1024
-#define MAX_ELEMENT_BUFFER 128 * 1024
 
 extern void luaopen_lua_extensions(lua_State *L);
 
@@ -191,10 +183,10 @@ struct game* seal_load_game_config() {
 
 static void seal_init_nuklear() {
     
-#ifdef PLAT_DESKTOP
-    struct nk_context* ctx = nk_glfw3_init(GAME->window->ctx, NK_GLFW3_INSTALL_CALLBACKS);
-    GAME->nk_gui_ctx = ctx;
-#endif
+
+    
+    nuk_node_ctx_init();
+
     struct nk_font_atlas *atlas = NULL;
     nk_glfw3_font_stash_begin(&atlas);
     nk_font_atlas_add_from_file(atlas, GAME->config.nk_gui_font_path, GAME->config.nk_gui_font_size, 0);
@@ -202,12 +194,12 @@ static void seal_init_nuklear() {
 }
 
 void seal_init_graphics() {
-    
     // baisc graphic modules
     GAME->texture_cache = texture_cache_new();
     GAME->sprite_frame_cache = sprite_frame_cache_new();
     GAME->global_camera = camera_new(GAME->config.window_height, GAME->config.window_height);
     GAME->render = render_new();
+    GAME->nuk_node = nuk_node_new();
     GAME->lua_handler = lua_handler_new(GAME->lstate);
     
     sprite_init_render(GAME->render);
@@ -240,11 +232,12 @@ void seal_load_file(const char* script_path) {
 
 static int traceback (lua_State *L) {
     const char *msg = lua_tostring(L, 1);
-    if (msg)
+    if (msg) {
         luaL_traceback(L, L, msg, 1);
-    else if (!lua_isnoneornil(L, 1)) {
-        if (!luaL_callmeta(L, 1, "__tostring"))
+    } else if (!lua_isnoneornil(L, 1)) {
+        if (!luaL_callmeta(L, 1, "__tostring")) {
             lua_pushliteral(L, "(no error message)");
+        }
     }
     return 1;
 }
@@ -307,32 +300,15 @@ void seal_touch_event(struct touch_event* touch_event) {
     sprite_touch(GAME->root, touch_event);
 }
 
+extern void nk_glfw3_new_frame(void);
+extern void nk_glfw3_render(enum nk_anti_aliasing AA, int max_vertex_buffer, int max_element_buffer);
+
 static void nk_draw() {
-    struct nk_context* ctx = GAME->nk_gui_ctx;
-    nk_glfw3_new_frame();
+    nuk_draw_start();
     
-    /* GUI */
-    struct nk_panel layout;
-    if (nk_begin(ctx, &layout, "Demo", nk_rect(50, 50, 230, 250),
-                 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
-                 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE)) {
-        enum {EASY, HARD};
-        static int op = EASY;
-        static int property = 20;
-        nk_layout_row_static(ctx, 30, 80, 1);
-        if (nk_button_label(ctx, "button", NK_BUTTON_DEFAULT))
-            fprintf(stdout, "button pressed\n");
-        
-        nk_layout_row_dynamic(ctx, 30, 2);
-        if (nk_option_label(ctx, "easy", op == EASY)) op = EASY;
-        if (nk_option_label(ctx, "hard", op == HARD)) op = HARD;
-        
-        nk_layout_row_dynamic(ctx, 25, 1);
-        nk_property_int(ctx, "Compression:", 0, &property, 100, 10, 1);
-    }
-    nk_end(ctx);
-    
-    nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
+    nuk_node_draw(GAME->nuk_node);
+
+    nuk_draw_end();
 }
 
 void seal_draw() {
@@ -352,6 +328,7 @@ void seal_destroy() {
     
     lua_close(GAME->lstate);
     
+    nuk_node_free(GAME->nuk_node);
     texture_cache_free(GAME->texture_cache);
     sprite_frame_cache_free(GAME->sprite_frame_cache);
     win_free(GAME->window);

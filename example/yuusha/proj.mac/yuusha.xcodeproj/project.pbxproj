@@ -104,6 +104,7 @@
 		A6291AF81D2CB05600B39E63 /* lua_handler.c in Sources */ = {isa = PBXBuildFile; fileRef = A6291AF61D2CB05600B39E63 /* lua_handler.c */; };
 		A62EEF5B1D2507F70065378C /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = A62EEF591D2507F70065378C /* render.c */; };
 		A65E1FC81D16BC070039B22B /* nanovg.c in Sources */ = {isa = PBXBuildFile; fileRef = A65E1FC01D16BC070039B22B /* nanovg.c */; };
+		A662945C1D2E51F300670C6B /* nuk_node.c in Sources */ = {isa = PBXBuildFile; fileRef = A662945A1D2E51F300670C6B /* nuk_node.c */; };
 		A695D3431CB2827900E4180B /* event.c in Sources */ = {isa = PBXBuildFile; fileRef = A695D3411CB2827900E4180B /* event.c */; };
 		A6E74C9B1CCA0E7F009392C8 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E74C9A1CCA0E7F009392C8 /* libz.a */; };
 		A6E74C9D1CCA0EF1009392C8 /* lua_zlib.c in Sources */ = {isa = PBXBuildFile; fileRef = A6E74C9C1CCA0EF1009392C8 /* lua_zlib.c */; };
@@ -308,6 +309,8 @@
 		A65E1FC31D16BC070039B22B /* nanovg_gl_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanovg_gl_utils.h; sourceTree = "<group>"; };
 		A65E1FC41D16BC070039B22B /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
 		A65E1FC51D16BC070039B22B /* stb_truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_truetype.h; sourceTree = "<group>"; };
+		A662945A1D2E51F300670C6B /* nuk_node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nuk_node.c; sourceTree = "<group>"; };
+		A662945B1D2E51F300670C6B /* nuk_node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuk_node.h; sourceTree = "<group>"; };
 		A695D3411CB2827900E4180B /* event.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = event.c; sourceTree = "<group>"; };
 		A695D3421CB2827900E4180B /* event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = event.h; sourceTree = "<group>"; };
 		A695D3451CB2871C00E4180B /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
@@ -640,6 +643,8 @@
 				A62EEF5A1D2507F70065378C /* render.h */,
 				A6291AF61D2CB05600B39E63 /* lua_handler.c */,
 				A6291AF71D2CB05600B39E63 /* lua_handler.h */,
+				A662945A1D2E51F300670C6B /* nuk_node.c */,
+				A662945B1D2E51F300670C6B /* nuk_node.h */,
 			);
 			name = seal;
 			path = ../../../seal;
@@ -899,6 +904,7 @@
 				4DDA8E3C1C4F5AE700ED5325 /* lmathlib.c in Sources */,
 				A62EEF5B1D2507F70065378C /* render.c in Sources */,
 				4DDA8E381C4F5AE700ED5325 /* lgc.c in Sources */,
+				A662945C1D2E51F300670C6B /* nuk_node.c in Sources */,
 				4D887C4A1C70BFCA006EA5DA /* texture.c in Sources */,
 				4DDA8E321C4F5AE700ED5325 /* lctype.c in Sources */,
 				4DDA8E2D1C4F5AE700ED5325 /* lauxlib.c in Sources */,
