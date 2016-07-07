@@ -22,6 +22,7 @@ int lnk_begin(lua_State* L) {
     
     const char* panel_title = luaL_checkstring(L, 1);
     luaL_checktype(L, 2, LUA_TTABLE);
+    lua_pushvalue(L, 2);
     
     struct nk_rect rect = {
         getfield_i(L, "x"),
@@ -30,11 +31,12 @@ int lnk_begin(lua_State* L) {
         getfield_i(L, "h"),
     };
     
+    lua_pop(L, 1);
     uint32_t flags = luaL_checkinteger(L, 3);
-    
+
     bool ret = nk_begin(ctx, panel, panel_title, rect, flags);
     lua_pushboolean(L, ret);
-    
+
     return 1;
 }
 
@@ -44,17 +46,25 @@ int lnk_end(lua_State* L) {
 }
 
 int lnk_layout_row_static(lua_State* L) {
-    
+    nk_layout_row_static(global_nk_context(),
+                         luaL_checknumber(L, 1),
+                         luaL_checknumber(L, 2),
+                         luaL_checknumber(L, 3));
     return 0;
 }
 
 int lnk_layout_row_dynamic(lua_State* L) {
-    
+    nk_layout_row_dynamic(global_nk_context(),
+                          luaL_checknumber(L, 1),
+                          luaL_checknumber(L, 2));
+
     return 0;
 }
 
 int lnk_button_label(lua_State* L) {
-    
+    lua_pushboolean(L, nk_button_label(global_nk_context(),
+                                       luaL_checkstring(L, 1),
+                                       luaL_checkinteger(L, 2)));
     return 1;
 }
 
