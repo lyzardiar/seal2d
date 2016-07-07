@@ -13,6 +13,8 @@
 #define TOUCH_END    (2)
 #define TOUCH_CANCEL (3)
 
+#define SPRITE_EVENT_TYPE "touch"
+
 struct touch_event {
     int type;
     int x, y;

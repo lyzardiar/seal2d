@@ -110,4 +110,6 @@ void sprite_add_child(struct sprite* self, struct sprite* child);
 void sprite_remove_child(struct sprite* self, struct sprite* child);
 void sprite_remove_all_child(struct sprite* self);
 
+void sprite_to_node_space(struct sprite* self, float x, float y, float* tox, float* toy);
+
 #endif

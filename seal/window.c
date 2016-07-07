@@ -53,7 +53,10 @@ void glfw_mouse_pos_callback(GLFWwindow* window, double x, double y) {
     win->cursor_x = x;
     win->cursor_y = y;
     if (win->is_touch_down) {
-        struct touch_event e = {TOUCH_MOVE, x, y, false, false};
+        struct touch_event e = {TOUCH_MOVE,
+                                x,
+                                GAME->config.window_height - y,
+                                false, false};
         seal_touch_event(&e);
     }
 }

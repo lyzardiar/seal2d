@@ -246,6 +246,20 @@ void sprite_remove_all_child(struct sprite* self) {
     }
 }
 
+// TODO: we should add a covert space function
+void sprite_to_node_space(struct sprite* self, float x, float y, float* tox, float* toy) {
+    
+}
+
+static int touch_event_set_func(lua_State* L, void* ud) {
+    struct touch_event* event = (struct touch_event*)ud;
+    lua_pushstring(L, SPRITE_EVENT_TYPE);
+    lua_pushinteger(L, event->type);
+    lua_pushinteger(L, event->x);
+    lua_pushinteger(L, event->y);
+    return 4;
+}
+
 void sprite_touch(struct sprite* self, struct touch_event* touch_event) {
     struct array* children = self->children;
     for (int i = 0 ;i < array_size(children); ++i) {
@@ -266,7 +280,7 @@ void sprite_touch(struct sprite* self, struct touch_event* touch_event) {
         }
         
         //TODO: this call is ugly, refactor someday.
-        lua_handler_exe_func(GAME->lua_handler, GAME->lstate, self, NULL);
+        lua_handler_exe_func(GAME->lua_handler, GAME->lstate, self, touch_event_set_func, touch_event);
     }
 }
 

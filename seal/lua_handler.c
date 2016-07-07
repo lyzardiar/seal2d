@@ -61,7 +61,11 @@ unsigned int lua_handler_set_func(struct lua_handler* self, lua_State* L, void* 
     return 0;
 }
 
-void lua_handler_exe_func(struct lua_handler* self, lua_State* L, void* object, int (*stack_set_func)(lua_State*) ) {
+void lua_handler_exe_func(struct lua_handler* self,
+                          lua_State* L,
+                          void* object,
+                          int (*stack_set_func)(lua_State*, void* ud),
+                          void* ud) {
     s_assert(object);
     int n = 0;
     unsigned int index = (unsigned int)hashmapGet(self->__handlers, object);
@@ -73,9 +77,8 @@ void lua_handler_exe_func(struct lua_handler* self, lua_State* L, void* object, 
         lua_rawget(L, -2);
         
         if (stack_set_func) {
-            n = stack_set_func(L);
+            n = stack_set_func(L, ud);
         }
-        
         seal_call(L, n, 0);
     }
    

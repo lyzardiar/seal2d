@@ -23,6 +23,10 @@ void lua_handler_clean(struct lua_handler* self, void* object);
 
 unsigned int lua_handler_set_func(struct lua_handler* self, lua_State* L, void* object, int func_loc);
 
-void lua_handler_exe_func(struct lua_handler* self, lua_State* L, void* object, int (*stack_set_func)(lua_State*) );
+void lua_handler_exe_func(struct lua_handler* self,
+                          lua_State* L,
+                          void* object,
+                          int (*stack_set_func)(lua_State*, void* ud),
+                          void* ud);
 
 #endif

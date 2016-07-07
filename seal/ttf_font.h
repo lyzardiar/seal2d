@@ -23,5 +23,4 @@ void ttf_font_free(struct ttf_font* font);
 FT_Face ttf_load_face(const char* path);
 
 
-
 #endif

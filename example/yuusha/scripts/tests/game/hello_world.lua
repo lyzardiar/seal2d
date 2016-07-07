@@ -86,19 +86,25 @@ local function sprite_event_test()
 
 	root:remove_all_child()
 
-	local function event_handler(event)
-		print("event = ", event)
-
-
+	local touch_event_names = {
+		[0] = "begin",
+		[1] = "moved",
+		[2] = "ended",
+		[3] = "canceled",
+	}
+	local function touch_handler(event, x, y)
+		print("event = ", touch_event_names[event], x, y)
 	end
 
 	local total = 5
 	for i = 1, 5 do
 		local s = sprite.new("anim_pirate.png", "attack_0.png")
 		s:set_pos(i * 100, 0)
-		s:register_handler(function()
+		s:register_handler(function(event_type, ...)
 				print(string.format("sprite %d: ", i))
-
+				if event_type == 'touch' then
+					touch_handler(...)
+				end
 			end)
 		root:add_child(s)
 	end 
