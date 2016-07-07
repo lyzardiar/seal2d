@@ -81,18 +81,41 @@ local function sprite_clip_test()
 	root:add_child(clip)
 end
 
+local function sprite_event_test()
+	print("run sprite_clip_test")
+
+	root:remove_all_child()
+
+	local function event_handler(event)
+		print("event = ", event)
+
+
+	end
+
+	local total = 5
+	for i = 1, 5 do
+		local s = sprite.new("anim_pirate.png", "attack_0.png")
+		s:set_pos(i * 100, 0)
+		s:register_handler(function()
+				print(string.format("sprite %d: ", i))
+
+			end)
+		root:add_child(s)
+	end 
+end
 
 
 local tests = {
 	{name = "sprite basic test", create_func = sprite_basic_test }, 
 	{name = "sprite animation test", create_func = sprite_animation_test},
 	{name = "sprite clip test", create_func = sprite_clip_test},
+	{name = "sprite touch test", create_func = sprite_event_test},
 }
 
 local function draw_gui()
 		-- we do some ugly performance test first. want to know how much cpu would it cost to call from C to Lua every frame.
 	nuk_node.register(function()
-			if(nuk_core.nk_begin("Example", {x = 50, y = 50, w = 200, h = 200}, 
+			if(nuk_core.nk_begin("Example", {x = WINDOW_WIDTH - 200, y = 50, w = 200, h = WINDOW_HEIGHT - 200/2}, 
 					NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE
 				)) then
 
