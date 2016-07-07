@@ -8,7 +8,7 @@ static unsigned int __anim_id = 0;
 struct anim* anim_new(struct array* sprite_frames) {
     struct anim* anim = STRUCT_NEW(anim);
     
-    anim->interval = 2.0f;
+    anim->interval = 1.0f/4.0f;
     anim->callback = NULL;
     anim->sprite_frames = array_copy(sprite_frames);
     anim->speed = 1.0f;
@@ -57,6 +57,10 @@ void anim_resume(struct anim* self) {
     if(self->__state == ANIM_STATE_PAUSED) {
         self->__state = ANIM_STATE_PLAY;
     }
+}
+
+void anim_set_interval(struct anim* self, float interval) {
+    self->interval = interval;
 }
 
 void anim_set_speed(struct anim* self, float speed) {

@@ -163,6 +163,13 @@ int lsprite_set_anim(lua_State* L) {
     return 0;
 }
 
+int lsprite_set_anim_interval(lua_State* L) {
+    struct sprite* self = lua_touserdata(L, 1);
+    float interval = luaL_checknumber(L, 2);
+    anim_set_interval(self->anim, interval);
+    return 0;
+}
+
 int lsprite_set_pos(lua_State* L) {
     struct sprite* self = lua_touserdata(L, 1);
     lua_Number x = luaL_checknumber(L, 2);
@@ -228,6 +235,7 @@ int luaopen_seal_sprite(lua_State* L) {
         { "free", lsprite_free },
         { "register_handler", lsprite_register_handler },
         { "set_anim", lsprite_set_anim },
+        { "set_anim_interval", lsprite_set_anim_interval},
         { "set_pos", lsprite_set_pos },
         { "set_rotation", lsprite_set_rotation },
         { "set_scale", lsprite_set_scale },

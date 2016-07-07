@@ -229,12 +229,14 @@ void sprite_add_child(struct sprite* self, struct sprite* child) {
 }
 
 void sprite_remove_child(struct sprite* self, struct sprite* child) {
-    s_assert(child);
     
     // here we should release the memory??? yes.
-    
-    sprite_free(child);
-    array_set(self->children, child->child_index, NULL);
+    if (child) {
+        sprite_free(child);
+        // we only remove the child, but we don't move the array
+        // TODO: move the array after set the element to NULL :)
+        array_set(self->children, child->child_index, NULL);
+    }
 }
 
 void sprite_remove_all_child(struct sprite* self) {

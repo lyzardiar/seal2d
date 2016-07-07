@@ -23,7 +23,9 @@ local hello_world = {}
 
 local root
 local function sprite_basic_test()
+	print("run sprite_basic_test")
 	root:remove_all_child()
+
 
 	local total = 5
 	for i = 1, 5 do
@@ -33,8 +35,32 @@ local function sprite_basic_test()
 	end
 end
 
+local function sprite_animation_test()
+	print("run sprite_animation_test")
+
+	root:remove_all_child()
+
+	
+	local frames = {}
+
+	for i = 0, 4 do
+		local name = string.format("attack_%d.png", i)
+		local f = assert(sprite_frame.get("anim_pirate.png", name))
+		frames[#frames+1] = f
+	end
+
+	local s = sprite.new("anim_pirate.png", "attack_0.png")
+
+	s:set_pos(100,0)
+	s:set_anim(frames)
+	s:set_anim_interval(1)
+
+	root:add_child(s)
+end
+
 local tests = {
-	{name = "sprite-basic test", create_func = sprite_basic_test }, 
+	{name = "sprite basic test", create_func = sprite_basic_test }, 
+	{name = "sprite animation test", create_func = sprite_animation_test}
 }
 
 local function draw_gui()
@@ -44,7 +70,8 @@ local function draw_gui()
 					NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE
 				)) then
 
-				nuk_core.nk_layout_row_static(30, 80, 1)
+				-- the layout size should never be larger than the panel size.....
+				nuk_core.nk_layout_row_static(30, 150, 1)
 
 				for i = 1, #tests do
 					local t = tests[i]

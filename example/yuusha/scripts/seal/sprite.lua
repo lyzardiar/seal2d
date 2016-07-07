@@ -66,4 +66,8 @@ function sprite:set_anim(frames)
 	sprite_core.set_anim(self.__cobj, frames)
 end
 
+function sprite:set_anim_interval(interval)
+	sprite_core.set_anim_interval(self.__cobj, interval)
+end
+
 return sprite

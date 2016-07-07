@@ -31,8 +31,10 @@ void anim_update(struct anim* self, float dt);
 void anim_play(struct anim* self);
 void anim_stop(struct anim* self);
 void anim_resume(struct anim* self);
+void anim_set_interval(struct anim* self, float interval);
 void anim_set_speed(struct anim* self, float speed);
 void anim_set_callback(struct anim* self, void (*callback)(struct anim*) );
+
 
 struct sprite_frame* anim_current_frame(struct anim* self);
 struct sprite_frame* anim_frame(struct anim* self, unsigned int frame_index);
