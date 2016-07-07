@@ -21,6 +21,27 @@ void ttf_init_module() {
     }
 }
 
+static FT_Face ttf_load_face(const char* path) {
+    s_assert(library);
+    
+    size_t file_size = 0;
+    unsigned char* ft_data = s_read(path, &file_size, 0);
+    if(!ft_data) {
+        fprintf(stderr, "load ttf file data failed, path = %s\n", path);
+        return NULL;
+    }
+    FT_Face face = NULL;
+    
+    FT_Error err = FT_New_Memory_Face(library, ft_data, file_size, 0, &face);
+    if(err) {
+        fprintf(stderr, "load font face failed with error = %d\n", err);
+        return NULL;
+    }
+    
+    s_free(ft_data);
+    return face;
+}
+
 unsigned char* draw_bitmap(FT_Bitmap* bitmap, int x, int y) {
     //TODO : read the document to figure out
     // the glyph metrics and rewrite this code.
@@ -77,6 +98,7 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
     
     FT_Set_Pixel_Sizes(face, 0, (unsigned int)font_size);
     
+    // TODO: we need render this charactor.. Add TTF render to sprite
     FT_ULong uni_char = 0x61;
     
     FT_Error err = FT_Load_Char(face, uni_char, FT_LOAD_NO_BITMAP);
@@ -115,26 +137,4 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
 
 void ttf_font_free(struct ttf_font* font) {
     s_free(font);
-}
-
-
-FT_Face ttf_load_face(const char* path) {
-    s_assert(library);
-    
-    size_t file_size = 0;
-    unsigned char* ft_data = s_read(path, &file_size, 0);
-    if(!ft_data) {
-        fprintf(stderr, "load ttf file data failed, path = %s\n", path);
-        return NULL;
-    }
-    FT_Face face = NULL;
-    
-    FT_Error err = FT_New_Memory_Face(library, ft_data, file_size, 0, &face);
-    if(err) {
-        fprintf(stderr, "load font face failed with error = %d\n", err);
-        return NULL;
-    }
-    
-    s_free(ft_data);
-    return face;
 }

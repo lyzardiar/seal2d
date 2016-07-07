@@ -17,8 +17,9 @@ struct touch_event;
 
 enum sprite_type {
     SPRITE_TYPE_PIC = 0,
-    SPRITE_TYPE_CONTAINER,
+    SPRITE_TYPE_TTF_LABEL,
     SPRITE_TYPE_CLIP,
+    SPRITE_TYPE_CONTAINER,
 };
 
 struct sprite_frame {
@@ -85,6 +86,7 @@ struct sprite {
 void sprite_init_render(struct render* render);
 
 struct sprite* sprite_new(struct sprite_frame* frame);
+struct sprite* sprite_new_label(const char* label);
 struct sprite* sprite_new_container(struct rect* r);
 struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* points);

@@ -153,6 +153,15 @@ struct sprite* sprite_new(struct sprite_frame* frame){
     return s;
 }
 
+struct sprite* sprite_new_label(const char* label) {
+    struct sprite* s = STRUCT_NEW(sprite);
+    s->type = SPRITE_TYPE_TTF_LABEL;
+    
+//    sprite_init(s, fr, <#float height#>)
+    
+    return s;
+}
+
 struct sprite* sprite_new_container(struct rect* r) {
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_CONTAINER;

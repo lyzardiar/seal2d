@@ -83,7 +83,6 @@ end
 
 local function sprite_event_test()
 	print("run sprite_clip_test")
-
 	root:remove_all_child()
 
 	local touch_event_names = {
@@ -107,8 +106,15 @@ local function sprite_event_test()
 				end
 			end)
 		root:add_child(s)
-	end 
+	end
 end
+
+local function sprite_label_test()
+	print("run sprite_label_test")
+	root:remove_all_child()
+
+end
+
 
 
 local tests = {
@@ -116,6 +122,7 @@ local tests = {
 	{name = "sprite animation test", create_func = sprite_animation_test},
 	{name = "sprite clip test", create_func = sprite_clip_test},
 	{name = "sprite touch test", create_func = sprite_event_test},
+	{name = "sprite label test", create_func = sprite_label_test},
 }
 
 local function draw_gui()
