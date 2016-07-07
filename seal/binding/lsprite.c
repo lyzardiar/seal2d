@@ -200,12 +200,13 @@ int lsprite_get_pos(lua_State* L) {
 }
 
 int lsprite_add_child(lua_State* L) {
-
     luaL_argcheck(L, lua_isuserdata(L, 1), 1, "sprite expected for arg 1");
-    luaL_argcheck(L, lua_isuserdata(L, 2), 2, "sprite expected for arg 2");
-
+    luaL_checktype(L, 2, LUA_TTABLE);
+    
+    lua_getfield(L, 2, "__cobj");
+    struct sprite* child = lua_touserdata(L, -1);
+    
     struct sprite* self = lua_touserdata(L, 1);
-    struct sprite* child = lua_touserdata(L, 2);
     sprite_add_child(self, child);
     
     return 0;
