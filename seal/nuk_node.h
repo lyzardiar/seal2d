@@ -14,9 +14,9 @@ struct nk_panel;
 
 struct nuk_node {
     struct nk_panel* panel;
-    
-    
 };
+
+struct nk_context* global_nk_context();
 
 void nuk_node_ctx_init();
 

@@ -2,6 +2,8 @@ local sprite_frame = require "seal.sprite_frame"
 local sprite = require "seal.sprite"
 local game = require "game"
 
+local nuk_node = require "seal.nuk_node"
+
 local hello_world = {}
 
 function hello_world.entry()
@@ -24,6 +26,10 @@ function hello_world.entry()
 	-- local child_2 = sprite.new("ui.png", "smile_middle.png")
 	-- child_2:set_pos(100, 100)
 	-- clip:add_child(child_2)
+
+	nuk_node.register(function()
+			print("this function should be called every frame. :)")
+		end)
 
 	return root.__cobj
 end

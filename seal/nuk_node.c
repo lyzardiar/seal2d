@@ -10,7 +10,6 @@
 #define NK_INCLUDE_DEFAULT_FONT
 #define NK_IMPLEMENTATION
 
-
 #include "nuklear.h"
 #ifdef PLAT_DESKTOP
     #define NK_GLFW_GL3_IMPLEMENTATION
@@ -34,6 +33,14 @@ void nuk_node_ctx_init() {
     struct nk_context* context = nk_glfw3_init(GAME->window->ctx, NK_GLFW3_INSTALL_CALLBACKS);
 #endif
     ctx = context;
+    struct nk_font_atlas *atlas = NULL;
+    nk_glfw3_font_stash_begin(&atlas);
+    nk_font_atlas_add_from_file(atlas, GAME->config.nk_gui_font_path, GAME->config.nk_gui_font_size, 0);
+    nk_glfw3_font_stash_end();
+}
+
+struct nk_context* global_nk_context() {
+    return ctx;
 }
 
 struct nuk_node* nuk_node_new() {
@@ -54,25 +61,27 @@ void nuk_draw_start() {
 
 void nuk_node_draw(struct nuk_node* self) {
     
-    if (nk_begin(ctx, self->panel, "Demo", nk_rect(50, 50, 230, 250),
-                 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
-                 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE)) {
-        enum {EASY, HARD};
-        static int op = EASY;
-        static int property = 20;
-        nk_layout_row_static(ctx, 30, 80, 1);
-        if (nk_button_label(ctx, "button", NK_BUTTON_DEFAULT))
-            fprintf(stdout, "button pressed\n");
-        
-        nk_layout_row_dynamic(ctx, 30, 2);
-        if (nk_option_label(ctx, "easy", op == EASY)) op = EASY;
-        if (nk_option_label(ctx, "hard", op == HARD)) op = HARD;
-        
-        nk_layout_row_dynamic(ctx, 25, 1);
-        nk_property_int(ctx, "Compression:", 0, &property, 100, 10, 1);
-    }
+    lua_handler_exe_func(GAME->lua_handler, GAME->lstate, self, NULL);
     
-    nk_end(ctx);
+//    if (nk_begin(ctx, self->panel, "Demo", nk_rect(50, 50, 230, 250),
+//                 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
+//                 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE)) {
+//        enum {EASY, HARD};
+//        static int op = EASY;
+//        static int property = 20;
+//        nk_layout_row_static(ctx, 30, 80, 1);
+//        if (nk_button_label(ctx, "button", NK_BUTTON_DEFAULT))
+//            fprintf(stdout, "button pressed\n");
+//        
+//        nk_layout_row_dynamic(ctx, 30, 2);
+//        if (nk_option_label(ctx, "easy", op == EASY)) op = EASY;
+//        if (nk_option_label(ctx, "hard", op == HARD)) op = HARD;
+//        
+//        nk_layout_row_dynamic(ctx, 25, 1);
+//        nk_property_int(ctx, "Compression:", 0, &property, 100, 10, 1);
+//    }
+//    
+//    nk_end(ctx);
 }
 
 void nuk_draw_end() {

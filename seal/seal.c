@@ -181,18 +181,6 @@ struct game* seal_load_game_config() {
     return GAME;
 }
 
-static void seal_init_nuklear() {
-    
-
-    
-    nuk_node_ctx_init();
-
-    struct nk_font_atlas *atlas = NULL;
-    nk_glfw3_font_stash_begin(&atlas);
-    nk_font_atlas_add_from_file(atlas, GAME->config.nk_gui_font_path, GAME->config.nk_gui_font_size, 0);
-    nk_glfw3_font_stash_end();
-}
-
 void seal_init_graphics() {
     // baisc graphic modules
     GAME->texture_cache = texture_cache_new();
@@ -203,8 +191,7 @@ void seal_init_graphics() {
     GAME->lua_handler = lua_handler_new(GAME->lstate);
     
     sprite_init_render(GAME->render);
-    
-    seal_init_nuklear();
+    nuk_node_ctx_init();
     
     // init the font
     ttf_init_module();
@@ -299,9 +286,6 @@ void seal_touch_event(struct touch_event* touch_event) {
     
     sprite_touch(GAME->root, touch_event);
 }
-
-extern void nk_glfw3_new_frame(void);
-extern void nk_glfw3_render(enum nk_anti_aliasing AA, int max_vertex_buffer, int max_element_buffer);
 
 static void nk_draw() {
     nuk_draw_start();
