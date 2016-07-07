@@ -21,43 +21,55 @@ local NK_BUTTON_REPEATER = 1
 
 local hello_world = {}
 
-function hello_world.entry()
-	sprite_frame.load_from_json("res/images/ui.json")
-	sprite_frame.load_from_json("res/images/anim_pirate.json")
+local root
+local function sprite_basic_test()
+	root:remove_all_child()
 
-	local root = sprite.new("ui.png", "smile_middle.png")
-	root:register_handler(function()
-		end)
-	root:set_pos(0, 0)
+	local total = 5
+	for i = 1, 5 do
+		local s = sprite.new("anim_pirate.png", "attack_0.png")
+		s:set_pos(i * 100, 0)
+		root:add_child(s)
+	end
+end
 
-	-- local clip = sprite.new_clip(0, 0, 150, 150)
-	-- clip:set_pos(100, 100)
-	-- root:add_child(clip)
+local tests = {
+	{name = "sprite-basic test", create_func = sprite_basic_test }, 
+}
 
-	-- local child_1 = sprite.new("ui.png", "smile_middle.png")
-	-- child_1:set_pos(-50, 0)
-	-- clip:add_child(child_1)
-
-	-- local child_2 = sprite.new("ui.png", "smile_middle.png")
-	-- child_2:set_pos(100, 100)
-	-- clip:add_child(child_2)
-
-	-- we do some ugly performance test first. want to know how much cpu would it cost to call from C to Lua every frame.
+local function draw_gui()
+		-- we do some ugly performance test first. want to know how much cpu would it cost to call from C to Lua every frame.
 	nuk_node.register(function()
-			if(nuk_core.nk_begin("DemoTitle", {x = 50, y = 50, w = 200, h = 200}, 
+			if(nuk_core.nk_begin("Example", {x = 50, y = 50, w = 200, h = 200}, 
 					NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE
 				)) then
 
 				nuk_core.nk_layout_row_static(30, 80, 1)
-				if (nuk_core.nk_button_label("button", NK_BUTTON_DEFAULT)) then
-					print("button pressed.")
+
+				for i = 1, #tests do
+					local t = tests[i]
+					if (nuk_core.nk_button_label(t.name, NK_BUTTON_DEFAULT)) then
+						t.create_func()
+					end
 				end
 
 			end
 
-
 			nuk_core.nk_end()
 		end)
+end
+
+
+function hello_world.entry()
+	sprite_frame.load_from_json("res/images/ui.json")
+	sprite_frame.load_from_json("res/images/anim_pirate.json")
+
+	root = sprite.new_container()
+	root:register_handler(function()
+		end)
+	root:set_pos(0, 0)
+
+	draw_gui()
 
 	return root.__cobj
 end

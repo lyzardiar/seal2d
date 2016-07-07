@@ -230,11 +230,18 @@ void sprite_add_child(struct sprite* self, struct sprite* child) {
 
 void sprite_remove_child(struct sprite* self, struct sprite* child) {
     s_assert(child);
+    
+    // here we should release the memory??? yes.
+    
+    sprite_free(child);
     array_set(self->children, child->child_index, NULL);
 }
 
 void sprite_remove_all_child(struct sprite* self) {
-    
+    struct array* children = self->children;
+    for (int i = 0 ;i < array_size(children); ++i) {
+        sprite_remove_child(self, array_at(children, i));
+    }
 }
 
 void sprite_touch(struct sprite* self, struct touch_event* touch_event) {

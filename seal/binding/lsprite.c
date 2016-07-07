@@ -204,6 +204,11 @@ int lsprite_add_child(lua_State* L) {
     return 0;
 }
 
+int lsprite_remove_all_child(lua_State* L) {
+    sprite_remove_all_child(lua_touserdata(L, 1));
+    return 0;
+}
+
 int luaopen_seal_sprite(lua_State* L) {
     
 #ifdef luaL_checkversion
@@ -228,6 +233,7 @@ int luaopen_seal_sprite(lua_State* L) {
         { "set_scale", lsprite_set_scale },
         { "get_pos", lsprite_get_pos},
         { "add_child", lsprite_add_child },
+        { "remove_all_child", lsprite_remove_all_child},
         { NULL, NULL },
     };
     
