@@ -66,13 +66,17 @@ void lua_handler_exe_func(struct lua_handler* self, lua_State* L, void* object, 
     int n = 0;
     unsigned int index = (unsigned int)hashmapGet(self->__handlers, object);
     
-    lua_getfield(L, LUA_REGISTRYINDEX, LUA_FUNCTION_HANDLER_KEY);
-    lua_pushinteger(L, index);
-    lua_rawget(L, -2);
-    
-    if (stack_set_func) {
-        n = stack_set_func(L);
+    // index == 0/NULL means no handler has been set to this object.
+    if (index) {
+        lua_getfield(L, LUA_REGISTRYINDEX, LUA_FUNCTION_HANDLER_KEY);
+        lua_pushinteger(L, index);
+        lua_rawget(L, -2);
+        
+        if (stack_set_func) {
+            n = stack_set_func(L);
+        }
+        
+        seal_call(L, n, 0);
     }
-    
-    seal_call(L, n, 0);
+   
 }

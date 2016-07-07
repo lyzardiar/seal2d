@@ -40,9 +40,7 @@ local function sprite_animation_test()
 
 	root:remove_all_child()
 
-	
 	local frames = {}
-
 	for i = 0, 4 do
 		local name = string.format("attack_%d.png", i)
 		local f = assert(sprite_frame.get("anim_pirate.png", name))
@@ -58,9 +56,37 @@ local function sprite_animation_test()
 	root:add_child(s)
 end
 
+local function sprite_clip_test()
+	print("run sprite_clip_test")
+
+	root:remove_all_child()
+
+	local clip = sprite.new_clip(0, 0, 200, 200)
+
+	local sprites = {
+		{x = 0,   y = 0, 	frame = "attack_0.png"},
+		{x = 150, y = 150, 	frame = "attack_1.png"},
+		{x = 250, y = 150, 	frame = "attack_2.png"},
+	}
+
+	for i = 1, #sprites do
+		local data = sprites[i]
+		local s = sprite.new("anim_pirate.png", "attack_0.png")
+		s:set_pos(data.x, data.y)
+		clip:add_child(s)
+	end
+
+	clip:set_pos(100, 0)
+
+	root:add_child(clip)
+end
+
+
+
 local tests = {
 	{name = "sprite basic test", create_func = sprite_basic_test }, 
-	{name = "sprite animation test", create_func = sprite_animation_test}
+	{name = "sprite animation test", create_func = sprite_animation_test},
+	{name = "sprite clip test", create_func = sprite_clip_test},
 }
 
 local function draw_gui()
