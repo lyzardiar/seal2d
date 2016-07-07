@@ -11,6 +11,7 @@
 #include "lualib.h"
 #include "lauxlib.h"
 
+#include "math/matrix.h"
 #include "seal.h"
 #include "geo.h"
 #include "window.h"
@@ -20,8 +21,6 @@
 #include "render.h"
 #include "lua_handler.h"
 
-#include "math/matrix.h"
-
 #include "util.h"
 #include "lopen.h"
 #include "ttf_font.h"
@@ -30,11 +29,10 @@
 #include "platform/platform.h"
 #include "unzip.h"
 
-#define NK_INCLUDE_FIXED_TYPES
-#include "nuklear/nuklear.h"
-
 #ifdef PLAT_DESKTOP
-#include "nuklear/nuklear_glfw_gl3.h"
+    #define NK_GLFW_GL3_IMPLEMENTATION
+    #include "nuklear/nuklear.h"
+    #include "nuklear/nuklear_glfw_gl3.h"
 #endif
 
 #define MAX_VERTEX_BUFFER 512 * 1024
@@ -191,6 +189,18 @@ struct game* seal_load_game_config() {
     return GAME;
 }
 
+static void seal_init_nuklear() {
+    
+#ifdef PLAT_DESKTOP
+    struct nk_context* ctx = nk_glfw3_init(GAME->window->ctx, NK_GLFW3_INSTALL_CALLBACKS);
+    GAME->nk_gui_ctx = ctx;
+#endif
+    struct nk_font_atlas *atlas = NULL;
+    nk_glfw3_font_stash_begin(&atlas);
+    nk_font_atlas_add_from_file(atlas, GAME->config.nk_gui_font_path, GAME->config.nk_gui_font_size, 0);
+    nk_glfw3_font_stash_end();
+}
+
 void seal_init_graphics() {
     
     // baisc graphic modules
@@ -201,6 +211,8 @@ void seal_init_graphics() {
     GAME->lua_handler = lua_handler_new(GAME->lstate);
     
     sprite_init_render(GAME->render);
+    
+    seal_init_nuklear();
     
     // init the font
     ttf_init_module();
@@ -295,30 +307,7 @@ void seal_touch_event(struct touch_event* touch_event) {
     sprite_touch(GAME->root, touch_event);
 }
 
-void seal_draw() {
-    struct render* R = GAME->render;
-    render_clear(R, MAKE_COLOR(255, 255, 255, 255));
-    
-    sprite_visit(GAME->root, GAME->global_dt);
-    
-    render_commit(R);
-    
-    CHECK_GL_ERROR
-}
-
-void seal_destroy() {
-    
-    lua_close(GAME->lstate);
-    
-    texture_cache_free(GAME->texture_cache);
-    sprite_frame_cache_free(GAME->sprite_frame_cache);
-    win_free(GAME->window);
-    
-    sprite_free(GAME->root);
-    s_free(GAME);
-}
-
-void nk_draw(void* win_ctx) {
+static void nk_draw() {
     struct nk_context* ctx = GAME->nk_gui_ctx;
     nk_glfw3_new_frame();
     
@@ -334,7 +323,7 @@ void nk_draw(void* win_ctx) {
         if (nk_button_label(ctx, "button", NK_BUTTON_DEFAULT))
             fprintf(stdout, "button pressed\n");
         
-        nk_layout_row_dynamic(ctx, 30, 2); 
+        nk_layout_row_dynamic(ctx, 30, 2);
         if (nk_option_label(ctx, "easy", op == EASY)) op = EASY;
         if (nk_option_label(ctx, "hard", op == HARD)) op = HARD;
         
@@ -344,4 +333,29 @@ void nk_draw(void* win_ctx) {
     nk_end(ctx);
     
     nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
+}
+
+void seal_draw() {
+    struct render* R = GAME->render;
+    render_clear(R, MAKE_COLOR(255, 255, 255, 255));
+    
+    sprite_visit(GAME->root, GAME->global_dt);
+    
+    render_commit(R);
+    
+    nk_draw();
+    
+    CHECK_GL_ERROR
+}
+
+void seal_destroy() {
+    
+    lua_close(GAME->lstate);
+    
+    texture_cache_free(GAME->texture_cache);
+    sprite_frame_cache_free(GAME->sprite_frame_cache);
+    win_free(GAME->window);
+    
+    sprite_free(GAME->root);
+    s_free(GAME);
 }

@@ -15,6 +15,8 @@ void win_free(struct window* win);
 struct window {
     double cursor_x, cursor_y;
     int is_touch_down; // bool, if the user is touching the screen.
+    
+    void *ctx; // varies depend on platform, reffers to GLFWindow* if we were on mac.
 };
 
 void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int modify);

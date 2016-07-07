@@ -10,7 +10,6 @@ function hello_world.entry()
 
 	local root = sprite.new("ui.png", "smile_middle.png")
 	root:register_handler(function()
-			print('call lua-handler... :) ')
 		end)
 	root:set_pos(0, 0)
 

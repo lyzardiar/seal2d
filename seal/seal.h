@@ -8,8 +8,20 @@
 
 #include "memory.h"
 
+#define NK_INCLUDE_FIXED_TYPES
+#define NK_INCLUDE_STANDARD_IO
+#define NK_INCLUDE_DEFAULT_ALLOCATOR
+#define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
+#define NK_INCLUDE_FONT_BAKING
+#define NK_INCLUDE_DEFAULT_FONT
+#define NK_IMPLEMENTATION
 
-struct NVGcontext;
+#ifdef PLAT_DESKTOP
+    #define NK_GLFW_GL3_IMPLEMENTATION
+    #include "nuklear/nuklear_glfw_gl3.h"
+    #define NK_INCLUDE_FIXED_TYPES
+    #include "nuklear/nuklear.h"
+#endif
 
 struct camera;
 struct sprite_batch;
@@ -44,6 +56,7 @@ struct game {
     
     struct game_config config;
     
+    // core render context
     float global_dt;
     struct camera* global_camera;
     struct sprite_batch* batch;
@@ -51,14 +64,14 @@ struct game {
     struct ttf_font* font;
     struct window* window;
     struct sprite* root;             // the root node of the world
-    struct nk_context* nk_gui_ctx;   // global context of the nuklear lib
     struct shader* shader;
     struct render* render;
     struct lua_handler* lua_handler;
-    
     struct sprite_frame_cache* sprite_frame_cache;
     
-    
+    // third party lib contexts
+    struct nk_context* nk_gui_ctx;   // global context of the nuklear lib
+
     int game_state;
 };
 
@@ -88,7 +101,5 @@ int  seal_call(lua_State *L, int n, int r);
 void seal_touch_event(struct touch_event* e);
 
 void seal_reload_scripts();
-
-void nk_draw(void* win_ctx);
 
 #endif
