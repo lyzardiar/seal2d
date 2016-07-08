@@ -6,6 +6,7 @@
 
 #include "sprite_batch.h"
 #include "texture.h"
+#include "ttf_font.h"
 #include "sprite.h"
 #include "anim.h"
 #include "render.h"
@@ -157,8 +158,22 @@ struct sprite* sprite_new_label(const char* label) {
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_TTF_LABEL;
     
-//    sprite_init(s, fr, <#float height#>)
+    // we new a frame
+    struct sprite_frame* frame = sprite_frame_new(label);
+    frame->source_rect.x = 0;
+    frame->source_rect.y = 0;
+    frame->source_rect.width = GAME->font->tex->width;
+    frame->source_rect.height = GAME->font->tex->height;
+    frame->tex_id = GAME->font->tex->id;
     
+    frame->uv.u = 0.0f;
+    frame->uv.v = 0.0f;
+    frame->uv.w = 1.0f;
+    frame->uv.h = 1.0f;
+    
+    sprite_init(s, GAME->font->tex->width, GAME->font->tex->height);
+    sprite_set_sprite_frame(s, frame);
+
     return s;
 }
 
@@ -313,6 +328,7 @@ void sprite_visit(struct sprite* self, float dt) {
     
     switch (self->type) {
         case SPRITE_TYPE_PIC:
+        case SPRITE_TYPE_TTF_LABEL:
             sprite_draw_pic(self);
             break;
         case SPRITE_TYPE_CONTAINER:

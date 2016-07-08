@@ -17,7 +17,6 @@ local meta = {
 			return rawget(t, key)
 		end
 	end
-
 }
 
 local all_sprites = {}
@@ -29,6 +28,14 @@ function sprite.new(...)
 	self.__cobj = sprite_core.new(__frame)
 
 	all_sprites[self] = self
+	return self
+end
+
+function sprite.new_label(...)
+	local self = {}
+	setmetatable(self, meta)
+	self.__cobj = sprite_core.new_label(...)
+
 	return self
 end
 

@@ -106,6 +106,30 @@ struct texture* texture_load_from_mem(const unsigned char* pixel,
     return tex;
 }
 
+void texture_set_row_height(struct texture* self, unsigned int row_height) {
+    self->row_height = row_height;
+}
+
+void texture_append(struct texture* self, unsigned char* pixel, unsigned int w, unsigned int h, GLint mode) {
+    if (pixel) {
+        int nx = self->cursor_x + w;
+        if (nx >= self->width) {
+            self->cursor_y += self->row_height;
+            nx = 0;
+        }
+        self->cursor_x = nx;
+        
+        glBindTexture(GL_TEXTURE_2D, self->id);
+        CHECK_GL_ERROR;
+        glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+        CHECK_GL_ERROR;
+        glTexSubImage2D(GL_TEXTURE_2D, 0, self->cursor_x, self->cursor_y, w, h, mode, GL_UNSIGNED_BYTE, pixel);
+        CHECK_GL_ERROR;
+        glBindTexture(GL_TEXTURE_2D, 0);
+        CHECK_GL_ERROR;
+    }
+}
+
 void texture_unload(struct texture* self) {
     glDeleteTextures(1, &self->id);
     s_free(self);

@@ -116,7 +116,7 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
     
     FT_Bitmap bitmap = slot->bitmap;
     
-    int asent = (int)(face->size->metrics.ascender >>6);
+    int asent = (int)(face->size->metrics.ascender >> 6);
     
     int ox = slot->bitmap_left;
     int oy = (int)(asent - slot->bitmap_top);

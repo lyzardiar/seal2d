@@ -113,6 +113,10 @@ local function sprite_label_test()
 	print("run sprite_label_test")
 	root:remove_all_child()
 
+	local s = sprite.new_label("hello_world")
+	s:set_pos(100, 100)
+
+	root:add_child(s)
 end
 
 

@@ -297,7 +297,7 @@ static void nk_draw() {
 
 void seal_draw() {
     struct render* R = GAME->render;
-    render_clear(R, MAKE_COLOR(255, 255, 255, 255));
+    render_clear(R, MAKE_COLOR(0, 0, 255, 255));
     
     sprite_visit(GAME->root, GAME->global_dt);
     
