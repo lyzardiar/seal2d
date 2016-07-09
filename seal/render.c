@@ -1,5 +1,6 @@
 #include "seal.h"
 
+#include "geo.h"
 #include "memory.h"
 #include "shader.h"
 #include "texture.h"
@@ -78,11 +79,11 @@ void render_free(struct render* self) {
     s_free(self);
 }
 
-void render_clear(struct render* self, unsigned long color) {
-    float r = ((color >> 24) & 0xff) / 255.0;
-    float g = ((color >> 16) & 0xff) / 255.0;
-    float b = ((color >> 8 ) & 0xff) / 255.0;
-    float a = ((color      ) & 0xff) / 255.0;
+void render_clear(struct render* self, color c) {
+    float r = ((c >> 24) & 0xff) / 255.0;
+    float g = ((c >> 16) & 0xff) / 255.0;
+    float b = ((c >> 8 ) & 0xff) / 255.0;
+    float a = ((c      ) & 0xff) / 255.0;
     
     glClearDepth(1.0f);
     glClearColor(r, g, b, a);

@@ -41,7 +41,7 @@ struct render* render_new();
 void render_free(struct render* self);
 
 void render_clear_state(struct render* self);
-void render_clear(struct render* self, unsigned long color);
+void render_clear(struct render* self, color c);
 void render_commit(struct render* self);
 
 void render_buffer_append(struct render* self, const struct glyph* glyph);

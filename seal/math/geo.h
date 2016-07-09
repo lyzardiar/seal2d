@@ -4,10 +4,12 @@
 #include <stdbool.h>
 #include <OpenGL/OpenGL.h>
 
+typedef unsigned long color;
+
 struct vertex {
     GLfloat position[2]; // x, y
     GLubyte color[4];   // r, g, b, a
-    float uv[2];        // u, v
+    GLfloat uv[2];        // u, v
 };
 
 #define SET_VERTEX_POS(vert, x, y) \
@@ -37,7 +39,7 @@ vert.uv[1] = v; \
 
 #define MAX_OBJECTS (1024)
 
-#define MAKE_COLOR(r,g,b,a) ( (r<<24) | (g<<16) | (b<<8) | (a<<0) )
+#define C4B_COLOR(r,g,b,a) ( (r<<24) | (g<<16) | (b<<8) | (a<<0) )
 
 struct glyph {
     struct vertex tl;
@@ -46,13 +48,6 @@ struct glyph {
     struct vertex br;
     
     GLuint tex_id;
-};
-
-struct color {
-    GLubyte r;
-    GLubyte g;
-    GLubyte b;
-    GLubyte a;
 };
 
 struct rect {
@@ -70,5 +65,7 @@ struct size {
 };
 
 bool rect_contains(struct rect* rect, float x, float y);
+
+void color_c4f(unsigned long color, float* r, float* g, float* b, float* a);
 
 #endif /* defined(__yuusha__geo__) */

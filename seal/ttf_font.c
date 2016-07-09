@@ -70,7 +70,7 @@ unsigned char* draw_bitmap(FT_Bitmap* bitmap, int x, int y) {
 
     unsigned char* buffer = s_malloc(w * h);
     unsigned char* out = buffer;
-    memset(buffer,0, w * h);
+    memset(buffer, 0, w * h);
     
     int offset = y * w + x;
     buffer += offset;

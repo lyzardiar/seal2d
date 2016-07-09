@@ -100,6 +100,7 @@ struct texture* texture_load_from_mem(const unsigned char* pixel,
     CHECK_GL_ERROR
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
     
+    
     CHECK_GL_ERROR
     tex->width = width;
     tex->height = height;

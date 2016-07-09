@@ -55,30 +55,32 @@ void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float 
 void sprite_frame_tostring(struct sprite_frame* self, char* buff);
 
 struct sprite {
+    // basic info
     unsigned int __id;
-    struct affine local_srt;
-    struct affine world_srt;
+    enum sprite_type type;
     
+    // scene graph
     int zorder;
-    
     struct sprite* parent;
     struct array* children; // NULL indicates the children has been removed.
     size_t child_index;
     
+    // geometry
     float x, y;
     float scale_x, scale_y;
     float rotation;
     float width, height;
-    
+    struct affine local_srt;
+    struct affine world_srt;
     int dirty;
     
-    enum sprite_type type;
-    
-    // for sprite only
-    // glphy information for rect sprites, this may waste some bytes. fix here someday.
+    // advanced
+    color color;
+    float alpha;
     struct sprite_frame* frame;
-    struct glyph glyph;
+    struct glyph glyph; // glphy information for rect sprites, this may waste some bytes. fix here someday.
     struct anim* anim;
+    
     
     bool swallow;
 };
@@ -107,6 +109,9 @@ void sprite_set_anim(struct sprite* self, struct anim* anim);
 void sprite_set_pos(struct sprite* self, float x, float y);
 void sprite_set_rotation(struct sprite* self, float rotation);
 void sprite_set_scale(struct sprite* self, float scale);
+
+void sprite_set_color(struct sprite* self, color color);
+void sprite_set_alpha(struct sprite* self, float alpha);
 
 void sprite_add_child(struct sprite* self, struct sprite* child);
 void sprite_remove_child(struct sprite* self, struct sprite* child);

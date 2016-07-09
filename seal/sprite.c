@@ -113,6 +113,8 @@ static void sprite_init(struct sprite* self, float width, float height) {
     self->height = height;
     self->anim = NULL;
     self->swallow = true;
+    self->color = C4B_COLOR(255, 255, 255, 255);
+    self->alpha = 1.0f;
     
     self->children = array_new(16);
     
