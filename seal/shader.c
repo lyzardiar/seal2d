@@ -88,11 +88,23 @@ static GLuint craete_shader_from_file(GLenum shader_type, const char* file_path)
 }
 
 static void shader_load_all(struct shader* self) {
-    GLuint vs = craete_shader_from_file(GL_VERTEX_SHADER, "res/shaders/color.vert");
-    GLuint fs = craete_shader_from_file(GL_FRAGMENT_SHADER, "res/shaders/color.frag");
+    const char* shaders[] = {
+        "res/shaders/text.vert",
+        "res/shaders/text.frag",
+        
+        "res/shaders/color.vert",
+        "res/shaders/color.frag",
+    };
     
-    GLuint program = create_program(vs, fs);
-    self->shader_programs[SHADER_COLOR] = program;
+    int n = sizeof(shaders)/sizeof(const char*)/2;
+    for (int i = 0; i < n; ++i) {
+        int index = i*2;
+        GLuint vs = craete_shader_from_file(GL_VERTEX_SHADER, shaders[index]);
+        GLuint fs = craete_shader_from_file(GL_FRAGMENT_SHADER, shaders[index+1]);
+        
+        GLuint program = create_program(vs, fs);
+        self->shader_programs[i] = program;
+    }
 }
 
 struct shader* shader_new() {

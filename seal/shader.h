@@ -7,6 +7,7 @@
 
 enum SHADER_TYPE {
     SHADER_COLOR = 0,
+    SHADER_TEXT = 1,
     
     MAX_SHADER = 64,
 };
@@ -22,9 +23,6 @@ void shader_free(struct shader* self);
 
 GLint shader_get_uniform(struct shader* self, GLint program, const char* name);
 
-
-//        GLint texture_location = glGetUniformLocation(self->cur_program, "sampler");
-//        glUniform1i(texture_location, 0);
 GLuint shader_get_program(struct shader* self, enum SHADER_TYPE shader_index);
 
 
