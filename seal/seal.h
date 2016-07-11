@@ -7,6 +7,7 @@
 #include "lua.h"
 
 #include "memory.h"
+#include "util.h"
 
 struct camera;
 struct sprite_batch;

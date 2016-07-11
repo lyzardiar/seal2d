@@ -10,6 +10,13 @@
 #define RENDER_STATE_SCISSORS_BIT (1 << 2)
 #define RENDER_STATE_PROGRAM_BIT  (1 << 3)
 
+enum UNIFORM_TYPE {
+    UNIFORM_1F = 0,
+    UNIFORM_2F,
+    UNIFORM_3F,
+    UNIFORM_4F,
+};
+
 struct glyph;
 struct array;
 
@@ -53,4 +60,6 @@ void render_use_texture(struct render* self, GLuint tex_id);
 void render_use_shader(struct render* self, enum SHADER_TYPE shader_type);
 void render_use_program(struct render* self, GLuint program);
 
-#endif /* render_h */
+void render_set_unfiorm(struct render* self, const char* name, enum UNIFORM_TYPE uniform_type, float* v);
+
+#endif

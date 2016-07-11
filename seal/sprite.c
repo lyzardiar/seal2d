@@ -15,8 +15,17 @@
 
 #include "util.h"
 
-
 EXTERN_GAME;
+
+// dirty flags
+#define SPRITE_TRANSFORM_DIRTY  (1 << 0)
+#define SPRITE_SCALE_DIRTY      (1 << 1)
+#define SPRITE_ROTATION_DIRTY   (1 << 2)
+#define SPRITE_COLOR_DIRTY      (1 << 3)
+#define SPRITE_FRAME_DIRTY      (1 << 4)
+#define SPRITE_ALL_DIRTY        ((unsigned int)-1)
+
+#define SPRITE_SRT_DIRTY        (SPRITE_TRANSFORM_DIRTY | SPRITE_SCALE_DIRTY | SPRITE_ROTATION_DIRTY)
 
 static unsigned int __sprite_id = 0;
 static struct render* R = NULL;
@@ -104,7 +113,7 @@ static void sprite_init(struct sprite* self, float width, float height) {
     self->__id = ++__sprite_id;
     self->frame = NULL;
     self->parent = NULL;
-    self->dirty = 1;
+    self->dirty = SPRITE_ALL_DIRTY;
     self->zorder = 0;
     self->scale_x = self->scale_y = 1;
     self->rotation = 0;
@@ -114,7 +123,6 @@ static void sprite_init(struct sprite* self, float width, float height) {
     self->anim = NULL;
     self->swallow = true;
     self->color = C4B_COLOR(255, 255, 255, 255);
-    self->alpha = 1.0f;
     
     self->children = array_new(16);
     
@@ -210,11 +218,18 @@ void sprite_free(struct sprite* self) {
 
 // update the coordinate from local to world
 void sprite_update_transform(struct sprite* self) {
-    if (self->dirty) {
-        for (int i = 0; i < array_size(self->children); ++i) {
-            struct sprite* child = (struct sprite*)array_at(self->children, i);
-            child->dirty = 1;
+    
+    // pass the dirty flags to the children
+    for (int i = 0; i < array_size(self->children); ++i) {
+        struct sprite* child = (struct sprite*)array_at(self->children, i);
+        if (child) {
+            child->dirty |= self->dirty;
         }
+    }
+    
+    // TODO: we could improve performance by seprating transform from SRT,
+    // but for simpler implemention, we have use SRT_DIRTY right now. :)
+    if (self->dirty & SPRITE_SRT_DIRTY ) {
         
         struct affine* local = &self->local_srt;
         af_srt(local, self->x, self->y, self->scale_x, self->scale_y, self->rotation);
@@ -227,7 +242,7 @@ void sprite_update_transform(struct sprite* self) {
             af_concat(&tmp, &(self->parent->world_srt));
         }
         
-        float left = tmp.x;
+        float left =    tmp.x;
         float right = tmp.x + self->width;
         float bottom = tmp.y;
         float top = tmp.y + self->height;
@@ -238,7 +253,7 @@ void sprite_update_transform(struct sprite* self) {
         SET_VERTEX_POS(g->tl, left, top);
         SET_VERTEX_POS(g->tr, right, top);
         
-        self->dirty = 0;
+        self->dirty &= ~(SPRITE_SRT_DIRTY);
         
         self->world_srt = tmp;
     }
@@ -373,6 +388,11 @@ void sprite_draw_pic(struct sprite* self) {
 
 void sprite_draw_label(struct sprite* self) {
     render_use_shader(R, SHADER_TTF_LABEL);
+//    if(self->dirty & SPRITE_COLOR_DIRTY) {
+//        float c4f[4] = {1.0f};
+//        color_vec4(self->color, c4f);
+//        render_set_unfiorm(R, "mix_color", UNIFORM_4F, c4f);
+//    }
     render_use_texture(R, self->frame->tex_id);
     render_buffer_append(R, &self->glyph);
 }
@@ -389,7 +409,8 @@ void sprite_clean_clip(struct sprite* self) {
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame) {
     sprite_set_glyph(self, &frame->source_rect, &frame->uv, frame->tex_id);
     self->frame = frame;
-    self->dirty = 1;
+    
+    self->dirty |= SPRITE_FRAME_DIRTY;
 }
 
 void sprite_set_anim(struct sprite* self, struct anim* anim) {
@@ -407,16 +428,22 @@ void sprite_set_pos(struct sprite* self, float x, float y) {
     self->x = x;
     self->y = y;
 
-    self->dirty = 1;
+    self->dirty |= SPRITE_TRANSFORM_DIRTY;
 }
 
 void sprite_set_rotation(struct sprite* self, float rotation) {
     self->rotation = rotation;
     
-    self->dirty = 1;
+    self->dirty |= SPRITE_ROTATION_DIRTY;
 }
 void sprite_set_scale(struct sprite* self, float scale) {
     self->scale_x = self->scale_y = scale;
     
-    self->dirty = 1;
+    self->dirty |= SPRITE_SCALE_DIRTY;
+}
+
+void sprite_set_color(struct sprite* self, color color) {
+    self->color = color;
+    
+    self->dirty |= SPRITE_COLOR_DIRTY;
 }

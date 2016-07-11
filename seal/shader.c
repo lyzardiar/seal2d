@@ -5,6 +5,7 @@
 
 #include "shader.h"
 #include "memory.h"
+#include "render.h"
 
 #include "platform/fs.h"
 
@@ -117,6 +118,31 @@ struct shader* shader_new() {
 
 void shader_free(struct shader* self) {
     s_free(self);
+}
+
+GLint shader_get_uniform(struct shader* self, GLint program, const char* name) {
+    GLint location =  glGetUniformLocation(program, name);
+    return location;
+}
+
+void shader_set_uniform(struct shader* self, GLint location, enum UNIFORM_TYPE uniform_type, float* v) {
+    switch (uniform_type) {
+        case UNIFORM_1F:
+            glUniform1f(location, v[0]);
+            break;
+        case UNIFORM_2F:
+            glUniform2f(location, v[0], v[1]);
+            break;
+        case UNIFORM_3F:
+            glUniform3f(location, v[0], v[1], v[2]);
+            break;
+        case UNIFORM_4F:
+            glUniform4f(location, v[0], v[1], v[2], v[3]);
+            break;
+        default:
+            break;
+    }
+    CHECK_GL_ERROR;
 }
 
 GLuint shader_get_program(struct shader* self, enum SHADER_TYPE shader_index) {

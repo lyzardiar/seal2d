@@ -97,6 +97,10 @@ void render_clear(struct render* self, color c) {
 void render_commit(struct render* self) {
     if (self->render_state & RENDER_STATE_PROGRAM_BIT) {
         glUseProgram(self->cur_program);
+        
+        float c4f[4] = {1.0f, 0.0f, 1.0f, 1.0f};
+//        color_vec4(self->color, c4f);
+        render_set_unfiorm(self, "mix_color", UNIFORM_4F, c4f);
     }
 
     struct vertex_buffer* vbuf = self->vertex_buffer;
@@ -186,4 +190,10 @@ void render_use_shader(struct render* self, enum SHADER_TYPE shader_type) {
 void render_use_program(struct render* self, GLuint program) {
     self->cur_program = program;
     self->render_state |= RENDER_STATE_PROGRAM_BIT;
+}
+
+void render_set_unfiorm(struct render* self, const char* name, enum UNIFORM_TYPE uniform_type, float* v) {
+    s_assert(self->cur_program);
+    GLint location = shader_get_uniform(self->shader, self->cur_program, name);
+    shader_set_uniform(self->shader, location, uniform_type, v);
 }

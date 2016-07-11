@@ -76,11 +76,9 @@ struct sprite {
     
     // advanced
     color color;
-    float alpha;
     struct sprite_frame* frame;
     struct glyph glyph; // glphy information for rect sprites, this may waste some bytes. fix here someday.
     struct anim* anim;
-    
     
     bool swallow;
 };
@@ -112,7 +110,6 @@ void sprite_set_rotation(struct sprite* self, float rotation);
 void sprite_set_scale(struct sprite* self, float scale);
 
 void sprite_set_color(struct sprite* self, color color);
-void sprite_set_alpha(struct sprite* self, float alpha);
 
 void sprite_add_child(struct sprite* self, struct sprite* child);
 void sprite_remove_child(struct sprite* self, struct sprite* child);

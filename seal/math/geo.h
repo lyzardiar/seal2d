@@ -66,6 +66,7 @@ struct size {
 
 bool rect_contains(struct rect* rect, float x, float y);
 
+void color_vec4(unsigned long color, float v[4]);
 void color_c4f(unsigned long color, float* r, float* g, float* b, float* a);
 
 #endif /* defined(__yuusha__geo__) */
