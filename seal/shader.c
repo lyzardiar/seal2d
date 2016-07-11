@@ -89,11 +89,11 @@ static GLuint craete_shader_from_file(GLenum shader_type, const char* file_path)
 
 static void shader_load_all(struct shader* self) {
     const char* shaders[] = {
-        "res/shaders/text.vert",
-        "res/shaders/text.frag",
-        
         "res/shaders/color.vert",
         "res/shaders/color.frag",
+        
+        "res/shaders/text.vert",
+        "res/shaders/text.frag",
     };
     
     int n = sizeof(shaders)/sizeof(const char*)/2;

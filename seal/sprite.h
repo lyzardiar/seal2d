@@ -100,6 +100,7 @@ void sprite_visit(struct sprite* self, float dt);
 bool sprite_contains(struct sprite* self, float x, float y);
 
 void sprite_draw_pic(struct sprite* self);
+void sprite_draw_label(struct sprite* self);
 void sprite_draw_clip(struct sprite* self);
 void sprite_clean_clip(struct sprite* self);
 

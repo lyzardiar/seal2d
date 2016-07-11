@@ -7,7 +7,7 @@
 
 enum SHADER_TYPE {
     SHADER_COLOR = 0,
-    SHADER_TEXT = 1,
+    SHADER_TTF_LABEL = 1,
     
     MAX_SHADER = 64,
 };

@@ -330,8 +330,10 @@ void sprite_visit(struct sprite* self, float dt) {
     
     switch (self->type) {
         case SPRITE_TYPE_PIC:
-        case SPRITE_TYPE_TTF_LABEL:
             sprite_draw_pic(self);
+            break;
+        case SPRITE_TYPE_TTF_LABEL:
+            sprite_draw_label(self);
             break;
         case SPRITE_TYPE_CONTAINER:
             // do nothing.
@@ -365,6 +367,12 @@ void sprite_visit(struct sprite* self, float dt) {
 
 void sprite_draw_pic(struct sprite* self) {
     render_use_shader(R, SHADER_COLOR);
+    render_use_texture(R, self->frame->tex_id);
+    render_buffer_append(R, &self->glyph);
+}
+
+void sprite_draw_label(struct sprite* self) {
+    render_use_shader(R, SHADER_TTF_LABEL);
     render_use_texture(R, self->frame->tex_id);
     render_buffer_append(R, &self->glyph);
 }
