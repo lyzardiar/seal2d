@@ -86,6 +86,7 @@ struct texture* texture_load_from_mem(const unsigned char* pixel,
                                       GLint mode) {
     // generate opengl texture
     struct texture* tex = s_malloc(sizeof(struct texture));
+    memset(tex, 0, sizeof(struct texture));
     tex->id = 0;
     glGenTextures(1, &tex->id);
     s_assert(tex->id != 0);
@@ -99,6 +100,7 @@ struct texture* texture_load_from_mem(const unsigned char* pixel,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     CHECK_GL_ERROR
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+    glBindTexture(GL_TEXTURE_2D, 0);
     
     
     CHECK_GL_ERROR
@@ -111,24 +113,35 @@ void texture_set_row_height(struct texture* self, unsigned int row_height) {
     self->row_height = row_height;
 }
 
-void texture_append(struct texture* self, unsigned char* pixel, unsigned int w, unsigned int h, GLint mode) {
-    if (pixel) {
-        int nx = self->cursor_x + w;
-        if (nx >= self->width) {
-            self->cursor_y += self->row_height;
-            nx = 0;
-        }
-        self->cursor_x = nx;
-        
-        glBindTexture(GL_TEXTURE_2D, self->id);
-        CHECK_GL_ERROR;
-        glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-        CHECK_GL_ERROR;
-        glTexSubImage2D(GL_TEXTURE_2D, 0, self->cursor_x, self->cursor_y, w, h, mode, GL_UNSIGNED_BYTE, pixel);
-        CHECK_GL_ERROR;
-        glBindTexture(GL_TEXTURE_2D, 0);
-        CHECK_GL_ERROR;
+void texture_append(struct texture* self,
+                    const unsigned char* pixel,
+                    unsigned int w,
+                    unsigned int h,
+                    GLint mode) {
+    
+    s_assert(w <= self->width);
+    s_assert(h <= self->height);
+    
+    if (self->row_height == 0) {
+        self->row_height = h;
     }
+    
+    unsigned int new_x = self->cursor_x + w;
+    if (new_x >= self->width) {
+        self->cursor_y += self->row_height;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, self->id);
+    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, self->width);
+    glPixelStorei(GL_UNPACK_SKIP_PIXELS, self->cursor_x);
+    glPixelStorei(GL_UNPACK_SKIP_ROWS, self->cursor_y);
+    
+    glTexSubImage2D(GL_TEXTURE_2D, 0, self->cursor_x, self->cursor_y, w, h, mode, GL_UNSIGNED_BYTE, pixel);
+    
+    glBindTexture(GL_TEXTURE_2D, 0);
+    
+    self->cursor_x = new_x % self->width;
 }
 
 void texture_unload(struct texture* self) {

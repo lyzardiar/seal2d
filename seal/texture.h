@@ -17,7 +17,6 @@ void texture_cache_free(struct texture_cache* self);
 struct texture* texture_cache_load(struct texture_cache* self, const char* key);
 void texture_cache_unload(struct texture_cache* self, const char* key);
 
-
 struct texture {
     GLuint id;
     unsigned int width, height;
@@ -33,7 +32,12 @@ struct texture* texture_load_from_mem(const unsigned char* memory,
                                       unsigned int height, GLint mode);
 
 void texture_set_row_height(struct texture* self, unsigned int row_height);
-void texture_append(struct texture* self, unsigned char* pixel, unsigned int w, unsigned int h, GLint mode);
+
+void texture_append(struct texture* self,
+                    const unsigned char* memory,
+                    unsigned int w,
+                    unsigned int h,
+                    GLint mode);
 
 void texture_unload(struct texture* self);
 //------------------------------------------------------------
