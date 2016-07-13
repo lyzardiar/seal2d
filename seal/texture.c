@@ -91,6 +91,33 @@ struct texture* texture_load_from_mem(const unsigned char* pixel,
     glGenTextures(1, &tex->id);
     s_assert(tex->id != 0);
     
+    if (mode == GL_RGBA) {
+        unsigned int* p = (unsigned int*)pixel;
+        printf("texture width, height = %d, %d\n", width, height);
+        printf("pixel = %p\n", p);
+        printf("---------------------------------------------------------------------\n");
+        for (int i = 0 ; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                printf("%c ", p[i*height + j] != 0 ? '*' : ' ');
+            }
+            printf("\n");
+        }
+        printf("---------------------------------------------------------------------\n");
+    } else {
+        printf("texture width, height = %d, %d\n", width, height);
+        printf("pixel = %p\n", pixel);
+        printf("---------------------------------------------------------------------\n");
+        for (int i = 0 ; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                printf("%c ", pixel[i*height + j] != 0 ? '*' : ' ');
+            }
+            printf("\n");
+        }
+        printf("---------------------------------------------------------------------\n");
+
+    }
+
+    
     glBindTexture(GL_TEXTURE_2D, tex->id);
     glTexImage2D(GL_TEXTURE_2D, 0, mode, width, height, 0, mode, GL_UNSIGNED_BYTE, pixel);
     CHECK_GL_ERROR

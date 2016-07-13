@@ -195,7 +195,7 @@ void seal_init_graphics() {
     
     // init the font
     ttf_init_module();
-    font = ttf_font_new("res/fonts/marker_felt.ttf", 100);  //TODO: load this in Lua.
+    font = ttf_font_new("res/fonts/SourceCodePro-Regular.ttf", 100);  //TODO: load this in Lua.
     GAME->font = font;
     
     // the bootloader

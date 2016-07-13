@@ -114,7 +114,7 @@ local function sprite_label_test()
 	root:remove_all_child()
 
 	local s = sprite.new_label("hello_world")
-	s:set_pos(100, 100)
+	s:set_pos(500, 300)
 
 	root:add_child(s)
 end
@@ -155,7 +155,7 @@ end
 
 function hello_world.entry()
 	sprite_frame.load_from_json("res/images/ui.json")
-	sprite_frame.load_from_json("res/images/anim_pirate.json")
+	-- sprite_frame.load_from_json("res/images/anim_pirate.json")
 
 	root = sprite.new_container()
 	root:register_handler(function()
