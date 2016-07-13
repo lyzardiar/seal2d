@@ -3,7 +3,7 @@ dst_dir=../../res/images
 tp=/Applications/TexturePacker.app/Contents/MacOS/Texturepacker
 .PHONY: all $(dirs)
 
-$(dirs):
+$(dirs): $(dirs)
 	mkdir -p $(dst_dir)
 	$(tp) --data $(dst_dir)/$@.json --format json --sheet $(dst_dir)/$@.png $@/*.png --trim-mode None --disable-rotation
 	@echo making atlas in folder: $@

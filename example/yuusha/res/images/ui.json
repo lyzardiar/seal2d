@@ -1,8 +1,16 @@
 {"frames": {
 
+"glyph_character_a.png":
+{
+	"frame": {"x":104,"y":104,"w":26,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":26,"h":50},
+	"sourceSize": {"w":26,"h":50}
+},
 "line.png":
 {
-	"frame": {"x":104,"y":2,"w":3,"h":130},
+	"frame": {"x":2,"y":2,"w":3,"h":130},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":3,"h":130},
@@ -10,7 +18,7 @@
 },
 "smile_middle.png":
 {
-	"frame": {"x":2,"y":104,"w":100,"h":100},
+	"frame": {"x":7,"y":2,"w":100,"h":100},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
@@ -18,7 +26,7 @@
 },
 "test_trimed.png":
 {
-	"frame": {"x":2,"y":2,"w":100,"h":100},
+	"frame": {"x":2,"y":134,"w":100,"h":100},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
@@ -29,8 +37,8 @@
 	"version": "1.0",
 	"image": "ui.png",
 	"format": "RGBA8888",
-	"size": {"w":109,"h":206},
+	"size": {"w":256,"h":256},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:b579132129bda051f60b74ea58d11a80:1/1$"
+	"smartupdate": "$TexturePacker:SmartUpdate:15702e97f01addc7602ad08330cf42b2:1/1$"
 }
 }
