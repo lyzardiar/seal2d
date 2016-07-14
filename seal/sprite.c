@@ -348,7 +348,8 @@ void sprite_visit(struct sprite* self, float dt) {
             sprite_draw_pic(self);
             break;
         case SPRITE_TYPE_TTF_LABEL:
-            sprite_draw_label(self);
+            sprite_draw_pic(self);
+//            sprite_draw_label(self);
             break;
         case SPRITE_TYPE_CONTAINER:
             // do nothing.

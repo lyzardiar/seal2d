@@ -114,9 +114,17 @@ local function sprite_label_test()
 	root:remove_all_child()
 
 	local s = sprite.new_label("hello_world")
-	s:set_pos(500, 300)
+	s:set_pos(200, 200)
 
 	root:add_child(s)
+end
+
+local function texture_load_test()
+	root:remove_all_child()
+
+	local texture_core = require "texure_core"
+	local tex_id = texture_core.load_from_cache("res/unpack/color_pad.png")
+	print("tex_id = ", tex_id)
 end
 
 
@@ -127,6 +135,7 @@ local tests = {
 	{name = "sprite clip test", create_func = sprite_clip_test},
 	{name = "sprite touch test", create_func = sprite_event_test},
 	{name = "sprite label test", create_func = sprite_label_test},
+	{name = "texture load test", create_func = texture_load_test},
 }
 
 local function draw_gui()
@@ -154,7 +163,7 @@ end
 
 
 function hello_world.entry()
-	sprite_frame.load_from_json("res/images/ui.json")
+	-- sprite_frame.load_from_json("res/images/ui.json")
 	-- sprite_frame.load_from_json("res/images/anim_pirate.json")
 
 	root = sprite.new_container()

@@ -26,6 +26,7 @@ struct texture {
 };
 
 struct texture* texture_load_from_png(const char* file_path);
+struct texture* texture_load_from_bmp(const char* file_path);
 
 struct texture* texture_load_from_mem(const unsigned char* memory,
                                       unsigned int width,
