@@ -163,8 +163,8 @@ end
 
 
 function hello_world.entry()
-	-- sprite_frame.load_from_json("res/images/ui.json")
-	-- sprite_frame.load_from_json("res/images/anim_pirate.json")
+	sprite_frame.load_from_json("res/images/ui.json")
+	sprite_frame.load_from_json("res/images/anim_pirate.json")
 
 	root = sprite.new_container()
 	root:register_handler(function()
