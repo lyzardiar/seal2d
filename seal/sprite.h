@@ -14,10 +14,13 @@
 struct anim;
 struct render;
 struct touch_event;
+struct array;
+struct bmfont;
 
 enum sprite_type {
     SPRITE_TYPE_PIC = 0,
     SPRITE_TYPE_TTF_LABEL,
+    SPRITE_TYPE_BMFONT_LABEL,
     SPRITE_TYPE_CLIP,
     SPRITE_TYPE_CONTAINER,
 };
@@ -78,7 +81,9 @@ struct sprite {
     color color;
     struct sprite_frame* frame;
     struct glyph glyph; // glphy information for rect sprites, this may waste some bytes. fix here someday.
-    struct anim* anim;
+    struct anim* anim; // for sprite's anim.
+    struct bmfont* bmfont; // for sprite bmfont.
+    struct array* bmfont_frames; // for sprite bmfont.
     
     bool swallow;
 };
@@ -87,6 +92,7 @@ void sprite_init_render(struct render* render);
 
 struct sprite* sprite_new(struct sprite_frame* frame);
 struct sprite* sprite_new_label(const char* label);
+struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path);
 struct sprite* sprite_new_container(struct rect* r);
 struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* points);

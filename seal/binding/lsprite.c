@@ -101,6 +101,14 @@ int lsprite_new_label(lua_State* L) {
     return 1;
 }
 
+int lsprite_new_bmfont_label(lua_State* L) {
+    const char* label = luaL_checkstring(L, 1);
+    const char* fnt_path = luaL_checkstring(L, 2);
+    struct sprite* sprite = sprite_new_bmfont_label(label, fnt_path);
+    lua_pushlightuserdata(L, sprite);
+    return 1;
+}
+
 static void check_rect(lua_State* L, struct rect* r) {
     lua_Number x, y, width, height;
     if(lua_gettop(L) == 4) {
@@ -239,6 +247,7 @@ int luaopen_seal_sprite(lua_State* L) {
         
         { "new", lsprite_new },
         { "new_label", lsprite_new_label },
+        { "new_bmfont_label", lsprite_new_bmfont_label },
         { "new_container", lsprite_new_container },
         { "new_clip", lsprite_new_clip },
         { "free", lsprite_free },

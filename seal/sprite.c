@@ -1,5 +1,7 @@
 #include <string.h>
 
+#include "platform/fs.h"
+
 #include "base/hashmap.h"
 #include "seal.h"
 #include "memory.h"
@@ -9,11 +11,14 @@
 #include "ttf_font.h"
 #include "sprite.h"
 #include "anim.h"
+#include "bmfont.h"
 #include "render.h"
 #include "event.h"
+
 #include "lua_handler.h"
 
 #include "util.h"
+
 
 EXTERN_GAME;
 
@@ -121,6 +126,8 @@ static void sprite_init(struct sprite* self, float width, float height) {
     self->width = width;
     self->height = height;
     self->anim = NULL;
+    self->bmfont = NULL;
+    self->bmfont_frames = NULL;
     self->swallow = true;
     self->color = C4B_COLOR(255, 255, 255, 255);
     
@@ -187,6 +194,21 @@ struct sprite* sprite_new_label(const char* label) {
     return s;
 }
 
+struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path) {
+    struct sprite* s = STRUCT_NEW(sprite);
+    s->type = SPRITE_TYPE_BMFONT_LABEL;
+    
+    char* bmfont_data = s_reads(fnt_path);
+    printf("bmfont_data is \n");
+    printf("%s\n", bmfont_data);
+    s->bmfont = bmfont_new(bmfont_data);
+    
+
+
+
+    return s;
+}
+
 struct sprite* sprite_new_container(struct rect* r) {
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_CONTAINER;
@@ -212,6 +234,9 @@ void sprite_free(struct sprite* self) {
     if(self->anim) {
         anim_free(self->anim);
     }
+    
+    
+    s_free(self->bmfont);
     
     s_free(self);
 }

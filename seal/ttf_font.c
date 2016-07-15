@@ -72,114 +72,6 @@ static FT_Face ttf_load_face(const char* path, size_t font_size) {
     s_free(ft_data);
     return face;
 }
-//
-//struct bitmap {
-//    void * buf;
-//    int w;
-//    int h;
-//    int pitch;
-//};
-//
-///* x,y is offset of target */
-//static void
-//cpy_bitmap(struct bitmap * target, struct bitmap * src, int x, int y) {
-//    unsigned char * sbuf = src->buf;
-//    unsigned char * tbuf = target->buf;
-//    
-//    int x0,y0,x1,y1;
-//    x0 = x > 0 ? x : 0;
-//    y0 = y > 0 ? y : 0;
-//    x1 = (x + src->w > target->w) ? target->w : (x+src->w);
-//    y1 = (y + src->h > target->h) ? target->h : (y+src->h);
-//    
-//    if (x1 <= x0 || y1 <= y0)
-//        return;
-//    if (x0 >= target->w || y0 >= target->h)
-//        return;
-//    
-//    int w = x1 - x0;
-//    int h = y1 - y0;
-//    
-//    tbuf += y0 * target->pitch + x0;
-//    sbuf += (y0 - y)*src->pitch + x0 - x;
-//    int i,j;
-//    for (i=0;i<h;i++) {
-//        for (j=0;j<w;j++)
-//            tbuf[j] = sbuf[j];
-//        sbuf += src->pitch;
-//        tbuf += target->pitch;
-//    }
-//}
-
-//unsigned char* draw_bitmap(FT_Bitmap* bitmap, int ox, int oy, int dst_width, int dst_height) {
-//    //TODO : read the document to figure out
-//    // the glyph metrics and rewrite this code.
-//    int bw = bitmap->width;
-//    int bh = bitmap->rows;
-//    int w = ox + bw;
-//    int h = oy + bh;
-//    printf("(bw,bh) = (%d, %d), (w, h) = (%d, %d), (ox, oy) = (%d, %d)\n", bw, bh, w, h, ox, oy);
-//
-//#if 1
-//
-//    unsigned char* out = s_malloc(dst_width * dst_height);
-//    unsigned char* ret = out;
-//    memset(out, 0, dst_width*dst_height);
-//    
-//    printf("offset = %d\n", oy * bw + ox);
-//    unsigned char* src = bitmap->buffer;
-//    src += dst_height - oy * bw + ox;
-//
-//    for (int i = 0; i < bh; ++i) {
-//        for (int j = 0; j < bw; ++j) {
-//            out[j] = src[j];
-//        }
-//        out += dst_width;
-//        src += bw;
-//    }
-//
-//    
-//    printf("####################################\n");
-//    for (int i = 0; i < dst_width; ++i) {
-//        for (int j = 0; j < dst_height; ++j) {
-//            printf("%c ", ret[j*h+i] ? '*' : ' ');
-//        }
-//        printf("\n");
-//    }
-//    printf("####################################\n");
-//    
-//    return ret;
-//#else
-//
-//    unsigned char* buffer = s_malloc(w * h);
-//    unsigned char* out = buffer;
-//    memset(buffer, 0, w * h);
-//    
-//    int offset = oy * w + ox;
-//    buffer += offset;
-//    
-//    printf("the origin buffer is\n");
-//    printf("------------------------------------\n");
-//    for (int i = 0; i < bitmap->rows; ++i) {
-//        for (int j = 0; j < bitmap->width; ++j) {
-//            printf("%c ", bitmap->buffer[i*bitmap->rows + j] != 0 ? '*' : ' ');
-//        }
-//        printf("\n");
-//    }
-//    printf("------------------------------------\n");
-//    unsigned char* src = bitmap->buffer;
-//    for (i = 0; i < bitmap->rows; ++i) {
-//        for (j = 0; j < bitmap->width; ++j) {
-//            buffer[j] = src[j];
-//        }
-//        buffer += w;
-//        src += bitmap->pitch;
-//    }
-//
-//    return out;
-//#endif
-//}
-
 
 // still don't known why I can't render texture properly.
 // I decide to use Bitmap font directly to render text for the time being.
@@ -270,7 +162,7 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
     unsigned char* src = bitmap.buffer;
     
     printf("dst = (%p), src = (%p), \n", dst, src);
-    printf("----------------------------------------\n");
+//    printf("----------------------------------------\n");
     for (int i = 0, p = offset_y; i < bitmap.rows; ++i, ++p) {
         for (int j = 0, q = offset_x; j < bitmap.width; ++j, ++q) {
 #ifdef USE_RGBA
@@ -278,20 +170,20 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
 #else
             dst[ p*target_w + q ] = (src[j]);
 #endif
-            printf("%c", src[j] != 0 ? '*' : ' ');
+//            printf("%c", src[j] != 0 ? '*' : ' ');
         }
-        printf("\n");
+//        printf("\n");
         src += bitmap.pitch;
     }
-    printf("----------------------------------------\n");
-    
-    for (int i = 0; i < target_h; ++i) {
-        for (int j = 0; j < target_w; ++j) {
-            printf("%c", ((unsigned int*)pixel)[i*target_w + j] != 0 ? '*' : ' ');
-        }
-        printf("\n");
-    }
-    
+//    printf("----------------------------------------\n");
+//
+//    for (int i = 0; i < target_h; ++i) {
+//        for (int j = 0; j < target_w; ++j) {
+//            printf("%c", ((unsigned int*)pixel)[i*target_w + j] != 0 ? '*' : ' ');
+//        }
+//        printf("\n");
+//    }
+//    
 #ifdef USE_RGBA
     struct texture* tex = texture_load_from_mem(pixel,
                                                 target_w,

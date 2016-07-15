@@ -127,6 +127,16 @@ local function texture_load_test()
 	print("tex_id = ", tex_id)
 end
 
+local function bmfont_load_test()
+	print("run bmfont_load_test")
+	root:remove_all_child()
+
+	local s = sprite.new_bmfont_label("hello world", "res/fonts/animated.txt")
+	s:set_pos(200, 200)
+
+	root:add_child(s)
+end
+
 
 
 local tests = {
@@ -136,6 +146,7 @@ local tests = {
 	{name = "sprite touch test", create_func = sprite_event_test},
 	{name = "sprite label test", create_func = sprite_label_test},
 	{name = "texture load test", create_func = texture_load_test},
+	{name = "bmfont load test", create_func = bmfont_load_test}, 
 }
 
 local function draw_gui()

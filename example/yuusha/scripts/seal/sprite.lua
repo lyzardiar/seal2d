@@ -39,6 +39,13 @@ function sprite.new_label(...)
 	return self
 end
 
+function sprite.new_bmfont_label(...)
+	local self = {}
+	setmetatable(self, meta)
+	self.__cobj = sprite_core.new_bmfont_label(...)
+	return self
+end
+
 function sprite.new_container(...)
 	local self = {}
 	setmetatable(self, meta)
