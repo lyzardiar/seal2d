@@ -87,7 +87,7 @@ void* array_at(struct array* self, size_t index) {
     return self->data[index];
 }
 
-void array_clear(struct array* self, int cleanup) {
+void array_clear(struct array* self, bool cleanup) {
     if (self->n == 0) {
         return;
     }

@@ -8,7 +8,6 @@
 #include "math/geo.h"
 
 #include "texture.h"
-#include "sprite_batch.h"
 #include "affine.h"
 
 struct anim;
@@ -18,9 +17,18 @@ struct array;
 struct bmfont;
 
 enum sprite_type {
+    // single sprite
     SPRITE_TYPE_PIC = 0,
     SPRITE_TYPE_TTF_LABEL,
+    SPRITE_TYPE_PARTICLE,
+    SPRITE_TYPE_VECTOR, // contains line, rect, polygon
+    
+    // muti sprite
     SPRITE_TYPE_BMFONT_LABEL,
+    SPRITE_TYPE_MESH,
+    SPRITE_TYPE_TILE_MAP,
+    
+    // sprite container
     SPRITE_TYPE_CLIP,
     SPRITE_TYPE_CONTAINER,
 };
@@ -83,7 +91,7 @@ struct sprite {
     struct glyph glyph; // glphy information for rect sprites, this may waste some bytes. fix here someday.
     struct anim* anim; // for sprite's anim.
     struct bmfont* bmfont; // for sprite bmfont.
-    struct array* bmfont_frames; // for sprite bmfont.
+    
     
     bool swallow;
 };
@@ -122,5 +130,10 @@ void sprite_remove_child(struct sprite* self, struct sprite* child);
 void sprite_remove_all_child(struct sprite* self);
 
 void sprite_to_node_space(struct sprite* self, float x, float y, float* tox, float* toy);
+
+
+// !!! don't use this 2 methods unless you known what the HELL you were doing. :)
+void sprite_init(struct sprite* self, float width, float height);
+void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLuint tex_id);
 
 #endif

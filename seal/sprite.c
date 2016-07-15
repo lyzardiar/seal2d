@@ -6,7 +6,6 @@
 #include "seal.h"
 #include "memory.h"
 
-#include "sprite_batch.h"
 #include "texture.h"
 #include "ttf_font.h"
 #include "sprite.h"
@@ -114,7 +113,7 @@ void sprite_frame_tostring(struct sprite_frame* self, char* buff) {
             self->uv.u, self->uv.v, self->uv.w, self->uv.h);
 }
 
-static void sprite_init(struct sprite* self, float width, float height) {
+void sprite_init(struct sprite* self, float width, float height) {
     self->__id = ++__sprite_id;
     self->frame = NULL;
     self->parent = NULL;
@@ -127,7 +126,6 @@ static void sprite_init(struct sprite* self, float width, float height) {
     self->height = height;
     self->anim = NULL;
     self->bmfont = NULL;
-    self->bmfont_frames = NULL;
     self->swallow = true;
     self->color = C4B_COLOR(255, 255, 255, 255);
     
@@ -137,7 +135,7 @@ static void sprite_init(struct sprite* self, float width, float height) {
     af_identify(&self->world_srt);
 }
 
-static void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLuint tex_id) {
+void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLuint tex_id) {
     struct glyph* g = &self->glyph;
     
     SET_VERTEX_POS(g->bl, 0.0f, 0.0f);
@@ -195,18 +193,28 @@ struct sprite* sprite_new_label(const char* label) {
 }
 
 struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path) {
-    struct sprite* s = STRUCT_NEW(sprite);
-    s->type = SPRITE_TYPE_BMFONT_LABEL;
+    struct sprite* root = STRUCT_NEW(sprite);
+    root->type = SPRITE_TYPE_BMFONT_LABEL;
     
     char* bmfont_data = s_reads(fnt_path);
     printf("bmfont_data is \n");
     printf("%s\n", bmfont_data);
-    s->bmfont = bmfont_new(bmfont_data);
+    root->bmfont = bmfont_new(bmfont_data);
+    
+    /*for simpler implemention, each character will use a sprite,
+      but will only cost one draw call at most. :)*/
+    sprite_init(root, 0, 0);
+    sprite_set_sprite_frame(root, NULL);
+    
+    // not support chinese yet.
+    int len = strlen(label);
+    for (int i = 0; i < len; ++i) {
+        char c = label[i];
+        
+    }
     
 
-
-
-    return s;
+    return root;
 }
 
 struct sprite* sprite_new_container(struct rect* r) {

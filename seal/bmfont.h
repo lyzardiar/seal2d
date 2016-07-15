@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 struct array;
+struct sprite;
 
 #define BM_FACE_NAME_LEN    (128)
 #define CHARSET_NAME_LEN    (32)
@@ -57,7 +58,12 @@ struct bmfont{
     struct array* characters;
 };
 
+struct bmfont_sprite {
+    struct sprite* __super;
+};
+
 struct bmfont* bmfont_new(const char* bmfont_data);
 void bmfont_free(struct bmfont* self);
+
 
 #endif

@@ -2,6 +2,7 @@
 #define __seal__array__
 
 #include <stdio.h>
+#include <stdbool.h>
 
 struct array;
 
@@ -16,7 +17,7 @@ void*   array_at(struct array* self, size_t index);
 
 // if free is set to none-zero, it will call s_free to dealloc the memory
 // allocated by the user.
-void    array_clear(struct array* self, int cleanup);
+void    array_clear(struct array* self, bool cleanup);
 int     array_empty(struct array* self);
 size_t  array_size(struct array* self);
 

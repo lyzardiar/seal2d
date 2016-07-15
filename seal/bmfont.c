@@ -1,6 +1,7 @@
 #include "memory.h"
 #include "array.h"
 
+#include "sprite.h"
 #include "bmfont.h"
 
 static int parse_int(char* data) {
@@ -141,4 +142,8 @@ struct bmfont* bmfont_new(const char* bmfont_data) {
     return font;
 }
 
-void bmfont_free(struct bmfont* self);
+void bmfont_free(struct bmfont* self) {
+    array_clear(self->characters, true);
+    
+    s_free(self);
+}
