@@ -7,7 +7,7 @@ This project is under heavy development currently, **it's a toy right now**.
 
 You need to set the custom working directory in xcode.
     
-    1. Open the example in "example/yuusha/proj.mac" or "proj.ios" by XCode. 
+    1. Open the example in "example/yuusha/proj.mac" by XCode. 
     2. Goto Product->Scheme->Edit Scheme.
     3. Click the left 'Run' tab, and find 'options'.
     4. Select the 'Use custom working directory:', and select the example's root directory, should be
