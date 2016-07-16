@@ -1,8 +1,17 @@
 #include "memory.h"
-#include "array.h"
+#include "hashmap.h"
 
 #include "sprite.h"
 #include "bmfont.h"
+
+static int64_t parse_int64(char* data) {
+    int64_t n = 0;
+    char* pos = strchr(data, '='); // go through the key
+    
+    sscanf(pos+1, "%lld", &n);
+    return n;
+    
+}
 
 static int parse_int(char* data) {
     int n = 0;
@@ -17,6 +26,14 @@ static void parse_str(char* data, char* val) {
     sscanf(pos+1, "%s", val);
 }
 
+static int hash_str(void* key) {
+    return hashmapHash(key, strlen(key));
+}
+
+static bool hash_equal(void* a, void* b) {
+    return strcmp(a, b) == 0;
+}
+
 
 //example data:
 
@@ -26,6 +43,11 @@ static void parse_str(char* data, char* val) {
 //chars count=97
 //char id=32     x=125   y=472   width=0     height=0     xoffset=0     yoffset=66    xadvance=16    page=0 chnl=0 letter="space"
 //char id=33     x=404   y=316   width=20    height=58    xoffset=3     yoffset=8     xadvance=17    page=0 chnl=0 letter="!"
+
+static void remove_quote(char* dst, const char* src) {
+    memcpy(dst, src+1, strlen(src)-2);
+    dst[strlen(src)-2] = 0;
+}
 
 struct bmfont* bmfont_new(const char* bmfont_data) {
     struct bmfont* font = STRUCT_NEW(bmfont);
@@ -42,20 +64,13 @@ struct bmfont* bmfont_new(const char* bmfont_data) {
         memset(tag, 0, 32);
         sscanf(line, "%s", tag);
         
-        printf("line = %s\n", line);
-        printf("tag = %s\n", tag);
         if (!strcmp(tag, "info")) {
             sscanf(line, "%s %s %s %s %s %s %s %s %s %s %s %s",
                    tag, dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy, space);
             
-            printf("space = %s\n", space);
             char space_data[16] = "";
             parse_str(space, space_data);
-            
-            printf("space_data = %s\n", space_data);
-            
             sscanf(space_data, "%d,%d", &font->info.spacing.x, &font->info.spacing.y);
-            
         } else if (!strcmp(tag, "common")) {
             
             char lineHeight[32] = "";
@@ -73,29 +88,21 @@ struct bmfont* bmfont_new(const char* bmfont_data) {
             font->common.scaleH = parse_int(scaleH);
             font->common.pages = parse_int(pages);
             font->common.packed = parse_int(packed);
-            
-            printf("lineHeight = %d, base = %d, scaleW = %d, scaleH = %d, pages = %d, packed = %d\n",
-                   font->common.lineHeight, font->common.base, font->common.scaleW,
-                   font->common.scaleH, font->common.pages, font->common.packed);
-
         } else if (!strcmp(tag, "page")) {
             char page[32] = "";
             char file[128] = "";
             sscanf(line, "%s %s %s", tag, page, file);
             font->page.id = parse_int(page);
-            parse_str(file, font->page.file);
             
-            printf("page.id = %d, file = %s\n", font->page.id, font->page.file);
+            char tmp[128] = "";
+            parse_str(file, tmp);
+            remove_quote(font->page.file, tmp);
         } else if (!strcmp(tag, "chars")) {
             char count[16] = "";
             sscanf(line, "%s %s", tag, count);
             int char_count = parse_int(count);
-            printf("char_count = %d\n", char_count);
             
-            struct array* characters = array_new(char_count);
-        
-            // example data struct:
-            // char id=38     x=359   y=73    width=53    height=59    xoffset=1     yoffset=8     xadvance=43    page=0 chnl=0 letter="&"
+            struct Hashmap* characters = hashmapCreate(256, hash_str, hash_equal);
             
             char dummy[32] = "";
             char id[32] = "";
@@ -110,13 +117,15 @@ struct bmfont* bmfont_new(const char* bmfont_data) {
             char chnl[32] = "";
             char letter[32] = "";
             
+            char tmp_letter[32] = "";
+            
             // this code is stupid. will fix this someday :)
             for (int i = 0; i < char_count; ++i) {
                 line = strtok(NULL, "\n");
                 struct charc* c = STRUCT_NEW(charc);
                 sscanf(line, "%s %s %s %s %s %s %s %s %s %s %s %s",
                        dummy, id, x, y, width, height, xoffset, yoffset, xadvance, page, chnl, letter);
-                c->id = parse_int(id);
+                c->id = parse_int64(id);
                 c->x = parse_int(x);
                 c->y = parse_int(y);
                 c->width = parse_int(width);
@@ -126,11 +135,21 @@ struct bmfont* bmfont_new(const char* bmfont_data) {
                 c->xadvance = parse_int(xadvance);
                 c->page = parse_int(page);
                 c->chnl = parse_int(chnl);
-                parse_str(letter, c->letter);
-                printf("id=%d, x=%d, y=%d, width=%d, height=%d, xoffset=%d, yoffset=%d, xadvance=%d, page=%d, chnl=%d, letter=%s\n",
-                       c->id, c->x, c->y, c->width, c->height,
-                       c->xoffset, c->yoffset, c->xadvance, c->page, c->chnl, c->letter);
-                array_push_back(characters, c);
+                
+                // here we need to remove 2 quotes.
+                
+                parse_str(letter, tmp_letter);
+                
+                // TODO: ugly code, improve someday.
+                
+                if (c->id == 32) { // space for special case
+                    c->letter[0] = ' ';
+                    c->letter[1] = 0;
+                } else {
+                    remove_quote(c->letter, tmp_letter);
+                }
+                
+                hashmapPut(characters, c->letter, c);
             }
             
             font->characters = characters;
@@ -143,7 +162,15 @@ struct bmfont* bmfont_new(const char* bmfont_data) {
 }
 
 void bmfont_free(struct bmfont* self) {
-    array_clear(self->characters, true);
+    hashmapFree(self->characters);
     
     s_free(self);
+}
+
+// add a len param we may avoid a lot string copy.
+struct charc* bmfont_load_charc(struct bmfont* self, const char* c) {
+    // TODO: implement a function which convert utf-8 to integer.
+    // NOW we simply return A
+    
+    return hashmapGet(self->characters, (void*)c);
 }

@@ -33,6 +33,7 @@ EXTERN_GAME;
 
 static unsigned int __sprite_id = 0;
 static struct render* R = NULL;
+static struct sprite_frame_cache* C = NULL;
 void sprite_init_render(struct render* render) {
     R = render;
 }
@@ -49,6 +50,8 @@ struct sprite_frame_cache* sprite_frame_cache_new() {
     struct sprite_frame_cache* c = STRUCT_NEW(sprite_frame_cache);
     c->cache = hashmapCreate(128, hash_str, hash_equal);
     c->nframes = 0;
+    
+    C = c;
     return c;
 }
 
@@ -62,17 +65,22 @@ void sprite_frame_cache_add(struct sprite_frame_cache* self, struct sprite_frame
 }
 
 struct sprite_frame* sprite_frame_cache_get(struct sprite_frame_cache* self, const char* key) {
-    return hashmapGet(self->cache, (void*)key);
+    struct sprite_frame* f = hashmapGet(self->cache, (void*)key);
+    if (!f) {
+        f = sprite_frame_new(key);
+        sprite_frame_cache_add(GAME->sprite_frame_cache, f);
+    }
+    return f;
 }
 
 struct sprite_frame* sprite_frame_new(const char* key) {
-    struct sprite_frame* f = STRUCT_NEW(sprite_frame);
+     struct sprite_frame* f = STRUCT_NEW(sprite_frame);
     memset(f, 0, sizeof(struct sprite_frame));
+    
     int len = strlen(key);
     f->key = s_calloc(len+1);
     strcpy(f->key, key);
     
-    sprite_frame_cache_add(GAME->sprite_frame_cache, f);
     return f;
 }
 
@@ -193,27 +201,82 @@ struct sprite* sprite_new_label(const char* label) {
 }
 
 struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path) {
-    struct sprite* root = STRUCT_NEW(sprite);
+    struct rect r = {0, 0, 200, 200};
+    struct sprite* root = sprite_new_container(&r);
     root->type = SPRITE_TYPE_BMFONT_LABEL;
     
     char* bmfont_data = s_reads(fnt_path);
-    printf("bmfont_data is \n");
-    printf("%s\n", bmfont_data);
-    root->bmfont = bmfont_new(bmfont_data);
+    
+    // TODO: we need cache the font to avoid load everytime.
+    struct bmfont* bmfont = bmfont_new(bmfont_data);
+    s_free(bmfont_data);
     
     /*for simpler implemention, each character will use a sprite,
       but will only cost one draw call at most. :)*/
-    sprite_init(root, 0, 0);
-    sprite_set_sprite_frame(root, NULL);
+//    sprite_init(root, 0, 0);
+    
+    // load the texture
+    
+    // get the path and append before page.file
+    
+    char* p = strrchr(fnt_path, '/');
+    char tmp[128] = "";
+    strncpy(tmp, fnt_path, p - fnt_path);
+    char pagefile[128] = "";
+    snprintf(pagefile, 128, "%s/%s", tmp, bmfont->page.file);
+    struct texture* tex = texture_cache_load(GAME->texture_cache, pagefile);
     
     // not support chinese yet.
+    char label_key[128] = "";
     int len = strlen(label);
+    float x = 0.0f;
+    float y = 0.0f;
+    
+    float width = 500;
+    
     for (int i = 0; i < len; ++i) {
-        char c = label[i];
         
+        // TODO: currently we only support ** ENGLISH **, we need have a UTF-8 character split function
+        // to split this label into characters, so that we were able to support Chinese, Japanese..
+        char c = label[i];
+        snprintf(label_key, 128, "%s_%c", fnt_path, c);
+        
+        char str[4] = {c, 0, 0, 0};
+        
+        struct charc* character = bmfont_load_charc(bmfont, str);
+        
+        struct sprite_frame* frame = sprite_frame_cache_get(C, label_key);
+        if (!frame->__initialized) {
+            
+            frame->frame_rect.x = character->x;
+            frame->frame_rect.y = character->y;
+            frame->frame_rect.width = character->width;
+            frame->frame_rect.height = character->height;
+            
+            frame->source_rect = frame->frame_rect;
+            
+            frame->source_size.width = character->width;
+            frame->source_size.height = character->height;
+            
+            frame->tex_id = tex->id;
+            
+            sprite_frame_init_uv(frame, tex->width, tex->height);
+            frame->__initialized = true;
+        }
+        
+        struct sprite* c_sprite = sprite_new(frame);
+        sprite_set_pos(c_sprite, x, y);
+        sprite_add_child(root, c_sprite);
+        
+        // coord caculation
+        x += character->xoffset + character->xadvance;
+        if (x > width) {
+            x = 0;
+            y -= bmfont->common.lineHeight;
+        }
     }
     
-
+    s_free(bmfont);
     return root;
 }
 

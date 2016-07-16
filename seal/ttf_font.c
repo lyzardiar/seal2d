@@ -12,6 +12,8 @@
 
 static FT_Library library = NULL;
 
+//#define TTF_LOG // uncomment this if you need log
+
 void ttf_init_module() {
     if (!library) {
         FT_Error err = FT_Init_FreeType(&library);
@@ -41,7 +43,7 @@ static FT_Face ttf_load_face(const char* path, size_t font_size) {
     FT_Set_Pixel_Sizes(face, 0, (unsigned int)font_size);
 
     
-#if DEBUG
+#ifdef TTF_LOG
     printf("face loaded: %s \n", path);
     printf("\tnum_faces = %ld\n", face->num_faces);
     printf("\tnum_glyphs = %ld\n", face->num_glyphs);
@@ -105,7 +107,7 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
         return NULL;
     }
     
-#if DEBUG
+#ifdef TTF_LOG
     printf("\n\tglyph metrics for char(\'%c\' - unicode[%lu]) = \n\t\t{\n\t\t\t width = %ld,\n"
            "\t\t\t height = %ld,\n"
            "\t\t\t horiBearingX = %ld,\n"
@@ -128,7 +130,7 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
     
     FT_Bitmap bitmap = slot->bitmap;
 
-#if DEBUG
+#ifdef TTF_LOG
     printf("\t bitmap = \n\t\t{\n"
            "\t\t\t rows = %u\n"
            "\t\t\t width = %u\n"
@@ -153,37 +155,15 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
     unsigned char* pixel = s_malloc(target_w * target_h * pixel_width);
     memset(pixel, 0, target_w * target_h * pixel_width);
     
+
+#ifdef TTF_LOG
     int asent = (int)(face->size->metrics.ascender >> 6);
     int offset_x = slot->bitmap_left;
     int offset_y = asent - slot->bitmap_top;
     printf("offset = (%d, %d), target size = (%d, %d)\n", offset_x, offset_y, target_w, target_h);
-
-    unsigned int * dst = (unsigned int*)pixel;
-    unsigned char* src = bitmap.buffer;
-    
-    printf("dst = (%p), src = (%p), \n", dst, src);
-//    printf("----------------------------------------\n");
-    for (int i = 0, p = offset_y; i < bitmap.rows; ++i, ++p) {
-        for (int j = 0, q = offset_x; j < bitmap.width; ++j, ++q) {
-#ifdef USE_RGBA
-            dst[ p*target_w + q ] = (src[j]<<24) | (src[j]<<16) | (src[j]<<8) | (src[j]);
-#else
-            dst[ p*target_w + q ] = (src[j]);
 #endif
-//            printf("%c", src[j] != 0 ? '*' : ' ');
-        }
-//        printf("\n");
-        src += bitmap.pitch;
-    }
-//    printf("----------------------------------------\n");
-//
-//    for (int i = 0; i < target_h; ++i) {
-//        for (int j = 0; j < target_w; ++j) {
-//            printf("%c", ((unsigned int*)pixel)[i*target_w + j] != 0 ? '*' : ' ');
-//        }
-//        printf("\n");
-//    }
-//    
+
+
 #ifdef USE_RGBA
     struct texture* tex = texture_load_from_mem(pixel,
                                                 target_w,

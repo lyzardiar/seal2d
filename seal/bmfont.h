@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-struct array;
+struct Hashmap;
 struct sprite;
 
 #define BM_FACE_NAME_LEN    (128)
@@ -12,13 +12,13 @@ struct sprite;
 
 // move outside of bmfont definition to get rid of warning. :0
 struct charc {
-    int id;
+    int64_t id;     // 64 (8bytes should be enough for most cases)
     int x, y, width, height;
     int xoffset, yoffset;
     int xadvance;
     int page; // should be 0 all the time, cause we only support 1 page right now.
     int chnl; // ?? what's this is used for
-    char letter[4]; // for implemention simplicty, use more bytes :), for bytes is enough for most cases.
+    char letter[8]; // for implemention simplicty, use more bytes :), 4 bytes is enough for most cases.
 };
 
 struct bmfont{
@@ -55,15 +55,13 @@ struct bmfont{
         char file[PAGE_FILE_NAME_LEN];
     }page;
     
-    struct array* characters;
+    struct Hashmap* characters;
 };
 
-struct bmfont_sprite {
-    struct sprite* __super;
-};
 
 struct bmfont* bmfont_new(const char* bmfont_data);
 void bmfont_free(struct bmfont* self);
 
+struct charc* bmfont_load_charc(struct bmfont* self, const char* c);
 
 #endif

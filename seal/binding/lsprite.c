@@ -24,50 +24,49 @@ int lsprite_load_spriteframe(lua_State* L) {
     luaL_checktype(L, 2, LUA_TTABLE);
     
     const char* key = luaL_checkstring(L, 3);
-    
-    // read the info in the frame
-    struct sprite_frame* frame = sprite_frame_new(key);
-    
-    frame->rotated = (int)getfield_i(L, "rotated");
-    frame->trimmed = (int)getfield_i(L, "trimmed");
+    struct sprite_frame* frame = sprite_frame_cache_get(GAME->sprite_frame_cache, key);
+    if (!frame->__initialized) {
+        frame->rotated = (int)getfield_i(L, "rotated");
+        frame->trimmed = (int)getfield_i(L, "trimmed");
+        
+        lua_pushstring(L, "frame");
+        lua_gettable(L, 1);
+        
+        struct rect* frame_rect = &frame->frame_rect;
+        frame_rect->x = (int)getfield_i(L, "x");
+        frame_rect->y = (int)getfield_i(L, "y");
+        frame_rect->width = (int)getfield_i(L, "w");
+        frame_rect->height = (int)getfield_i(L, "h");
+        lua_pop(L, 1);
+        
+        lua_pushstring(L, "spriteSourceSize");
+        lua_gettable(L, 1);
+        
+        struct rect* source_rect = &frame->source_rect;
+        source_rect->x = (int)getfield_i(L, "x");
+        source_rect->y = (int)getfield_i(L, "y");
+        source_rect->width = (int)getfield_i(L, "w");
+        source_rect->height = (int)getfield_i(L, "h");
+        lua_pop(L, 1);
+        
+        lua_pushstring(L, "sourceSize");
+        lua_gettable(L, 1);
+        
+        struct size* size = &frame->source_size;
+        size->width = (int)getfield_i(L, "w");
+        size->height = (int)getfield_i(L, "h");
+        lua_pop(L, 1);
+        
+        // read the info in the meta
+        lua_pushstring(L, "size");
+        lua_gettable(L, 2);
+        
+        float texture_width = getfield_f(L, "w");
+        float texture_height = getfield_f(L, "h");
+        
+        sprite_frame_init_uv(frame, texture_width, texture_height);
+    }
 
-    lua_pushstring(L, "frame");
-    lua_gettable(L, 1);
-    
-    struct rect* frame_rect = &frame->frame_rect;
-    frame_rect->x = (int)getfield_i(L, "x");
-    frame_rect->y = (int)getfield_i(L, "y");
-    frame_rect->width = (int)getfield_i(L, "w");
-    frame_rect->height = (int)getfield_i(L, "h");
-    lua_pop(L, 1);
-    
-    lua_pushstring(L, "spriteSourceSize");
-    lua_gettable(L, 1);
-    
-    struct rect* source_rect = &frame->source_rect;
-    source_rect->x = (int)getfield_i(L, "x");
-    source_rect->y = (int)getfield_i(L, "y");
-    source_rect->width = (int)getfield_i(L, "w");
-    source_rect->height = (int)getfield_i(L, "h");
-    lua_pop(L, 1);
-    
-    lua_pushstring(L, "sourceSize");
-    lua_gettable(L, 1);
-
-    struct size* size = &frame->source_size;
-    size->width = (int)getfield_i(L, "w");
-    size->height = (int)getfield_i(L, "h");
-    lua_pop(L, 1);
-    
-    // read the info in the meta
-    lua_pushstring(L, "size");
-    lua_gettable(L, 2);
-
-    float texture_width = getfield_f(L, "w");
-    float texture_height = getfield_f(L, "h");
-
-    sprite_frame_init_uv(frame, texture_width, texture_height);
-    
     lua_pop(L, -1);
     lua_pushlightuserdata(L, frame);
     return 1;

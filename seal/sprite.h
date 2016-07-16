@@ -46,6 +46,10 @@ struct sprite_frame {
     struct uv uv;
     
     char* key;
+    
+    // internal flag,
+    bool __initialized;  // we have different procedure to init a sprite frame, so we have this flag
+                         // to make life easier by not involving to many type of init functions.
 };
 
 struct sprite_frame_cache {
