@@ -15,3 +15,7 @@ You need to set the custom working directory in xcode.
     5. Hit cmd+R, or click run to run the project. :)
   
 If you got anyquestion, please don't bother to add an issue. thank you. :)
+
+# getting started
+
+wiki: https://github.com/tangyiyang/seal2d/wiki (chinese only, will have English version when release first version.)
