@@ -38,7 +38,7 @@ struct vertex_buffer* vertex_buffer_new() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    buffer->data = s_malloc(VERTEX_SIZE * MAX_OBJECTS);
+    buffer->data = s_malloc(VERTEX_SIZE * MAX_OBJECTS * 6);
     buffer->n_objs = 0;
     
     return buffer;
@@ -195,7 +195,7 @@ void render_use_program(struct render* self, GLuint program) {
 
 void render_set_unfiorm(struct render* self, enum BUILT_IN_UNIFORMS uniform_type, float* v) {
     s_assert(self->cur_program);
-    render_commit(self);
+//    render_commit(self);
     shader_set_uniform_object(self->shader, uniform_type, v);
     self->render_state |= RENDER_STATE_PROGRAM_BIT;
 }
