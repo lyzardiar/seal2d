@@ -87,7 +87,7 @@ struct sprite {
     float width, height;
     struct affine local_srt;
     struct affine world_srt;
-    int dirty;
+    unsigned int dirty;
     
     // advanced
     color color;

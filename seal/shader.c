@@ -9,6 +9,42 @@
 
 #include "platform/fs.h"
 
+#define set_builtin_uniform(uniform, i, t, n) uniform.type = i; \
+                                                      uniform.attr_type = t; \
+                                                      uniform.name = n; \
+
+void shader_set_uniform_object(struct shader* self,
+                               enum BUILT_IN_UNIFORMS type,
+                               float* v) {
+    
+    struct uniform_buffer_object* object = &(self->uniform_buffer_objects[type]);
+    
+    enum UNIFORM_ATTRIBUTE_TYPE attr_type = self->uniforms[type].attr_type;
+    switch (attr_type) {
+        case UNIFORM_1F:
+            object->v[0] = v[0];
+            break;
+        case UNIFORM_2F:
+            object->v[0] = v[0];
+            object->v[1] = v[1];
+            break;
+        case UNIFORM_3F:
+            object->v[0] = v[0];
+            object->v[1] = v[1];
+            object->v[2] = v[2];
+            break;
+        case UNIFORM_4F:
+            object->v[0] = v[0];
+            object->v[1] = v[1];
+            object->v[2] = v[2];
+            object->v[3] = v[3];
+            break;
+         default:
+            break;
+    }
+}
+
+
 void check_gl_error(const char* file, int line) {
     GLenum err = GL_NO_ERROR;
     if((err = glGetError()) != GL_NO_ERROR) {
@@ -113,6 +149,9 @@ struct shader* shader_new() {
     memset(shader->shader_programs, 0, MAX_SHADER*sizeof(GLuint));
     
     shader_load_all(shader);
+    
+    set_builtin_uniform(shader->uniforms[BUILT_IN_MIX_COLOR], BUILT_IN_MIX_COLOR, UNIFORM_4F, "mix_color");
+    
     return shader;
 }
 
@@ -120,29 +159,34 @@ void shader_free(struct shader* self) {
     s_free(self);
 }
 
-GLint shader_get_uniform(struct shader* self, GLint program, const char* name) {
-    GLint location =  glGetUniformLocation(program, name);
-    return location;
-}
-
-void shader_set_uniform(struct shader* self, GLint location, enum UNIFORM_TYPE uniform_type, float* v) {
-    switch (uniform_type) {
+void shader_set_uniform(struct shader* self, GLint program, enum BUILT_IN_UNIFORMS type, void* v) {
+    const char* name = self->uniforms[type].name;
+    
+    GLint location = glGetUniformLocation(program, name);
+    
+    switch (self->uniforms[type].attr_type) {
         case UNIFORM_1F:
-            glUniform1f(location, v[0]);
+            glUniform1f(location, ((float*)v)[0]);
             break;
         case UNIFORM_2F:
-            glUniform2f(location, v[0], v[1]);
+            glUniform2f(location, ((float*)v)[0], ((float*)v)[1]);
             break;
         case UNIFORM_3F:
-            glUniform3f(location, v[0], v[1], v[2]);
+            glUniform3f(location, ((float*)v)[0], ((float*)v)[1], ((float*)v)[2]);
             break;
         case UNIFORM_4F:
-            glUniform4f(location, v[0], v[1], v[2], v[3]);
+            glUniform4f(location, ((float*)v)[0], ((float*)v)[1], ((float*)v)[2], ((float*)v)[3]);
             break;
         default:
             break;
     }
     CHECK_GL_ERROR;
+}
+
+void shader_commit_uniform(struct shader* self, GLint program) {
+    for (int i = 0; i < BUILT_IN_UNIFORM_MAX; ++i) {
+        shader_set_uniform(self, program, i, self->uniform_buffer_objects[i].v);
+    }
 }
 
 GLuint shader_get_program(struct shader* self, enum SHADER_TYPE shader_index) {

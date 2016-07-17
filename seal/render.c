@@ -4,8 +4,10 @@
 #include "memory.h"
 #include "shader.h"
 #include "texture.h"
+#include "array.h"
 
 #include "render.h"
+#include "shader.h"
 #include "camera.h"
 
 EXTERN_GAME;
@@ -70,6 +72,7 @@ struct render* render_new() {
     r->scissors.width = GAME->config.window_width;
     r->scissors.width = GAME->config.window_height;
     r->drawcall = 0;
+    
     return r;
 }
 
@@ -98,9 +101,7 @@ void render_commit(struct render* self) {
     if (self->render_state & RENDER_STATE_PROGRAM_BIT) {
         glUseProgram(self->cur_program);
         
-        float c4f[4] = {1.0f, 0.0f, 1.0f, 1.0f};
-//        color_vec4(self->color, c4f);
-        render_set_unfiorm(self, "mix_color", UNIFORM_4F, c4f);
+        shader_commit_uniform(self->shader, self->cur_program);
     }
 
     struct vertex_buffer* vbuf = self->vertex_buffer;
@@ -120,7 +121,7 @@ void render_commit(struct render* self) {
         glUniform1i(texture_location, 0);
     }
     
-    if (self->render_state) {
+    if (self->render_state & RENDER_STATE_VERTEX_BIT) {
         GLint projection = glGetUniformLocation(self->cur_program, "projection");
         glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
         
@@ -192,8 +193,9 @@ void render_use_program(struct render* self, GLuint program) {
     self->render_state |= RENDER_STATE_PROGRAM_BIT;
 }
 
-void render_set_unfiorm(struct render* self, const char* name, enum UNIFORM_TYPE uniform_type, float* v) {
+void render_set_unfiorm(struct render* self, enum BUILT_IN_UNIFORMS uniform_type, float* v) {
     s_assert(self->cur_program);
-    GLint location = shader_get_uniform(self->shader, self->cur_program, name);
-    shader_set_uniform(self->shader, location, uniform_type, v);
+    render_commit(self);
+    shader_set_uniform_object(self->shader, uniform_type, v);
+    self->render_state |= RENDER_STATE_PROGRAM_BIT;
 }
