@@ -105,40 +105,20 @@ struct bmfont* bmfont_new(const char* bmfont_data) {
             struct Hashmap* characters = hashmapCreate(256, hash_str, hash_equal);
             
             char dummy[32] = "";
-            char id[32] = "";
-            char x[32] = "";
-            char y[32] = "";
-            char width[32] = "";
-            char height[32] = "";
-            char xoffset[32] = "";
-            char yoffset[32] = "";
-            char xadvance[32] = "";
-            char page[32] = "";
-            char chnl[32] = "";
-            char letter[32] = "";
-            
-            char tmp_letter[32] = "";
             
             // this code is stupid. will fix this someday :)
             for (int i = 0; i < char_count; ++i) {
                 line = strtok(NULL, "\n");
                 struct charc* c = STRUCT_NEW(charc);
-                sscanf(line, "%s %s %s %s %s %s %s %s %s %s %s %s",
-                       dummy, id, x, y, width, height, xoffset, yoffset, xadvance, page, chnl, letter);
-                c->id = parse_int64(id);
-                c->x = parse_int(x);
-                c->y = parse_int(y);
-                c->width = parse_int(width);
-                c->height = parse_int(height);
-                c->xoffset = parse_int(xoffset);
-                c->yoffset = parse_int(yoffset);
-                c->xadvance = parse_int(xadvance);
-                c->page = parse_int(page);
-                c->chnl = parse_int(chnl);
                 
-                // here we need to remove 2 quotes.
-                
-                parse_str(letter, tmp_letter);
+                sscanf(line, "char%[ ]id=%lld%[ ]x=%d%[ ]y=%d%[ ]width=%d%[ ]height=%d%[ ]xoffset=%d%[ ]yoffset=%d%[ ]xadvance=%d%[ ]page=%d%[ ]chnl=%d%[ ]letter=\"%[^\n]"
+                       , dummy , &c->id
+                       , dummy , &c->x         , dummy , &c->y
+                       , dummy , &c->width     , dummy , &c->height
+                       , dummy , &c->xoffset   , dummy , &c->yoffset
+                       , dummy , &c->xadvance  , dummy , &c->page
+                       , dummy , &c->chnl      , dummy , c->letter
+                       );
                 
                 // TODO: ugly code, improve someday.
                 
@@ -146,7 +126,7 @@ struct bmfont* bmfont_new(const char* bmfont_data) {
                     c->letter[0] = ' ';
                     c->letter[1] = 0;
                 } else {
-                    remove_quote(c->letter, tmp_letter);
+                    c->letter[strlen(c->letter) - 1] = 0;
                 }
                 
                 hashmapPut(characters, c->letter, c);
