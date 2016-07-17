@@ -148,6 +148,11 @@ end
 local function bunny_test()
 	root:cleanup()
 
+
+	local label = sprite.new_bmfont_label("count: 0", "res/fonts/animated.txt")
+    root:add_child(label)
+
+    local count = 0
 	local bunnies = {}
 	local function add_bunny(x, y)
 		for i = 1, 50 do
@@ -155,7 +160,14 @@ local function bunny_test()
 			b:set_pos(x, y)
 			root:add_child(b)
 		end
-	end
+		count = count + 50
+
+		label:cleanup()
+		label = sprite.new_bmfont_label(string.format("count: %d", count), "res/fonts/animated.txt")
+		label:set_pos(0, 0)
+    	root:add_child(label)
+    end
+
 
 	root:register_handler(function(event, t, x, y)
 			if t == consts.TOUCH_END then
