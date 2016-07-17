@@ -43,11 +43,15 @@ void af_srt(struct affine* af,
     af_set_rotation(&rotation_matrix, rotation);
     af_set_translate(&translate_matrix, x, y);
     
-    af_concat(af, &scale_matrix);
+    af_copy(af, &scale_matrix);
     af_concat(af, &rotation_matrix);
     af_concat(af, &translate_matrix);
 }
 
+void af_copy(struct affine* af, struct affine* other)
+{
+    memcpy(af, other, sizeof(struct affine));
+}
 
 void af_set_translate(struct affine* af, float x, float y) {
     af->x = x;
