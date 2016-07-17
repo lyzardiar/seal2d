@@ -1,6 +1,7 @@
 local sprite_frame = require "seal.sprite_frame"
 local sprite = require "seal.sprite"
 local game = require "game"
+local util = require "util"
 
 -- TODO: merge these 2 into 1 :)  
 local nuk_node = require "seal.nuk_node"
@@ -26,13 +27,19 @@ local function sprite_basic_test()
 	print("run sprite_basic_test")
 	root:remove_all_child()
 
-
+	local child = {}
 	local total = 5
-	for i = 1, 5 do
+	for i = 1, total do
 		local s = sprite.new("anim_pirate.png", "attack_0.png")
 		s:set_pos(i * 100, 0)
 		root:add_child(s)
+		child[#child+1] = s
 	end
+
+	child[1]:set_color(255, 0, 0, 255)
+	child[2]:set_color(0, 255, 0, 255)
+	child[3]:set_color(0, 0, 255, 255)
+	child[4]:set_color(255, 255, 255, 128)
 end
 
 local function sprite_animation_test()
@@ -136,8 +143,6 @@ local function bmfont_load_test()
 
 	root:add_child(s)
 end
-
-
 
 local tests = {
 	{name = "sprite basic test", create_func = sprite_basic_test }, 

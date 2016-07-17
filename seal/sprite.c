@@ -27,9 +27,10 @@ EXTERN_GAME;
 #define SPRITE_ROTATION_DIRTY   (1 << 2)
 #define SPRITE_COLOR_DIRTY      (1 << 3)
 #define SPRITE_FRAME_DIRTY      (1 << 4)
-#define SPRITE_ALL_DIRTY        ((unsigned int)-1)
 
 #define SPRITE_SRT_DIRTY        (SPRITE_TRANSFORM_DIRTY | SPRITE_SCALE_DIRTY | SPRITE_ROTATION_DIRTY)
+
+#define SPRITE_ALL_DIRTY        (SPRITE_SRT_DIRTY | SPRITE_COLOR_DIRTY | SPRITE_FRAME_DIRTY)
 
 static unsigned int __sprite_id = 0;
 static struct render* R = NULL;
@@ -349,7 +350,7 @@ void sprite_update_transform(struct sprite* self) {
         SET_VERTEX_POS(g->tl, left, top);
         SET_VERTEX_POS(g->tr, right, top);
         
-        self->dirty &= ~(SPRITE_SRT_DIRTY);
+        self->dirty &= (~SPRITE_SRT_DIRTY);
         
         self->world_srt = tmp;
     }
@@ -483,17 +484,18 @@ void sprite_visit(struct sprite* self, float dt) {
 
 void sprite_draw_pic(struct sprite* self) {
     render_use_shader(R, SHADER_COLOR);
+    if (self->dirty & SPRITE_COLOR_DIRTY) {
+        float c4f[4];
+        color_vec4(self->color, c4f);
+        render_set_unfiorm(R, BUILT_IN_MIX_COLOR, c4f);
+        self->dirty &= ~(SPRITE_COLOR_DIRTY);
+    }
     render_use_texture(R, self->frame->tex_id);
     render_buffer_append(R, &self->glyph);
 }
 
 void sprite_draw_label(struct sprite* self) {
     render_use_shader(R, SHADER_TTF_LABEL);
-//    if(self->dirty & SPRITE_COLOR_DIRTY) {
-//        float c4f[4] = {1.0f};
-//        color_vec4(self->color, c4f);
-//        render_set_unfiorm(R, "mix_color", UNIFORM_4F, c4f);
-//    }
     render_use_texture(R, self->frame->tex_id);
     render_buffer_append(R, &self->glyph);
 }
