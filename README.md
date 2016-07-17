@@ -1,7 +1,7 @@
 # seal2d
 A 2D game engine based on OpenGL, developed with Lua and C.
 
-This project is under heavy development currently, **it's a toy right now**.
+This project is under heavy development currently, we will release version 0.1 soon.
 
 # build & run
 
