@@ -54,6 +54,7 @@ struct game {
     struct render* render;
     struct lua_handler* lua_handler;
     struct sprite_frame_cache* sprite_frame_cache;
+    struct bmfont_cache* bmfont_cache;
     struct nuk_node* nuk_node;
 
     int game_state;

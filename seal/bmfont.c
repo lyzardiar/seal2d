@@ -3,6 +3,7 @@
 
 #include "sprite.h"
 #include "bmfont.h"
+#include "platform/fs.h"
 
 static int64_t parse_int64(char* data) {
     int64_t n = 0;
@@ -154,3 +155,39 @@ struct charc* bmfont_load_charc(struct bmfont* self, const char* c) {
     
     return hashmapGet(self->characters, (void*)c);
 }
+
+
+
+
+static struct bmfont_cache* C = NULL;
+
+struct bmfont_cache* bmfont_cache_new() {
+    struct bmfont_cache* c = STRUCT_NEW(bmfont_cache);
+    c->cache = hashmapCreate(128, hash_str, hash_equal);
+    c->nframes = 0;
+    
+    C = c;
+    return c;
+}
+
+void bmfont_cache_free(struct bmfont_cache* self) {
+    hashmapFree(self->cache);
+    s_free(self);
+}
+
+void bmfont_cache_add(struct bmfont_cache* self, struct bmfont* font, const char* fnt_path) {
+    hashmapPut(self->cache, (void*)fnt_path, font);
+}
+
+struct bmfont* bmfont_cache_get(struct bmfont_cache* self, const char* fnt_path) {
+    struct bmfont* f = hashmapGet(self->cache, (void*)fnt_path);
+    if (!f) {
+        char* bmfont_data = s_reads(fnt_path);
+        f = bmfont_new(bmfont_data);
+        memcpy(f->fnt_file, fnt_path, strlen(fnt_path) + 1);
+        s_free(bmfont_data);
+        bmfont_cache_add(self, f, fnt_path);
+    }
+    return f;
+}
+

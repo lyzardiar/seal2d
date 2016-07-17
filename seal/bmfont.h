@@ -55,6 +55,7 @@ struct bmfont{
         char file[PAGE_FILE_NAME_LEN];
     }page;
     
+    char fnt_file[PAGE_FILE_NAME_LEN];
     struct Hashmap* characters;
 };
 
@@ -64,4 +65,14 @@ void bmfont_free(struct bmfont* self);
 
 struct charc* bmfont_load_charc(struct bmfont* self, const char* c);
 
+
+struct bmfont_cache {
+    struct Hashmap* cache;
+    unsigned int nframes;
+};
+
+struct bmfont_cache* bmfont_cache_new();
+void bmfont_cache_free(struct bmfont_cache* cache);
+void bmfont_cache_add(struct bmfont_cache* self, struct bmfont* font, const char* key);
+struct bmfont* bmfont_cache_get(struct bmfont_cache* self, const char* key);
 #endif
