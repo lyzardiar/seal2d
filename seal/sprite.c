@@ -321,7 +321,8 @@ void sprite_update_transform(struct sprite* self) {
     for (int i = 0; i < array_size(self->children); ++i) {
         struct sprite* child = (struct sprite*)array_at(self->children, i);
         if (child) {
-            child->dirty |= self->dirty;
+            // we should only pass the SRT dirty to the children
+            child->dirty |= (self->dirty & SPRITE_SRT_DIRTY);
         }
     }
     
@@ -485,12 +486,6 @@ void sprite_visit(struct sprite* self, float dt) {
 
 void sprite_draw_pic(struct sprite* self) {
     render_use_shader(R, SHADER_COLOR);
-    if (self->dirty & SPRITE_COLOR_DIRTY) {
-        float c4f[4];
-        color_vec4(self->color, c4f);
-        render_set_unfiorm(R, BUILT_IN_MIX_COLOR, c4f);
-        self->dirty &= ~(SPRITE_COLOR_DIRTY);
-    }
     render_use_texture(R, self->frame->tex_id);
     render_buffer_append(R, &self->glyph);
 }

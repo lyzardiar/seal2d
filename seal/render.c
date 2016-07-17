@@ -94,6 +94,7 @@ void render_clear(struct render* self, color c) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
+    printf("drawcall = %d\n", self->drawcall);
     self->drawcall = 0;
 }
 
@@ -195,7 +196,7 @@ void render_use_program(struct render* self, GLuint program) {
 
 void render_set_unfiorm(struct render* self, enum BUILT_IN_UNIFORMS uniform_type, float* v) {
     s_assert(self->cur_program);
-//    render_commit(self);
+    render_commit(self);
     shader_set_uniform_object(self->shader, uniform_type, v);
     self->render_state |= RENDER_STATE_PROGRAM_BIT;
 }
