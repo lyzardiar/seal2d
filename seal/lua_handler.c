@@ -81,5 +81,4 @@ void lua_handler_exe_func(struct lua_handler* self,
         }
         seal_call(L, n, 0);
     }
-   
 }

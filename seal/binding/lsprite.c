@@ -157,6 +157,12 @@ int lsprite_register_handler(lua_State* L) {
     return 0;
 }
 
+int lsprite_clean_handler(lua_State* L) {
+    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    lua_handler_clean(GAME->lua_handler, self);
+    return 0;
+}
+
 int lsprite_set_anim(lua_State* L) {
     struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
     luaL_checktype(L, 2, LUA_TTABLE);
@@ -261,6 +267,7 @@ int luaopen_seal_sprite(lua_State* L) {
         { "new_clip", lsprite_new_clip },
         { "free", lsprite_free },
         { "register_handler", lsprite_register_handler },
+        { "clean_handler", lsprite_clean_handler },
         { "set_anim", lsprite_set_anim },
         { "set_anim_interval", lsprite_set_anim_interval},
         { "set_pos", lsprite_set_pos },
