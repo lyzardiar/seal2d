@@ -14,7 +14,7 @@ local meta = {
 				return handle
 			end
 		else
-			return rawget(t, key)
+			return rawget(sprite, key)
 		end
 	end
 }
@@ -58,6 +58,11 @@ function sprite.new_clip(...)
 	setmetatable(self, meta)
 	self.__cobj = sprite_core.new_clip(...)
 	return self
+end
+
+function sprite:cleanup(...)
+	self:remove_all_child(...)
+	self:clean_handler()
 end
 
 return sprite

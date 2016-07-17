@@ -2,6 +2,7 @@ local sprite_frame = require "seal.sprite_frame"
 local sprite = require "seal.sprite"
 local game = require "game"
 local util = require "util"
+local consts = require "consts"
 
 -- TODO: merge these 2 into 1 :)  
 local nuk_node = require "seal.nuk_node"
@@ -25,7 +26,7 @@ local hello_world = {}
 local root
 local function sprite_basic_test()
 	print("run sprite_basic_test")
-	root:remove_all_child()
+	root:cleanup()
 
 	local child = {}
 	local total = 5
@@ -45,7 +46,7 @@ end
 local function sprite_animation_test()
 	print("run sprite_animation_test")
 
-	root:remove_all_child()
+	root:cleanup()
 
 	local frames = {}
 	for i = 0, 4 do
@@ -66,7 +67,7 @@ end
 local function sprite_clip_test()
 	print("run sprite_clip_test")
 
-	root:remove_all_child()
+	root:cleanup()
 
 	local clip = sprite.new_clip(0, 0, 200, 200)
 
@@ -90,7 +91,7 @@ end
 
 local function sprite_event_test()
 	print("run sprite_clip_test")
-	root:remove_all_child()
+	root:cleanup()
 
 	local touch_event_names = {
 		[0] = "begin",
@@ -118,7 +119,7 @@ end
 
 local function sprite_label_test()
 	print("run sprite_label_test")
-	root:remove_all_child()
+	root:cleanup()
 
 	local s = sprite.new_label("hello_world")
 	s:set_pos(200, 200)
@@ -127,7 +128,7 @@ local function sprite_label_test()
 end
 
 local function texture_load_test()
-	root:remove_all_child()
+	root:cleanup()
 
 	local texture_core = require "texure_core"
 	local tex_id = texture_core.load_from_cache("res/unpack/color_pad.png")
@@ -136,12 +137,31 @@ end
 
 local function bmfont_load_test()
 	print("run bmfont_load_test")
-	root:remove_all_child()
+	root:cleanup()
 
 	local s = sprite.new_bmfont_label("hello world", "res/fonts/animated.txt")
 	s:set_pos(200, 200)
 
 	root:add_child(s)
+end
+
+local function bunny_test()
+	root:cleanup()
+
+	local bunnies = {}
+	local function add_bunny(x, y)
+		for i = 1, 50 do
+			local b = sprite.new("ui.png", "smile_middle.png")
+			b:set_pos(x, y)
+			root:add_child(b)
+		end
+	end
+
+	root:register_handler(function(event, t, x, y)
+			if t == consts.TOUCH_END then
+				add_bunny(x, y)
+			end
+		end)	
 end
 
 local tests = {
@@ -152,6 +172,7 @@ local tests = {
 	{name = "sprite label test", create_func = sprite_label_test},
 	{name = "texture load test", create_func = texture_load_test},
 	{name = "bmfont load test", create_func = bmfont_load_test}, 
+	{name = "bunny test", create_func = bunny_test}
 }
 
 local function draw_gui()
@@ -183,8 +204,6 @@ function hello_world.entry()
 	sprite_frame.load_from_json("res/images/anim_pirate.json")
 
 	root = sprite.new_container()
-	root:register_handler(function()
-		end)
 	root:set_pos(0, 0)
 
 	draw_gui()
