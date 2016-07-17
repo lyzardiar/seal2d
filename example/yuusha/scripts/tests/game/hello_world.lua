@@ -1,5 +1,6 @@
 local sprite_frame = require "seal.sprite_frame"
 local sprite = require "seal.sprite"
+local timer = require "seal.timer"
 local game = require "game"
 local util = require "util"
 local consts = require "consts"
@@ -148,6 +149,12 @@ end
 local function bunny_test()
 	root:cleanup()
 
+
+	local label = sprite.new_bmfont_label("count: 0", "res/fonts/animated.txt")
+	label:set_pos(0, 60)
+    root:add_child(label)
+
+    local count = 0
 	local bunnies = {}
 	local function add_bunny(x, y)
 		for i = 1, 1000 do
@@ -155,13 +162,42 @@ local function bunny_test()
 			b:set_pos(x, y)
 			root:add_child(b)
 		end
-	end
+		count = count + 1000
 
+		label:cleanup()
+		label = sprite.new_bmfont_label(string.format("count: %d", count), "res/fonts/animated.txt")
+		label:set_pos(0, 60)
+    	root:add_child(label)
+    end
+
+
+    local isClick = false
 	root:register_handler(function(event, t, x, y)
-			if t == consts.TOUCH_END then
-				add_bunny(x, y)
-			end
-		end)	
+		if t == consts.TOUCH_END and isClick then
+			add_bunny(x, y)
+			print("add_bunny:", x, y)
+			isClick = false
+		elseif t == consts.TOUCH_BEGIN then 
+			isClick = true
+		end
+	end)	
+
+
+	local fps_label = sprite.new_bmfont_label("FPS: 0", "res/fonts/animated.txt")
+    root:add_child(fps_label)
+	timer.new{
+		interval = 0,
+		callback = function(dt) 
+			
+			local fps = 1 / timer.mpf
+			if fps > 60 then fps = 60 end
+
+			fps_label:cleanup()
+			fps_label = sprite.new_bmfont_label(string.format("FPS: %.2f", fps), "res/fonts/animated.txt")
+    		root:add_child(fps_label)
+		end,
+		loop = 0,
+	}
 end
 
 local tests = {
