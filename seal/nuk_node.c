@@ -10,10 +10,16 @@
 #define NK_INCLUDE_DEFAULT_FONT
 #define NK_IMPLEMENTATION
 
+#ifdef _WIN32
+#define NK_GLFW_GL2_IMPLEMENTATION
+#include "nuklear.h"
+#include "nuklear_glfw_gl2.h"
+#else
 #include "nuklear.h"
 #ifdef PLAT_DESKTOP
-    #define NK_GLFW_GL3_IMPLEMENTATION
-    #include "nuklear_glfw_gl3.h"
+#define NK_GLFW_GL3_IMPLEMENTATION
+#include "nuklear_glfw_gl3.h"
+#endif
 #endif
 
 #include "nuk_node.h"

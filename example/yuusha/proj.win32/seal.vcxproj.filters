@@ -1,0 +1,620 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Libs">
+      <UniqueIdentifier>{749afe9e-8bbf-4033-88d8-ec6ae30cdd17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\nanovg">
+      <UniqueIdentifier>{4610e0fc-e2cf-4593-80f9-5bd994aaef97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\nanovg\obsolete">
+      <UniqueIdentifier>{335c2b70-de8e-4ecc-9088-30e35502793a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\nanovg\src">
+      <UniqueIdentifier>{53de6cd0-3481-45b1-88a5-2de03fa96504}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\nuklear">
+      <UniqueIdentifier>{bbf85064-3ec2-4157-a6e6-f0654e0d129e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\lua">
+      <UniqueIdentifier>{8fc89fa2-7e7e-420a-82ba-b028cccde2a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\lua\lua-zlib">
+      <UniqueIdentifier>{b4f132ea-a1e7-4c76-a6c0-0a958a6e644c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\lua\lua-cjson">
+      <UniqueIdentifier>{d1df5fca-b151-4921-89ea-a1ec23088ae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\lua\lua-socket">
+      <UniqueIdentifier>{aa3c46fb-148b-4420-93db-4b0ab1061bf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\lua\lua-5.3.2">
+      <UniqueIdentifier>{bafd5963-7771-4f81-b2aa-3f64e3645180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs\lua\lua-zlib\include">
+      <UniqueIdentifier>{d21e7ee5-3a86-432d-a1e2-e36b33fb4f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="seal">
+      <UniqueIdentifier>{f8af2be0-d5bb-476e-aa99-b78bf0a3a87a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="seal\base">
+      <UniqueIdentifier>{126037fb-403d-41ea-8687-22cc194bc601}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="seal\binding">
+      <UniqueIdentifier>{8a547a15-c29b-4e1a-8a96-903939d67c01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="seal\image">
+      <UniqueIdentifier>{b75d1ca7-9858-4acc-a148-9b9167afc92b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="seal\math">
+      <UniqueIdentifier>{80c67730-d1fa-4416-a4be-4e071ec1dfee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="seal\platform">
+      <UniqueIdentifier>{ef16febf-c45b-4110-b42e-51f030003dcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="native">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\libs\nanovg\obsolete\nanovg_gl2.h">
+      <Filter>Libs\nanovg\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\obsolete\nanovg_gl3.h">
+      <Filter>Libs\nanovg\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg_gl_utils.h">
+      <Filter>Libs\nanovg\obsolete</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\stb_image.h">
+      <Filter>Libs\nanovg\obsolete</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\stb_truetype.h">
+      <Filter>Libs\nanovg\obsolete</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\fontstash.h">
+      <Filter>Libs\nanovg\obsolete</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg.h">
+      <Filter>Libs\nanovg\obsolete</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg_gl.h">
+      <Filter>Libs\nanovg\obsolete</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\ioapi_mem.h">
+      <Filter>Libs\lua\lua-zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\unzip.h">
+      <Filter>Libs\lua\lua-zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\ioapi.h">
+      <Filter>Libs\lua\lua-zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\inffast.h">
+      <Filter>Libs\lua\lua-zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\inffixed.h">
+      <Filter>Libs\lua\lua-zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\inflate.h">
+      <Filter>Libs\lua\lua-zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\inftrees.h">
+      <Filter>Libs\lua\lua-zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\trees.h">
+      <Filter>Libs\lua\lua-zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\zconf.h">
+      <Filter>Libs\lua\lua-zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\zlib.h">
+      <Filter>Libs\lua\lua-zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\zutil.h">
+      <Filter>Libs\lua\lua-zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\crc32.h">
+      <Filter>Libs\lua\lua-zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\deflate.h">
+      <Filter>Libs\lua\lua-zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\gzguts.h">
+      <Filter>Libs\lua\lua-zlib\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\timeout.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\udp.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\wsocket.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\auxiliar.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\buffer.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\compat.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\except.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\inet.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\io.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\luasocket.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\mime.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\options.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\pierror.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\select.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\socket.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\tcp.h">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-cjson\fpconv.h">
+      <Filter>Libs\lua\lua-cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-cjson\strbuf.h">
+      <Filter>Libs\lua\lua-cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lcode.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lctype.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ldebug.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ldo.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lfunc.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lgc.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\llex.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\llimits.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lmem.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lobject.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lopcodes.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lparser.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lprefix.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lstate.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lstring.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ltable.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ltm.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lua.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lua.hpp">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\luaconf.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lualib.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lundump.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lvm.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lzio.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lapi.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lauxlib.h">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\nuk_node.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\render.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\seal.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\shader.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\sprite.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\texture.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\ttf_font.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\util.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\window.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\action.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\anim.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\bmfont.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\camera.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\event.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\lua_handler.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\memory.h">
+      <Filter>seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\base\array_map.h">
+      <Filter>seal\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\base\hashmap.h">
+      <Filter>seal\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\base\list.h">
+      <Filter>seal\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\base\array.h">
+      <Filter>seal\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\binding\lopen.h">
+      <Filter>seal\binding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\image\lodepng.h">
+      <Filter>seal\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\math\affine.h">
+      <Filter>seal\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\math\geo.h">
+      <Filter>seal\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\math\matrix.h">
+      <Filter>seal\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\platform\fs.h">
+      <Filter>seal\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\platform\platform.h">
+      <Filter>seal\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\platform\timer.h">
+      <Filter>seal\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nuklear2\nuklear.h">
+      <Filter>Libs\nuklear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nuklear2\nuklear_glfw_gl2.h">
+      <Filter>Libs\nuklear</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\libs\nanovg\src\nanovg.c">
+      <Filter>Libs\nanovg\obsolete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-zlib\ioapi_mem.c">
+      <Filter>Libs\lua\lua-zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-zlib\lua_zlib.c">
+      <Filter>Libs\lua\lua-zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-zlib\unzip.c">
+      <Filter>Libs\lua\lua-zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-zlib\ioapi.c">
+      <Filter>Libs\lua\lua-zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\timeout.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\udp.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\wsocket.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\auxiliar.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\buffer.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\compat.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\except.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\inet.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\io.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\luasocket.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\mime.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\options.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\select.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\tcp.c">
+      <Filter>Libs\lua\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-cjson\fpconv.c">
+      <Filter>Libs\lua\lua-cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-cjson\lua_cjson.c">
+      <Filter>Libs\lua\lua-cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-cjson\strbuf.c">
+      <Filter>Libs\lua\lua-cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lbaselib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lbitlib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lcode.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lcorolib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lctype.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldblib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldebug.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldo.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldump.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lfunc.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lgc.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\linit.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\liolib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\llex.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lmathlib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lmem.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\loadlib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lobject.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lopcodes.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\loslib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lparser.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstate.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstring.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstrlib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltable.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltablib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltm.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lundump.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lutf8lib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lvm.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lzio.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lapi.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lauxlib.c">
+      <Filter>Libs\lua\lua-5.3.2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\render.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\seal.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\shader.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\sprite.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\texture.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\ttf_font.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\window.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\action.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\anim.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\bmfont.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\camera.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\event.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\lua_handler.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\memory.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\nuk_node.c">
+      <Filter>seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\base\hashmap.c">
+      <Filter>seal\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\base\array.c">
+      <Filter>seal\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\base\array_map.c">
+      <Filter>seal\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\lplatform.c">
+      <Filter>seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\lseal_core.c">
+      <Filter>seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\lsprite.c">
+      <Filter>seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\ltexture.c">
+      <Filter>seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\laffine.c">
+      <Filter>seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\lnuklear.c">
+      <Filter>seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\lopen.c">
+      <Filter>seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\image\lodepng.c">
+      <Filter>seal\image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\math\affine.c">
+      <Filter>seal\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\math\geo.c">
+      <Filter>seal\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\math\matrix.c">
+      <Filter>seal\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\platform\fs.c">
+      <Filter>seal\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\platform\timer.c">
+      <Filter>seal\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>native</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

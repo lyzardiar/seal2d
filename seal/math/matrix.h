@@ -8,7 +8,7 @@ struct mat4 {
 };
 
 struct mat4* identy_matix();
-struct mat4* orth_matrix(float left, float bottom, float right, float top, float near, float far);
+struct mat4* orth_matrix(float left, float bottom, float right, float top, float nNear, float nfar);
 
 void matrix_free(struct mat4* mat);
 

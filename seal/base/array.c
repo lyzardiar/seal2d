@@ -35,7 +35,7 @@ struct array* array_copy(struct array* self) {
     
    
     
-    a->data = (DATA_TYPE*)s_calloc(sizeof(DATA_TYPE) * (a->cap));
+    a->data = (DATA_TYPE*)s_calloc(a->cap, sizeof(DATA_TYPE));
 
     memcpy(a->data, self->data, self->n * sizeof(DATA_TYPE));
     

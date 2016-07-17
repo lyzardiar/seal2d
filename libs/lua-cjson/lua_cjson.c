@@ -74,6 +74,12 @@
 #define DEFAULT_DECODE_INVALID_NUMBERS 0
 #endif
 
+
+#ifdef _MSC_VER
+extern int strcasecmp(const char *s1, const char *s2);
+extern int strncasecmp(const char *s1, const char *s2, register int n);
+#endif
+
 typedef enum {
     T_OBJ_BEGIN,
     T_OBJ_END,

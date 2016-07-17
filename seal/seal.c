@@ -3,8 +3,6 @@
 #include <string.h>
 #include <assert.h>
 #include <math.h>
-#include <sys/time.h>
-#include <unistd.h>
 #include <float.h>
 #include <stddef.h>
 
@@ -13,7 +11,7 @@
 
 #include "math/matrix.h"
 #include "seal.h"
-#include "geo.h"
+#include "math/geo.h"
 #include "window.h"
 #include "shader.h"
 #include "sprite.h"
@@ -23,7 +21,7 @@
 #include "lua_handler.h"
 
 #include "util.h"
-#include "lopen.h"
+#include "binding/lopen.h"
 #include "ttf_font.h"
 #include "event.h"
 #include "platform/fs.h"

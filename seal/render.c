@@ -1,6 +1,6 @@
 #include "seal.h"
 
-#include "geo.h"
+#include "math/geo.h"
 #include "memory.h"
 #include "shader.h"
 #include "texture.h"

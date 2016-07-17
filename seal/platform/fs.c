@@ -9,7 +9,7 @@
 #include "util.h"
 
 unsigned char* s_read(const char* path, size_t* size, int extra_byte) {
-#ifdef __APPLE__
+#ifdef PLAT_DESKTOP
     s_assert(extra_byte == 0 || extra_byte == 1);
     FILE* fp = fopen(path, "r");
     if (!fp) {
@@ -51,7 +51,7 @@ size_t s_writes(const char* path, const char* string) {
 }
 
 size_t s_writef(const char* path, const void* data, size_t size) {
-#ifdef __APPLE__
+#ifdef PLAT_DESKTOP
     FILE* fp = fopen(path, "w+");
     if (!fp) {
         fprintf(stderr, "s_writef, can't open file.\n");
@@ -81,4 +81,5 @@ const char* s_get_write_path() {
 #ifdef PLAT_MAC
     return get_write_path_mac();
 #endif
+	return "";
 }

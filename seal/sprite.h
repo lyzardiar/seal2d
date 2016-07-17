@@ -8,7 +8,7 @@
 #include "math/geo.h"
 
 #include "texture.h"
-#include "affine.h"
+#include "math/affine.h"
 
 struct anim;
 struct render;

@@ -1,7 +1,7 @@
 #ifndef anim_h
 #define anim_h
 
-#include "array.h"
+#include "base/array.h"
 
 struct sprite_frame;
 

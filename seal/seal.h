@@ -6,6 +6,7 @@
 
 #include "lua.h"
 
+#include "platform/platform.h"
 #include "memory.h"
 #include "util.h"
 

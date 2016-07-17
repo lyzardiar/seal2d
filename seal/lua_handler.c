@@ -2,9 +2,9 @@
 #include "memory.h"
 #include "util.h"
 
-#include "hashmap.h"
+#include "base/hashmap.h"
 
-#include "lopen.h"
+#include "binding/lopen.h"
 #include "lua.h"
 
 #include "lua_handler.h"

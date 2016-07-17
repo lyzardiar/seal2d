@@ -1,5 +1,5 @@
 #include "memory.h"
-#include "hashmap.h"
+#include "base/hashmap.h"
 
 #include "sprite.h"
 #include "bmfont.h"

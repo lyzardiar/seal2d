@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0F82034C-D4E6-4ECE-80A2-88987C469B5F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>seal</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(Configuration)\obj\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)../../../libs/lua-5.3.2/src;$(SolutionDir)../../../libs/lua-cjson;$(SolutionDir)../../../libs/lua-socket/src;$(SolutionDir)../../../libs/lua-zlib/win32/include;$(SolutionDir)../../../libs/lua-zlib;$(SolutionDir)../../../libs/nanovg/src;$(SolutionDir)../../../libs/nuklear2;$(SolutionDir)../../../libs/glfw/win32/include;$(SolutionDir)../../../libs/freetype-2.6.2/win32/include;$(SolutionDir)../../../seal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4244;4996;4217;4049</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <CompileAs>CompileAsC</CompileAs>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)../../../libs/lua-zlib/win32/prebuilt;$(SolutionDir)../../../libs/freetype-2.6.2/win32/prebuilt;$(SolutionDir)../../../libs/glfw/win32/prebuilt;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libzlib.lib;glew32.lib;opengl32.lib;glfw3-2015.lib;Ws2_32.lib;freetype.lib;libcmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lapi.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lauxlib.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lcode.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lctype.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ldebug.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ldo.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lfunc.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lgc.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\llex.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\llimits.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lmem.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lobject.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lopcodes.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lparser.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lprefix.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lstate.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lstring.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ltable.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ltm.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lua.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lua.hpp" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\luaconf.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lualib.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lundump.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lvm.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lzio.h" />
+    <ClInclude Include="..\..\..\libs\lua-cjson\fpconv.h" />
+    <ClInclude Include="..\..\..\libs\lua-cjson\strbuf.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\auxiliar.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\buffer.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\compat.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\except.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\inet.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\io.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\luasocket.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\mime.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\options.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\pierror.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\select.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\socket.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\tcp.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\timeout.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\udp.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\wsocket.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\ioapi.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\ioapi_mem.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\crc32.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\deflate.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\gzguts.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\inffast.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\inffixed.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\inflate.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\inftrees.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\trees.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\zconf.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\zlib.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\mac\include\zutil.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\unzip.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\obsolete\nanovg_gl2.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\obsolete\nanovg_gl3.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\fontstash.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg_gl.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg_gl_utils.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\stb_image.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\stb_truetype.h" />
+    <ClInclude Include="..\..\..\libs\nuklear2\nuklear.h" />
+    <ClInclude Include="..\..\..\libs\nuklear2\nuklear_glfw_gl2.h" />
+    <ClInclude Include="..\..\..\seal\action.h" />
+    <ClInclude Include="..\..\..\seal\anim.h" />
+    <ClInclude Include="..\..\..\seal\base\array.h" />
+    <ClInclude Include="..\..\..\seal\base\array_map.h" />
+    <ClInclude Include="..\..\..\seal\base\hashmap.h" />
+    <ClInclude Include="..\..\..\seal\base\list.h" />
+    <ClInclude Include="..\..\..\seal\binding\lopen.h" />
+    <ClInclude Include="..\..\..\seal\bmfont.h" />
+    <ClInclude Include="..\..\..\seal\camera.h" />
+    <ClInclude Include="..\..\..\seal\event.h" />
+    <ClInclude Include="..\..\..\seal\image\lodepng.h" />
+    <ClInclude Include="..\..\..\seal\lua_handler.h" />
+    <ClInclude Include="..\..\..\seal\math\affine.h" />
+    <ClInclude Include="..\..\..\seal\math\geo.h" />
+    <ClInclude Include="..\..\..\seal\math\matrix.h" />
+    <ClInclude Include="..\..\..\seal\memory.h" />
+    <ClInclude Include="..\..\..\seal\nuk_node.h" />
+    <ClInclude Include="..\..\..\seal\platform\fs.h" />
+    <ClInclude Include="..\..\..\seal\platform\platform.h" />
+    <ClInclude Include="..\..\..\seal\platform\timer.h" />
+    <ClInclude Include="..\..\..\seal\render.h" />
+    <ClInclude Include="..\..\..\seal\seal.h" />
+    <ClInclude Include="..\..\..\seal\shader.h" />
+    <ClInclude Include="..\..\..\seal\sprite.h" />
+    <ClInclude Include="..\..\..\seal\texture.h" />
+    <ClInclude Include="..\..\..\seal\ttf_font.h" />
+    <ClInclude Include="..\..\..\seal\util.h" />
+    <ClInclude Include="..\..\..\seal\window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lapi.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lauxlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lbaselib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lbitlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lcode.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lcorolib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lctype.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldblib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldebug.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldo.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldump.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lfunc.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lgc.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\linit.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\liolib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\llex.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lmathlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lmem.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\loadlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lobject.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lopcodes.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\loslib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lparser.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstate.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstring.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstrlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltable.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltablib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltm.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lundump.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lutf8lib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lvm.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lzio.c" />
+    <ClCompile Include="..\..\..\libs\lua-cjson\fpconv.c" />
+    <ClCompile Include="..\..\..\libs\lua-cjson\lua_cjson.c" />
+    <ClCompile Include="..\..\..\libs\lua-cjson\strbuf.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\auxiliar.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\buffer.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\compat.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\except.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\inet.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\io.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\luasocket.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\mime.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\options.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\select.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\tcp.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\timeout.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\udp.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\wsocket.c" />
+    <ClCompile Include="..\..\..\libs\lua-zlib\ioapi.c" />
+    <ClCompile Include="..\..\..\libs\lua-zlib\ioapi_mem.c" />
+    <ClCompile Include="..\..\..\libs\lua-zlib\lua_zlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-zlib\unzip.c" />
+    <ClCompile Include="..\..\..\libs\nanovg\src\nanovg.c" />
+    <ClCompile Include="..\..\..\seal\action.c" />
+    <ClCompile Include="..\..\..\seal\anim.c" />
+    <ClCompile Include="..\..\..\seal\base\array.c" />
+    <ClCompile Include="..\..\..\seal\base\array_map.c" />
+    <ClCompile Include="..\..\..\seal\base\hashmap.c" />
+    <ClCompile Include="..\..\..\seal\binding\laffine.c" />
+    <ClCompile Include="..\..\..\seal\binding\lnuklear.c" />
+    <ClCompile Include="..\..\..\seal\binding\lopen.c" />
+    <ClCompile Include="..\..\..\seal\binding\lplatform.c" />
+    <ClCompile Include="..\..\..\seal\binding\lseal_core.c" />
+    <ClCompile Include="..\..\..\seal\binding\lsprite.c" />
+    <ClCompile Include="..\..\..\seal\binding\ltexture.c" />
+    <ClCompile Include="..\..\..\seal\bmfont.c" />
+    <ClCompile Include="..\..\..\seal\camera.c" />
+    <ClCompile Include="..\..\..\seal\event.c" />
+    <ClCompile Include="..\..\..\seal\image\lodepng.c" />
+    <ClCompile Include="..\..\..\seal\lua_handler.c" />
+    <ClCompile Include="..\..\..\seal\math\affine.c" />
+    <ClCompile Include="..\..\..\seal\math\geo.c" />
+    <ClCompile Include="..\..\..\seal\math\matrix.c" />
+    <ClCompile Include="..\..\..\seal\memory.c" />
+    <ClCompile Include="..\..\..\seal\nuk_node.c" />
+    <ClCompile Include="..\..\..\seal\platform\fs.c" />
+    <ClCompile Include="..\..\..\seal\platform\timer.c" />
+    <ClCompile Include="..\..\..\seal\render.c" />
+    <ClCompile Include="..\..\..\seal\seal.c" />
+    <ClCompile Include="..\..\..\seal\shader.c" />
+    <ClCompile Include="..\..\..\seal\sprite.c" />
+    <ClCompile Include="..\..\..\seal\texture.c" />
+    <ClCompile Include="..\..\..\seal\ttf_font.c" />
+    <ClCompile Include="..\..\..\seal\window.c" />
+    <ClCompile Include="main.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

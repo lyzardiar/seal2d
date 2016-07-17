@@ -78,7 +78,7 @@ struct sprite_frame* sprite_frame_new(const char* key) {
     memset(f, 0, sizeof(struct sprite_frame));
     
     int len = strlen(key);
-    f->key = s_calloc(len+1);
+    f->key = s_calloc(1, len+1);
     strcpy(f->key, key);
     
     return f;

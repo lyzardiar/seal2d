@@ -51,4 +51,14 @@
 #else
 #endif
 
+
+#ifdef _WIN32
+#include <winsock.h>
+typedef long long int64_t;
+#else
+#include <sys/time.h>
+#include <unistd.h>
+
+#endif
+
 #endif

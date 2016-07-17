@@ -6,7 +6,8 @@
 //1,5,9,13,
 //2,6,10,14,
 //3,7,11,15
-struct mat4* orth_matrix(float left, float bottom, float right, float top, float near, float far) {
+struct mat4* orth_matrix(float left, float bottom, float right, float top, float nNear, float nFar)
+{
     struct mat4* mat = (struct mat4*)s_malloc(sizeof(struct mat4));
     float* m = mat->m;
     m[0] = 2.0f / (right - left);
@@ -19,11 +20,11 @@ struct mat4* orth_matrix(float left, float bottom, float right, float top, float
     m[7] = 0.0f;
     m[8] = 0.0f;
     m[9] = 0.0f;
-    m[10] = 2.0f / (near - far);
+    m[10] = 2.0f / (nNear - nFar);
     m[11] = 0.0f;
     m[12] = (left + right) / (left - right);
     m[13] = -(top + bottom) / (top - bottom);
-    m[14] = (near + far) / (near - far);
+    m[14] = (nNear + nFar) / (nNear - nFar);
     m[15] = 1.0f;
     return mat;
 }

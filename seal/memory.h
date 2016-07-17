@@ -8,7 +8,7 @@
 #ifdef DEBUG
 // memory functions
 #define s_malloc(size)          seal_malloc(size, __FILE__, __LINE__)
-#define s_calloc(size)          seal_calloc(size, __FILE__, __LINE__)
+#define s_calloc(count, size)          seal_calloc(count, size, __FILE__, __LINE__)
 #define s_realloc(p, size)      seal_realloc(p, size, __FILE__, __LINE__)
 #define s_free(p)               seal_free((p))
 

@@ -2,7 +2,7 @@
 #define render_h
 
 #include <OpenGL/gl3.h>
-#include "geo.h"
+#include "math/geo.h"
 #include "shader.h"
 
 #define RENDER_STATE_TEXTURE_BIT  (1)
