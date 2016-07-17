@@ -155,7 +155,7 @@ local function bunny_test()
     local count = 0
 	local bunnies = {}
 	local function add_bunny(x, y)
-		for i = 1, 50 do
+		for i = 1, 1000 do
 			local b = sprite.new("ui.png", "smile_middle.png")
 			b:set_pos(x, y)
 			root:add_child(b)
