@@ -94,8 +94,9 @@ struct sprite {
     struct sprite_frame* frame;
     struct glyph glyph; // glphy information for rect sprites, this may waste some bytes. fix here someday.
     struct anim* anim; // for sprite's anim.
-    struct bmfont* bmfont; // for sprite bmfont.
     
+    struct bmfont* bmfont; // for sprite bmfont.
+    char* text;
     
     bool swallow;
 };
@@ -110,6 +111,7 @@ struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* points);
 
 void sprite_free(struct sprite* self);
+void sprite_set_text(struct sprite* self, const char* label);
 
 void sprite_touch(struct sprite* self, struct touch_event* touch_event);
 void sprite_visit(struct sprite* self, float dt);

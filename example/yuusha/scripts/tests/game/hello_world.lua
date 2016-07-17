@@ -164,10 +164,7 @@ local function bunny_test()
 		end
 		count = count + 1000
 
-		label:cleanup()
-		label = sprite.new_bmfont_label(string.format("count: %d", count), "res/fonts/animated.txt")
-		label:set_pos(0, 60)
-    	root:add_child(label)
+		label:set_text(string.format("count: %d", count))
     end
 
 
@@ -191,10 +188,11 @@ local function bunny_test()
 			
 			local fps = 1 / timer.mpf
 			if fps > 60 then fps = 60 end
+			local status = string.format("FPS: %.2f", fps)
 
-			fps_label:cleanup()
-			fps_label = sprite.new_bmfont_label(string.format("FPS: %.2f", fps), "res/fonts/animated.txt")
-    		root:add_child(fps_label)
+			fps_label:set_text(status)
+
+			print(status, count)
 		end,
 		loop = 0,
 	}

@@ -17,6 +17,7 @@
 #include "window.h"
 #include "shader.h"
 #include "sprite.h"
+#include "bmfont.h"
 #include "camera.h"
 #include "render.h"
 #include "nuk_node.h"
@@ -185,6 +186,7 @@ void seal_init_graphics() {
     // baisc graphic modules
     GAME->texture_cache = texture_cache_new();
     GAME->sprite_frame_cache = sprite_frame_cache_new();
+    GAME->bmfont_cache = bmfont_cache_new();
     GAME->global_camera = camera_new(GAME->config.window_height, GAME->config.window_height);
     GAME->render = render_new();
     GAME->nuk_node = nuk_node_new();
