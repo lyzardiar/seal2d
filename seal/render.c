@@ -20,6 +20,12 @@ static struct render_batch* sprite_render_batch_new(int offset, GLint tex_id) {
     return batch;
 }
 
+static void sprite_render_batch_reset(struct render_batch* self) {
+    self->offset = 0;
+    self->tex_id = 0;
+    self->n_verts = 0;
+}
+
 static void sprite_render_func_init(struct render* R) {
     struct sprite_render_context* context = STRUCT_NEW(sprite_render_context);
     struct vertex_buffer* buffer = STRUCT_NEW(vertex_buffer);
@@ -51,8 +57,9 @@ static void sprite_render_func_init(struct render* R) {
     
     context->state.tex_id = 0;
     context->buffer = buffer;
-    context->batches = array_new(64); // 64 drawcall is enough for most cases
+    memset(context->batches, 0, MAX_RENDER_BATCH*sizeof(struct render_batch));
     context->n_objects = 0;
+    context->current_batch_index = 0;
     
     render_set_context(R, context);
 }
@@ -67,9 +74,9 @@ void sprite_render_func_flush(struct render* R) {
     glBufferData(GL_ARRAY_BUFFER, VERTEX_SIZE*context->n_objects * 6, context->buffer->data, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
-    int n = array_size(context->batches);
+    int n = context->current_batch_index;
     for (int i = 0; i < n; ++i) {
-        struct render_batch* b = array_at(context->batches, 0);
+        struct render_batch* b = context->batches + i;
         glBindTexture(GL_TEXTURE_2D, b->tex_id);
         
         glBindBuffer(GL_ARRAY_BUFFER, context->buffer->vbo);
@@ -83,11 +90,13 @@ void sprite_render_func_flush(struct render* R) {
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
         glDrawArrays(GL_TRIANGLES, b->offset, b->n_verts);
         
+        sprite_render_batch_reset(b);
         CHECK_GL_ERROR;
         R->drawcall++;
+        
     }
     
-    array_clear(context->batches, true);
+    context->current_batch_index = 0;
     context->n_objects = 0;
     context->buffer->offset = 0;
 }
@@ -104,9 +113,9 @@ void sprite_render_func_start(struct render* R) {
     glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
     
     // we can definitly improve this by cache the batch and do save state, here for simplity.
-    struct sprite_render_context* context = (R->context);
-    memset(context->buffer->data, 0, VERTEX_SIZE * MAX_OBJECTS * 6);
-    array_clear(context->batches, true);
+//    struct sprite_render_context* context = (R->context);
+//    memset(context->buffer->data, 0, VERTEX_SIZE * MAX_OBJECTS * 6);
+//    array_reset(context->batches);
 }
 
 /*-------------------- sprite_render --------------------*/
@@ -130,24 +139,28 @@ void sprite_render_func_draw(struct render* R, void* object) {
     data[4] = glyph->br;
     data[5] = glyph->tr;
     
-    struct render_batch* batch = NULL;
-    if (context->state.tex_id == sprite->frame->tex_id) {
-        batch = array_at(context->batches, 0);
-        // first index, no batch created.
-        if (batch) {
-            batch->n_verts += 6;
-        } else {
-            batch = sprite_render_batch_new(offset, sprite->frame->tex_id);
-            array_push_back(context->batches, batch);
-        }
+    int new_tex_id = sprite->frame->tex_id;
+    
+    int n = context->current_batch_index;
+    
+    struct render_batch* batch = context->batches + n;
+    
+    if (new_tex_id == batch->tex_id) {
+        batch->offset += 6;
+        batch->n_verts += 6;
     } else {
-        batch = sprite_render_batch_new(offset, sprite->frame->tex_id);
-        array_push_back(context->batches, batch);
-        context->state.tex_id = sprite->frame->tex_id;
+        batch->offset = offset;
+        batch->n_verts = 6;
+        batch->tex_id = new_tex_id;
+        context->current_batch_index++;
     }
     
-    buffer->offset += 6;
+    
+    // save the last tex_id
+    context->state.tex_id = sprite->frame->tex_id;
     context->n_objects++;
+    
+    buffer->offset = offset;
 }
 
 void sprite_render_func_end(struct render* R) {

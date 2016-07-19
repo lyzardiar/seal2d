@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef DEBUG
+#if DEBUG
 // memory functions
 #define s_malloc(size)          seal_malloc(size, __FILE__, __LINE__)
 #define s_calloc(size)          seal_calloc(size, __FILE__, __LINE__)

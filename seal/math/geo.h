@@ -37,8 +37,6 @@ vert.uv[1] = v; \
 #define VERTEX_OFFSET_COLOR ((void*)offsetof(struct vertex, color))
 #define VERTEX_OFFSET_UV ((void*)offsetof(struct vertex, uv))
 
-#define MAX_OBJECTS (1024)
-
 #define C4B_COLOR(r,g,b,a) ( (r<<24) | (g<<16) | (b<<8) | (a<<0) )
 
 struct glyph {

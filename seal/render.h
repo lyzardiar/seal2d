@@ -6,6 +6,9 @@
 #include "shader.h"
 #include "sprite.h"
 
+#define MAX_OBJECTS (1024) // max objects in on drawcall
+#define MAX_RENDER_BATCH (MAX_OBJECTS) // we may use 1 draw call for each of the object
+
 struct render;
 
 enum RENDER_TYPE {
@@ -60,9 +63,10 @@ struct render_batch {
 
 struct sprite_render_context {
     struct vertex_buffer* buffer;
-    struct array* batches;
+    struct render_batch batches[MAX_RENDER_BATCH];
     struct render_state state;
     
+    int current_batch_index;
     int n_objects;
 };
 
