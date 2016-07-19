@@ -303,8 +303,6 @@ void seal_draw() {
     
     sprite_visit(GAME->root, GAME->global_dt);
     
-    render_commit(R);
-    
     nk_draw();
     
     CHECK_GL_ERROR

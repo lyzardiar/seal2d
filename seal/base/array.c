@@ -83,7 +83,7 @@ void array_set(struct array* self, size_t index, void* data) {
 }
 
 void* array_at(struct array* self, size_t index) {
-    s_assert(index < self->n);
+    s_assert(index <= self->n);
     return self->data[index];
 }
 

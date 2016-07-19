@@ -4,55 +4,76 @@
 #include <OpenGL/gl3.h>
 #include "geo.h"
 #include "shader.h"
+#include "sprite.h"
 
-#define RENDER_STATE_TEXTURE_BIT  (1)
-#define RENDER_STATE_VERTEX_BIT   (1 << 1)
-#define RENDER_STATE_SCISSORS_BIT (1 << 2)
-#define RENDER_STATE_PROGRAM_BIT  (1 << 3)
+struct render;
 
-struct glyph;
-struct array;
+enum RENDER_TYPE {
+    SPRITE_RENDER = 0,
+    
+    RENDER_MAX,
+};
 
-struct vertex_buffer {
-    GLuint vbo;
-    GLuint vao;
-    struct vertex* data;
-    int n_objs;
+struct render_func {
+    void (*init)(struct render*);
+    void (*start)(struct render*);
+    void (*draw)(struct render*, void* render_object);
+    void (*end)(struct render*);
+    void (*flush)(struct render*);
+    void (*destroy)(struct render*);
+};
+
+struct render_object {
+    enum RENDER_TYPE type;
+    
+    struct render_func render_func;
 };
 
 struct render {
+    struct render_object R_objs[RENDER_MAX];
+    
     struct shader* shader;
+    int last;
+    int current; // current render type.
     
-    GLuint cur_tex_id;
-    GLuint cur_program;
-    
-    struct vertex_buffer* vertex_buffer;
-    struct rect scissors;
-    
-    unsigned int render_state;
-    
-    unsigned int drawcall;
+    int drawcall;
+    void* context;
 };
 
-struct vertex_buffer* vertex_buffer_new();
-void vertex_buffer_free(struct vertex_buffer* self);
+struct vertex_buffer {
+    GLuint vao;
+    GLuint vbo;
+    
+    struct vertex* data;
+    int offset;
+};
+
+struct render_state {
+    int tex_id;
+};
+
+struct render_batch {
+    int n_verts;
+    int offset;
+    GLint tex_id;
+};
+
+struct sprite_render_context {
+    struct vertex_buffer* buffer;
+    struct array* batches;
+    struct render_state state;
+    
+    int n_objects;
+};
 
 struct render* render_new();
 void render_free(struct render* self);
-
-void render_clear_state(struct render* self);
 void render_clear(struct render* self, color c);
-void render_commit(struct render* self);
 
-void render_buffer_append(struct render* self, const struct glyph* glyph);
+void render_set_context(struct render* self, void* context);
+void render_switch(struct render* self, enum RENDER_TYPE type);
 
-void render_set_scissors(struct render* self, struct rect* rect);
-void render_clear_scissors(struct render* self);
-
-void render_use_texture(struct render* self, GLuint tex_id);
-void render_use_shader(struct render* self, enum SHADER_TYPE shader_type);
-void render_use_program(struct render* self, GLuint program);
-
-void render_set_unfiorm(struct render* self, enum BUILT_IN_UNIFORMS uniform_type, float* v);
+void sprite_render_func_draw(struct render* R, void* object);
+void sprite_render_func_flush(struct render* R);
 
 #endif

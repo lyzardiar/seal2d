@@ -30,7 +30,7 @@ local function sprite_basic_test()
 	root:cleanup()
 
 	local child = {}
-	local total = 5
+	local total = 1
 	for i = 1, total do
 		local s = sprite.new("anim_pirate.png", "attack_0.png")
 		s:set_pos(i * 100, 0)
@@ -38,10 +38,10 @@ local function sprite_basic_test()
 		child[#child+1] = s
 	end
 
-	child[1]:set_color(255, 0, 0, 255)
-	child[2]:set_color(0, 255, 0, 255)
-	child[3]:set_color(0, 0, 255, 255)
-	child[4]:set_color(255, 255, 255, 128)
+	-- child[1]:set_color(255, 0, 0, 255)
+	-- child[2]:set_color(0, 255, 0, 255)
+	-- child[3]:set_color(0, 0, 255, 255)
+	-- child[4]:set_color(255, 255, 255, 128)
 end
 
 local function sprite_animation_test()
@@ -118,24 +118,6 @@ local function sprite_event_test()
 	end
 end
 
-local function sprite_label_test()
-	print("run sprite_label_test")
-	root:cleanup()
-
-	local s = sprite.new_label("hello_world")
-	s:set_pos(200, 200)
-
-	root:add_child(s)
-end
-
-local function texture_load_test()
-	root:cleanup()
-
-	local texture_core = require "texure_core"
-	local tex_id = texture_core.load_from_cache("res/unpack/color_pad.png")
-	print("tex_id = ", tex_id)
-end
-
 local function bmfont_load_test()
 	print("run bmfont_load_test")
 	root:cleanup()
@@ -149,20 +131,20 @@ end
 local function bunny_test()
 	root:cleanup()
 
-
 	local label = sprite.new_bmfont_label("count: 0", "res/fonts/animated.txt")
 	label:set_pos(0, 60)
     root:add_child(label)
 
     local count = 0
 	local bunnies = {}
+	local n = 500
 	local function add_bunny(x, y)
-		for i = 1, 2 do
+		for i = 1, n do
 			local b = sprite.new("ui.png", "smile_middle.png")
 			b:set_pos(x, y)
 			root:add_child(b)
 		end
-		count = count + 1000
+		count = count + n
 
 		label:set_text(string.format("count: %d", count))
     end
@@ -198,15 +180,25 @@ local function bunny_test()
 	}
 end
 
+local function multi_texture_test()
+	root:cleanup()
+
+	local s1 = sprite.new("ui.png", "smile_middle.png")
+	root:add_child(s1)
+
+	local s2 = sprite.new("anim_pirate.png", "attack_0.png")
+	s2:set_pos(200, 200)
+	root:add_child(s2)
+end
+
 local tests = {
 	{name = "sprite basic test", create_func = sprite_basic_test }, 
 	{name = "sprite animation test", create_func = sprite_animation_test},
 	{name = "sprite clip test", create_func = sprite_clip_test},
 	{name = "sprite touch test", create_func = sprite_event_test},
-	{name = "sprite label test", create_func = sprite_label_test},
-	{name = "texture load test", create_func = texture_load_test},
-	{name = "bmfont load test", create_func = bmfont_load_test}, 
-	{name = "bunny test", create_func = bunny_test}
+	{name = "bmfont load test", create_func = bmfont_load_test},
+	{name = "bunny test", create_func = bunny_test},
+	{name = "multi texture test", create_func = multi_texture_test},
 }
 
 local function draw_gui()

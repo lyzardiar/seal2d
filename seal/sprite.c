@@ -492,6 +492,10 @@ void sprite_visit(struct sprite* self, float dt) {
     }
     
     switch (self->type) {
+        case SPRITE_TYPE_PIC:
+            sprite_render_func_flush(R);
+            break;
+            
         case SPRITE_TYPE_CLIP:
             sprite_clean_clip(self);
             break;
@@ -502,24 +506,21 @@ void sprite_visit(struct sprite* self, float dt) {
 }
 
 void sprite_draw_pic(struct sprite* self) {
-    render_use_shader(R, SHADER_COLOR);
-    render_use_texture(R, self->frame->tex_id);
-    render_buffer_append(R, &self->glyph);
+    render_switch(R, SPRITE_RENDER);
+    sprite_render_func_draw(R, self);
 }
 
 void sprite_draw_label(struct sprite* self) {
-    render_use_shader(R, SHADER_TTF_LABEL);
-    render_use_texture(R, self->frame->tex_id);
-    render_buffer_append(R, &self->glyph);
+
 }
 
 void sprite_draw_clip(struct sprite* self) {
-    struct rect r = {self->world_srt.x, self->world_srt.y, self->width, self->height};
-    render_set_scissors(R, &r);
+//    struct rect r = {self->world_srt.x, self->world_srt.y, self->width, self->height};
+//    render_set_scissors(R, &r);
 }
 
 void sprite_clean_clip(struct sprite* self) {
-    render_clear_scissors(R);
+//    render_clear_scissors(R);
 }
 
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame) {

@@ -12,17 +12,24 @@
 
 EXTERN_GAME;
 
-#define VERTEXES_PER_OBJECT (6)
+static struct render_batch* sprite_render_batch_new(int offset, GLint tex_id) {
+    struct render_batch* batch = STRUCT_NEW(render_batch);
+    batch->offset = offset;
+    batch->tex_id = tex_id;
+    batch->n_verts = 6;
+    return batch;
+}
 
-struct vertex_buffer* vertex_buffer_new() {
+static void sprite_render_func_init(struct render* R) {
+    struct sprite_render_context* context = STRUCT_NEW(sprite_render_context);
     struct vertex_buffer* buffer = STRUCT_NEW(vertex_buffer);
     
     glGenVertexArrays(1, &buffer->vao);
     glBindVertexArray(buffer->vao);
-    
+    CHECK_GL_ERROR;
     glGenBuffers(1, &buffer->vbo);
     glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
-    
+    CHECK_GL_ERROR;
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
@@ -37,47 +44,143 @@ struct vertex_buffer* vertex_buffer_new() {
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-
+    CHECK_GL_ERROR;
     buffer->data = s_malloc(VERTEX_SIZE * MAX_OBJECTS * 6);
-    buffer->n_objs = 0;
+    buffer->offset = 0;
+
     
-    return buffer;
+    context->state.tex_id = 0;
+    context->buffer = buffer;
+    context->batches = array_new(64); // 64 drawcall is enough for most cases
+    context->n_objects = 0;
+    
+    render_set_context(R, context);
 }
 
-void vertex_buffer_free(struct vertex_buffer* self) {
-    s_free(self->data);
-    s_free(self);
+
+void sprite_render_func_flush(struct render* R) {
+    struct sprite_render_context* context = (R->context);
+    
+    glBindVertexArray(context->buffer->vao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, context->buffer->vbo);
+    glBufferData(GL_ARRAY_BUFFER, VERTEX_SIZE*context->n_objects * 6, context->buffer->data, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    int n = array_size(context->batches);
+    for (int i = 0; i < n; ++i) {
+        struct render_batch* b = array_at(context->batches, 0);
+        glBindTexture(GL_TEXTURE_2D, b->tex_id);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, context->buffer->vbo);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
+        
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
+        
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
+        glDrawArrays(GL_TRIANGLES, b->offset, b->n_verts);
+        
+        CHECK_GL_ERROR;
+        R->drawcall++;
+    }
+    
+    array_clear(context->batches, true);
+    context->n_objects = 0;
+    context->buffer->offset = 0;
 }
 
-static void vertex_buffer_add(struct vertex_buffer* self, const struct glyph* glyph) {
-    int offset = (self->n_objs++) * VERTEXES_PER_OBJECT;
-    struct vertex* buf = self->data + offset;
-    buf[0] = glyph->tr;
-    buf[1] = glyph->tl;
-    buf[2] = glyph->bl;
-    buf[3] = glyph->bl;
-    buf[4] = glyph->br;
-    buf[5] = glyph->tr;
+void sprite_render_func_start(struct render* R) {
+    GLuint prog = shader_get_program(R->shader, SHADER_COLOR);
+    glUseProgram(prog);
+    
+    glActiveTexture(GL_TEXTURE0);
+    GLint texture_location = glGetUniformLocation(prog, "sampler");
+    glUniform1i(texture_location, 0);
+    
+    GLint projection = glGetUniformLocation(prog, "projection");
+    glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
+    
+    // we can definitly improve this by cache the batch and do save state, here for simplity.
+    struct sprite_render_context* context = (R->context);
+    memset(context->buffer->data, 0, VERTEX_SIZE * MAX_OBJECTS * 6);
+    array_clear(context->batches, true);
 }
 
+/*-------------------- sprite_render --------------------*/
+void sprite_render_func_draw(struct render* R, void* object) {
+    struct sprite* sprite = (struct sprite*)object;
+    
+    struct sprite_render_context* context = (R->context);
+    if (context->n_objects+1 > MAX_OBJECTS) {
+        sprite_render_func_flush(R);
+        return;
+    }
+    
+    struct vertex_buffer* buffer = context->buffer;
+    int offset = buffer->offset;
+    struct vertex* data = buffer->data + offset;
+    struct glyph* glyph = &sprite->glyph;
+    data[0] = glyph->tr;
+    data[1] = glyph->tl;
+    data[2] = glyph->bl;
+    data[3] = glyph->bl;
+    data[4] = glyph->br;
+    data[5] = glyph->tr;
+    
+    struct render_batch* batch = NULL;
+    if (context->state.tex_id == sprite->frame->tex_id) {
+        batch = array_at(context->batches, 0);
+        // first index, no batch created.
+        if (batch) {
+            batch->n_verts += 6;
+        } else {
+            batch = sprite_render_batch_new(offset, sprite->frame->tex_id);
+            array_push_back(context->batches, batch);
+        }
+    } else {
+        batch = sprite_render_batch_new(offset, sprite->frame->tex_id);
+        array_push_back(context->batches, batch);
+        context->state.tex_id = sprite->frame->tex_id;
+    }
+    
+    buffer->offset += 6;
+    context->n_objects++;
+}
+
+void sprite_render_func_end(struct render* R) {
+    // dummy
+}
+
+/*-------------------- render --------------------*/
+
+#define RENDER_INVALID (-1)
 struct render* render_new() {
     struct render* r = STRUCT_NEW(render);
-    r->cur_program = 0;
-    r->cur_tex_id = 0;
-    r->vertex_buffer = vertex_buffer_new();
-    r->render_state = 0;
-    r->shader = shader_new();
-    r->scissors.x = 0;
-    r->scissors.y = 0;
-    r->scissors.width = GAME->config.window_width;
-    r->scissors.width = GAME->config.window_height;
-    r->drawcall = 0;
+    r->last = r->current = RENDER_INVALID;
+    r->context = NULL;
     
+    r->R_objs[SPRITE_RENDER].type = SPRITE_RENDER;
+    r->R_objs[SPRITE_RENDER].render_func.init = sprite_render_func_init;
+    r->R_objs[SPRITE_RENDER].render_func.start = sprite_render_func_start;
+    r->R_objs[SPRITE_RENDER].render_func.draw = sprite_render_func_draw;
+    r->R_objs[SPRITE_RENDER].render_func.end = sprite_render_func_end;
+    r->R_objs[SPRITE_RENDER].render_func.flush = sprite_render_func_flush;
+    
+    // TODO: move to render switch to do lazy init.
+    sprite_render_func_init(r);
+    
+    r->shader = shader_new();
     return r;
 }
 
+void render_set_context(struct render* self, void* context) {
+    self->context = context;
+}
+
 void render_free(struct render* self) {
-    vertex_buffer_free(self->vertex_buffer);
     shader_free(self->shader);
     s_free(self);
 }
@@ -87,116 +190,27 @@ void render_clear(struct render* self, color c) {
     float g = ((c >> 16) & 0xff) / 255.0;
     float b = ((c >> 8 ) & 0xff) / 255.0;
     float a = ((c      ) & 0xff) / 255.0;
-    
+
     glClearDepth(1.0f);
     glClearColor(r, g, b, a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    printf("drawcall = %d\n", self->drawcall);
+
     self->drawcall = 0;
 }
 
-void render_commit(struct render* self) {
-    if (self->render_state & RENDER_STATE_PROGRAM_BIT) {
-        glUseProgram(self->cur_program);
-        
-        shader_commit_uniform(self->shader, self->cur_program);
-    }
-
-    struct vertex_buffer* vbuf = self->vertex_buffer;
-    if (self->render_state & RENDER_STATE_VERTEX_BIT) {
-        glBindBuffer(GL_ARRAY_BUFFER, vbuf->vbo);
-        glBufferData(GL_ARRAY_BUFFER, VERTEX_SIZE*vbuf->n_objs * 6, vbuf->data, GL_DYNAMIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        
-        glBindVertexArray(vbuf->vao);
+void render_switch(struct render* self, enum RENDER_TYPE type) {
+    if (self->current != type) {
+        if (self->last != RENDER_INVALID) {
+            struct render_object* LR = &self->R_objs[self->last];
+            LR->render_func.flush(self);
+        }
     }
     
-    // TODO: ungly hacking here.
-    if (self->render_state & RENDER_STATE_TEXTURE_BIT) {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, self->cur_tex_id);
-        GLint texture_location = glGetUniformLocation(self->cur_program, "sampler");
-        glUniform1i(texture_location, 0);
-    }
+    struct render_object* render_object = &self->R_objs[type];
+    render_object->render_func.start(self);
     
-    if (self->render_state & RENDER_STATE_VERTEX_BIT) {
-        GLint projection = glGetUniformLocation(self->cur_program, "projection");
-        glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
-        
-        glBindBuffer(GL_ARRAY_BUFFER, vbuf->vbo);
-        
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
-        
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
-        
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
-        
-        glDrawArrays(GL_TRIANGLES, 0, vbuf->n_objs * 6);
-        self->drawcall++;
-    }
-
-    render_clear_state(self);
-}
-
-void render_clear_state(struct render* self) {
-    self->render_state = 0;
-    self->vertex_buffer->n_objs = 0;
-}
-
-void render_buffer_append(struct render* self, const struct glyph* glyph) {
-    struct vertex_buffer* buffer = self->vertex_buffer;
-    if (buffer->n_objs >= MAX_OBJECTS) {
-        render_commit(self);
-    }
-    vertex_buffer_add(buffer, glyph);
-    self->render_state |= RENDER_STATE_VERTEX_BIT;
-}
-
-void render_set_scissors(struct render* self, struct rect* rect) {
-    if (self->render_state) {
-        render_commit(self);
-    }
-    glEnable(GL_SCISSOR_TEST);
-    glScissor(rect->x, rect->y, rect->width, rect->height);
-}
-
-void render_clear_scissors(struct render* self) {
-    if (self->render_state) {
-        render_commit(self);
-    }
-    glScissor(0, 0, GAME->config.window_width, GAME->config.window_height);
-    glDisable(GL_SCISSOR_TEST);
-    
-    self->scissors.x = 0;
-    self->scissors.y = 0;
-    self->scissors.y = GAME->config.window_width;
-    self->scissors.y = GAME->config.window_height;
-}
-
-void render_use_texture(struct render* self, GLuint tex_id) {
-    self->cur_tex_id = tex_id;
-    self->render_state |= RENDER_STATE_TEXTURE_BIT;
-}
-
-void render_use_shader(struct render* self, enum SHADER_TYPE shader_type) {
-    GLuint program = shader_get_program(self->shader, shader_type);
-    render_use_program(self, program);
-}
-
-void render_use_program(struct render* self, GLuint program) {
-    self->cur_program = program;
-    self->render_state |= RENDER_STATE_PROGRAM_BIT;
-}
-
-void render_set_unfiorm(struct render* self, enum BUILT_IN_UNIFORMS uniform_type, float* v) {
-    s_assert(self->cur_program);
-    render_commit(self);
-    shader_set_uniform_object(self->shader, uniform_type, v);
-    self->render_state |= RENDER_STATE_PROGRAM_BIT;
+    self->current = type;
+    self->last = self->current;
 }
