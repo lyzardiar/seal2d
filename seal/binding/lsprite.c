@@ -157,6 +157,14 @@ int lsprite_set_text(lua_State* L) {
     return 0;
 }
 
+int lsprite_set_size(lua_State* L) {
+    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    lua_Integer width = luaL_checkinteger(L, 2);
+    lua_Integer height = luaL_checkinteger(L, 3);
+    sprite_set_size(self, width, height);
+    return 0;
+}
+
 int lsprite_register_handler(lua_State* L) {
     struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
     lua_handler_set_func(GAME->lua_handler, L, self, 2);
@@ -236,6 +244,13 @@ int lsprite_get_pos(lua_State* L) {
     return 2;
 }
 
+int lsprite_get_size(lua_State* L) {
+    struct sprite* self = lua_touserdata(L, 1);
+    lua_pushnumber(L, self->width);
+    lua_pushnumber(L, self->height);
+    return 2;
+}
+
 int lsprite_add_child(lua_State* L) {
     luaL_argcheck(L, lua_isuserdata(L, 1), 1, "sprite expected for arg 1");
     luaL_checktype(L, 2, LUA_TTABLE);
@@ -282,7 +297,9 @@ int luaopen_seal_sprite(lua_State* L) {
         { "set_rotation", lsprite_set_rotation },
         { "set_scale", lsprite_set_scale },
         { "set_color", lsprite_set_color },
+        { "set_size", lsprite_set_size },
         { "get_pos", lsprite_get_pos},
+        { "get_size", lsprite_get_size},
         { "add_child", lsprite_add_child },
         { "remove_all_child", lsprite_remove_all_child},
         { NULL, NULL },

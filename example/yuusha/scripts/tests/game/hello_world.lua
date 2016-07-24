@@ -29,11 +29,31 @@ local function sprite_basic_test()
 	print("run sprite_basic_test")
 	root:cleanup()
 
+	local sprites = {
+		{ frame = "skeleton_1.png"},
+		{ frame = "skeleton_1.png", scale = 0.5 },
+		{ frame = "skeleton_1.png", scale = 1 },
+		-- { frame = "attack_0.png", pos = {x = 400, y = 0}, color = {0, 255, 0, 255}},
+	}
+
 	local child = {}
-	local total = 1
-	for i = 1, total do
-		local s = sprite.new("anim_pirate.png", "attack_0.png")
-		s:set_pos(i * 100, 0)
+
+	local x, y = 0, 0
+
+	local last_width
+	for i = 1, #sprites do
+		local data = sprites[i]
+		local s = sprite.new("skeleton.png", data.frame)
+		s:set_pos(x, y)
+
+		print("size = ", s:get_size())
+		x = x + s:get_size()
+
+		s:set_scale(data.scale or 1.0)
+		if data.color then
+			s:set_color(data.color[1], data.color[2], data.color[3], data.color[4])
+		end
+
 		root:add_child(s)
 		child[#child+1] = s
 	end
@@ -122,10 +142,22 @@ local function bmfont_load_test()
 	print("run bmfont_load_test")
 	root:cleanup()
 
-	local s = sprite.new_bmfont_label("hello world", "res/fonts/animated.txt")
-	s:set_pos(200, 200)
+	local labels = {
+		{ pos = {x = 0, y = 500}, label = "the quick brown fox jumps over the lazy dog." },
+		{ pos = {x = 0 , y = 0}, label = "hello world"},
+		{ pos = {x = 0 , y = 100}, label = "hello world", scale = 0.5},
+	}
 
-	root:add_child(s)
+	for i = 1, #labels do
+		local l = labels[i]
+		local s = sprite.new_bmfont_label(l.label, "res/fonts/animated.txt")
+		s:set_pos(l.pos.x, l.pos.y)
+		if l.scale then 
+			s:set_scale(l.scale)
+		end
+		root:add_child(s)
+	end
+	
 end
 
 local function bunny_test()
@@ -161,23 +193,8 @@ local function bunny_test()
 		end
 	end)	
 
-
 	local fps_label = sprite.new_bmfont_label("FPS: 0", "res/fonts/animated.txt")
     root:add_child(fps_label)
-	timer.new{
-		interval = 0,
-		callback = function(dt) 
-			
-			local fps = 1 / timer.mpf
-			if fps > 60 then fps = 60 end
-			local status = string.format("FPS: %.2f", fps)
-
-			fps_label:set_text(status)
-
-			print(status, count)
-		end,
-		loop = 0,
-	}
 end
 
 local function multi_texture_test()
@@ -228,6 +245,7 @@ end
 function hello_world.entry()
 	sprite_frame.load_from_json("res/images/ui.json")
 	sprite_frame.load_from_json("res/images/anim_pirate.json")
+	sprite_frame.load_from_json("res/images/skeleton.json")
 
 	root = sprite.new_container()
 	root:set_pos(0, 0)

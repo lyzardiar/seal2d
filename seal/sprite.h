@@ -111,7 +111,6 @@ struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* points);
 
 void sprite_free(struct sprite* self);
-void sprite_set_text(struct sprite* self, const char* label);
 
 void sprite_touch(struct sprite* self, struct touch_event* touch_event);
 void sprite_visit(struct sprite* self, float dt);
@@ -125,11 +124,13 @@ void sprite_clean_clip(struct sprite* self);
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame);
 void sprite_set_anim(struct sprite* self, struct anim* anim);
 
+// common
 void sprite_set_pos(struct sprite* self, float x, float y);
 void sprite_set_rotation(struct sprite* self, float rotation);
 void sprite_set_scale(struct sprite* self, float scale);
 
 void sprite_set_color(struct sprite* self, color color);
+void sprite_set_size(struct sprite* self, float width, float height);
 
 void sprite_add_child(struct sprite* self, struct sprite* child);
 void sprite_remove_child(struct sprite* self, struct sprite* child);
@@ -137,8 +138,10 @@ void sprite_remove_all_child(struct sprite* self);
 
 void sprite_to_node_space(struct sprite* self, float x, float y, float* tox, float* toy);
 
+// for label
+void sprite_set_text(struct sprite* self, const char* label);
 
-// !!! don't use this 2 methods unless you known what the HELL you were doing. :)
+// !!! don't use this 2 methods unless you known what the you were doing. :)
 void sprite_init(struct sprite* self, float width, float height);
 void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLuint tex_id);
 

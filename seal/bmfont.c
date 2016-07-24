@@ -5,15 +5,6 @@
 #include "bmfont.h"
 #include "platform/fs.h"
 
-static int64_t parse_int64(char* data) {
-    int64_t n = 0;
-    char* pos = strchr(data, '='); // go through the key
-    
-    sscanf(pos+1, "%lld", &n);
-    return n;
-    
-}
-
 static int parse_int(char* data) {
     int n = 0;
     char* pos = strchr(data, '='); // go through the key
@@ -107,12 +98,13 @@ struct bmfont* bmfont_new(const char* bmfont_data) {
             
             char dummy[32] = "";
             
-            // this code is stupid. will fix this someday :)
             for (int i = 0; i < char_count; ++i) {
                 line = strtok(NULL, "\n");
                 struct charc* c = STRUCT_NEW(charc);
                 
-                sscanf(line, "char%[ ]id=%lld%[ ]x=%d%[ ]y=%d%[ ]width=%d%[ ]height=%d%[ ]xoffset=%d%[ ]yoffset=%d%[ ]xadvance=%d%[ ]page=%d%[ ]chnl=%d%[ ]letter=\"%[^\n]"
+                sscanf(line, "char%[ ]id=%lld%[ ]x=%d%[ ]y=%d%[ ]width=%d%[ ]"
+                             "height=%d%[ ]xoffset=%d%[ ]yoffset=%d%[ ]xadvance=%d%[ ]"
+                             "page=%d%[ ]chnl=%d%[ ]letter=\"%[^\n]"
                        , dummy , &c->id
                        , dummy , &c->x         , dummy , &c->y
                        , dummy , &c->width     , dummy , &c->height
@@ -120,8 +112,6 @@ struct bmfont* bmfont_new(const char* bmfont_data) {
                        , dummy , &c->xadvance  , dummy , &c->page
                        , dummy , &c->chnl      , dummy , c->letter
                        );
-                
-                // TODO: ugly code, improve someday.
                 
                 if (c->id == 32) { // space for special case
                     c->letter[0] = ' ';
@@ -155,9 +145,6 @@ struct charc* bmfont_load_charc(struct bmfont* self, const char* c) {
     
     return hashmapGet(self->characters, (void*)c);
 }
-
-
-
 
 static struct bmfont_cache* C = NULL;
 

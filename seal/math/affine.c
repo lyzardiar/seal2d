@@ -31,7 +31,6 @@ void af_srt(struct affine* af,
             float x, float y,
             float scale_x, float scale_y,
             float rotation) {
-    af_identify(af);
     struct affine scale_matrix;
     struct affine rotation_matrix;
     struct affine translate_matrix;
@@ -48,8 +47,7 @@ void af_srt(struct affine* af,
     af_concat(af, &translate_matrix);
 }
 
-void af_copy(struct affine* af, struct affine* other)
-{
+void af_copy(struct affine* af, struct affine* other) {
     memcpy(af, other, sizeof(struct affine));
 }
 
@@ -69,8 +67,7 @@ void af_set_rotation(struct affine* af, float rotate) {
     af->a = cos;
     af->b = -sin;
     af->c = sin;
-    af->d = cos;
-    
+    af->d = cos;    
 }
 
 void af_translate(struct affine* af, float x, float y) {
@@ -99,13 +96,16 @@ void af_rotate(struct affine* af, float rotate) {
 // [0,  0,  1]    [0,  0,  1]    [0,           0,           1             ]
 
 void af_concat(struct affine* m1, struct affine* m2) {
+    if (fabs(m1->a - 0.5) < 0.0001) {
+        int i = 0;
+    }
     float a = m1->a*m2->a + m1->b*m2->c;
     float b = m1->a*m2->b + m1->b*m2->d;
     float x = m1->a*m2->x + m1->b*m2->y + m1->x;
     
     float c = m1->c*m2->a + m1->d*m2->c;
     float d = m1->c*m2->b + m1->d*m2->d;
-    float y = m1->c*m2->y + m1->d*m2->y + m1->y;
+    float y = m1->c*m2->x + m1->d*m2->y + m1->y;
     
     m1->a = a;
     m1->b = b;

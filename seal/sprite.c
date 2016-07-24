@@ -260,8 +260,6 @@ void sprite_set_text(struct sprite* self, const char* label) {
          but will only cost one draw call at most. :)*/
         //    sprite_init(root, 0, 0);
         
-        // load the texture
-        
         // get the path and append before page.file
         
         char* p = strrchr(fnt_path, '/');
@@ -358,11 +356,15 @@ void sprite_update_transform(struct sprite* self) {
             af_concat(&tmp, &(self->parent->world_srt));
         }
         
-        float left =    tmp.x;
+        self->width *= tmp.a;
+        self->height *= tmp.d;
+        
+        float left =  tmp.x;
         float right = tmp.x + self->width;
         float bottom = tmp.y;
         float top = tmp.y + self->height;
         
+        printf("left = %.2f right = %.2f\n", left, right);
         struct glyph* g = &self->glyph;
         SET_VERTEX_POS(g->bl, left, bottom);
         SET_VERTEX_POS(g->br, right, bottom);
@@ -563,4 +565,11 @@ void sprite_set_color(struct sprite* self, color color) {
     self->color = color;
     
     self->dirty |= SPRITE_COLOR_DIRTY;
+}
+
+void sprite_set_size(struct sprite* self, float width, float height) {
+    self->width = width;
+    self->height = height;
+    
+    self->dirty |= SPRITE_SRT_DIRTY;
 }

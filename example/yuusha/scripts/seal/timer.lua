@@ -1,7 +1,4 @@
-local timer = {
-	mpf = 0,
-	last_time = os.clock(),
-}
+local timer = {}
 
 local all_timers = {}
 
@@ -28,10 +25,6 @@ function timer.update(dt)
 	for i = 1, #stopped_timers do
 		all_timers[stopped_timers[i]] = nil
 	end
-
-	local cur_time = os.clock()
-	timer.mpf = cur_time - timer.last_time
-	timer.last_time = cur_time
 end
 
 function timer:step(dt)
@@ -62,6 +55,10 @@ function timer:step(dt)
 	end
 	
 	return false
+end
+
+function timer:stop()
+	self.stopped = true
 end
 
 return timer

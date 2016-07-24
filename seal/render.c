@@ -153,7 +153,6 @@ void sprite_render_func_draw(struct render* R, void* object) {
         context->current_batch_index++;
     }
     
-    
     // save the last tex_id
     context->state.tex_id = sprite->frame->tex_id;
     context->n_objects++;
