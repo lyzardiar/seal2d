@@ -12,48 +12,59 @@
 
 EXTERN_GAME;
 
-static struct render_batch* sprite_render_batch_new(int offset, GLint tex_id) {
-    struct render_batch* batch = STRUCT_NEW(render_batch);
-    batch->offset = offset;
-    batch->tex_id = tex_id;
-    batch->n_verts = 6;
-    return batch;
-}
-
+#define VERTEX_PER_OBJECT (4)
 static void sprite_render_batch_reset(struct render_batch* self) {
     self->offset = 0;
     self->tex_id = 0;
-    self->n_verts = 0;
+    self->n_objects = 0;
 }
 
 static void sprite_render_func_init(struct render* R) {
     struct sprite_render_context* context = STRUCT_NEW(sprite_render_context);
     struct vertex_buffer* buffer = STRUCT_NEW(vertex_buffer);
     
+    // init the vao
     glGenVertexArrays(1, &buffer->vao);
     glBindVertexArray(buffer->vao);
-    CHECK_GL_ERROR;
+    
+    // init the vbo
     glGenBuffers(1, &buffer->vbo);
     glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
-    CHECK_GL_ERROR;
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
-    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
-    
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+    
+    // init the vertex index buffer
     CHECK_GL_ERROR;
-    buffer->data = s_malloc(VERTEX_SIZE * MAX_OBJECTS * 6);
-    buffer->offset = 0;
+    glGenBuffers(1, &buffer->vibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->vibo);
+    
+    GLushort* idata = s_malloc(MAX_OBJECTS * 6 * sizeof(GLushort));
+    int i, j;
+    
+    //   tl(1) ------ (0) tr
+    //      |         |
+    //      |         |
+    //      |         |
+    //      |         |
+    //   bl(2) -------(3) br
+    for (i = 0, j = 0; i < MAX_OBJECTS*6; i+=6, j+=4) {
+        idata[i+0] = j+1;
+        idata[i+1] = j+0;
+        idata[i+2] = j+3;
+        idata[i+3] = j+3;
+        idata[i+4] = j+2;
+        idata[i+5] = j+1;
+    }
+    
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort)*MAX_OBJECTS*6, idata, GL_STATIC_DRAW);
+    CHECK_GL_ERROR;
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    buffer->idata = idata;
+    
+    buffer->data = s_malloc(VERTEX_SIZE * MAX_OBJECTS * VERTEX_PER_OBJECT);
+    buffer->offset = 0;
     
     context->state.tex_id = 0;
     context->buffer = buffer;
@@ -64,7 +75,6 @@ static void sprite_render_func_init(struct render* R) {
     render_set_context(R, context);
 }
 
-
 void sprite_render_func_flush(struct render* R) {
     struct sprite_render_context* context = (R->context);
     
@@ -72,28 +82,23 @@ void sprite_render_func_flush(struct render* R) {
 
     glBindBuffer(GL_ARRAY_BUFFER, context->buffer->vbo);
     glBufferData(GL_ARRAY_BUFFER, VERTEX_SIZE*context->n_objects * 6, context->buffer->data, GL_DYNAMIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context->buffer->vibo);
+    
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
+    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
     
     int n = context->current_batch_index;
     for (int i = 0; i < n; ++i) {
         struct render_batch* b = context->batches + i;
         glBindTexture(GL_TEXTURE_2D, b->tex_id);
-        
-        glBindBuffer(GL_ARRAY_BUFFER, context->buffer->vbo);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
-        
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
-        
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
-        glDrawArrays(GL_TRIANGLES, b->offset, b->n_verts);
+        glDrawElements(GL_TRIANGLES, b->n_objects*6, GL_UNSIGNED_SHORT, 0);
         
         sprite_render_batch_reset(b);
-        CHECK_GL_ERROR;
         R->drawcall++;
-        
     }
     
     context->current_batch_index = 0;
@@ -111,11 +116,6 @@ void sprite_render_func_start(struct render* R) {
     
     GLint projection = glGetUniformLocation(prog, "projection");
     glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
-    
-    // we can definitly improve this by cache the batch and do save state, here for simplity.
-//    struct sprite_render_context* context = (R->context);
-//    memset(context->buffer->data, 0, VERTEX_SIZE * MAX_OBJECTS * 6);
-//    array_reset(context->batches);
 }
 
 /*-------------------- sprite_render --------------------*/
@@ -135,9 +135,7 @@ void sprite_render_func_draw(struct render* R, void* object) {
     data[0] = glyph->tr;
     data[1] = glyph->tl;
     data[2] = glyph->bl;
-    data[3] = glyph->bl;
-    data[4] = glyph->br;
-    data[5] = glyph->tr;
+    data[3] = glyph->br;
     
     int new_tex_id = sprite->frame->tex_id;
     
@@ -146,11 +144,11 @@ void sprite_render_func_draw(struct render* R, void* object) {
     struct render_batch* batch = context->batches + n;
     
     if (new_tex_id == batch->tex_id) {
-        batch->offset += 6;
-        batch->n_verts += 6;
+        batch->offset += VERTEX_PER_OBJECT;
+        batch->n_objects++;
     } else {
         batch->offset = offset;
-        batch->n_verts = 6;
+        batch->n_objects = 1;
         batch->tex_id = new_tex_id;
         context->current_batch_index++;
     }

@@ -45,9 +45,11 @@ struct render {
 
 struct vertex_buffer {
     GLuint vao;
+    GLuint vibo;
     GLuint vbo;
     
     struct vertex* data;
+    GLushort* idata;
     int offset;
 };
 
@@ -56,7 +58,7 @@ struct render_state {
 };
 
 struct render_batch {
-    int n_verts;
+    int n_objects;
     int offset;
     GLint tex_id;
 };
