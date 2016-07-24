@@ -364,7 +364,6 @@ void sprite_update_transform(struct sprite* self) {
         float bottom = tmp.y;
         float top = tmp.y + self->height;
         
-        printf("left = %.2f right = %.2f\n", left, right);
         struct glyph* g = &self->glyph;
         SET_VERTEX_POS(g->bl, left, bottom);
         SET_VERTEX_POS(g->br, right, bottom);

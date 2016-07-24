@@ -33,18 +33,17 @@ void af_srt(struct affine* af,
             float rotation) {
     struct affine scale_matrix;
     struct affine rotation_matrix;
-    struct affine translate_matrix;
     af_identify(&scale_matrix);
     af_identify(&rotation_matrix);
-    af_identify(&translate_matrix);
     
     af_set_scale(&scale_matrix, scale_x, scale_y);
     af_set_rotation(&rotation_matrix, rotation);
-    af_set_translate(&translate_matrix, x, y);
     
     af_copy(af, &scale_matrix);
     af_concat(af, &rotation_matrix);
-    af_concat(af, &translate_matrix);
+
+    af->x += x;
+    af->y += y;
 }
 
 void af_copy(struct affine* af, struct affine* other) {
@@ -70,35 +69,10 @@ void af_set_rotation(struct affine* af, float rotate) {
     af->d = cos;    
 }
 
-void af_translate(struct affine* af, float x, float y) {
-    af->x += x;
-    af->y += y;
-}
-
-void af_scale(struct affine* af, float scale_x, float scale_y) {
-    af->a *= scale_x;
-    af->b *= scale_y;
-    af->c *= scale_x;
-    af->d *= scale_y;
-}
-
-void af_rotate(struct affine* af, float rotate) {
-    float sin = sinf(rotate);
-    float cos = cosf(rotate);
-    af->a *= cos;
-    af->b *= -sin;
-    af->c *= sin;
-    af->d *= cos;
-}
-
 // [a1, b1, x1]   [a2, b2, x2]   [a1*a2+b1*c2, a1*b2+b1*d2, a1*x2+b1*y2+x1]
 // [c1, d1, y1] * [c2, d2, y2] = [c1*a2+d1*c2, c1*b2+d1*d2, c1*x2+d1*y2+y1]
 // [0,  0,  1]    [0,  0,  1]    [0,           0,           1             ]
-
 void af_concat(struct affine* m1, struct affine* m2) {
-    if (fabs(m1->a - 0.5) < 0.0001) {
-        int i = 0;
-    }
     float a = m1->a*m2->a + m1->b*m2->c;
     float b = m1->a*m2->b + m1->b*m2->d;
     float x = m1->a*m2->x + m1->b*m2->y + m1->x;
@@ -113,16 +87,6 @@ void af_concat(struct affine* m1, struct affine* m2) {
     m1->d = d;
     m1->x = x;
     m1->y = y;
-}
-
-//    [a, b, x]   [x']    [a*x' + b*y' + x]
-//    [c, d, y] * [y'] =  [c*x' + d*y' + y]
-//    [0, 0, 1]   [1]     [1]
-void af_mul(struct affine* af, float *x, float *y) {
-    float rx = af->a*(*x) + af->b*(*y) + af->x;
-    float ry = af->c*(*x) + af->d*(*y) + af->y;
-    *x = rx;
-    *y = ry;
 }
 
 void af_tostring(struct affine* af, char* buff) {
