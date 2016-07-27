@@ -143,16 +143,16 @@ local function bmfont_load_test()
 	root:cleanup()
 
 	local labels = {
-		{ pos = {x = 0, y = 500}, label = "the quick brown fox jumps over the lazy dog." },
-		{ pos = {x = 0 , y = 0}, label = "hello world"},
-		{ pos = {x = 0 , y = 100}, label = "hello world", scale = 0.5},
+		{ pos = {x = 0, y = 500}, label = "(the quick brown fox jumps over the lazy dog." },
+		{ pos = {x = 0 , y = 0}, label = "h,ello world"},
+		-- { pos = {x = 0 , y = 100}, label = "hello world", scale = 0.5},
 	}
 
 	for i = 1, #labels do
 		local l = labels[i]
 		local s = sprite.new_bmfont_label(l.label, "res/fonts/animated.txt")
 		s:set_pos(l.pos.x, l.pos.y)
-		if l.scale then 
+		if l.scale then
 			s:set_scale(l.scale)
 		end
 		root:add_child(s)

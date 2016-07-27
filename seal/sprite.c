@@ -308,11 +308,12 @@ void sprite_set_text(struct sprite* self, const char* label) {
             }
             
             struct sprite* c_sprite = sprite_new(frame);
-            sprite_set_pos(c_sprite, x, y);
+            int yoffset = self->bmfont->common.lineHeight - character->yoffset - character->height;
+            sprite_set_pos(c_sprite, x + character->xoffset, y + yoffset);
             sprite_add_child(self, c_sprite);
             
             // coord caculation
-            x += character->xoffset + character->xadvance;
+            x += character->xadvance;
             if (x > width) {
                 x = 0;
                 y -= self->bmfont->common.lineHeight;
