@@ -213,6 +213,14 @@ int lsprite_set_pos(lua_State* L) {
     return 0;
 }
 
+int lsprite_set_anchor(lua_State* L) {
+    struct sprite* self = lua_touserdata(L, 1);
+    lua_Number x = luaL_checknumber(L, 2);
+    lua_Number y = luaL_checknumber(L, 3);
+    sprite_set_anchor(self, x, y);
+    return 0;
+}
+
 int lsprite_set_rotation(lua_State* L) {
     struct sprite* self = lua_touserdata(L, 1);
     lua_Number rotation = luaL_checknumber(L, 2);
@@ -294,6 +302,7 @@ int luaopen_seal_sprite(lua_State* L) {
         { "set_anim", lsprite_set_anim },
         { "set_anim_interval", lsprite_set_anim_interval},
         { "set_pos", lsprite_set_pos },
+        { "set_anchor", lsprite_set_anchor },
         { "set_rotation", lsprite_set_rotation },
         { "set_scale", lsprite_set_scale },
         { "set_color", lsprite_set_color },

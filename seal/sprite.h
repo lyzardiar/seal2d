@@ -85,6 +85,7 @@ struct sprite {
     float scale_x, scale_y;
     float rotation;
     float width, height;
+    float anchor_x, anchor_y;
     struct affine local_srt;
     struct affine world_srt;
     unsigned int dirty;
@@ -92,10 +93,11 @@ struct sprite {
     // advanced
     color color;
     struct sprite_frame* frame;
-    struct glyph glyph; // glphy information for rect sprites, this may waste some bytes. fix here someday.
+    struct glyph glyph; // glphy information for rect sprites, this may waste some bytes.
     struct anim* anim; // for sprite's anim.
     
-    struct bmfont* bmfont; // for sprite bmfont.
+    // for sprite bmfont.
+    struct bmfont* bmfont;
     char* text;
     
     bool swallow;
@@ -126,6 +128,7 @@ void sprite_set_anim(struct sprite* self, struct anim* anim);
 
 // common
 void sprite_set_pos(struct sprite* self, float x, float y);
+void sprite_set_anchor(struct sprite* self, float x, float y);
 void sprite_set_rotation(struct sprite* self, float rotation);
 void sprite_set_scale(struct sprite* self, float scale);
 

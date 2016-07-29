@@ -25,43 +25,81 @@ local NK_BUTTON_REPEATER = 1
 local hello_world = {}
 
 local root
-local function sprite_basic_test()
-	print("run sprite_basic_test")
-	root:cleanup()
 
-	local sprites = {
-		{ frame = "skeleton_1.png"},
-		{ frame = "skeleton_1.png", scale = 0.5 },
-		{ frame = "skeleton_1.png", scale = 1 },
-		-- { frame = "attack_0.png", pos = {x = 400, y = 0}, color = {0, 255, 0, 255}},
-	}
+local function load_sprite(texture, data, x, y)
+	local s = sprite.new(texture, data.frame)
+	s:set_pos(x, y)
 
+	s:set_scale(data.scale or 1.0)
+	if data.color then
+		s:set_color(data.color[1], data.color[2], data.color[3], data.color[4])
+	end
+
+	if data.rotation then
+		s:set_rotation(data.rotation)
+	end
+	
+	if data.anchor then
+		s:set_anchor(data.anchor.x, data.anchor.y)
+	end
+
+	if data.pos then
+		s:set_pos(data.pos.x, data.pos.y)
+	end
+	return s
+end
+
+local function load_skeltons(sprites, x0, y0)
 	local child = {}
-
-	local x, y = 0, 0
-
+	local x, y = x0 or 0, y0 or 0
 	local last_width
 	for i = 1, #sprites do
-		local data = sprites[i]
-		local s = sprite.new("skeleton.png", data.frame)
-		s:set_pos(x, y)
-
-		print("size = ", s:get_size())
+		s = load_sprite("skeleton.png", sprites[i], x, y)
 		x = x + s:get_size()
-
-		s:set_scale(data.scale or 1.0)
-		if data.color then
-			s:set_color(data.color[1], data.color[2], data.color[3], data.color[4])
-		end
-
 		root:add_child(s)
 		child[#child+1] = s
 	end
+end
 
-	-- child[1]:set_color(255, 0, 0, 255)
-	-- child[2]:set_color(0, 255, 0, 255)
-	-- child[3]:set_color(0, 0, 255, 255)
-	-- child[4]:set_color(255, 255, 255, 128)
+local function sprite_srt_test()
+	print("run sprite_srt_test")
+	root:cleanup()
+
+	local sprites = {
+		{ frame = "skeleton_1.png" },
+		{ frame = "skeleton_2.png", scale = 2},
+		{ frame = "skeleton_3.png", rotation = 90 },
+		{ frame = "skeleton_4.png", rotation = 360, scale = 2 },
+	}
+
+	load_skeltons(sprites, 0, WINDOW_HEIGHT/2)
+end
+
+local function sprite_anchor_test()
+	print("run sprite_anchor_test")
+	root:cleanup()
+	local sprites = {
+		{ frame = "skeleton_1.png" },
+		
+		{ 	frame = "skeleton_1.png",
+			anchor = {x = 0.5, y = 0.5}, 
+			pos = {x = WINDOW_WIDTH/2, y = WINDOW_HEIGHT/2} },
+
+		{ 	frame = "skeleton_1.png", 
+			anchor = {x = 1, y = 0}, 
+			pos = {x = WINDOW_WIDTH, y = 0} },
+
+
+		{ 	frame = "skeleton_1.png", 
+			anchor = {x = 1, y = 1}, 
+			pos = {x = WINDOW_WIDTH, y = WINDOW_HEIGHT} },
+
+		{ 	frame = "skeleton_1.png", 
+			anchor = {x = 0, y = 1}, 
+			pos = {x = 0, y = WINDOW_HEIGHT} },
+	}
+
+	load_skeltons(sprites)
 end
 
 local function sprite_animation_test()
@@ -209,7 +247,8 @@ local function multi_texture_test()
 end
 
 local tests = {
-	{name = "sprite basic test", create_func = sprite_basic_test }, 
+	{name = "sprite srt test", create_func = sprite_srt_test },
+	{name = "sprite anchor test", create_func = sprite_anchor_test },
 	{name = "sprite animation test", create_func = sprite_animation_test},
 	{name = "sprite clip test", create_func = sprite_clip_test},
 	{name = "sprite touch test", create_func = sprite_event_test},

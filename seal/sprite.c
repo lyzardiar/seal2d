@@ -132,6 +132,7 @@ void sprite_init(struct sprite* self, float width, float height) {
     self->scale_x = self->scale_y = 1;
     self->rotation = 0;
     self->x = self->y = 0;
+    self->anchor_x = self->anchor_y = 0;
     self->width = width;
     self->height = height;
     self->anim = NULL;
@@ -357,19 +358,33 @@ void sprite_update_transform(struct sprite* self) {
             af_concat(&tmp, &(self->parent->world_srt));
         }
         
-        self->width *= tmp.a;
-        self->height *= tmp.d;
+        float w0 = self->width * (1-self->anchor_x);
+        float w1 = self->width * (0-self->anchor_x);
         
-        float left =  tmp.x;
-        float right = tmp.x + self->width;
-        float bottom = tmp.y;
-        float top = tmp.y + self->height;
+        float h0 = self->height * (1-self->anchor_y);
+        float h1 = self->height * (0-self->anchor_y);
         
-        struct glyph* g = &self->glyph;
-        SET_VERTEX_POS(g->bl, left, bottom);
-        SET_VERTEX_POS(g->br, right, bottom);
-        SET_VERTEX_POS(g->tl, left, top);
-        SET_VERTEX_POS(g->tr, right, top);
+        float a = tmp.a;
+        float b = tmp.b;
+        float c = tmp.c;
+        float d = tmp.d;
+        float tx = tmp.x;
+        float ty = tmp.y;
+        
+        float x0 = a * w1 + c * h1 + tx;
+        float y0 = d * h1 + b * w1 + ty;
+        float x1 = a * w0 + c * h1 + tx;
+        float y1 = d * h1 + b * w0 + ty;
+        float x2 = a * w0 + c * h0 + tx;
+        float y2 = d * h0 + b * w0 + ty;
+        float x3 = a * w1 + c * h0 + tx;
+        float y3 = d * h0 + b * w1 + ty;
+        
+        struct glyph* g = &self->glyph;        
+        SET_VERTEX_POS(g->bl, x0, y0);
+        SET_VERTEX_POS(g->br, x1, y1);
+        SET_VERTEX_POS(g->tr, x2, y2);
+        SET_VERTEX_POS(g->tl, x3, y3);
         
         self->dirty &= (~SPRITE_SRT_DIRTY);
         
@@ -547,6 +562,13 @@ void sprite_set_pos(struct sprite* self, float x, float y) {
     self->x = x;
     self->y = y;
 
+    self->dirty |= SPRITE_TRANSFORM_DIRTY;
+}
+
+void sprite_set_anchor(struct sprite* self, float x, float y) {
+    self->anchor_x = x;
+    self->anchor_y = y;
+    
     self->dirty |= SPRITE_TRANSFORM_DIRTY;
 }
 
