@@ -45,10 +45,8 @@
 #   error "Unknown compiler"
 #endif
 
-
 #if defined (PLAT_WIN) || defined (PLAT_MAC) || defined (PLAT_LINUX)
     #define PLAT_DESKTOP
-#else
 #endif
 
 #endif

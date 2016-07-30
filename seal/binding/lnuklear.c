@@ -1,3 +1,7 @@
+#include "platform/platform.h"
+
+#ifdef PLAT_DESKTOP
+
 #include "lua.h"
 #include "lauxlib.h"
 
@@ -99,3 +103,4 @@ int luaopen_nuklear_core(lua_State* L) {
     
     return 1;
 }
+#endif

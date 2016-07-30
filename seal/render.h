@@ -1,7 +1,7 @@
 #ifndef render_h
 #define render_h
 
-#include <OpenGL/gl3.h>
+
 #include "geo.h"
 #include "shader.h"
 #include "sprite.h"

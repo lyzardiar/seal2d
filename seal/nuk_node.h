@@ -1,13 +1,9 @@
-//
-//  nuk_node.h
-//  yuusha
-//
-//  Created by jukka on 16/7/7.
-//  Copyright © 2016年 levelmax. All rights reserved.
-//
-
 #ifndef nuk_node_h
 #define nuk_node_h
+
+#include "platform/platform.h"
+
+#ifdef PLAT_DESKTOP
 
 struct nk_context;
 struct nk_panel;
@@ -29,4 +25,6 @@ void nuk_node_draw(struct nuk_node* self);
 
 void nuk_draw_end();
 
-#endif /* nuk_node_h */
+#endif
+
+#endif

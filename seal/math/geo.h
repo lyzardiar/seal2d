@@ -2,7 +2,7 @@
 #define __seal__geo__
 
 #include <stdbool.h>
-#include <OpenGL/OpenGL.h>
+#include "platform/render_opengl.h"
 
 typedef unsigned long color;
 

@@ -104,8 +104,8 @@
 		A65E1FC81D16BC070039B22B /* nanovg.c in Sources */ = {isa = PBXBuildFile; fileRef = A65E1FC01D16BC070039B22B /* nanovg.c */; };
 		A662945C1D2E51F300670C6B /* nuk_node.c in Sources */ = {isa = PBXBuildFile; fileRef = A662945A1D2E51F300670C6B /* nuk_node.c */; };
 		A695D3431CB2827900E4180B /* event.c in Sources */ = {isa = PBXBuildFile; fileRef = A695D3411CB2827900E4180B /* event.c */; };
-		A6E74C9B1CCA0E7F009392C8 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E74C9A1CCA0E7F009392C8 /* libz.a */; };
-		A6E74C9D1CCA0EF1009392C8 /* lua_zlib.c in Sources */ = {isa = PBXBuildFile; fileRef = A6E74C9C1CCA0EF1009392C8 /* lua_zlib.c */; };
+		A6A836801D4CBD6500A48B19 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A8367F1D4CBD6500A48B19 /* libz.tbd */; };
+		A6A836821D4CBD9400A48B19 /* lua_zlib.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A836811D4CBD9400A48B19 /* lua_zlib.c */; };
 		A6E74CAF1CCA1D2A009392C8 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = A6E74CAB1CCA1D2A009392C8 /* ioapi.c */; };
 		A6E74CB01CCA1D2A009392C8 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = A6E74CAD1CCA1D2A009392C8 /* unzip.c */; };
 		A6E74CB31CCA2271009392C8 /* ioapi_mem.c in Sources */ = {isa = PBXBuildFile; fileRef = A6E74CB11CCA2271009392C8 /* ioapi_mem.c */; };
@@ -309,8 +309,8 @@
 		A695D3411CB2827900E4180B /* event.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = event.c; sourceTree = "<group>"; };
 		A695D3421CB2827900E4180B /* event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = event.h; sourceTree = "<group>"; };
 		A695D3451CB2871C00E4180B /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
-		A6E74C9A1CCA0E7F009392C8 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = "../../../libs/lua-zlib/mac/libs/libz.a"; sourceTree = "<group>"; };
-		A6E74C9C1CCA0EF1009392C8 /* lua_zlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lua_zlib.c; path = "../../../libs/lua-zlib/lua_zlib.c"; sourceTree = "<group>"; };
+		A6A8367F1D4CBD6500A48B19 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		A6A836811D4CBD9400A48B19 /* lua_zlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lua_zlib.c; path = "../../../libs/lua-zlib/lua_zlib.c"; sourceTree = "<group>"; };
 		A6E74CAB1CCA1D2A009392C8 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ioapi.c; path = "../../../libs/lua-zlib/ioapi.c"; sourceTree = "<group>"; };
 		A6E74CAC1CCA1D2A009392C8 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ioapi.h; path = "../../../libs/lua-zlib/ioapi.h"; sourceTree = "<group>"; };
 		A6E74CAD1CCA1D2A009392C8 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = unzip.c; path = "../../../libs/lua-zlib/unzip.c"; sourceTree = "<group>"; };
@@ -328,13 +328,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6A836801D4CBD6500A48B19 /* libz.tbd in Frameworks */,
 				4D822B8D1C6F66400083122E /* libglfw3.a in Frameworks */,
 				4D46F80B1C8F2B0A0081A1DC /* libfreetype.a in Frameworks */,
 				4D77985C1C6F0B5100021ED6 /* OpenGL.framework in Frameworks */,
 				4DDA8EA41C4F5CA300ED5325 /* CoreFoundation.framework in Frameworks */,
 				4DDA8EA21C4F5C9D00ED5325 /* AudioUnit.framework in Frameworks */,
 				4DDA8EA01C4F5C9900ED5325 /* Carbon.framework in Frameworks */,
-				A6E74C9B1CCA0E7F009392C8 /* libz.a in Frameworks */,
 				4DDA8E9E1C4F5C9200ED5325 /* IOKit.framework in Frameworks */,
 				4DDA8E9C1C4F5C8E00ED5325 /* ForceFeedback.framework in Frameworks */,
 				4DDA8E9A1C4F5C8200ED5325 /* CoreVideo.framework in Frameworks */,
@@ -557,6 +557,7 @@
 		4DDF63961C4E0585008A44CE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6A8367F1D4CBD6500A48B19 /* libz.tbd */,
 				4D77985B1C6F0B5100021ED6 /* OpenGL.framework */,
 				4DDA8EA31C4F5CA300ED5325 /* CoreFoundation.framework */,
 				4DDA8EA11C4F5C9D00ED5325 /* AudioUnit.framework */,
@@ -730,14 +731,13 @@
 		A6E74C991CCA0E71009392C8 /* lua-zlib */ = {
 			isa = PBXGroup;
 			children = (
+				A6A836811D4CBD9400A48B19 /* lua_zlib.c */,
 				A6E74CB11CCA2271009392C8 /* ioapi_mem.c */,
 				A6E74CB21CCA2271009392C8 /* ioapi_mem.h */,
 				A6E74CAB1CCA1D2A009392C8 /* ioapi.c */,
 				A6E74CAC1CCA1D2A009392C8 /* ioapi.h */,
 				A6E74CAD1CCA1D2A009392C8 /* unzip.c */,
 				A6E74CAE1CCA1D2A009392C8 /* unzip.h */,
-				A6E74C9C1CCA0EF1009392C8 /* lua_zlib.c */,
-				A6E74C9A1CCA0E7F009392C8 /* libz.a */,
 			);
 			name = "lua-zlib";
 			sourceTree = "<group>";
@@ -809,7 +809,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DDA8E301C4F5AE700ED5325 /* lcode.c in Sources */,
-				A6E74C9D1CCA0EF1009392C8 /* lua_zlib.c in Sources */,
 				4DDA8E311C4F5AE700ED5325 /* lcorolib.c in Sources */,
 				4DDA8E371C4F5AE700ED5325 /* lfunc.c in Sources */,
 				4DDA8E341C4F5AE700ED5325 /* ldebug.c in Sources */,
@@ -898,6 +897,7 @@
 				4DE47B491C7AD8C8001D2F8C /* test_array.c in Sources */,
 				4DDA8E4E1C4F5AE700ED5325 /* lzio.c in Sources */,
 				4D25D8821C95C06000448F88 /* select.c in Sources */,
+				A6A836821D4CBD9400A48B19 /* lua_zlib.c in Sources */,
 				4DDA8E461C4F5AE700ED5325 /* ltable.c in Sources */,
 				4D25D8841C95C06000448F88 /* serial.c in Sources */,
 			);

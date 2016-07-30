@@ -1,5 +1,7 @@
 #include "platform/platform.h"
 
+#ifdef PLAT_DESKTOP
+
 #include "memory.h"
 
 #define NK_INCLUDE_FIXED_TYPES
@@ -11,10 +13,8 @@
 #define NK_IMPLEMENTATION
 
 #include "nuklear.h"
-#ifdef PLAT_DESKTOP
-    #define NK_GLFW_GL3_IMPLEMENTATION
-    #include "nuklear_glfw_gl3.h"
-#endif
+#define NK_GLFW_GL3_IMPLEMENTATION
+#include "nuklear_glfw_gl3.h"
 
 #include "nuk_node.h"
 #include "seal.h"
@@ -29,9 +29,7 @@ EXTERN_GAME;
 static struct nk_context* ctx = NULL;
 
 void nuk_node_ctx_init() {
-#ifdef PLAT_DESKTOP
     struct nk_context* context = nk_glfw3_init(GAME->window->ctx, NK_GLFW3_INSTALL_CALLBACKS);
-#endif
     ctx = context;
     struct nk_font_atlas *atlas = NULL;
     nk_glfw3_font_stash_begin(&atlas);
@@ -67,3 +65,5 @@ void nuk_node_draw(struct nuk_node* self) {
 void nuk_draw_end() {
     nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
 }
+
+#endif

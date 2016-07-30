@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <OpenGL/gl3.h>
+
+#include "platform/render_opengl.h"
 
 #include "shader.h"
 #include "memory.h"

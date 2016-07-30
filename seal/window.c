@@ -6,6 +6,7 @@
 #include "window.h"
 
 EXTERN_GAME;
+#ifdef PLAT_DESKTOP
 struct window* win_alloc() {
     struct window* win = STRUCT_NEW(window);
     win->cursor_x = 0.0f;
@@ -18,7 +19,6 @@ void win_free(struct window* win) {
     s_free(win);
 }
 
-#ifdef PLAT_DESKTOP
 void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int modify) {
     switch (action) {
         case GLFW_PRESS: {

@@ -189,11 +189,13 @@ void seal_init_graphics() {
     GAME->bmfont_cache = bmfont_cache_new();
     GAME->global_camera = camera_new(GAME->config.window_height, GAME->config.window_height);
     GAME->render = render_new();
-    GAME->nuk_node = nuk_node_new();
     GAME->lua_handler = lua_handler_new(GAME->lstate);
-    
     sprite_init_render(GAME->render);
+
+#ifdef PLAT_DESKTOP
+    GAME->nuk_node = nuk_node_new();
     nuk_node_ctx_init();
+#endif
     
     // init the font
     ttf_init_module();
@@ -289,6 +291,7 @@ void seal_touch_event(struct touch_event* touch_event) {
     sprite_touch(GAME->root, touch_event);
 }
 
+#ifdef PLAT_DESKTOP
 static void nk_draw() {
     nuk_draw_start();
     
@@ -296,14 +299,17 @@ static void nk_draw() {
 
     nuk_draw_end();
 }
+#endif
 
 void seal_draw() {
     struct render* R = GAME->render;
     render_clear(R, C4B_COLOR(0, 0, 255, 255));
     
     sprite_visit(GAME->root, GAME->global_dt);
-    
+
+#ifdef PLAT_DESKTOP
     nk_draw();
+#endif
     
     CHECK_GL_ERROR
 }
@@ -311,8 +317,11 @@ void seal_draw() {
 void seal_destroy() {
     
     lua_close(GAME->lstate);
-    
+
+#ifdef PLAT_DESKTOP
     nuk_node_free(GAME->nuk_node);
+#endif
+    
     texture_cache_free(GAME->texture_cache);
     sprite_frame_cache_free(GAME->sprite_frame_cache);
     win_free(GAME->window);

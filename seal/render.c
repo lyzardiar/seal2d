@@ -6,6 +6,7 @@
 #include "texture.h"
 #include "array.h"
 
+#include "platform/render_opengl.h"
 #include "render.h"
 #include "shader.h"
 #include "camera.h"
@@ -201,7 +202,7 @@ void render_clear(struct render* self, color c) {
     float b = ((c >> 8 ) & 0xff) / 255.0;
     float a = ((c      ) & 0xff) / 255.0;
 
-    glClearDepth(1.0f);
+//    glClearDepth(1.0f);
     glClearColor(r, g, b, a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_BLEND);

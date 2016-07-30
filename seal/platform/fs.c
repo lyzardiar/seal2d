@@ -75,10 +75,8 @@ size_t s_writef(const char* path, const void* data, size_t size) {
 
 #ifdef PLAT_MAC
 extern const char* get_write_path_mac();
-#endif
 
 const char* s_get_write_path() {
-#ifdef PLAT_MAC
     return get_write_path_mac();
-#endif
 }
+#endif
