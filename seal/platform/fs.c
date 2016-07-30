@@ -73,7 +73,7 @@ size_t s_writef(const char* path, const void* data, size_t size) {
 #endif
 }
 
-#ifdef PLAT_MAC
+#ifdef __APPLE__
 extern const char* get_write_path_mac();
 
 const char* s_get_write_path() {

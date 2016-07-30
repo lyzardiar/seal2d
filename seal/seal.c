@@ -176,8 +176,10 @@ struct game* seal_load_game_config() {
     config->nk_gui_font_size = lua_tonumber(L, 5);
     
     lua_pop(L, 5);
-    
+
+#ifdef PLAT_DESKTOP
     GAME->window = win_alloc();
+#endif
 
     return GAME;
 }
@@ -198,10 +200,11 @@ void seal_init_graphics() {
 #endif
     
     // init the font
-    ttf_init_module();
-    font = ttf_font_new("res/fonts/SourceCodePro-Regular.ttf", 32);  //TODO: load this in Lua.
-    GAME->font = font;
-    
+    // TODO: implement this later
+//    ttf_init_module();
+//    font = ttf_font_new("res/fonts/SourceCodePro-Regular.ttf", 32);  //TODO: load this in Lua.
+//    GAME->font = font;
+
     // the bootloader
     seal_load_file("scripts/bootloader.lua");
     seal_load_string("main()");
@@ -324,7 +327,10 @@ void seal_destroy() {
     
     texture_cache_free(GAME->texture_cache);
     sprite_frame_cache_free(GAME->sprite_frame_cache);
+
+#ifdef PLAT_DESKTOP
     win_free(GAME->window);
+#endif
     
     sprite_free(GAME->root);
     s_free(GAME);

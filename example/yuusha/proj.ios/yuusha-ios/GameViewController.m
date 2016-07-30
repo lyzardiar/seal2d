@@ -9,6 +9,7 @@
 #import "GameViewController.h"
 #import <OpenGLES/ES2/glext.h>
 
+#include "seal.h"
 
 
 @interface GameViewController () {
@@ -75,15 +76,17 @@
 - (void)setupGL
 {
     [EAGLContext setCurrentContext:self.context];
-    
-    // init the render
+
+    seal_load_game_config();
+    seal_init_graphics();
+    seal_start_game();
 }
 
 - (void)tearDownGL
 {
     [EAGLContext setCurrentContext:self.context];
     
-
+    seal_destroy();
     // destroy seal2d
 }
 
@@ -92,12 +95,13 @@
 - (void)update
 {
     // update
+    seal_update();
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
     //draw
-
+    seal_draw();
 //    glClearColor(0.65f, 0.65f, 0.65f, 1.0f);
 //    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 //    

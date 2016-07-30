@@ -1,3 +1,5 @@
+#ifdef PLAT_DESKTOP
+
 #include <stdio.h>
 
 #include "platform/fs.h"
@@ -186,3 +188,5 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
 void ttf_font_free(struct ttf_font* font) {
     s_free(font);
 }
+
+#endif
