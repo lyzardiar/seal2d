@@ -289,7 +289,10 @@ function hello_world.entry()
 	root = sprite.new_container()
 	root:set_pos(0, 0)
 
-	draw_gui()
+	local platform = require ("platform_core").get_platform()
+	if platform == 'mac' or platform == 'win' then
+		draw_gui()
+	end
 
 	return root.__cobj
 end

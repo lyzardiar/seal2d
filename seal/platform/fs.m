@@ -24,6 +24,7 @@ const char* fs_full_path(const char* filename) {
     
     
     char name[name_len+1];
+    memset(name, 0, name_len+1);
     strncpy(name, filename, name_len);
     
     printf("name = %s\n", name);
@@ -31,7 +32,19 @@ const char* fs_full_path(const char* filename) {
     NSString *dataFile = [[NSBundle mainBundle] pathForResource:
                           [NSString stringWithUTF8String:name] ofType:
                           [NSString stringWithUTF8String:ext_offset+1]]; // +1 to escape the 'dot'.
+
     return [dataFile UTF8String];
+}
+
+
+const char* fs_sandbox_root_path() {
+    #ifdef PLAT_IOS
+        return [[[NSBundle mainBundle] resourcePath] UTF8String];
+    #endif
+
+    #ifdef PLAT_DESKTOP
+        return "";
+    #endif
 }
 
 unsigned char* s_read(const char* path, size_t* size, int extra_byte) {

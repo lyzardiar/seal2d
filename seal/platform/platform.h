@@ -31,15 +31,17 @@
     #else
     #   error "Unknown Apple platform"
     #endif
+#elif __ANDROID__
+    #define PLAT_ANDROID (6)
 
 #elif __linux__
-    #define PLAT_LINUX (6)
+    #define PLAT_LINUX (7)
 
 #elif __unix__
-    #define PLAT_UNIX (7)
+    #define PLAT_UNIX (8)
 
 #elif defined(_POSIX_VERSION)
-    #define PLAT_POSIX (8)
+    #define PLAT_POSIX (9)
 
 #else
 #   error "Unknown compiler"
@@ -47,6 +49,10 @@
 
 #if defined (PLAT_WIN) || defined (PLAT_MAC) || defined (PLAT_LINUX)
     #define PLAT_DESKTOP
+#endif
+
+#if defined (PLAT_IOS) || defined (PALT_ANDROID)
+    #define PLAT_MOBILE
 #endif
 
 #ifndef PLATFORM
@@ -60,6 +66,10 @@
 
     #ifdef PLAT_IOS
         #define PLATFORM PLAT_IOS
+    #endif
+
+    #ifdef PLAT_ANDROID
+        #define PLATFORM PLAT_ANDROID
     #endif
 
     #ifdef PLAT_LINUX

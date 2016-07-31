@@ -227,6 +227,7 @@ void seal_load_file(const char* script_path) {
 #ifdef PLAT_IOS
     char* script_file_data = s_reads(script_path);
     seal_load_string(script_file_data);
+    s_free(script_file_data);
 #endif
     
 }

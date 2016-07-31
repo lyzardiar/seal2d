@@ -12,9 +12,8 @@ extern int luaopen_mime_core(lua_State *L);
 extern int luaopen_cjson(lua_State* L);
 extern int luaopen_zlib(lua_State* L);
 
-#ifdef PLAT_DESKTOP
 extern int luaopen_nuklear_core(lua_State* L);
-#endif
+
 
 
 void stackDump (lua_State *L) {
@@ -102,9 +101,9 @@ void luaopen_lua_extensions(lua_State *L)
         {"mime.core", luaopen_mime_core},
         {"cjson", luaopen_cjson},
         {"zlib", luaopen_zlib},
-#ifdef PLAT_DESKTOP
+
         {"nuklear_core", luaopen_nuklear_core},
-#endif
+
         {NULL, NULL}
     };
     
