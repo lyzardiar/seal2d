@@ -385,9 +385,10 @@ void sprite_update_transform(struct sprite* self) {
         SET_VERTEX_POS(g->br, x1, y1);
         SET_VERTEX_POS(g->tr, x2, y2);
         SET_VERTEX_POS(g->tl, x3, y3);
-        
+
+        self->width = fabs(x1 - x0);
+        self->height = fabs(y3 - y1);
         self->dirty &= (~SPRITE_SRT_DIRTY);
-        
         self->world_srt = tmp;
     }
 }
