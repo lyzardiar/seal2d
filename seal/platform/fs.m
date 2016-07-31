@@ -1,19 +1,52 @@
+#include "platform/platform.h"
+
+#ifdef __APPLE__
+#import <Foundation/Foundation.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "platform/platform.h"
 #include "platform/fs.h"
 
 #include "memory.h"
 #include "util.h"
 
+const char* fs_full_path(const char* filename) {
+    char* ext_offset = strrchr(filename, '.');
+    if (!ext_offset) {
+        fprintf(stderr, "invalid file name.\n");
+        return NULL;
+    }
+    
+    long name_len = ext_offset - filename;
+    
+    
+    char name[name_len+1];
+    strncpy(name, filename, name_len);
+    
+    printf("name = %s\n", name);
+    printf("ext = %s\n", ext_offset+1);
+    NSString *dataFile = [[NSBundle mainBundle] pathForResource:
+                          [NSString stringWithUTF8String:name] ofType:
+                          [NSString stringWithUTF8String:ext_offset+1]]; // +1 to escape the 'dot'.
+    return [dataFile UTF8String];
+}
+
 unsigned char* s_read(const char* path, size_t* size, int extra_byte) {
-#ifdef __APPLE__
+#ifdef PLAT_IOS
+    const char* full_path = fs_full_path(path);
+#endif
+    
+#ifdef PLAT_DESKTOP
+    const char* full_path = path;
+#endif
+    
     s_assert(extra_byte == 0 || extra_byte == 1);
-    FILE* fp = fopen(path, "r");
+    FILE* fp = fopen(full_path, "r");
     if (!fp) {
-        fprintf(stderr, "s_read, can't open file path = %s.\n", path);
+        fprintf(stderr, "s_read, can't open file path = %s.\n", full_path);
         return NULL;
     }
     fseek(fp, 0L, SEEK_END);
@@ -38,7 +71,6 @@ unsigned char* s_read(const char* path, size_t* size, int extra_byte) {
     }
     fclose(fp);
     return buffer;
-#endif
 }
 
 char* s_reads(const char* path) {
@@ -51,7 +83,6 @@ size_t s_writes(const char* path, const char* string) {
 }
 
 size_t s_writef(const char* path, const void* data, size_t size) {
-#ifdef __APPLE__
     FILE* fp = fopen(path, "w+");
     if (!fp) {
         fprintf(stderr, "s_writef, can't open file.\n");
@@ -70,13 +101,14 @@ size_t s_writef(const char* path, const void* data, size_t size) {
     }
     fclose(fp);
     return write_size;
-#endif
 }
 
-#ifdef __APPLE__
-extern const char* get_write_path_mac();
-
+static const char* write_path = NULL;
 const char* s_get_write_path() {
-    return get_write_path_mac();
+    if (!write_path) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        write_path = [documentsDirectory UTF8String];
+    }
+    return write_path;
 }
-#endif

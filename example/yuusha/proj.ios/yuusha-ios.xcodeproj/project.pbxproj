@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D6486221D4DBE92002781A7 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = 4D6486211D4DBE92002781A7 /* scripts */; };
+		4D6486241D4DBEA8002781A7 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 4D6486231D4DBEA8002781A7 /* res */; };
+		4DC479571D4DB966002E444B /* fs.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DC479561D4DB966002E444B /* fs.m */; };
 		A6A8357E1D4CA87000A48B19 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A6A8357D1D4CA87000A48B19 /* main.m */; };
 		A6A835811D4CA87000A48B19 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A6A835801D4CA87000A48B19 /* AppDelegate.m */; };
 		A6A835831D4CA87000A48B19 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = A6A835821D4CA87000A48B19 /* Shader.fsh */; };
@@ -36,8 +39,6 @@
 		A6A835F01D4CA94C00A48B19 /* matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835BC1D4CA94C00A48B19 /* matrix.c */; };
 		A6A835F11D4CA94C00A48B19 /* memory.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835BE1D4CA94C00A48B19 /* memory.c */; };
 		A6A835F21D4CA94C00A48B19 /* nuk_node.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835C01D4CA94C00A48B19 /* nuk_node.c */; };
-		A6A835F31D4CA94C00A48B19 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835C31D4CA94C00A48B19 /* fs.c */; };
-		A6A835F41D4CA94C00A48B19 /* fs_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6A835C51D4CA94C00A48B19 /* fs_mac.mm */; };
 		A6A835F51D4CA94C00A48B19 /* timer.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835C71D4CA94C00A48B19 /* timer.c */; };
 		A6A835F61D4CA94C00A48B19 /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835C91D4CA94C00A48B19 /* render.c */; };
 		A6A835F71D4CA94C00A48B19 /* seal.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835CB1D4CA94C00A48B19 /* seal.c */; };
@@ -112,6 +113,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4D6486211D4DBE92002781A7 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../scripts; sourceTree = "<group>"; };
+		4D6486231D4DBEA8002781A7 /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../res; sourceTree = "<group>"; };
+		4DC479561D4DB966002E444B /* fs.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = fs.m; sourceTree = "<group>"; };
 		A6A835791D4CA87000A48B19 /* yuusha-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "yuusha-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6A8357D1D4CA87000A48B19 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A6A8357F1D4CA87000A48B19 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -162,9 +166,7 @@
 		A6A835BF1D4CA94C00A48B19 /* memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memory.h; sourceTree = "<group>"; };
 		A6A835C01D4CA94C00A48B19 /* nuk_node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nuk_node.c; sourceTree = "<group>"; };
 		A6A835C11D4CA94C00A48B19 /* nuk_node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuk_node.h; sourceTree = "<group>"; };
-		A6A835C31D4CA94C00A48B19 /* fs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fs.c; sourceTree = "<group>"; };
 		A6A835C41D4CA94C00A48B19 /* fs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fs.h; sourceTree = "<group>"; };
-		A6A835C51D4CA94C00A48B19 /* fs_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = fs_mac.mm; sourceTree = "<group>"; };
 		A6A835C61D4CA94C00A48B19 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		A6A835C71D4CA94C00A48B19 /* timer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = timer.c; sourceTree = "<group>"; };
 		A6A835C81D4CA94C00A48B19 /* timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timer.h; sourceTree = "<group>"; };
@@ -313,10 +315,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D6486201D4DBE84002781A7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4D6486231D4DBEA8002781A7 /* res */,
+				4D6486211D4DBE92002781A7 /* scripts */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		A6A835701D4CA87000A48B19 = {
 			isa = PBXGroup;
 			children = (
-				A6A836981D4CDE2800A48B19 /* libbz2.tbd */,
+				4D6486201D4DBE84002781A7 /* Resources */,
 				A6A836001D4CAB2900A48B19 /* libs */,
 				A6A835971D4CA94C00A48B19 /* seal */,
 				A6A8357B1D4CA87000A48B19 /* yuusha-ios */,
@@ -456,9 +467,8 @@
 		A6A835C21D4CA94C00A48B19 /* platform */ = {
 			isa = PBXGroup;
 			children = (
-				A6A835C31D4CA94C00A48B19 /* fs.c */,
+				4DC479561D4DB966002E444B /* fs.m */,
 				A6A835C41D4CA94C00A48B19 /* fs.h */,
-				A6A835C51D4CA94C00A48B19 /* fs_mac.mm */,
 				A6A835C61D4CA94C00A48B19 /* platform.h */,
 				A6A835C71D4CA94C00A48B19 /* timer.c */,
 				A6A835C81D4CA94C00A48B19 /* timer.h */,
@@ -593,6 +603,7 @@
 		A6A836931D4CC44300A48B19 /* builtin_frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6A836981D4CDE2800A48B19 /* libbz2.tbd */,
 				A6A836911D4CC43800A48B19 /* OpenGLES.framework */,
 			);
 			name = builtin_frameworks;
@@ -727,6 +738,8 @@
 				A6A8358B1D4CA87000A48B19 /* Main.storyboard in Resources */,
 				A6A835851D4CA87000A48B19 /* Shader.vsh in Resources */,
 				A6A8358D1D4CA87000A48B19 /* Assets.xcassets in Resources */,
+				4D6486221D4DBE92002781A7 /* scripts in Resources */,
+				4D6486241D4DBEA8002781A7 /* res in Resources */,
 				A6A835901D4CA87000A48B19 /* LaunchScreen.storyboard in Resources */,
 				A6A835831D4CA87000A48B19 /* Shader.fsh in Resources */,
 			);
@@ -747,7 +760,6 @@
 				A6A835E81D4CA94C00A48B19 /* ltexture.c in Sources */,
 				A6A8365B1D4CABF800A48B19 /* lauxlib.c in Sources */,
 				A6A835E41D4CA94C00A48B19 /* lopen.c in Sources */,
-				A6A835F41D4CA94C00A48B19 /* fs_mac.mm in Sources */,
 				A6A835EA1D4CA94C00A48B19 /* camera.c in Sources */,
 				A6A836751D4CABF800A48B19 /* ltablib.c in Sources */,
 				A6A836661D4CABF800A48B19 /* lgc.c in Sources */,
@@ -755,7 +767,6 @@
 				A6A835F91D4CA94C00A48B19 /* sprite.c in Sources */,
 				A6A836691D4CABF800A48B19 /* llex.c in Sources */,
 				A6A835EF1D4CA94C00A48B19 /* geo.c in Sources */,
-				A6A835F31D4CA94C00A48B19 /* fs.c in Sources */,
 				A6A835ED1D4CA94C00A48B19 /* lua_handler.c in Sources */,
 				A6A836621D4CABF800A48B19 /* ldebug.c in Sources */,
 				A6A835EB1D4CA94C00A48B19 /* event.c in Sources */,
@@ -822,6 +833,7 @@
 				A6A836CB1D4CE37A00A48B19 /* buffer.c in Sources */,
 				A6A835F71D4CA94C00A48B19 /* seal.c in Sources */,
 				A6A835E01D4CA94C00A48B19 /* array.c in Sources */,
+				4DC479571D4DB966002E444B /* fs.m in Sources */,
 				A6A8357E1D4CA87000A48B19 /* main.m in Sources */,
 				A6A835E61D4CA94C00A48B19 /* lseal_core.c in Sources */,
 				A6A8366F1D4CABF800A48B19 /* loslib.c in Sources */,

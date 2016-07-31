@@ -28,7 +28,6 @@
 #include "ttf_font.h"
 #include "event.h"
 #include "platform/fs.h"
-#include "platform/platform.h"
 #include "unzip.h"
 
 extern void luaopen_lua_extensions(lua_State *L);
@@ -218,10 +217,18 @@ void seal_load_string(const char* script_data) {
 }
 
 void seal_load_file(const char* script_path) {
+#ifdef PLAT_DESKTOP
     if(luaL_dofile(GAME->lstate, script_path)) {
         fprintf(stderr, "run start script Failed.\n");
         abort();
     }
+#endif
+    
+#ifdef PLAT_IOS
+    char* script_file_data = s_reads(script_path);
+    seal_load_string(script_file_data);
+#endif
+    
 }
 
 static int traceback (lua_State *L) {

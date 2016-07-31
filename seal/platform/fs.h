@@ -4,6 +4,9 @@
 // user's duty to free
 // extra_byte: 0 or 1, if you were to read a string, we ensure another byte
 // which is set '\0' to make a c-string.
+
+const char* fs_full_path(const char* filename);
+
 unsigned char* s_read(const char* path, size_t* size, int extra_byte);
 char* s_reads(const char* path);
 
