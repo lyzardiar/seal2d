@@ -46,6 +46,10 @@ local function load_sprite(texture, data, x, y)
 	if data.pos then
 		s:set_pos(data.pos.x, data.pos.y)
 	end
+
+	if data.test_description then
+		s.test_description = data.test_description
+	end
 	return s
 end
 
@@ -59,6 +63,7 @@ local function load_skeltons(sprites, x0, y0)
 		root:add_child(s)
 		child[#child+1] = s
 	end
+	return child
 end
 
 local function sprite_srt_test()
@@ -162,17 +167,35 @@ local function sprite_event_test()
 		print("event = ", touch_event_names[event], x, y)
 	end
 
-	local total = 5
-	for i = 1, 5 do
-		local s = sprite.new("anim_pirate.png", "attack_0.png")
-		s:set_pos(i * 100, 0)
-		s:register_handler(function(event_type, ...)
-				print(string.format("sprite %d: ", i))
+	local spritesData = {
+		{frame = "skeleton_1.png", pos = {x = 100, y = 500}, test_description = "normal"},
+		{frame = "skeleton_1.png", pos = {x = 300, y = 500}, anchor = {x = 0, y = 0}, test_description = "anchor point = (0, 0)"},
+		{frame = "skeleton_1.png", pos = {x = 300, y = 500}, anchor = {x = 0, y = 1}, test_description = "anchor point = (0, 1)"},
+		{frame = "skeleton_1.png", pos = {x = 300, y = 500}, anchor = {x = 1, y = 0}, test_description = "anchor point = (1, 0)"},
+		{frame = "skeleton_1.png", pos = {x = 300, y = 500}, anchor = {x = 1, y = 1}, test_description = "anchor point = (1, 1)"},
+		{frame = "skeleton_1.png", pos = {x = 100, y = 300}, anchor = {x = 0, y = 0}, scale = 2, test_description = "set scale 2"},
+		{
+			frame = "skeleton_1.png", pos = {x = 200, y = 300}, anchor = {x = 0, y = 0},
+			rotation = 90, test_description = "set rotation 90"
+		},
+		{
+			frame = "skeleton_1.png", pos = {x = 400, y = 300}, anchor = {x = 0, y = 0},
+			scale = 2, rotation = 90, test_description = "scale=2 and rotation=90"
+		},
+		{
+			frame = "skeleton_1.png", pos = {x = 100, y = 200}, anchor = {x = 1, y = 1},
+			scale = 0.5, rotation = 120, test_description = "scale=0.5 and rotation = 120"
+		},
+	}
+	local sprite = load_skeltons(spritesData)
+	
+	for i=1,#sprite do
+		sprite[i]:register_handler(function(event_type, ...)
+				print(string.format("sprite: %d , test name: %s", i, sprite[i].test_description))
 				if event_type == 'touch' then
 					touch_handler(...)
 				end
 			end)
-		root:add_child(s)
 	end
 end
 
