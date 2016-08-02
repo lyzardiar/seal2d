@@ -286,7 +286,8 @@ function hello_world.entry()
 	sprite_frame.load_from_json("res/images/anim_pirate.json")
 	sprite_frame.load_from_json("res/images/skeleton.json")
 
-	root = sprite.new_container()
+	root = sprite.new("ui.png", "smile_middle.png")
+	-- root = sprite.new_container()
 	root:set_pos(0, 0)
 
 	local platform = require ("platform_core").get_platform()

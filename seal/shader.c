@@ -44,31 +44,25 @@ static const char* fs_color = STRINGFY(#version 330\n)STRINGFY(
 
 #ifdef PLAT_MOBILE
 static const char* vs_color = STRINGFY(\n
-    attribute mediump vec2 vertex_pos;\n
-    attribute mediump vec4 vertex_color;\n
-    attribute mediump vec2 vertex_uv;\n
-    varying mediump vec4 frag_color;\n
-    varying mediump vec2 frag_uv;\n
-    uniform mediump mat4 projection;\n
+                                       attribute mediump vec2 vertex_pos;\n
+                                       attribute lowp vec4 vertex_color; \n
 
-    void main() {\n
-       gl_Position.xy = (projection * vec4(vertex_pos.x, vertex_pos.y, 0.0, 1.0)).xy;\n
-       gl_Position.z = 1.0;\n
-       gl_Position.w = 1.0;\n
-       frag_color = vertex_color;\n
-       frag_uv = vec2(vertex_uv.x, 1.0 - vertex_uv.y);\n
-    }\n
-    );
+                                       varying lowp vec4 color; \n
+                                       void main() {\n
+                                           color = vertex_color;\n
+                                           gl_Position = vec4(vertex_pos.x, vertex_pos.y, 0.0, 1.0); \n
+                                       }\n
+                                       );
 
-static const char* fs_color = STRINGFY(
-    varying mediump vec2 frag_uv;\n
-    uniform sampler2D sampler;\n
-    void main() {\n
-       gl_FragColor = texture2D(sampler, frag_uv);\n
-    }\n
-    );
+static const char* fs_color = STRINGFY(\n
+                                       varying lowp vec4 color; \n
+                                       void main() {\n
+                                           gl_FragColor = color; \n
+                                       }\n
+                                       );
 #endif
 
+//gl_FragColor = texture2D(sampler, frag_uv);\n
 
 #define set_builtin_uniform(uniform, i, t, n) uniform.type = i; \
                                                       uniform.attr_type = t; \

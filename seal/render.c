@@ -87,15 +87,23 @@ void sprite_render_func_flush(struct render* R) {
     
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
-    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
-    
+
+//    glEnableVertexAttribArray(2);
+//    printf("VERTEX_SIZE = %d, VERTEX_OFFSET_POS = %d, VERTEX_OFFSET_COLOR = %d,"
+//        "&context->buffer->data[0].position = %d\n",
+//           VERTEX_SIZE,
+//           VERTEX_OFFSET_POS,
+//           VERTEX_OFFSET_COLOR,
+//           &context->buffer->data[0].position);
+//    printf("offsetof(struct vertex, color) = %d\n", offsetof(struct vertex, color));
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, 0);
+    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, 0);
+//    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
+
     int n = context->current_batch_index;
     for (int i = 0; i < n; ++i) {
         struct render_batch* b = context->batches + i;
-        glBindTexture(GL_TEXTURE_2D, b->tex_id);
+//        glBindTexture(GL_TEXTURE_2D, b->tex_id);
         glDrawElements(GL_TRIANGLES, b->n_objects*6, GL_UNSIGNED_SHORT, 0);
         
         sprite_render_batch_reset(b);
@@ -111,12 +119,13 @@ void sprite_render_func_start(struct render* R) {
     GLuint prog = shader_get_program(R->shader, SHADER_COLOR);
     glUseProgram(prog);
     
-    glActiveTexture(GL_TEXTURE0);
-    GLint texture_location = glGetUniformLocation(prog, "sampler");
-    glUniform1i(texture_location, 0);
-    
-    GLint projection = glGetUniformLocation(prog, "projection");
-    glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
+//    glActiveTexture(GL_TEXTURE0);
+//    GLint texture_location = glGetUniformLocation(prog, "sampler");
+//    glUniform1i(texture_location, 0);
+
+//    GLint projection = glGetUniformLocation(prog, "projection");
+//    glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
+    CHECK_GL_ERROR;
 }
 
 /*-------------------- sprite_render --------------------*/

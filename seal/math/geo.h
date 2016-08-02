@@ -9,7 +9,7 @@ typedef unsigned long color;
 struct vertex {
     GLfloat position[2]; // x, y
     GLubyte color[4];   // r, g, b, a
-    GLfloat uv[2];        // u, v
+//    GLfloat uv[2];        // u, v
 };
 
 #define SET_VERTEX_POS(vert, x, y) \
