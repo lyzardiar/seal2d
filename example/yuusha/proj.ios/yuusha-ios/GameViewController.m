@@ -95,12 +95,12 @@
 - (void)update
 {
     // update
+    seal_update();
 }
 
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    seal_update();
     seal_draw();
 }
 

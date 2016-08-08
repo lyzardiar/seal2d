@@ -53,9 +53,9 @@ static void sprite_render_func_init(struct render* R) {
         idata[i+0] = j+1;
         idata[i+1] = j+0;
         idata[i+2] = j+3;
-        idata[i+3] = j+3;
-        idata[i+4] = j+2;
-        idata[i+5] = j+1;
+        idata[i+3] = j+1;
+        idata[i+4] = j+3;
+        idata[i+5] = j+2;
     }
     
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort)*MAX_OBJECTS*6, idata, GL_STATIC_DRAW);
@@ -83,24 +83,23 @@ void sprite_render_func_flush(struct render* R) {
 
     glBindBuffer(GL_ARRAY_BUFFER, context->buffer->vbo);
     glBufferData(GL_ARRAY_BUFFER, VERTEX_SIZE*context->n_objects * 6, context->buffer->data, GL_DYNAMIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context->buffer->vibo);
+
     
     glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
+//    glEnableVertexAttribArray(1);
 
 //    glEnableVertexAttribArray(2);
-//    printf("VERTEX_SIZE = %d, VERTEX_OFFSET_POS = %d, VERTEX_OFFSET_COLOR = %d,"
-//        "&context->buffer->data[0].position = %d\n",
+//    printf("VERTEX_SIZE = %d, VERTEX_OFFSET_POS = %d, VERTEX_OFFSET_COLOR = %d,",
 //           VERTEX_SIZE,
 //           VERTEX_OFFSET_POS,
-//           VERTEX_OFFSET_COLOR,
-//           &context->buffer->data[0].position);
-//    printf("offsetof(struct vertex, color) = %d\n", offsetof(struct vertex, color));
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, 0);
-    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, 0);
+//           VERTEX_OFFSET_COLOR);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
+//    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
 //    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
 
     int n = context->current_batch_index;
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context->buffer->vibo);
     for (int i = 0; i < n; ++i) {
         struct render_batch* b = context->batches + i;
 //        glBindTexture(GL_TEXTURE_2D, b->tex_id);
