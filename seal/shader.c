@@ -33,10 +33,10 @@ static const char* fs_color = STRINGFY(#version 330\n)STRINGFY(
     in vec4 frag_color;\n
     in vec2 frag_uv;\n
     out vec4 color;\n
-    uniform sampler2D sampler;\n
+    uniform sampler2D texture_0;\n
 
     void main() {\n
-       vec4 texture_color = texture(sampler, frag_uv);\n
+       vec4 texture_color = texture(texture_0, frag_uv);\n
        color = texture_color;\n
     }\n
     );
@@ -47,19 +47,25 @@ static const char* vs_color = STRINGFY(\n
                                        precision lowp float;\n
                                        attribute mediump vec2 vertex_pos;\n
                                        attribute lowp vec4 vertex_color;\n
+                                       attribute mediump vec2 vertex_uv; \n\n
 
                                        varying lowp vec4 fragement_color;\n
+                                       varying mediump vec2 fragement_uv; \n\n
                                        void main() {\n
                                            gl_Position = vec4(vertex_pos.x, vertex_pos.y, 0.0, 1.0); \n
                                            fragement_color = vertex_color;\n
+                                           fragement_uv = vertex_uv; \n
                                        }\n
                                        );
 
 static const char* fs_color = STRINGFY(\n
                                        precision lowp float;\n
-                                       varying lowp vec4 fragement_color;
+                                       varying lowp vec4 fragement_color; \n
+                                       varying mediump vec2 fragement_uv; \n\n
+
+                                       uniform sampler2D texture_0; \n\n
                                        void main() {\n
-                                           gl_FragColor = fragement_color; \n
+                                           gl_FragColor = texture2D(texture_0, fragement_uv); \n
                                        }\n
                                        );
 #endif

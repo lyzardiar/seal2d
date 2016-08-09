@@ -53,9 +53,16 @@ struct vertex_buffer {
     int offset;
 };
 
+struct attr_location {
+    GLuint position;
+    GLuint color;
+    GLuint uv;
+};
+
 struct render_state {
     int tex_id;
     GLuint program;
+    struct attr_location loc;
 };
 
 struct render_batch {

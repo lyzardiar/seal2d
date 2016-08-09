@@ -151,22 +151,22 @@ void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLu
     struct glyph* g = &self->glyph;
     
     SET_VERTEX_POS(g->bl, 0.0f, 0.0f);
-//    SET_VERTEX_COLOR(g->bl, 1.0f, 1.0f, 1.0f, 1.0f);
+    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
 
     SET_VERTEX_POS(g->br, rect->width, 0.0f);
-//    SET_VERTEX_COLOR(g->br, 1.0f, 1.0f, 1.0f, 1.0f);
+    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
 
     SET_VERTEX_POS(g->tl, 0.0f, rect->height);
-//    SET_VERTEX_COLOR(g->tl, 1.0f, 1.0f, 1.0f, 1.0f);
+    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
 
     SET_VERTEX_POS(g->tr, rect->width, rect->height);
-//    SET_VERTEX_COLOR(g->tr, 1.0f, 1.0f, 1.0f, 1.0f);
+    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
 
     if (uv) {
-//        SET_VERTEX_UV(g->bl, uv->u,         uv->v);
-//        SET_VERTEX_UV(g->br, uv->u + uv->w, uv->v);
-//        SET_VERTEX_UV(g->tl, uv->u,         uv->v + uv->h);
-//        SET_VERTEX_UV(g->tr, uv->u + uv->w, uv->v + uv->h);
+        SET_VERTEX_UV(g->bl, uv->u,         uv->v);
+        SET_VERTEX_UV(g->br, uv->u + uv->w, uv->v);
+        SET_VERTEX_UV(g->tl, uv->u,         uv->v + uv->h);
+        SET_VERTEX_UV(g->tr, uv->u + uv->w, uv->v + uv->h);
     }
     
     g->tex_id = tex_id;
@@ -384,26 +384,20 @@ void sprite_update_transform(struct sprite* self) {
         float y3 = d * h0 + b * w1 + ty;
         
         struct glyph* g = &self->glyph;        
-//        SET_VERTEX_POS(g->bl, x0, y0);
-//        SET_VERTEX_POS(g->br, x1, y1);
-//        SET_VERTEX_POS(g->tr, x2, y2);
-//        SET_VERTEX_POS(g->tl, x3, y3);
+        SET_VERTEX_POS(g->bl, x0, y0);
+        SET_VERTEX_POS(g->br, x1, y1);
+        SET_VERTEX_POS(g->tr, x2, y2);
+        SET_VERTEX_POS(g->tl, x3, y3);
 
         SET_VERTEX_POS(g->tr, 0.5f, 0.5f);
         SET_VERTEX_POS(g->tl, -0.5f, 0.5f);
         SET_VERTEX_POS(g->bl, -0.5f, -0.5f);
         SET_VERTEX_POS(g->br, 0.5f, -0.5f);
 
-//        SET_VERTEX_COLOR(g->tr, 255, 0, 0, 255);
-//        SET_VERTEX_COLOR(g->tl, 0, 255, 0, 255);
-//        SET_VERTEX_COLOR(g->bl, 255, 0, 0, 255);
-//        SET_VERTEX_COLOR(g->br, 255, 255, 255, 255);
-//
-        SET_VERTEX_COLOR(g->tr, 1.0f, 0.0f, 0.0f, 1.0f);
-        SET_VERTEX_COLOR(g->tl, 0.0f, 1.0f, 0.0f, 1.0f);
-        SET_VERTEX_COLOR(g->bl, 0.0f, 0.0f, 1.0f, 1.0f);
-        SET_VERTEX_COLOR(g->br, 1.0f, 1.0f, 1.0f, 1.0f);
-
+        SET_VERTEX_UV(g->tr, 1.0f, 1.0f);
+        SET_VERTEX_UV(g->tl, 0.0f, 1.0f);
+        SET_VERTEX_UV(g->bl, 0.0f, 0.0f);
+        SET_VERTEX_UV(g->br, 1.0f, 0.0f);
 
         self->dirty &= (~SPRITE_SRT_DIRTY);
         
