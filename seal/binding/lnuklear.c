@@ -1,6 +1,8 @@
+#include "platform/platform.h"
 #include "lua.h"
 #include "lauxlib.h"
 
+#ifdef PLAT_DESKTOP
 #include "nuk_node.h"
 
 #define NK_INCLUDE_FIXED_TYPES
@@ -99,3 +101,10 @@ int luaopen_nuklear_core(lua_State* L) {
     
     return 1;
 }
+#else
+// make this compliable on mobile platform
+    int luaopen_nuklear_core(lua_State* L) {
+        printf("nuklear not implemented on mobile platform.\n");
+        return 0;
+    }
+#endif

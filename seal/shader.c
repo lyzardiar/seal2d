@@ -1,13 +1,75 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <OpenGL/gl3.h>
+
+#include "platform/render_opengl.h"
 
 #include "shader.h"
 #include "memory.h"
 #include "render.h"
 
 #include "platform/fs.h"
+
+
+#ifdef PLAT_DESKTOP
+static const char* vs_color = STRINGFY(#version 330\n)STRINGFY(\n
+    layout(location = 0) in vec2 vertex_pos; \n
+    layout(location = 1) in vec4 vertex_color; \n
+    layout(location = 2) in vec2 vertex_uv; \n
+    out vec4 frag_color;\n
+    out vec2 frag_uv;\n
+    uniform mat4 mvp;\n
+
+    void main() {\n
+       gl_Position.xy = (mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0f, 1.0f)).xy;\n
+       gl_Position.z = 1.0;\n
+       gl_Position.w = 1.0;\n
+       frag_color = vertex_color;\n
+       frag_uv = vec2(vertex_uv.x, 1.0f - vertex_uv.y);\n
+    }\n
+);
+
+static const char* fs_color = STRINGFY(#version 330\n)STRINGFY(
+    in vec4 frag_color;\n
+    in vec2 frag_uv;\n
+    out vec4 color;\n
+    uniform sampler2D texture_0;\n
+
+    void main() {\n
+       vec4 texture_color = texture(texture_0, frag_uv);\n
+       color = texture_color;\n
+    }\n
+    );
+#endif
+
+#ifdef PLAT_MOBILE
+static const char* vs_color = STRINGFY(\n
+                                       precision lowp float;\n
+                                       attribute mediump vec2 vertex_pos;\n
+                                       attribute lowp vec4 vertex_color;\n
+                                       attribute mediump vec2 vertex_uv; \n\n
+                                       uniform mat4 mvp; \n
+
+                                       varying lowp vec4 fragement_color;\n
+                                       varying mediump vec2 fragement_uv; \n\n
+                                       void main() {\n
+                                           gl_Position = mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0, 1.0); \n
+                                           fragement_color = vertex_color;\n
+                                           fragement_uv = vec2(vertex_uv.x, 1.0 - vertex_uv.y); \n
+                                       }\n
+                                       );
+
+static const char* fs_color = STRINGFY(\n
+                                       precision lowp float;\n
+                                       varying lowp vec4 fragement_color; \n
+                                       varying mediump vec2 fragement_uv; \n\n
+
+                                       uniform sampler2D texture_0; \n\n
+                                       void main() {\n
+                                           gl_FragColor = texture2D(texture_0, fragement_uv); \n
+                                       }\n
+                                       );
+#endif
 
 #define set_builtin_uniform(uniform, i, t, n) uniform.type = i; \
                                                       uniform.attr_type = t; \
@@ -44,7 +106,6 @@ void shader_set_uniform_object(struct shader* self,
     }
 }
 
-
 void check_gl_error(const char* file, int line) {
     GLenum err = GL_NO_ERROR;
     if((err = glGetError()) != GL_NO_ERROR) {
@@ -54,14 +115,10 @@ void check_gl_error(const char* file, int line) {
 
 static GLuint create_program(GLuint vs, GLuint fs) {
     GLuint program = glCreateProgram();
-    CHECK_GL_ERROR;
     glAttachShader(program, vs);
-    CHECK_GL_ERROR;
     glAttachShader(program, fs);
-    CHECK_GL_ERROR;
     
     glLinkProgram(program);
-    CHECK_GL_ERROR;
     
     GLint status;
     glGetProgramiv (program, GL_LINK_STATUS, &status);
@@ -73,10 +130,9 @@ static GLuint create_program(GLuint vs, GLuint fs) {
         glGetProgramInfoLog(program, infoLogLength, NULL, strInfoLog);
         fprintf(stderr, "Linker failure: %s\n", strInfoLog);
     }
-    
     glDetachShader(program, vs);
-    CHECK_GL_ERROR;
     glDetachShader(program, fs);
+
     CHECK_GL_ERROR;
     return program;
 }
@@ -84,12 +140,9 @@ static GLuint create_program(GLuint vs, GLuint fs) {
 static GLuint create_shader(GLenum shader_type, const char* shader_data) {
     GLuint shader = glCreateShader(shader_type);
     glShaderSource(shader, 1, &shader_data, NULL);
-    CHECK_GL_ERROR;
     glCompileShader(shader);
-    CHECK_GL_ERROR;
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    CHECK_GL_ERROR;
     if (status == GL_FALSE)
     {
         GLint infoLogLength;
@@ -105,7 +158,8 @@ static GLuint create_shader(GLenum shader_type, const char* shader_data) {
             default: strShaderType = "unkown"; break;
         }
         
-        fprintf(stderr, "Compile failure in %s bshader:\n%s\n", strShaderType, strInfoLog);
+        fprintf(stderr, "Compile failure in %s shader:\n%s\n shader_src = %s",
+                strShaderType, strInfoLog, shader_data);
     }
     
     return shader;
@@ -126,18 +180,15 @@ static GLuint craete_shader_from_file(GLenum shader_type, const char* file_path)
 
 static void shader_load_all(struct shader* self) {
     const char* shaders[] = {
-        "res/shaders/color.vert",
-        "res/shaders/color.frag",
-        
-        "res/shaders/text.vert",
-        "res/shaders/text.frag",
+        vs_color,
+        fs_color,
     };
-    
+
     int n = sizeof(shaders)/sizeof(const char*)/2;
     for (int i = 0; i < n; ++i) {
         int index = i*2;
-        GLuint vs = craete_shader_from_file(GL_VERTEX_SHADER, shaders[index]);
-        GLuint fs = craete_shader_from_file(GL_FRAGMENT_SHADER, shaders[index+1]);
+        GLuint vs = create_shader(GL_VERTEX_SHADER, shaders[index]);
+        GLuint fs = create_shader(GL_FRAGMENT_SHADER, shaders[index+1]);
         
         GLuint program = create_program(vs, fs);
         self->shader_programs[i] = program;

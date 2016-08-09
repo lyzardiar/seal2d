@@ -5,7 +5,7 @@ local game = require "game"
 local util = require "util"
 local consts = require "consts"
 
--- TODO: merge these 2 into 1 :)  
+-- TODO: merge these 2 into 1 :)
 local nuk_node = require "seal.nuk_node"
 local nuk_core = require "nuklear_core"
 
@@ -38,7 +38,7 @@ local function load_sprite(texture, data, x, y)
 	if data.rotation then
 		s:set_rotation(data.rotation)
 	end
-	
+
 	if data.anchor then
 		s:set_anchor(data.anchor.x, data.anchor.y)
 	end
@@ -85,22 +85,22 @@ local function sprite_anchor_test()
 	root:cleanup()
 	local sprites = {
 		{ frame = "skeleton_1.png" },
-		
+
 		{ 	frame = "skeleton_1.png",
-			anchor = {x = 0.5, y = 0.5}, 
+			anchor = {x = 0.5, y = 0.5},
 			pos = {x = WINDOW_WIDTH/2, y = WINDOW_HEIGHT/2} },
 
-		{ 	frame = "skeleton_1.png", 
-			anchor = {x = 1, y = 0}, 
+		{ 	frame = "skeleton_1.png",
+			anchor = {x = 1, y = 0},
 			pos = {x = WINDOW_WIDTH, y = 0} },
 
 
-		{ 	frame = "skeleton_1.png", 
-			anchor = {x = 1, y = 1}, 
+		{ 	frame = "skeleton_1.png",
+			anchor = {x = 1, y = 1},
 			pos = {x = WINDOW_WIDTH, y = WINDOW_HEIGHT} },
 
-		{ 	frame = "skeleton_1.png", 
-			anchor = {x = 0, y = 1}, 
+		{ 	frame = "skeleton_1.png",
+			anchor = {x = 0, y = 1},
 			pos = {x = 0, y = WINDOW_HEIGHT} },
 	}
 
@@ -188,7 +188,7 @@ local function sprite_event_test()
 		},
 	}
 	local sprite = load_skeltons(spritesData)
-	
+
 	for i=1,#sprite do
 		sprite[i]:register_handler(function(event_type, ...)
 				print(string.format("sprite: %d , test name: %s", i, sprite[i].test_description))
@@ -218,7 +218,7 @@ local function bmfont_load_test()
 		end
 		root:add_child(s)
 	end
-	
+
 end
 
 local function bunny_test()
@@ -249,10 +249,10 @@ local function bunny_test()
 			add_bunny(x, y)
 			print("add_bunny:", x, y)
 			isClick = false
-		elseif t == consts.TOUCH_BEGIN then 
+		elseif t == consts.TOUCH_BEGIN then
 			isClick = true
 		end
-	end)	
+	end)
 
 	local fps_label = sprite.new_bmfont_label("FPS: 0", "res/fonts/animated.txt")
     root:add_child(fps_label)
@@ -283,7 +283,7 @@ local tests = {
 local function draw_gui()
 		-- we do some ugly performance test first. want to know how much cpu would it cost to call from C to Lua every frame.
 	nuk_node.register(function()
-			if(nuk_core.nk_begin("Example", {x = WINDOW_WIDTH - 200, y = 50, w = 200, h = WINDOW_HEIGHT - 200/2}, 
+			if(nuk_core.nk_begin("Example", {x = WINDOW_WIDTH - 200, y = 50, w = 200, h = WINDOW_HEIGHT - 200/2},
 					NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE
 				)) then
 
@@ -309,10 +309,14 @@ function hello_world.entry()
 	sprite_frame.load_from_json("res/images/anim_pirate.json")
 	sprite_frame.load_from_json("res/images/skeleton.json")
 
+	-- root = sprite.new("ui.png", "smile_middle.png")
 	root = sprite.new_container()
 	root:set_pos(0, 0)
 
-	draw_gui()
+	local platform = require ("platform_core").get_platform()
+	if platform == 'mac' or platform == 'win' then
+		draw_gui()
+	end
 
 	return root.__cobj
 end

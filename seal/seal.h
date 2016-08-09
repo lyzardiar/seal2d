@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "platform/platform.h"
 
 #include "lua.h"
 
@@ -70,8 +71,6 @@ struct game {
 #define GAME_RESUME      "GAME_RESUME"
 #define GAME_EVENT       "GAME_EVENT"
 #define GAME_HANDLERS    "GAME_HANDLERS"
-
-// seal system
 
 struct game* seal_load_game_config();
 void seal_init_graphics();

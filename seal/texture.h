@@ -1,7 +1,7 @@
 #ifndef __seal__texture__
 #define __seal__texture__
 
-#include <OpenGL/gl3.h>
+#include "platform/render_opengl.h"
 
 struct array_map;
 struct texture;

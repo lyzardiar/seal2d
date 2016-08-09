@@ -1,6 +1,10 @@
 local consts = require "consts"
 local game = {}
 
+function game.load_shader(shader_index)
+
+end
+
 function game.init()
 	return require("tests.game.hello_world").entry()
 end

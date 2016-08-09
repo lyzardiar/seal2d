@@ -151,17 +151,17 @@ void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLu
     struct glyph* g = &self->glyph;
     
     SET_VERTEX_POS(g->bl, 0.0f, 0.0f);
-    SET_VERTEX_COLOR(g->bl, 1.0f, 1.0f, 1.0f, 1.0f);
-    
+    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
+
     SET_VERTEX_POS(g->br, rect->width, 0.0f);
-    SET_VERTEX_COLOR(g->br, 1.0f, 1.0f, 1.0f, 1.0f);
-    
+    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
+
     SET_VERTEX_POS(g->tl, 0.0f, rect->height);
-    SET_VERTEX_COLOR(g->tl, 1.0f, 1.0f, 1.0f, 1.0f);
-    
+    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
+
     SET_VERTEX_POS(g->tr, rect->width, rect->height);
-    SET_VERTEX_COLOR(g->tr, 1.0f, 1.0f, 1.0f, 1.0f);
-    
+    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
+
     if (uv) {
         SET_VERTEX_UV(g->bl, uv->u,         uv->v);
         SET_VERTEX_UV(g->br, uv->u + uv->w, uv->v);
@@ -181,25 +181,28 @@ struct sprite* sprite_new(struct sprite_frame* frame){
     return s;
 }
 
+
 struct sprite* sprite_new_label(const char* label) {
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_TTF_LABEL;
-    
-    // we new a frame
-    struct sprite_frame* frame = sprite_frame_new(label);
-    frame->source_rect.x = 0;
-    frame->source_rect.y = 0;
-    frame->source_rect.width = GAME->font->tex->width;
-    frame->source_rect.height = GAME->font->tex->height;
-    frame->tex_id = GAME->font->tex->id;
-    
-    frame->uv.u = 0.0f;
-    frame->uv.v = 0.0f;
-    frame->uv.w = 1.0f;
-    frame->uv.h = 1.0f;
-    
-    sprite_init(s, GAME->font->tex->width, GAME->font->tex->height);
-    sprite_set_sprite_frame(s, frame);
+
+    //TODO: implement this later
+    s_assert(false);
+//    // we new a frame
+//    struct sprite_frame* frame = sprite_frame_new(label);
+//    frame->source_rect.x = 0;
+//    frame->source_rect.y = 0;
+//    frame->source_rect.width = GAME->font->tex->width;
+//    frame->source_rect.height = GAME->font->tex->height;
+//    frame->tex_id = GAME->font->tex->id;
+//    
+//    frame->uv.u = 0.0f;
+//    frame->uv.v = 0.0f;
+//    frame->uv.w = 1.0f;
+//    frame->uv.h = 1.0f;
+//    
+//    sprite_init(s, GAME->font->tex->width, GAME->font->tex->height);
+//    sprite_set_sprite_frame(s, frame);
 
     return s;
 }
@@ -388,6 +391,7 @@ void sprite_update_transform(struct sprite* self) {
 
         self->width = fabs(x1 - x0);
         self->height = fabs(y3 - y1);
+
         self->dirty &= (~SPRITE_SRT_DIRTY);
         self->world_srt = tmp;
     }
@@ -484,10 +488,6 @@ void sprite_visit(struct sprite* self, float dt) {
     switch (self->type) {
         case SPRITE_TYPE_PIC:
             sprite_draw_pic(self);
-            break;
-        case SPRITE_TYPE_TTF_LABEL:
-            sprite_draw_pic(self);
-//            sprite_draw_label(self);
             break;
         case SPRITE_TYPE_CONTAINER:
             // do nothing.

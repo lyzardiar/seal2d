@@ -21,5 +21,4 @@ struct action* move_to(struct sprite* sprite, float target_x, float target_y, fl
 void action_update(struct action* action, struct sprite* sprite, float dt);
 void action_free(struct action* action);
 
-
 #endif

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "geo.h"
 
 const float color_deno = 1.0f / 255.0f;
@@ -21,4 +22,11 @@ void color_c4f(unsigned long color, float* r, float* g, float* b, float* a) {
     *g = ((color >> 16) & 0xff) * color_deno;
     *b = ((color >> 8 ) & 0xff) * color_deno;
     *a = ((color      ) & 0xff) * color_deno;
+}
+
+void vertex_tostring(char* buff, struct vertex* vertex) {
+    snprintf(buff, 1024, "vertex (%p) { position = {%.2f, %.2f}, color = {%.2f, %.2f, %.2f, %.2f} }",
+                vertex,
+                vertex->position[0], vertex->position[1],
+                vertex->color[0], vertex->color[1], vertex->color[2], vertex->color[3] );
 }

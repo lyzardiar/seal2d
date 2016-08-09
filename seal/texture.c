@@ -139,10 +139,10 @@ void texture_append(struct texture* self,
 
     glBindTexture(GL_TEXTURE_2D, self->id);
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, self->width);
-    glPixelStorei(GL_UNPACK_SKIP_PIXELS, self->cursor_x);
-    glPixelStorei(GL_UNPACK_SKIP_ROWS, self->cursor_y);
-    
+//    glPixelStorei(GL_UNPACK_ROW_LENGTH, self->width);
+//    glPixelStorei(GL_UNPACK_SKIP_PIXELS, self->cursor_x);
+//    glPixelStorei(GL_UNPACK_SKIP_ROWS, self->cursor_y);
+
     glTexSubImage2D(GL_TEXTURE_2D, 0, self->cursor_x, self->cursor_y, w, h, mode, GL_UNSIGNED_BYTE, pixel);
     
     glBindTexture(GL_TEXTURE_2D, 0);

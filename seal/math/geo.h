@@ -2,7 +2,7 @@
 #define __seal__geo__
 
 #include <stdbool.h>
-#include <OpenGL/OpenGL.h>
+#include "platform/render_opengl.h"
 
 typedef unsigned long color;
 
@@ -66,5 +66,6 @@ bool rect_contains(struct rect* rect, float x, float y);
 
 void color_vec4(unsigned long color, float v[4]);
 void color_c4f(unsigned long color, float* r, float* g, float* b, float* a);
+void vertex_tostring(char* buff, struct vertex* vertex);
 
 #endif /* defined(__yuusha__geo__) */
