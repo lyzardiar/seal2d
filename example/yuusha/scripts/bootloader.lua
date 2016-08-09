@@ -25,7 +25,7 @@ local function pmain()
 	end
 
 
-	print("package.path = ", package.path)
+	-- print("package.path = ", package.path)
 	-- require "luacov"
 	-- require "luacov.tick"
 

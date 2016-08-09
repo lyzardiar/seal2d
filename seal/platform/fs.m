@@ -26,9 +26,7 @@ const char* fs_full_path(const char* filename) {
     char name[name_len+1];
     memset(name, 0, name_len+1);
     strncpy(name, filename, name_len);
-    
-    printf("name = %s\n", name);
-    printf("ext = %s\n", ext_offset+1);
+
     NSString *dataFile = [[NSBundle mainBundle] pathForResource:
                           [NSString stringWithUTF8String:name] ofType:
                           [NSString stringWithUTF8String:ext_offset+1]]; // +1 to escape the 'dot'.

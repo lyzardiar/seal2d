@@ -104,7 +104,7 @@ int luaopen_nuklear_core(lua_State* L) {
 #else
 // make this compliable on mobile platform
     int luaopen_nuklear_core(lua_State* L) {
-        printf("nuklear not implemented on mobile platform");
+        printf("nuklear not implemented on mobile platform.\n");
         return 0;
     }
 #endif
