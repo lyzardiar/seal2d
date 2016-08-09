@@ -1,4 +1,5 @@
 #include <string.h>
+#include <math.h>
 
 #include "platform/fs.h"
 
@@ -78,7 +79,7 @@ struct sprite_frame* sprite_frame_new(const char* key) {
      struct sprite_frame* f = STRUCT_NEW(sprite_frame);
     memset(f, 0, sizeof(struct sprite_frame));
     
-    int len = strlen(key);
+    size_t len = strlen(key);
     f->key = s_malloc(len+1);
     memset(f->key, 0, len+1);
     strcpy(f->key, key);
