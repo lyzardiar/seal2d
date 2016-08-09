@@ -389,16 +389,6 @@ void sprite_update_transform(struct sprite* self) {
         SET_VERTEX_POS(g->tr, x2, y2);
         SET_VERTEX_POS(g->tl, x3, y3);
 
-        SET_VERTEX_POS(g->tr, 0.5f, 0.5f);
-        SET_VERTEX_POS(g->tl, -0.5f, 0.5f);
-        SET_VERTEX_POS(g->bl, -0.5f, -0.5f);
-        SET_VERTEX_POS(g->br, 0.5f, -0.5f);
-
-        SET_VERTEX_UV(g->tr, 1.0f, 1.0f);
-        SET_VERTEX_UV(g->tl, 0.0f, 1.0f);
-        SET_VERTEX_UV(g->bl, 0.0f, 0.0f);
-        SET_VERTEX_UV(g->br, 1.0f, 0.0f);
-
         self->dirty &= (~SPRITE_SRT_DIRTY);
         
         self->world_srt = tmp;

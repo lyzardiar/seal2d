@@ -72,8 +72,6 @@ struct game {
 #define GAME_EVENT       "GAME_EVENT"
 #define GAME_HANDLERS    "GAME_HANDLERS"
 
-// seal system
-
 struct game* seal_load_game_config();
 void seal_init_graphics();
 void seal_load_string(const char* script_data);
