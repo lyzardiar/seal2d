@@ -44,15 +44,22 @@ static const char* fs_color = STRINGFY(#version 330\n)STRINGFY(
 
 #ifdef PLAT_MOBILE
 static const char* vs_color = STRINGFY(\n
+                                       precision lowp float;\n
                                        attribute mediump vec2 vertex_pos;\n
+                                       attribute lowp vec4 vertex_color;\n
+
+                                       varying lowp vec4 fragement_color;\n
                                        void main() {\n
                                            gl_Position = vec4(vertex_pos.x, vertex_pos.y, 0.0, 1.0); \n
+                                           fragement_color = vertex_color;\n
                                        }\n
                                        );
 
 static const char* fs_color = STRINGFY(\n
+                                       precision lowp float;\n
+                                       varying lowp vec4 fragement_color;
                                        void main() {\n
-                                           gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); \n
+                                           gl_FragColor = fragement_color; \n
                                        }\n
                                        );
 #endif

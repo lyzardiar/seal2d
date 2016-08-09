@@ -399,10 +399,10 @@ void sprite_update_transform(struct sprite* self) {
 //        SET_VERTEX_COLOR(g->bl, 255, 0, 0, 255);
 //        SET_VERTEX_COLOR(g->br, 255, 255, 255, 255);
 //
-//        SET_VERTEX_COLOR(g->tr, 1.0f, 0, 0, 1.0f);
-//        SET_VERTEX_COLOR(g->tl, 0, 1.0f, 0, 1.0f);
-//        SET_VERTEX_COLOR(g->bl, 1.0f, 0, 0, 1.0f);
-//        SET_VERTEX_COLOR(g->br, 1.0f, 1.0f, 1.0f, 1.0f);
+        SET_VERTEX_COLOR(g->tr, 1.0f, 0.0f, 0.0f, 1.0f);
+        SET_VERTEX_COLOR(g->tl, 0.0f, 1.0f, 0.0f, 1.0f);
+        SET_VERTEX_COLOR(g->bl, 0.0f, 0.0f, 1.0f, 1.0f);
+        SET_VERTEX_COLOR(g->br, 1.0f, 1.0f, 1.0f, 1.0f);
 
 
         self->dirty &= (~SPRITE_SRT_DIRTY);

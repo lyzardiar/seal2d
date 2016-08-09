@@ -8,7 +8,7 @@ typedef unsigned long color;
 
 struct vertex {
     GLfloat position[2]; // x, y
-//    GLfloat color[4];   // r, g, b, a
+    GLfloat color[4];   // r, g, b, a
 //    GLfloat uv[2];        // u, v
 };
 
@@ -66,5 +66,6 @@ bool rect_contains(struct rect* rect, float x, float y);
 
 void color_vec4(unsigned long color, float v[4]);
 void color_c4f(unsigned long color, float* r, float* g, float* b, float* a);
+void vertex_tostring(char* buff, struct vertex* vertex);
 
 #endif /* defined(__yuusha__geo__) */

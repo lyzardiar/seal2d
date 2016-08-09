@@ -55,6 +55,7 @@ struct vertex_buffer {
 
 struct render_state {
     int tex_id;
+    GLuint program;
 };
 
 struct render_batch {
