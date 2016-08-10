@@ -51,7 +51,6 @@ static bool hash_equal(void* a, void* b) {
 struct sprite_frame_cache* sprite_frame_cache_new() {
     struct sprite_frame_cache* c = STRUCT_NEW(sprite_frame_cache);
     c->cache = hashmapCreate(128, hash_str, hash_equal);
-    c->nframes = 0;
     
     C = c;
     return c;

@@ -169,7 +169,7 @@ void bmfont_cache_add(struct bmfont_cache* self, struct bmfont* font, const char
 struct bmfont* bmfont_cache_get(struct bmfont_cache* self, const char* fnt_path) {
     struct bmfont* f = hashmapGet(self->cache, (void*)fnt_path);
     if (!f) {
-        char* bmfont_data = s_reads(fnt_path);
+        char* bmfont_data = fs_reads(fnt_path);
         f = bmfont_new(bmfont_data);
         memcpy(f->fnt_file, fnt_path, strlen(fnt_path) + 1);
         s_free(bmfont_data);

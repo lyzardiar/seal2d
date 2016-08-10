@@ -54,7 +54,6 @@ struct sprite_frame {
 
 struct sprite_frame_cache {
     struct Hashmap* cache;
-    unsigned int nframes;
 };
 
 struct sprite_frame_cache* sprite_frame_cache_new();

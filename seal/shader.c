@@ -166,7 +166,7 @@ static GLuint create_shader(GLenum shader_type, const char* shader_data) {
 }
 
 static GLuint craete_shader_from_file(GLenum shader_type, const char* file_path) {
-    char* bytes = s_reads(file_path);
+    char* bytes = fs_reads(file_path);
     GLuint shader = 0;
     if (bytes > 0) {
         shader = create_shader(shader_type, (const char*)bytes);

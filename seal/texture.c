@@ -66,7 +66,7 @@ struct texture* texture_load_from_png(const char* file_path) {
     
     // load png data into memory 
     size_t file_size = 0;
-    unsigned char* origin_data = s_read(file_path, &file_size, 0);
+    unsigned char* origin_data = fs_read(file_path, &file_size, 0);
 
     unsigned char* pixel_data = NULL;
     unsigned int width = 0;

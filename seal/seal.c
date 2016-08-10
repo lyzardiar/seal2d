@@ -78,7 +78,7 @@ struct ttf_font* font = NULL;
 
 int load_game_scripts(lua_State* L, const char* zipfile) {
     size_t size = 0;
-    unsigned char* filedata = s_read(zipfile, &size, 0);
+    unsigned char* filedata = fs_read(zipfile, &size, 0);
     if (!filedata) {
         fprintf(stderr, "unable to read zipfile = %s\n", zipfile);
         return 1;

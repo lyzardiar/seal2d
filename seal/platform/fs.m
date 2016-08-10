@@ -45,7 +45,7 @@ const char* fs_sandbox_root_path() {
     #endif
 }
 
-unsigned char* s_read(const char* path, size_t* size, int extra_byte) {
+unsigned char* fs_read(const char* path, size_t* size, int extra_byte) {
 #ifdef PLAT_IOS
     const char* full_path = fs_full_path(path);
 #endif
@@ -84,30 +84,30 @@ unsigned char* s_read(const char* path, size_t* size, int extra_byte) {
     return buffer;
 }
 
-char* s_reads(const char* path) {
-    return (char*)s_read(path, NULL, 1);
+char* fs_reads(const char* path) {
+    return (char*)fs_read(path, NULL, 1);
 }
 
-size_t s_writes(const char* path, const char* string) {
+size_t fs_writes(const char* path, const char* string) {
     size_t size = strlen(string)+1;
-    return s_writef(path, string, size);
+    return fs_writef(path, string, size);
 }
 
-size_t s_writef(const char* path, const void* data, size_t size) {
+size_t fs_writef(const char* path, const void* data, size_t size) {
     FILE* fp = fopen(path, "w+");
     if (!fp) {
-        fprintf(stderr, "s_writef, can't open file.\n");
+        fprintf(stderr, "fs_writef, can't open file.\n");
         return 0;
     }
     if (!data) {
-        fprintf(stderr, "s_writef, null data.\n");
+        fprintf(stderr, "fs_writef, null data.\n");
         fclose(fp);
         return 0;
     }
     size_t write_size = fwrite(data, 1, size, fp);
     if (write_size != size) {
         fclose(fp);
-        fprintf(stderr, "s_writef, error when write file. not enough disk?\n");
+        fprintf(stderr, "fs_writef, error when write file. not enough disk?\n");
         return 0;
     }
     fclose(fp);
@@ -115,7 +115,7 @@ size_t s_writef(const char* path, const void* data, size_t size) {
 }
 
 static const char* write_path = NULL;
-const char* s_get_write_path() {
+const char* fs_get_write_path() {
     if (!write_path) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];

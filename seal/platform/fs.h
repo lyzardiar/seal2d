@@ -9,14 +9,14 @@
 const char* fs_full_path(const char* filename);
 const char* fs_sandbox_root_path();
 
-unsigned char* s_read(const char* path, size_t* size, int extra_byte);
-char* s_reads(const char* path);
+unsigned char* fs_read(const char* path, size_t* size, int extra_byte);
+char* fs_reads(const char* path);
 
-size_t s_writes(const char* path, const char* string);
+size_t fs_writes(const char* path, const char* string);
 
-size_t s_writef(const char* path, const void* data, size_t size);
+size_t fs_writef(const char* path, const void* data, size_t size);
 
-const char* s_get_write_path();
+const char* fs_get_write_path();
 
 
 #endif /* defined(__zore__zore_fs__) */
