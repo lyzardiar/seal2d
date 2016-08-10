@@ -13,4 +13,10 @@ lua_Integer getfield_i(lua_State* L, const char* key);
 lua_Number  getfield_f(lua_State* L, const char* key);
 const char* getfiled_s(lua_State* L, const char* key);
 
+#define bind_func_implemention_0(func) \
+    int l##func(lua_State* L) { \
+        func();\
+        return 0; \
+    }
+
 #endif

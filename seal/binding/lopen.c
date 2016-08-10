@@ -85,7 +85,6 @@ const char* getfiled_s(lua_State* L, const char* key) {
     const char* value = lua_tostring(L, -1);
     lua_pop(L, 1);
     return value;
-
 }
 
 void luaopen_lua_extensions(lua_State *L)

@@ -5,8 +5,14 @@ function game.load_shader(shader_index)
 
 end
 
+local root
 function game.init()
-	return require("tests.game.hello_world").entry()
+	root = require("tests.game.hello_world")
+	return root.entry()
+end
+
+function game.draw()
+	root.draw()
 end
 
 function game.pause()
@@ -51,10 +57,6 @@ function game.event(e)
 	else
 		assert(false, "invalid event type = ", e.type)
 	end
-end
-
-function game.set_root(root)
-	game.root = root
 end
 
 return game

@@ -2,26 +2,57 @@
 #include "lua.h"
 #include "lauxlib.h"
 
-#ifdef PLAT_DESKTOP
-#include "nuk_node.h"
-
-#define NK_INCLUDE_FIXED_TYPES
-#include "nuklear.h"
 #include "lopen.h"
 #include "seal.h"
 #include "lua_handler.h"
 
+#ifdef PLAT_DESKTOP
+
+#define NK_INCLUDE_FIXED_TYPES
+#define NK_INCLUDE_STANDARD_IO
+#define NK_INCLUDE_DEFAULT_ALLOCATOR
+#define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
+#define NK_INCLUDE_FONT_BAKING
+#define NK_INCLUDE_DEFAULT_FONT
+#define NK_IMPLEMENTATION
+
+#include "nuklear.h"
+#define NK_GLFW_GL3_IMPLEMENTATION
+#include "nuklear_glfw_gl3.h"
+
 EXTERN_GAME;
 
-int lnuk_node_register(lua_State* L) {
-    lua_handler_set_func(GAME->lua_handler, L, GAME->nuk_node, 1);
+static struct nk_context* ctx = NULL;
+
+#define MAX_VERTEX_BUFFER (512 * 1024)
+#define MAX_ELEMENT_BUFFER (128 * 1024)
+
+void nuk_init(void* winctx) {
+#ifdef PLAT_DESKTOP
+    if (!ctx) {
+        ctx = nk_glfw3_init(winctx, NK_GLFW3_DEFAULT);
+        struct nk_font_atlas *atlas;
+        nk_glfw3_font_stash_begin(&atlas);
+        nk_font_atlas_add_from_file(atlas, GAME->config.nk_gui_font_path, GAME->config.nk_gui_font_size, 0);
+        nk_glfw3_font_stash_end();
+    }
+
+#endif
+    
+}
+
+int lnuk_draw_start(lua_State* L) {
+    nk_glfw3_new_frame();
+    return 0;
+}
+
+int lnuk_draw_end(lua_State* L) {
+    nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
     return 0;
 }
 
 int lnk_begin(lua_State* L) {
-    struct nk_context* ctx = global_nk_context();
-    struct nk_panel* panel = GAME->nuk_node->panel;
-    
+
     const char* panel_title = luaL_checkstring(L, 1);
     luaL_checktype(L, 2, LUA_TTABLE);
     lua_pushvalue(L, 2);
@@ -36,19 +67,20 @@ int lnk_begin(lua_State* L) {
     lua_pop(L, 1);
     uint32_t flags = luaL_checkinteger(L, 3);
 
-    bool ret = nk_begin(ctx, panel, panel_title, rect, flags);
+    static struct nk_panel panel;
+    bool ret = nk_begin(ctx, &panel, panel_title, rect, flags);
     lua_pushboolean(L, ret);
 
     return 1;
 }
 
 int lnk_end(lua_State* L) {
-    nk_end(global_nk_context());
+    nk_end(ctx);
     return 0;
 }
 
 int lnk_layout_row_static(lua_State* L) {
-    nk_layout_row_static(global_nk_context(),
+    nk_layout_row_static(ctx,
                          luaL_checknumber(L, 1),
                          luaL_checknumber(L, 2),
                          luaL_checknumber(L, 3));
@@ -56,7 +88,7 @@ int lnk_layout_row_static(lua_State* L) {
 }
 
 int lnk_layout_row_dynamic(lua_State* L) {
-    nk_layout_row_dynamic(global_nk_context(),
+    nk_layout_row_dynamic(ctx,
                           luaL_checknumber(L, 1),
                           luaL_checknumber(L, 2));
 
@@ -64,7 +96,7 @@ int lnk_layout_row_dynamic(lua_State* L) {
 }
 
 int lnk_button_label(lua_State* L) {
-    lua_pushboolean(L, nk_button_label(global_nk_context(),
+    lua_pushboolean(L, nk_button_label(ctx,
                                        luaL_checkstring(L, 1),
                                        luaL_checkinteger(L, 2)));
     return 1;
@@ -80,13 +112,16 @@ int lnk_property_int(lua_State* L) {
     return 0;
 }
 
+
 // we support only 1 nk_node.
 int luaopen_nuklear_core(lua_State* L) {
 #ifdef luaL_checkversion
     luaL_checkversion(L);
 #endif
     luaL_Reg lib[] = {
-        { "nuk_node_register", lnuk_node_register},
+        { "nuk_draw_start", lnuk_draw_start},
+        { "nuk_draw_end", lnuk_draw_end},
+
         { "nk_begin", lnk_begin},
         { "nk_end", lnk_end},
         { "nk_layout_row_static", lnk_layout_row_static},
@@ -102,7 +137,7 @@ int luaopen_nuklear_core(lua_State* L) {
     return 1;
 }
 #else
-// make this compliable on mobile platform
+// make this compliable on mobile splatform
     int luaopen_nuklear_core(lua_State* L) {
         printf("nuklear not implemented on mobile platform.\n");
         return 0;
