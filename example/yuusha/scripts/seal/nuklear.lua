@@ -16,11 +16,15 @@ local nuklear = {
 }
 
 function nuklear.init()
-	setmetatable(nuklear, {__index = function(t, key, ...)
+	return setmetatable(nuklear, {__index = function(t, key, ...)
 			print(string.format("call metatable nuk_core[%s] = %s", key, nuk_core[key]))
 			rawset(t, key, nuk_core[key])
 			return nuk_core[key]
 		end})
+end
+
+function nuklear.new_panel()
+
 end
 
 return nuklear

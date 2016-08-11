@@ -33,11 +33,22 @@ void nuk_init(void* winctx) {
         ctx = nk_glfw3_init(winctx, NK_GLFW3_DEFAULT);
         struct nk_font_atlas *atlas;
         nk_glfw3_font_stash_begin(&atlas);
-        nk_font_atlas_add_from_file(atlas, GAME->config.nk_gui_font_path, GAME->config.nk_gui_font_size, 0);
+        nk_font_atlas_add_from_file(atlas,
+                                    GAME->config.nk_gui_font_path,
+                                    GAME->config.nk_gui_font_size,
+                                    0);
         nk_glfw3_font_stash_end();
     }
-
 #endif
+}
+
+int lnuk_new_panel(lua_State* L) {
+    struct nk_panel* panel = STRUCT_NEW(nk_panel);
+    lua_pushlightuserdata(L, panel);
+    return 1;
+}
+
+int lnuk_free_panel(lua_State* L) {
     
 }
 
@@ -52,7 +63,6 @@ int lnuk_draw_end(lua_State* L) {
 }
 
 int lnk_begin(lua_State* L) {
-
     const char* panel_title = luaL_checkstring(L, 1);
     luaL_checktype(L, 2, LUA_TTABLE);
     lua_pushvalue(L, 2);
@@ -119,16 +129,18 @@ int luaopen_nuklear_core(lua_State* L) {
     luaL_checkversion(L);
 #endif
     luaL_Reg lib[] = {
-        { "nuk_draw_start", lnuk_draw_start},
-        { "nuk_draw_end", lnuk_draw_end},
+        { "nuk_new_panel", lnuk_new_panel },
+        { "nuk_free_panel", lnuk_free_panel },
+        { "nuk_draw_start", lnuk_draw_start },
+        { "nuk_draw_end", lnuk_draw_end },
 
-        { "nk_begin", lnk_begin},
-        { "nk_end", lnk_end},
-        { "nk_layout_row_static", lnk_layout_row_static},
-        { "nk_button_label", lnk_button_label},
-        { "nk_layout_row_dynamic", lnk_layout_row_dynamic},
-        { "nk_option_label", lnk_option_label},
-        { "nk_property_int", lnk_property_int},
+        { "nk_begin", lnk_begin },
+        { "nk_end", lnk_end },
+        { "nk_layout_row_static", lnk_layout_row_static },
+        { "nk_button_label", lnk_button_label },
+        { "nk_layout_row_dynamic", lnk_layout_row_dynamic },
+        { "nk_option_label", lnk_option_label },
+        { "nk_property_int", lnk_property_int },
         { NULL, NULL },
     };
     
