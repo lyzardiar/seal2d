@@ -7,7 +7,7 @@ end
 
 local root
 function game.init()
-	root = require("tests.game.hello_world")
+	root = require "editor.main_panel"
 	return root.entry()
 end
 

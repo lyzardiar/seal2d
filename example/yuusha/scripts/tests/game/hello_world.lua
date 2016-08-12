@@ -4,7 +4,6 @@ local timer = require "seal.timer"
 local game = require "game"
 local util = require "util"
 local consts = require "consts"
-local nuklear = require "nuklear"
 
 local hello_world = {}
 
@@ -269,7 +268,7 @@ local function draw_gui()
 	print("call draw_gui")
 	nuklear.nuk_draw_start()
 
-	if(nuklear.nk_begin("Example", 
+	if(nuklear.nk_begin("Example",
 		{x = WINDOW_WIDTH - 200, y = 50, w = 200, h = WINDOW_HEIGHT - 200/2},
 			nuklear.NK_WINDOW_BORDER      |
 			nuklear.NK_WINDOW_MOVABLE     |
@@ -287,7 +286,6 @@ local function draw_gui()
 				t.create_func()
 			end
 		end
-
 	end
 	nuklear.nk_end()
 
@@ -309,11 +307,6 @@ function hello_world.entry()
 	-- root = sprite.new("ui.png", "smile_middle.png")
 	root = sprite.new_container()
 	root:set_pos(0, 0)
-
-	local platform = require ("platform_core").get_platform()
-	if platform == 'mac' or platform == 'win' then
-		nuklear.init()
-	end
 
 	return root.__cobj
 end

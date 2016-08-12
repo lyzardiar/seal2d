@@ -14,8 +14,6 @@ extern int luaopen_zlib(lua_State* L);
 
 extern int luaopen_nuklear_core(lua_State* L);
 
-
-
 void stackDump (lua_State *L) {
     int i;
     int top = lua_gettop(L);
