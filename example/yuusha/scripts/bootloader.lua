@@ -8,7 +8,7 @@ local function pmain()
 		"scripts/seal/thirdparty/luaunit/?.lua;",
 		"res/?.lua",
 	}
-	
+
 	local plat = platform.get_platform()
 	if plat == 'mac' then
 		for _, path in ipairs(script_search_path) do
@@ -27,6 +27,15 @@ local function pmain()
 	-- print("package.path = ", package.path)
 	-- require "luacov"
 	-- require "luacov.tick"
+	local function inject(mod_name, mod)
+		for k, v in pairs(mod) do
+			_G[k] = mod[k]
+			print(string.format("inject: %s.%s", mod_name, k))
+		end
+	end
+
+	local util = require "seal.util"
+	inject("util", util)
 
 	local game = require "game"
 	require("seal.engine").start(game)

@@ -10,7 +10,7 @@ function util.class(name, super)
 		assert(super == nil, 'invalid super type, must be table, function or nil.')
 		class.__super = {}
 	end
-	
+
 	super = class.__super
 	for k,v in pairs(super) do
 		if k ~= '__super' then
@@ -50,12 +50,12 @@ function util.print_r(root)
 	if not root then
 		print("attempt to print an empty table.")
 		print(debug.traceback("", 2))
-		return 
+		return
 	end
 	if type(root) ~= "table" then
-		print(string.format("attempt to print a table, but it's type = %s, value = %s.", 
+		print(string.format("attempt to print a table, but it's type = %s, value = %s.",
 				type(root), tostring(root)))
-		return 
+		return
 	end
 
 	local cache = { [root] = "." }
@@ -68,7 +68,7 @@ function util.print_r(root)
 	          elseif type(v) == "table" then
 	              local new_key = name .. "." .. key
 	              cache[v] = new_key
-	              table.insert(temp,"+" .. key .. _dump(v,space .. (next(t,k) and "|" or " " ) 
+	              table.insert(temp,"+" .. key .. _dump(v,space .. (next(t,k) and "|" or " " )
 	              					.. string.rep(" ",#key),new_key))
 	          else
 	              table.insert(temp,"+" .. key .. " [" .. tostring(v).."]")
@@ -76,16 +76,16 @@ function util.print_r(root)
 	      end
 	      return table.concat(temp,"\n"..space)
 	end
-	
-	local info =  "\n------------------------------------------------------------------------\n" .. 
-					_dump(root, "","") .. 
+
+	local info =  "\n------------------------------------------------------------------------\n" ..
+					_dump(root, "","") ..
 				  "\n------------------------------------------------------------------------\n"
 	io.write(info)
 	io.flush()
 end
 
 function util.contains(rect, x, y)
-	return  x >= rect.x and 
+	return  x >= rect.x and
 			x <= rect.x + rect.width and
 			y >= rect.y and
 			y <= rect.y + rect.height
@@ -97,6 +97,10 @@ function util.nkeys(t)
 		total = total + 1
 	end
 	return total
+end
+
+function util.printf(...)
+	print(string.format(...))
 end
 
 return util

@@ -84,23 +84,23 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
         fprintf(stderr, "unable to read zipfile = %s\n", zipfile);
         return 1;
     }
-    
+
     unzFile unzfile = unzOpenBuffer(filedata, size);
     if(!unzfile) {
         fprintf(stderr, "open zip from buffer failed.\n");
         return 1;
     }
-    
+
     lua_getglobal(L, "package");
     lua_getfield(L, -1, "preload");
-    
+
     char filename[1024] = "";
     int err = unzGoToFirstFile(unzfile);
     if (err) {
         fprintf(stderr, "go to first file failed");
         return 1;
     }
-    
+
     bool succeed = true;
     while (true) {
         unz_file_info info;
@@ -110,7 +110,7 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
             succeed = false;
             break;
         }
-        
+
         unz_file_pos file_pos;
         err = unzGetFilePos(unzfile, &file_pos);
         err = unzGoToFilePos(unzfile, &file_pos);
@@ -130,7 +130,7 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
             goto error;
         }
         lua_setfield(L, -2, filename);
-        
+
         if(unzGoToNextFile(unzfile) == UNZ_END_OF_LIST_OF_FILE) {
             succeed = true;
             break;
@@ -144,7 +144,7 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
         s_free(buffer);
         break;
     }
-    
+
     lua_pop(L, -1);
     return succeed ? 1 : 0;
 }
@@ -159,7 +159,7 @@ struct game* seal_load_game_config() {
     lua_State* L = seal_new_lua();
     luaopen_lua_extensions(L);
     GAME->lstate = L;
-    
+
     // load the game settings from config.lua
     seal_load_file("scripts/config.lua");
     lua_getglobal(L, "APP_NAME");
@@ -167,14 +167,14 @@ struct game* seal_load_game_config() {
     lua_getglobal(L, "WINDOW_HEIGHT");
     lua_getglobal(L, "NK_GUI_FONT_PATH");
     lua_getglobal(L, "NK_GUI_FONT_SIZE");
-    
+
     struct game_config* config = &GAME->config;
     config->app_name = lua_tostring(L, 1);
     config->window_width = lua_tonumber(L, 2);
     config->window_height = lua_tonumber(L, 3);
     config->nk_gui_font_path = lua_tostring(L, 4);
     config->nk_gui_font_size = lua_tonumber(L, 5);
-    
+
     lua_pop(L, 5);
 
 #ifdef PLAT_DESKTOP
@@ -221,13 +221,13 @@ void seal_load_file(const char* script_path) {
         abort();
     }
 #endif
-    
+
 #ifdef PLAT_IOS
     char* script_file_data = s_reads(script_path);
     seal_load_string(script_file_data);
     s_free(script_file_data);
 #endif
-    
+
 }
 
 static int traceback (lua_State *L) {
@@ -246,7 +246,7 @@ static struct timeval _lastUpdate;
 
 void seal_start_game() {
     gettimeofday(&_lastUpdate, NULL);
-    
+
     lua_State *L = GAME->lstate;
     assert(lua_gettop(L) == 0);
     lua_pushcfunction(L, traceback);
@@ -263,7 +263,7 @@ void seal_start_game() {
     lua_getfield(L, LUA_REGISTRYINDEX, GAME_PAUSE);
     lua_getfield(L, LUA_REGISTRYINDEX, GAME_RESUME);
     lua_getfield(L, LUA_REGISTRYINDEX, GAME_EVENT);
-    
+
     camera_pos(GAME->global_camera,
                GAME->config.window_width/2,
                GAME->config.window_height/2);
@@ -272,7 +272,7 @@ void seal_start_game() {
 void seal_update() {
     struct timeval now;
     gettimeofday(&now, NULL);
-    
+
     // delta只计算draw的时间
     float dt = ((now.tv_sec - _lastUpdate.tv_sec) +
                    (now.tv_usec - _lastUpdate.tv_usec))/1000000.0f;
@@ -282,10 +282,10 @@ void seal_update() {
     if (dt < FLT_EPSILON) {
         return;
     }
-    
+
     GAME->global_dt = dt;
     camera_update(GAME->global_camera);
-    
+
     lua_State* L = GAME->lstate;
     lua_pushvalue(L, UPDATE_FUNC_INDEX);
     lua_pushnumber(L, dt);
@@ -294,7 +294,7 @@ void seal_update() {
 }
 
 void seal_touch_event(struct touch_event* touch_event) {
-    
+
     sprite_touch(GAME->root, touch_event);
 }
 
@@ -303,7 +303,7 @@ void seal_draw() {
     struct render* R = GAME->render;
     render_clear(R, C4B_COLOR(127, 127, 127, 255));
 
-//    sprite_visit(GAME->root, GAME->global_dt);
+    sprite_visit(GAME->root, GAME->global_dt);
 
     // call the injected draw function in Lua Layer.
     lua_State* L = GAME->lstate;
@@ -314,7 +314,7 @@ void seal_draw() {
 }
 
 void seal_destroy() {
-    
+
     lua_close(GAME->lstate);
     texture_cache_free(GAME->texture_cache);
     sprite_frame_cache_free(GAME->sprite_frame_cache);
@@ -322,7 +322,7 @@ void seal_destroy() {
 #ifdef PLAT_DESKTOP
     win_free(GAME->window);
 #endif
-    
+
     sprite_free(GAME->root);
     s_free(GAME);
 }

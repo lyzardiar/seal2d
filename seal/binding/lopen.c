@@ -11,6 +11,7 @@ extern int luaopen_socket_core(lua_State *L);
 extern int luaopen_mime_core(lua_State *L);
 extern int luaopen_cjson(lua_State* L);
 extern int luaopen_zlib(lua_State* L);
+extern int luaopen_lxp(lua_State* L);
 
 extern int luaopen_nuklear_core(lua_State* L);
 extern int luaopen_nanovg_core(lua_State* L);
@@ -99,6 +100,7 @@ void luaopen_lua_extensions(lua_State *L)
         { "mime.core", luaopen_mime_core },
         { "cjson", luaopen_cjson },
         { "zlib", luaopen_zlib },
+        { "lxp", luaopen_lxp},
 
         { "nuklear_core", luaopen_nuklear_core },
         { "nanovg_core", luaopen_nanovg_core },

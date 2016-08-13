@@ -102,6 +102,8 @@
 		A62EEF5B1D2507F70065378C /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = A62EEF591D2507F70065378C /* render.c */; };
 		A63B5C731D3872A50093359C /* bmfont.c in Sources */ = {isa = PBXBuildFile; fileRef = A63B5C711D3872A50093359C /* bmfont.c */; };
 		A63F5E501D5ECBB1004538D9 /* lnanovg.c in Sources */ = {isa = PBXBuildFile; fileRef = A63F5E4E1D5ECBB1004538D9 /* lnanovg.c */; };
+		A63F5E541D5F3AED004538D9 /* lxplib.c in Sources */ = {isa = PBXBuildFile; fileRef = A63F5E521D5F3AED004538D9 /* lxplib.c */; };
+		A63F5E561D5F3BFE004538D9 /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A63F5E551D5F3BFE004538D9 /* libexpat.a */; };
 		A65E1FC81D16BC070039B22B /* nanovg.c in Sources */ = {isa = PBXBuildFile; fileRef = A65E1FC01D16BC070039B22B /* nanovg.c */; };
 		A695D3431CB2827900E4180B /* event.c in Sources */ = {isa = PBXBuildFile; fileRef = A695D3411CB2827900E4180B /* event.c */; };
 		A6A836801D4CBD6500A48B19 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A8367F1D4CBD6500A48B19 /* libz.tbd */; };
@@ -295,6 +297,9 @@
 		A63B5C711D3872A50093359C /* bmfont.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bmfont.c; sourceTree = "<group>"; };
 		A63B5C721D3872A50093359C /* bmfont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bmfont.h; sourceTree = "<group>"; };
 		A63F5E4E1D5ECBB1004538D9 /* lnanovg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lnanovg.c; sourceTree = "<group>"; };
+		A63F5E521D5F3AED004538D9 /* lxplib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lxplib.c; path = "../../../libs/lua-expat/lxplib.c"; sourceTree = "<group>"; };
+		A63F5E531D5F3AED004538D9 /* lxplib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lxplib.h; path = "../../../libs/lua-expat/lxplib.h"; sourceTree = "<group>"; };
+		A63F5E551D5F3BFE004538D9 /* libexpat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libexpat.a; path = "../../../libs/lua-expat/mac/libs/libexpat.a"; sourceTree = "<group>"; };
 		A65E1FBA1D16BC070039B22B /* nanovg_gl2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanovg_gl2.h; sourceTree = "<group>"; };
 		A65E1FBB1D16BC070039B22B /* nanovg_gl3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanovg_gl3.h; sourceTree = "<group>"; };
 		A65E1FBF1D16BC070039B22B /* fontstash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fontstash.h; sourceTree = "<group>"; };
@@ -325,6 +330,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A63F5E561D5F3BFE004538D9 /* libexpat.a in Frameworks */,
 				A6A836801D4CBD6500A48B19 /* libz.tbd in Frameworks */,
 				4D822B8D1C6F66400083122E /* libglfw3.a in Frameworks */,
 				4D46F80B1C8F2B0A0081A1DC /* libfreetype.a in Frameworks */,
@@ -413,6 +419,7 @@
 			children = (
 				A65E1FB71D16BC070039B22B /* nanovg */,
 				B60387F21D0B027000A27714 /* nuklear */,
+				A63F5E511D5F3AD0004538D9 /* lua-expat */,
 				A6E74C991CCA0E71009392C8 /* lua-zlib */,
 				A611E70F1CB65F32001C7E2C /* lua-cjson */,
 				4D25D83E1C95C04500448F88 /* lua-socket */,
@@ -553,6 +560,7 @@
 		4DDF63961C4E0585008A44CE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A63F5E551D5F3BFE004538D9 /* libexpat.a */,
 				A6A8367F1D4CBD6500A48B19 /* libz.tbd */,
 				4D77985B1C6F0B5100021ED6 /* OpenGL.framework */,
 				4DDA8EA31C4F5CA300ED5325 /* CoreFoundation.framework */,
@@ -690,6 +698,15 @@
 			name = "lua-cjson";
 			sourceTree = "<group>";
 		};
+		A63F5E511D5F3AD0004538D9 /* lua-expat */ = {
+			isa = PBXGroup;
+			children = (
+				A63F5E521D5F3AED004538D9 /* lxplib.c */,
+				A63F5E531D5F3AED004538D9 /* lxplib.h */,
+			);
+			name = "lua-expat";
+			sourceTree = "<group>";
+		};
 		A65E1FB71D16BC070039B22B /* nanovg */ = {
 			isa = PBXGroup;
 			children = (
@@ -815,6 +832,7 @@
 				4DE642C81C5B3BCA003EBBC0 /* lseal_core.c in Sources */,
 				A6E74CB01CCA1D2A009392C8 /* unzip.c in Sources */,
 				4D25D88C1C95C06000448F88 /* unix.c in Sources */,
+				A63F5E541D5F3AED004538D9 /* lxplib.c in Sources */,
 				4DDA8E411C4F5AE700ED5325 /* loslib.c in Sources */,
 				A65E1FC81D16BC070039B22B /* nanovg.c in Sources */,
 				A6291AF81D2CB05600B39E63 /* lua_handler.c in Sources */,
@@ -990,11 +1008,12 @@
 					"../../../libs/freetype-2.6.2/mac/include/**",
 					"../../../libs/lua-zlib/mac/include",
 					"../../../libs/lua-5.3.2/src",
+					"../../../libs/lua-expat/",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					../../../libs/glfw/mac/libs,
 					"../../../libs/freetype-2.6.2/mac/libs",
-					"../../../libs/lua-zlib/mac/libs",
+					"../../../libs/lua-expat/mac/libs",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
@@ -1018,11 +1037,12 @@
 					"../../../libs/freetype-2.6.2/mac/include/**",
 					"../../../libs/lua-zlib/mac/include",
 					"../../../libs/lua-5.3.2/src",
+					"../../../libs/lua-expat/",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					../../../libs/glfw/mac/libs,
 					"../../../libs/freetype-2.6.2/mac/libs",
-					"../../../libs/lua-zlib/mac/libs",
+					"../../../libs/lua-expat/mac/libs",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;

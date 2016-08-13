@@ -206,6 +206,7 @@ local function bmfont_load_test()
 end
 
 local function bunny_test()
+	print("run bunny_test")
 	root:cleanup()
 
 	local label = sprite.new_bmfont_label("count: 0", "res/fonts/animated.txt")
@@ -243,6 +244,7 @@ local function bunny_test()
 end
 
 local function multi_texture_test()
+	print("run multi_texture_test")
 	root:cleanup()
 
 	local s1 = sprite.new("ui.png", "smile_middle.png")
@@ -256,6 +258,7 @@ end
 local naovg_draw
 
 local function nanovg_test()
+	print("run nanovg_test")
 	root:cleanup()
 
 	local nvg = require "nanovg_core"
