@@ -265,11 +265,9 @@ local tests = {
 }
 
 local function draw_gui()
-
-	print("call draw_gui")
 	nuklear.nuk_draw_start()
 
-	if(nuklear.nk_begin("Example", 
+	if(nuklear.nk_begin("Example",
 		{x = WINDOW_WIDTH - 200, y = 50, w = 200, h = WINDOW_HEIGHT - 200/2},
 			nuklear.NK_WINDOW_BORDER      |
 			nuklear.NK_WINDOW_MOVABLE     |

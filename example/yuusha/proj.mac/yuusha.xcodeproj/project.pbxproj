@@ -101,6 +101,7 @@
 		A6291AF81D2CB05600B39E63 /* lua_handler.c in Sources */ = {isa = PBXBuildFile; fileRef = A6291AF61D2CB05600B39E63 /* lua_handler.c */; };
 		A62EEF5B1D2507F70065378C /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = A62EEF591D2507F70065378C /* render.c */; };
 		A63B5C731D3872A50093359C /* bmfont.c in Sources */ = {isa = PBXBuildFile; fileRef = A63B5C711D3872A50093359C /* bmfont.c */; };
+		A63F5E501D5ECBB1004538D9 /* lnanovg.c in Sources */ = {isa = PBXBuildFile; fileRef = A63F5E4E1D5ECBB1004538D9 /* lnanovg.c */; };
 		A65E1FC81D16BC070039B22B /* nanovg.c in Sources */ = {isa = PBXBuildFile; fileRef = A65E1FC01D16BC070039B22B /* nanovg.c */; };
 		A695D3431CB2827900E4180B /* event.c in Sources */ = {isa = PBXBuildFile; fileRef = A695D3411CB2827900E4180B /* event.c */; };
 		A6A836801D4CBD6500A48B19 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A6A8367F1D4CBD6500A48B19 /* libz.tbd */; };
@@ -293,6 +294,7 @@
 		A62EEF5A1D2507F70065378C /* render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render.h; sourceTree = "<group>"; };
 		A63B5C711D3872A50093359C /* bmfont.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bmfont.c; sourceTree = "<group>"; };
 		A63B5C721D3872A50093359C /* bmfont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bmfont.h; sourceTree = "<group>"; };
+		A63F5E4E1D5ECBB1004538D9 /* lnanovg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lnanovg.c; sourceTree = "<group>"; };
 		A65E1FBA1D16BC070039B22B /* nanovg_gl2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanovg_gl2.h; sourceTree = "<group>"; };
 		A65E1FBB1D16BC070039B22B /* nanovg_gl3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanovg_gl3.h; sourceTree = "<group>"; };
 		A65E1FBF1D16BC070039B22B /* fontstash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fontstash.h; sourceTree = "<group>"; };
@@ -638,6 +640,7 @@
 				4D1CF58B1CB2C3AC00A1FFB9 /* ltexture.c */,
 				A611E7261CB662E0001C7E2C /* lplatform.c */,
 				B63A0F391D0B99F300CE6B7F /* lnuklear.c */,
+				A63F5E4E1D5ECBB1004538D9 /* lnanovg.c */,
 			);
 			path = binding;
 			sourceTree = "<group>";
@@ -834,6 +837,7 @@
 				4DDA8E441C4F5AE700ED5325 /* lstring.c in Sources */,
 				4DDA8E2C1C4F5AE700ED5325 /* lapi.c in Sources */,
 				4D25D8721C95C06000448F88 /* compat.c in Sources */,
+				A63F5E501D5ECBB1004538D9 /* lnanovg.c in Sources */,
 				4D1CF58D1CB2C3AC00A1FFB9 /* ltexture.c in Sources */,
 				4DDA8E431C4F5AE700ED5325 /* lstate.c in Sources */,
 				4D822B7E1C6F61670083122E /* main.c in Sources */,

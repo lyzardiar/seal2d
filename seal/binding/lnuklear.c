@@ -1,4 +1,5 @@
 #include "platform/platform.h"
+
 #include "lua.h"
 #include "lauxlib.h"
 
@@ -49,7 +50,7 @@ int lnuk_new_panel(lua_State* L) {
 }
 
 int lnuk_free_panel(lua_State* L) {
-    
+    return 0;
 }
 
 int lnuk_draw_start(lua_State* L) {
@@ -149,7 +150,7 @@ int luaopen_nuklear_core(lua_State* L) {
     return 1;
 }
 #else
-// make this compliable on mobile splatform
+// make this compliable on mobile platform
     int luaopen_nuklear_core(lua_State* L) {
         printf("nuklear not implemented on mobile platform.\n");
         return 0;
