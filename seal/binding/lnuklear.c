@@ -2,6 +2,7 @@
 
 #include "lua.h"
 #include "lauxlib.h"
+#include "memory.h"
 
 #include "lopen.h"
 #include "seal.h"
@@ -50,6 +51,8 @@ int lnuk_new_panel(lua_State* L) {
 }
 
 int lnuk_free_panel(lua_State* L) {
+    struct nk_panel* panel = lua_touserdata(L, 1);
+    s_free(panel);
     return 0;
 }
 
@@ -65,8 +68,9 @@ int lnuk_draw_end(lua_State* L) {
 
 int lnk_begin(lua_State* L) {
     const char* panel_title = luaL_checkstring(L, 1);
-    luaL_checktype(L, 2, LUA_TTABLE);
-    lua_pushvalue(L, 2);
+    struct nk_panel* panel = lua_touserdata(L, 2);
+    luaL_checktype(L, 3, LUA_TTABLE);
+    lua_pushvalue(L, 3);
     
     struct nk_rect rect = {
         getfield_i(L, "x"),
@@ -76,10 +80,9 @@ int lnk_begin(lua_State* L) {
     };
     
     lua_pop(L, 1);
-    uint32_t flags = luaL_checkinteger(L, 3);
+    uint32_t flags = luaL_checkinteger(L, 4);
 
-    static struct nk_panel panel;
-    bool ret = nk_begin(ctx, &panel, panel_title, rect, flags);
+    bool ret = nk_begin(ctx, panel, panel_title, rect, flags);
     lua_pushboolean(L, ret);
 
     return 1;
