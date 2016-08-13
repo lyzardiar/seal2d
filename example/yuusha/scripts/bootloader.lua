@@ -24,7 +24,6 @@ local function pmain()
 		assert(false, "other platform should write the load function.")
 	end
 
-
 	-- print("package.path = ", package.path)
 	-- require "luacov"
 	-- require "luacov.tick"
