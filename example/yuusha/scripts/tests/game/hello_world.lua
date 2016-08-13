@@ -253,6 +253,24 @@ local function multi_texture_test()
 	root:add_child(s2)
 end
 
+local naovg_draw
+
+local function nanovg_test()
+	root:cleanup()
+
+	local nvg = require "nanovg_core"
+	nanovg_draw = function()
+		nvg.begin_frame()
+		nvg.stroke_width(1.0)
+		nvg.stroke_color(255, 0, 0, 255)
+		nvg.begin_path()
+		nvg.move_to(100, 100)
+		nvg.line_to(100, 200)
+		nvg.stroke()
+		nvg.end_frame()
+	end
+end
+
 local tests = {
 	{name = "sprite srt test", create_func = sprite_srt_test },
 	{name = "sprite anchor test", create_func = sprite_anchor_test },
@@ -262,6 +280,7 @@ local tests = {
 	{name = "bmfont load test", create_func = bmfont_load_test},
 	{name = "bunny test", create_func = bunny_test},
 	{name = "multi texture test", create_func = multi_texture_test},
+	{name = "nanovg_test", create_func = nanovg_test },
 }
 
 local function draw_gui()
@@ -282,6 +301,9 @@ local function draw_gui()
 		for i = 1, #tests do
 			local t = tests[i]
 			if (nuklear.nk_button_label(t.name, nuklear.NK_BUTTON_DEFAULT)) then
+				if t.name ~= 'nanovg_test' then
+					nanovg_draw = nil
+				end
 				t.create_func()
 			end
 		end
@@ -296,6 +318,10 @@ function hello_world.draw()
 	local platform = require ("platform_core").get_platform()
 	if platform == 'mac' or platform == 'win' then
 		draw_gui()
+	end
+
+	if nanovg_draw then
+		nanovg_draw()
 	end
 end
 

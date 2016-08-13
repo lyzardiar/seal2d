@@ -31,6 +31,7 @@
 
 extern void luaopen_lua_extensions(lua_State *L);
 extern void nuk_init(void* winctx);
+extern void nanovg_init(int w, int h);
 
 #define TRACE_BACK_FUNC_INDEX 1
 #define UPDATE_FUNC_INDEX     2
@@ -194,6 +195,7 @@ void seal_init_graphics() {
     sprite_init_render(GAME->render);
 
     nuk_init(GAME->window->ctx);
+    nanovg_init(GAME->config.window_width, GAME->config.window_height);
     // init the font
     // TODO: implement this later
 //    ttf_init_module();
@@ -299,9 +301,9 @@ void seal_touch_event(struct touch_event* touch_event) {
 
 void seal_draw() {
     struct render* R = GAME->render;
-    render_clear(R, C4B_COLOR(0, 0, 255, 255));
-    
-    sprite_visit(GAME->root, GAME->global_dt);
+    render_clear(R, C4B_COLOR(127, 127, 127, 255));
+
+//    sprite_visit(GAME->root, GAME->global_dt);
 
     // call the injected draw function in Lua Layer.
     lua_State* L = GAME->lstate;

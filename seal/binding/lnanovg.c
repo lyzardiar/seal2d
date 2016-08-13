@@ -45,7 +45,7 @@ bind_func_implemention_f2(nvg_line_to, nvgLineTo, vg_ctx);
 bind_func_implemention_i1(nvg_line_cap, nvgLineCap, vg_ctx);
 bind_func_implemention_i1(nvg_line_join, nvgLineJoin, vg_ctx);
 bind_func_implemention_v(nvg_stroke, nvgStroke, vg_ctx);
-bind_func_implemention_f1(nvg_stoke_width, nvgStrokeWidth, vg_ctx);
+bind_func_implemention_f1(nvg_stroke_width, nvgStrokeWidth, vg_ctx);
 
 // state management
 bind_func_implemention_v(nvg_save, nvgSave, vg_ctx);
@@ -71,13 +71,13 @@ int luaopen_nanovg_core(lua_State* L)
         { "begin_frame", lnvg_begin_frame },
         { "end_frame",   lnvg_end_frame },
 
-        { "begin_path", lnvg_begin_path},
+        { "begin_path", lnvg_begin_path },
         { "move_to", lnvg_move_to },
         { "line_to", lnvg_line_to },
         { "line_cap", lnvg_line_cap },
         { "line_join" ,lnvg_line_join },
         { "stroke", lnvg_stroke },
-        { "stroke_width", lnvg_stoke_width },
+        { "stroke_width", lnvg_stroke_width },
         { "stroke_color", lnvg_stoke_color},
         { NULL, NULL },
     };

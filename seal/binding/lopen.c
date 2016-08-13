@@ -13,6 +13,7 @@ extern int luaopen_cjson(lua_State* L);
 extern int luaopen_zlib(lua_State* L);
 
 extern int luaopen_nuklear_core(lua_State* L);
+extern int luaopen_nanovg_core(lua_State* L);
 
 void stackDump (lua_State *L) {
     int i;
@@ -89,17 +90,18 @@ void luaopen_lua_extensions(lua_State *L)
 {
     // load extensions
     luaL_Reg lua_modules[] = {
-        {"engine_core", luaopen_seal_core},
-        {"platform_core", luaopen_seal_platform},
-        {"texure_core", luaopen_seal_texture},
-        {"sprite_core", luaopen_seal_sprite},
+        { "engine_core", luaopen_seal_core },
+        { "platform_core", luaopen_seal_platform },
+        { "texure_core", luaopen_seal_texture },
+        { "sprite_core", luaopen_seal_sprite },
         
-        {"socket.core", luaopen_socket_core},
-        {"mime.core", luaopen_mime_core},
-        {"cjson", luaopen_cjson},
-        {"zlib", luaopen_zlib},
+        { "socket.core", luaopen_socket_core },
+        { "mime.core", luaopen_mime_core },
+        { "cjson", luaopen_cjson },
+        { "zlib", luaopen_zlib },
 
-        {"nuklear_core", luaopen_nuklear_core},
+        { "nuklear_core", luaopen_nuklear_core },
+        { "nanovg_core", luaopen_nanovg_core },
 
         {NULL, NULL}
     };
