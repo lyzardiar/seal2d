@@ -9,7 +9,7 @@ function drum_meastro.draw()
 end
 
 function drum_meastro.entry()
-    score = require("tests.drum_play.score").new("res/scores/its_my_life.xml")
+    score = require("tests.drum_play.score").new("res/scores/its_my_life.json")
 
     root = sprite.new_container()
     root:set_pos(0, 0)
