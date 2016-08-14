@@ -47,8 +47,6 @@ function menu_panel.draw()
 		end
 	end
 
-
-
 	render:nk_end()
 end
 

@@ -1,4 +1,4 @@
-local consts = require "consts"
+local consts = require "seal.consts"
 local game = {}
 
 function game.load_shader(shader_index)
@@ -7,7 +7,9 @@ end
 
 local root
 function game.init()
-	root = require("tests.game.drum_meastro")
+	root = require ("tests.game.hello_world")
+	-- root = require("tests.game.drum_meastro")
+
 	return root.entry()
 end
 

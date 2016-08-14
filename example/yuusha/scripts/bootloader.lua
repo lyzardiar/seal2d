@@ -2,10 +2,10 @@ local function pmain()
 	local platform = require("platform_core")
 	local script_search_path = {
 		"scripts/?.lua",
-		"scripts/seal/?.lua",
-		"scripts/seal/thirdparty/socket/?.lua",
-		"scripts/seal/thirdparty/cov/?.lua;",
-		"scripts/seal/thirdparty/luaunit/?.lua;",
+		"seal/?.lua",
+		"thirdparty/socket/?.lua",
+		"thirdparty/cov/?.lua;",
+		"thirdparty/luaunit/?.lua;",
 		"res/?.lua",
 	}
 

@@ -13,6 +13,10 @@
 		4D1CF5891CB2B79E00A1FFB9 /* lsprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF5871CB2B79E00A1FFB9 /* lsprite.c */; };
 		4D1CF58D1CB2C3AC00A1FFB9 /* ltexture.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1CF58B1CB2C3AC00A1FFB9 /* ltexture.c */; };
 		4D1FECBE1D1850EF0077444D /* anim.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D1FECBC1D1850EF0077444D /* anim.c */; };
+		4D205D281D60CA7A00AD1E70 /* seal in Copy Files */ = {isa = PBXBuildFile; fileRef = 4D205D261D60CA6E00AD1E70 /* seal */; };
+		4D205D291D60CA7A00AD1E70 /* thirdparty in Copy Files */ = {isa = PBXBuildFile; fileRef = 4D205D271D60CA6E00AD1E70 /* thirdparty */; };
+		4D205D2A1D60CAFD00AD1E70 /* res in Copy Files */ = {isa = PBXBuildFile; fileRef = 4DA028881C5131C80070AE6B /* res */; };
+		4D205D2B1D60CAFD00AD1E70 /* scripts in Copy Files */ = {isa = PBXBuildFile; fileRef = 4DA028891C5131C80070AE6B /* scripts */; };
 		4D25D86E1C95C06000448F88 /* auxiliar.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D8401C95C06000448F88 /* auxiliar.c */; };
 		4D25D8701C95C06000448F88 /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D8421C95C06000448F88 /* buffer.c */; };
 		4D25D8721C95C06000448F88 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D8441C95C06000448F88 /* compat.c */; };
@@ -115,14 +119,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4DF5F5BC1C4C8CFC0080A8EB /* CopyFiles */ = {
+		4DF5F5BC1C4C8CFC0080A8EB /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = .;
+			dstSubfolderSpec = 16;
 			files = (
+				4D205D2A1D60CAFD00AD1E70 /* res in Copy Files */,
+				4D205D2B1D60CAFD00AD1E70 /* scripts in Copy Files */,
+				4D205D281D60CA7A00AD1E70 /* seal in Copy Files */,
+				4D205D291D60CA7A00AD1E70 /* thirdparty in Copy Files */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -137,6 +146,8 @@
 		4D1CF58B1CB2C3AC00A1FFB9 /* ltexture.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ltexture.c; sourceTree = "<group>"; };
 		4D1FECBC1D1850EF0077444D /* anim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = anim.c; sourceTree = "<group>"; };
 		4D1FECBD1D1850EF0077444D /* anim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = anim.h; sourceTree = "<group>"; };
+		4D205D261D60CA6E00AD1E70 /* seal */ = {isa = PBXFileReference; lastKnownFileType = folder; name = seal; path = ../../../luasrc/seal; sourceTree = "<group>"; };
+		4D205D271D60CA6E00AD1E70 /* thirdparty */ = {isa = PBXFileReference; lastKnownFileType = folder; name = thirdparty; path = ../../../luasrc/thirdparty; sourceTree = "<group>"; };
 		4D25D8401C95C06000448F88 /* auxiliar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = auxiliar.c; sourceTree = "<group>"; };
 		4D25D8411C95C06000448F88 /* auxiliar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = auxiliar.h; sourceTree = "<group>"; };
 		4D25D8421C95C06000448F88 /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = buffer.c; sourceTree = "<group>"; };
@@ -349,6 +360,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D205D251D60CA1C00AD1E70 /* luasrc */ = {
+			isa = PBXGroup;
+			children = (
+				4D205D261D60CA6E00AD1E70 /* seal */,
+				4D205D271D60CA6E00AD1E70 /* thirdparty */,
+			);
+			name = luasrc;
+			sourceTree = "<group>";
+		};
 		4D25D83C1C95C01C00448F88 /* freetype */ = {
 			isa = PBXGroup;
 			children = (
@@ -671,6 +691,7 @@
 			children = (
 				4D46EDDE1C8F149E0081A1DC /* libs */,
 				4DE642B51C5B3BCA003EBBC0 /* seal */,
+				4D205D251D60CA1C00AD1E70 /* luasrc */,
 				4D822B7C1C6F61670083122E /* native */,
 				4DA700531C4E852E0007549F /* Resources */,
 				4DDF63961C4E0585008A44CE /* Frameworks */,
@@ -773,7 +794,7 @@
 			buildPhases = (
 				4DF5F5BB1C4C8CFC0080A8EB /* Frameworks */,
 				4DF5F5BA1C4C8CFC0080A8EB /* Sources */,
-				4DF5F5BC1C4C8CFC0080A8EB /* CopyFiles */,
+				4DF5F5BC1C4C8CFC0080A8EB /* Copy Files */,
 			);
 			buildRules = (
 			);

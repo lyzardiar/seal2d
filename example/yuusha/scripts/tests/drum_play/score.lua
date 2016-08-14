@@ -30,7 +30,7 @@ local function draw_measure(self, measure)
         measure_cursor_y = measure_cursor_y + distance
 
         -- here we go draw the print
-        print("page_width, distance = ", page_width, distance)
+        -- print("page_width, distance = ", page_width, distance)
     end
 
     local element_draw_func = {

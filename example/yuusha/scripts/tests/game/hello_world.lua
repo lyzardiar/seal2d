@@ -4,10 +4,13 @@ local timer = require "seal.timer"
 local game = require "game"
 local util = require "util"
 local consts = require "consts"
+local nuklear = require "nuklear_core"
+local nuk_node = require "nuk_node"
 
 local hello_world = {}
 
 local root
+local menu
 
 local function load_sprite(texture, data, x, y)
 	local s = sprite.new(texture, data.frame)
@@ -288,21 +291,21 @@ local tests = {
 local function draw_gui()
 	nuklear.nuk_draw_start()
 
-	if(nuklear.nk_begin("Example",
+	if(menu:nk_begin("tests",
 		{x = WINDOW_WIDTH - 200, y = 50, w = 200, h = WINDOW_HEIGHT - 200/2},
-			nuklear.NK_WINDOW_BORDER      |
-			nuklear.NK_WINDOW_MOVABLE     |
-			nuklear.NK_WINDOW_SCALABLE    |
-			nuklear.NK_WINDOW_MINIMIZABLE |
-			nuklear.NK_WINDOW_TITLE
+			nuk_node.NK_WINDOW_BORDER      |
+			nuk_node.NK_WINDOW_MOVABLE     |
+			nuk_node.NK_WINDOW_SCALABLE    |
+			nuk_node.NK_WINDOW_MINIMIZABLE |
+			nuk_node.NK_WINDOW_TITLE
 		)) then
 
 		-- the layout size should never be larger than the panel size.....
-		nuklear.nk_layout_row_static(30, 150, 1)
+		menu.nk_layout_row_static(30, 150, 1)
 
 		for i = 1, #tests do
 			local t = tests[i]
-			if (nuklear.nk_button_label(t.name, nuklear.NK_BUTTON_DEFAULT)) then
+			if (menu.nk_button_label(t.name, menu.NK_BUTTON_DEFAULT)) then
 				if t.name ~= 'nanovg_test' then
 					nanovg_draw = nil
 				end
@@ -310,7 +313,7 @@ local function draw_gui()
 			end
 		end
 	end
-	nuklear.nk_end()
+	menu.nk_end()
 
 	nuklear.nuk_draw_end()
 end
@@ -334,6 +337,8 @@ function hello_world.entry()
 	-- root = sprite.new("ui.png", "smile_middle.png")
 	root = sprite.new_container()
 	root:set_pos(0, 0)
+
+	menu = nuk_node.new()
 
 	return root.__cobj
 end
