@@ -103,4 +103,13 @@ function util.printf(...)
 	print(string.format(...))
 end
 
+function util.tobytes(s)
+    local t = {}
+    local tinsert = table.insert
+    for i = 1, #s do
+        tinsert(t, string.byte(s, i))
+    end
+    return table.concat(t, " ")
+end
+
 return util
