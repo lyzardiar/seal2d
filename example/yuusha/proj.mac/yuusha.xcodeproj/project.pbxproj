@@ -39,6 +39,7 @@
 		4D77985C1C6F0B5100021ED6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D77985B1C6F0B5100021ED6 /* OpenGL.framework */; };
 		4D7798661C6F0EC800021ED6 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D7798641C6F0EC800021ED6 /* sprite.c */; };
 		4D77986E1C6F229700021ED6 /* shader.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D77986C1C6F229700021ED6 /* shader.c */; };
+		4D8007001D6B45BB00C6C919 /* laction.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D8006FF1D6B45BB00C6C919 /* laction.c */; };
 		4D822B781C6F5CE60083122E /* memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D822B761C6F5CE60083122E /* memory.c */; };
 		4D822B7E1C6F61670083122E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D822B7D1C6F61670083122E /* main.c */; };
 		4D822B8A1C6F62490083122E /* fs.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D822B861C6F62490083122E /* fs.m */; };
@@ -194,6 +195,7 @@
 		4D7798651C6F0EC800021ED6 /* sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprite.h; sourceTree = "<group>"; };
 		4D77986C1C6F229700021ED6 /* shader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shader.c; sourceTree = "<group>"; };
 		4D77986D1C6F229700021ED6 /* shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader.h; sourceTree = "<group>"; };
+		4D8006FF1D6B45BB00C6C919 /* laction.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = laction.c; sourceTree = "<group>"; };
 		4D822B761C6F5CE60083122E /* memory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memory.c; sourceTree = "<group>"; };
 		4D822B771C6F5CE60083122E /* memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memory.h; sourceTree = "<group>"; };
 		4D822B7B1C6F5DCE0083122E /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
@@ -676,6 +678,7 @@
 				A611E7261CB662E0001C7E2C /* lplatform.c */,
 				B63A0F391D0B99F300CE6B7F /* lnuklear.c */,
 				A63F5E4E1D5ECBB1004538D9 /* lnanovg.c */,
+				4D8006FF1D6B45BB00C6C919 /* laction.c */,
 			);
 			path = binding;
 			sourceTree = "<group>";
@@ -879,6 +882,7 @@
 				4DDA8E481C4F5AE700ED5325 /* ltm.c in Sources */,
 				4DDA8E331C4F5AE700ED5325 /* ldblib.c in Sources */,
 				4DDA8E2F1C4F5AE700ED5325 /* lbitlib.c in Sources */,
+				4D8007001D6B45BB00C6C919 /* laction.c in Sources */,
 				4DE47B451C7ACBA5001D2F8C /* array.c in Sources */,
 				4D1FECBE1D1850EF0077444D /* anim.c in Sources */,
 				4D25D88E1C95C06000448F88 /* usocket.c in Sources */,
