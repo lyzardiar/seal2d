@@ -10,186 +10,28 @@
 #include "render.h"
 #include "shader.h"
 #include "camera.h"
-
-EXTERN_GAME;
-
-#define VERTEX_PER_OBJECT (4)
-static void sprite_render_batch_reset(struct render_batch* self) {
-    self->offset = 0;
-    self->tex_id = 0;
-    self->n_objects = 0;
-}
-
-static void sprite_render_func_init(struct render* R) {
-    struct sprite_render_context* context = STRUCT_NEW(sprite_render_context);
-    struct vertex_buffer* buffer = STRUCT_NEW(vertex_buffer);
-    
-    // init the vao
-    glGenVertexArrays(1, &buffer->vao);
-    glBindVertexArray(buffer->vao);
-
-    // init the vbo
-    glGenBuffers(1, &buffer->vbo);
-    glGenBuffers(1, &buffer->vibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->vibo);
-    
-    GLushort* idata = s_malloc(MAX_OBJECTS * 6 * sizeof(GLushort));
-    //   tl(1) ------ (0) tr
-    //      |         |
-    //      |         |
-    //      |         |
-    //      |         |
-    //   bl(2) -------(3) br
-    for (int i = 0, j = 0; i < MAX_OBJECTS*6; i+=6, j+=4) {
-        idata[i+0] = j+1;
-        idata[i+1] = j+0;
-        idata[i+2] = j+3;
-        idata[i+3] = j+1;
-        idata[i+4] = j+3;
-        idata[i+5] = j+2;
-    }
-    
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort)*MAX_OBJECTS*6, idata, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    buffer->idata = idata;
-    buffer->data = s_malloc(VERTEX_SIZE * MAX_OBJECTS * VERTEX_PER_OBJECT);
-    buffer->offset = 0;
-
-    context->state.tex_id = 0;
-    context->buffer = buffer;
-    memset(context->batches, 0, MAX_RENDER_BATCH*sizeof(struct render_batch));
-    context->n_objects = 0;
-    context->current_batch_index = 0;
-    
-    render_set_context(R, context);
-
-    CHECK_GL_ERROR;
-}
-
-void sprite_render_func_flush(struct render* R) {
-    struct sprite_render_context* context = (R->context);
-    
-    glBindVertexArray(context->buffer->vao);
-
-    glBindBuffer(GL_ARRAY_BUFFER, context->buffer->vbo);
-    glBufferData(GL_ARRAY_BUFFER, VERTEX_SIZE*context->n_objects * 4, context->buffer->data, GL_DYNAMIC_DRAW);
-
-    GLuint loc_pos = context->state.loc.position;
-    GLuint loc_color = context->state.loc.color;
-    GLuint loc_uv = context->state.loc.uv;
-    glEnableVertexAttribArray(loc_pos);
-    glEnableVertexAttribArray(loc_color);
-    glEnableVertexAttribArray(loc_uv);
-    glVertexAttribPointer(loc_pos, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_POS);
-    glVertexAttribPointer(loc_color, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
-    glVertexAttribPointer(loc_uv, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context->buffer->vibo);
-    int n = context->current_batch_index;
-    for (int i = 0; i < n; ++i) {
-        struct render_batch* b = context->batches + i;
-        glBindTexture(GL_TEXTURE_2D, b->tex_id);
-        glDrawElements(GL_TRIANGLES, b->n_objects*6, GL_UNSIGNED_SHORT, 0);
-        
-        sprite_render_batch_reset(b);
-        R->drawcall++;
-    }
-    
-    context->current_batch_index = 0;
-    context->n_objects = 0;
-    context->buffer->offset = 0;
-}
-
-void sprite_render_func_start(struct render* R) {
-    GLuint prog = shader_get_program(R->shader, SHADER_COLOR);
-    glUseProgram(prog);
-    struct sprite_render_context* context = R->context;
-    context->state.program = prog;
-
-    context->state.loc.position = glGetAttribLocation(context->state.program, "vertex_pos" );
-    context->state.loc.color = glGetAttribLocation(context->state.program, "vertex_color" );
-    context->state.loc.uv = glGetAttribLocation(context->state.program, "vertex_uv" );
-
-    glActiveTexture(GL_TEXTURE0);
-    GLint texture_location = glGetUniformLocation(prog, "texture_0");
-    glUniform1i(texture_location, 0);
-
-    GLint projection = glGetUniformLocation(prog, "mvp");
-    glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
-    CHECK_GL_ERROR;
-}
-
-/*-------------------- sprite_render --------------------*/
-void sprite_render_func_draw(struct render* R, void* object) {
-    struct sprite* sprite = (struct sprite*)object;
-    
-    struct sprite_render_context* context = (R->context);
-    if (context->n_objects+1 > MAX_OBJECTS) {
-        sprite_render_func_flush(R);
-        return;
-    }
-    
-    struct vertex_buffer* buffer = context->buffer;
-    int offset = buffer->offset;
-    struct vertex* data = buffer->data + offset;
-    struct glyph* glyph = &sprite->glyph;
-    data[0] = glyph->tr;
-    data[1] = glyph->tl;
-    data[2] = glyph->bl;
-    data[3] = glyph->br;
-    
-    int new_tex_id = sprite->frame->tex_id;
-    
-    int n = context->current_batch_index;
-    
-    struct render_batch* batch = context->batches + n;
-    
-    if (new_tex_id == batch->tex_id) {
-        batch->offset += VERTEX_PER_OBJECT;
-        batch->n_objects++;
-    } else {
-        batch->offset = offset;
-        batch->n_objects = 1;
-        batch->tex_id = new_tex_id;
-        context->current_batch_index++;
-    }
-    
-    // save the last tex_id
-    context->state.tex_id = sprite->frame->tex_id;
-    context->n_objects++;
-    
-    buffer->offset = offset;
-}
-
-void sprite_render_func_end(struct render* R) {
-    // dummy
-}
-
 /*-------------------- render --------------------*/
 
 #define RENDER_INVALID (-1)
+
+extern void sprite_render_func_init(struct render* R);
+
 struct render* render_new() {
     struct render* r = STRUCT_NEW(render);
     r->last = r->current = RENDER_INVALID;
-    r->context = NULL;
-    
-    r->R_objs[SPRITE_RENDER].type = SPRITE_RENDER;
-    r->R_objs[SPRITE_RENDER].render_func.init = sprite_render_func_init;
-    r->R_objs[SPRITE_RENDER].render_func.start = sprite_render_func_start;
-    r->R_objs[SPRITE_RENDER].render_func.draw = sprite_render_func_draw;
-    r->R_objs[SPRITE_RENDER].render_func.end = sprite_render_func_end;
-    r->R_objs[SPRITE_RENDER].render_func.flush = sprite_render_func_flush;
-    
-    // TODO: move to render switch to do lazy init.
+
     sprite_render_func_init(r);
     
     r->shader = shader_new();
     return r;
 }
 
-void render_set_context(struct render* self, void* context) {
-    self->context = context;
+void render_set_context(struct render* self, enum RENDER_TYPE render_object_type, void* context) {
+    self->R_objs[render_object_type].context = context;
+}
+
+void* render_get_context(struct render* self, enum RENDER_TYPE render_object_type) {
+    return self->R_objs[render_object_type].context;
 }
 
 void render_free(struct render* self) {

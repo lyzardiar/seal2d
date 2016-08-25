@@ -30,6 +30,7 @@ struct render_object {
     enum RENDER_TYPE type;
     
     struct render_func render_func;
+    void* context;
 };
 
 struct render {
@@ -40,7 +41,6 @@ struct render {
     int current; // current render type.
     
     int drawcall;
-    void* context;
 };
 
 struct vertex_buffer {
@@ -71,23 +71,12 @@ struct render_batch {
     GLint tex_id;
 };
 
-struct sprite_render_context {
-    struct vertex_buffer* buffer;
-    struct render_batch batches[MAX_RENDER_BATCH];
-    struct render_state state;
-    
-    int current_batch_index;
-    int n_objects;
-};
-
 struct render* render_new();
 void render_free(struct render* self);
 void render_clear(struct render* self, color c);
 
-void render_set_context(struct render* self, void* context);
+void render_set_context(struct render* self, enum RENDER_TYPE render_object_type, void* context);
+void* render_get_context(struct render* self, enum RENDER_TYPE render_object_type);
 void render_switch(struct render* self, enum RENDER_TYPE type);
-
-void sprite_render_func_draw(struct render* R, void* object);
-void sprite_render_func_flush(struct render* R);
 
 #endif
