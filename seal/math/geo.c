@@ -25,7 +25,7 @@ void color_c4f(unsigned long color, float* r, float* g, float* b, float* a) {
 }
 
 void vertex_tostring(char* buff, struct vertex* vertex) {
-    snprintf(buff, 1024, "vertex (%p) { position = {%.2f, %.2f}, color = {%.2f, %.2f, %.2f, %.2f} }",
+    snprintf(buff, 1024, "vertex (%p) { position = {%.2f, %.2f}, color = {%d, %d, %d, %d} }",
                 vertex,
                 vertex->position[0], vertex->position[1],
                 vertex->color[0], vertex->color[1], vertex->color[2], vertex->color[3] );

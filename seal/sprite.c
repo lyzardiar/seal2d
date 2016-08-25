@@ -140,6 +140,7 @@ void sprite_init(struct sprite* self, float width, float height) {
     self->text = NULL;
     self->swallow = true;
     self->color = C4B_COLOR(255, 255, 255, 255);
+    self->primitive_vertex = NULL;
     
     self->children = array_new(16);
     
@@ -238,6 +239,26 @@ struct sprite* sprite_new_clip(struct rect* r) {
     
     s->x = r->x;
     s->y = r->y;
+    return s;
+}
+
+struct sprite* sprite_new_line(float* vertex, int width, color line_color) {
+    struct sprite* s = STRUCT_NEW(sprite);
+
+    struct rect r = {
+        .x = 0,
+        .y = 0,
+        .width = vertex[2] - vertex[0],
+        .height = width,
+    };
+    s->type = SPRITE_TYPE_PRIMITVE;
+    sprite_init(s, r.width, r.height);
+    sprite_set_glyph(s, &r, NULL, 0);
+    sprite_set_color(s, line_color);
+
+    s->primitive_vertex = s_malloc(sizeof(float) * 4);
+    memcpy(s->primitive_vertex, vertex, sizeof(float)*4);
+
     return s;
 }
 
@@ -489,6 +510,9 @@ void sprite_visit(struct sprite* self, float dt) {
         case SPRITE_TYPE_PIC:
             sprite_draw_pic(self);
             break;
+        case SPRITE_TYPE_PRIMITVE:
+            sprite_draw_primitive(self);
+            break;
         case SPRITE_TYPE_CONTAINER:
             // do nothing.
             break;
@@ -523,10 +547,15 @@ void sprite_visit(struct sprite* self, float dt) {
     }
 }
 
+void sprite_draw_primitive(struct sprite* self) {
+
+}
+
 void sprite_draw_pic(struct sprite* self) {
     render_switch(R, SPRITE_RENDER);
     sprite_render_func_draw(R, self);
 }
+
 
 void sprite_draw_label(struct sprite* self) {
 

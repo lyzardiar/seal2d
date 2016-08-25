@@ -139,6 +139,16 @@ local function sprite_clip_test()
 	root:add_child(clip)
 end
 
+local function sprite_primitive_test()
+	root:cleanup()
+
+	local line = sprite.new_primitive("L", {	vertex = {0, 20, 100, 20},
+												width = 2.0,
+												color = {255, 0, 0, 255}
+												} )
+	root:add_child(line)
+end
+
 local function sprite_event_test()
 	print("run sprite_clip_test")
 	root:cleanup()
@@ -281,6 +291,7 @@ local tests = {
 	{name = "sprite anchor test", create_func = sprite_anchor_test },
 	{name = "sprite animation test", create_func = sprite_animation_test},
 	{name = "sprite clip test", create_func = sprite_clip_test},
+	{name = "sprite primitive test", create_func = sprite_primitive_test },
 	{name = "sprite touch test", create_func = sprite_event_test},
 	{name = "bmfont load test", create_func = bmfont_load_test},
 	{name = "bunny test", create_func = bunny_test},

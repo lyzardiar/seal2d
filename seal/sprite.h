@@ -20,17 +20,22 @@ enum sprite_type {
     // single sprite
     SPRITE_TYPE_PIC = 0,
     SPRITE_TYPE_TTF_LABEL,
-    SPRITE_TYPE_PARTICLE,
-    SPRITE_TYPE_VECTOR, // contains line, rect, polygon
-    
+    SPRITE_TYPE_PRIMITVE, // contains line, rect, polygon, bezier line
+
     // muti sprite
     SPRITE_TYPE_BMFONT_LABEL,
     SPRITE_TYPE_MESH,
     SPRITE_TYPE_TILE_MAP,
-    
+    SPRITE_TYPE_PARTICLE,
+
     // sprite container
     SPRITE_TYPE_CLIP,
     SPRITE_TYPE_CONTAINER,
+};
+
+enum sprite_primitive_type {
+    SPRITE_PRIMITIVE_NONE = 0,
+    SPRITE_PRIMITIVE_LINE = 1,
 };
 
 struct sprite_frame {
@@ -39,14 +44,14 @@ struct sprite_frame {
     struct size source_size;
 
     GLuint tex_id;
-    
+
     bool rotated;
     bool trimmed;
-    
+
     struct uv uv;
-    
+
     char* key;
-    
+
     // internal flag,
     bool __initialized;  // we have different procedure to init a sprite frame, so we have this flag
                          // to make life easier by not involving to many type of init functions.
@@ -72,13 +77,14 @@ struct sprite {
     // basic info
     unsigned int __id;
     enum sprite_type type;
-    
+    enum sprite_primitive_type primitive_type;
+
     // scene graph
     int zorder;
     struct sprite* parent;
     struct array* children; // NULL indicates the children has been removed.
     size_t child_index;
-    
+
     // geometry
     float x, y;
     float scale_x, scale_y;
@@ -88,17 +94,20 @@ struct sprite {
     struct affine local_srt;
     struct affine world_srt;
     unsigned int dirty;
-    
+
     // advanced
     color color;
     struct sprite_frame* frame;
     struct glyph glyph; // glphy information for rect sprites, this may waste some bytes.
     struct anim* anim; // for sprite's anim.
-    
+
+    // for primitive
+    float* primitive_vertex;
+
     // for sprite bmfont.
     struct bmfont* bmfont;
     char* text;
-    
+
     bool swallow;
 };
 
@@ -109,13 +118,16 @@ struct sprite* sprite_new_label(const char* label);
 struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path);
 struct sprite* sprite_new_container(struct rect* r);
 struct sprite* sprite_new_clip(struct rect* r);
-struct sprite* sprite_new_line(float* points);
+struct sprite* sprite_new_line(float* vertex, int width, color line_color);
 
 void sprite_free(struct sprite* self);
 
 void sprite_touch(struct sprite* self, struct touch_event* touch_event);
 void sprite_visit(struct sprite* self, float dt);
 bool sprite_contains(struct sprite* self, float x, float y);
+
+
+void sprite_draw_primitive(struct sprite* self);
 
 void sprite_draw_pic(struct sprite* self);
 void sprite_draw_label(struct sprite* self);

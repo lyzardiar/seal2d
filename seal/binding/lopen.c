@@ -87,6 +87,16 @@ const char* getfiled_s(lua_State* L, const char* key) {
     return value;
 }
 
+void getarray_f(lua_State* L, const char* key, float* f_array, int cnt) {
+    lua_pushstring(L, "vertex");
+    lua_gettable(L, 2);
+    for (int i = 1; i < cnt; ++i) {
+        f_array[i] = lua_rawgeti(L, -1, i);
+        lua_pop(L, 1);
+    }
+    lua_pop(L, 1);
+}
+
 void luaopen_lua_extensions(lua_State *L)
 {
     // load extensions

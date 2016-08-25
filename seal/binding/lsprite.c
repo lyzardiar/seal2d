@@ -22,48 +22,48 @@ int lsprite_frame_cache_get(lua_State* L) {
 int lsprite_load_spriteframe(lua_State* L) {
     luaL_checktype(L, 1, LUA_TTABLE);
     luaL_checktype(L, 2, LUA_TTABLE);
-    
+
     const char* key = luaL_checkstring(L, 3);
     struct sprite_frame* frame = sprite_frame_cache_get(GAME->sprite_frame_cache, key);
     if (!frame->__initialized) {
         frame->rotated = (int)getfield_i(L, "rotated");
         frame->trimmed = (int)getfield_i(L, "trimmed");
-        
+
         lua_pushstring(L, "frame");
         lua_gettable(L, 1);
-        
+
         struct rect* frame_rect = &frame->frame_rect;
         frame_rect->x = (int)getfield_i(L, "x");
         frame_rect->y = (int)getfield_i(L, "y");
         frame_rect->width = (int)getfield_i(L, "w");
         frame_rect->height = (int)getfield_i(L, "h");
         lua_pop(L, 1);
-        
+
         lua_pushstring(L, "spriteSourceSize");
         lua_gettable(L, 1);
-        
+
         struct rect* source_rect = &frame->source_rect;
         source_rect->x = (int)getfield_i(L, "x");
         source_rect->y = (int)getfield_i(L, "y");
         source_rect->width = (int)getfield_i(L, "w");
         source_rect->height = (int)getfield_i(L, "h");
         lua_pop(L, 1);
-        
+
         lua_pushstring(L, "sourceSize");
         lua_gettable(L, 1);
-        
+
         struct size* size = &frame->source_size;
         size->width = (int)getfield_i(L, "w");
         size->height = (int)getfield_i(L, "h");
         lua_pop(L, 1);
-        
+
         // read the info in the meta
         lua_pushstring(L, "size");
         lua_gettable(L, 2);
-        
+
         float texture_width = getfield_f(L, "w");
         float texture_height = getfield_f(L, "h");
-        
+
         sprite_frame_init_uv(frame, texture_width, texture_height);
     }
 
@@ -120,7 +120,7 @@ static void check_rect(lua_State* L, struct rect* r) {
         width = GAME->config.window_width;
         height = GAME->config.window_height;
     }
-    
+
     r->x = x;
     r->y = y;
     r->width = width;
@@ -130,16 +130,60 @@ static void check_rect(lua_State* L, struct rect* r) {
 int lsprite_new_container(lua_State* L) {
     struct rect r;
     check_rect(L, &r);
-    
+
     struct sprite* s = sprite_new_container(&r);
     lua_pushlightuserdata(L, s);
     return 1;
 }
 
+static int new_line(lua_State* L) {
+
+    float vertex[4];
+
+    lua_pushstring(L, "vertex");
+    lua_gettable(L, 2);
+    for (int i = 1; i < 5; ++i) {
+        vertex[i] = lua_rawgeti(L, -1, i);
+        lua_pop(L, 1);
+    }
+
+    int width = lua_tonumber(L, 3);
+    stackDump(L);
+
+    int color[4];
+    lua_gettable(L, 3);
+    lua_pushstring(L, "color");
+
+    for (int i = 0; i < 4; ++i) {
+        color[i] = lua_rawgeti(L, -1, i);
+        lua_pop(L, 1);
+    }
+
+    struct sprite* line = sprite_new_line(vertex, width, C4B_COLOR(color[0], color[1], color[2], color[3]));
+    lua_pushlightuserdata(L, line);
+    return 1;
+}
+
+int lsprite_new_primitive(lua_State* L) {
+    char type = lua_tostring(L, 1)[0];
+
+    int ret = 0;
+    switch (type) {
+        case 'L':
+            ret = new_line(L);
+            break;
+
+        default:
+            break;
+    }
+
+    return ret;
+}
+
 int lsprite_new_clip(lua_State* L) {
     struct rect r;
     check_rect(L, &r);
-    
+
     struct sprite* s = sprite_new_clip(&r);
     lua_pushlightuserdata(L, s);
     return 1;
@@ -168,7 +212,7 @@ int lsprite_set_size(lua_State* L) {
 int lsprite_register_handler(lua_State* L) {
     struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
     lua_handler_set_func(GAME->lua_handler, L, self, 2);
-    
+
     return 0;
 }
 
@@ -181,7 +225,7 @@ int lsprite_clean_handler(lua_State* L) {
 int lsprite_set_anim(lua_State* L) {
     struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
     luaL_checktype(L, 2, LUA_TTABLE);
-    
+
     int len = luaL_len(L, 2);
     struct array* frames = array_new(len);
     for (int i = 1; i <= len; ++i) {
@@ -190,10 +234,10 @@ int lsprite_set_anim(lua_State* L) {
         array_push_back(frames, frame);
         lua_pop(L, 1);
     }
-    
+
     struct anim* anim = anim_new(frames);
     sprite_set_anim(self, anim);
-    
+
     array_free(frames);
     return 0;
 }
@@ -262,13 +306,13 @@ int lsprite_get_size(lua_State* L) {
 int lsprite_add_child(lua_State* L) {
     luaL_argcheck(L, lua_isuserdata(L, 1), 1, "sprite expected for arg 1");
     luaL_checktype(L, 2, LUA_TTABLE);
-    
+
     lua_getfield(L, 2, "__cobj");
     struct sprite* child = lua_touserdata(L, -1);
-    
+
     struct sprite* self = lua_touserdata(L, 1);
     sprite_add_child(self, child);
-    
+
     return 0;
 }
 
@@ -278,22 +322,23 @@ int lsprite_remove_all_child(lua_State* L) {
 }
 
 int luaopen_seal_sprite(lua_State* L) {
-    
+
 #ifdef luaL_checkversion
     luaL_checkversion(L);
 #endif
     luaL_Reg lib[] = {
-        
+
         { "get_frame_from_cache", lsprite_frame_cache_get},
-        
+
         { "load_sprite_frame", lsprite_load_spriteframe },
         { "unload_sprite_frame", lsprite_unload_spriteframe },
         { "set_frame_texture_id", lsprite_set_texture_id},
-        
+
         { "new", lsprite_new },
         { "new_label", lsprite_new_label },
         { "new_bmfont_label", lsprite_new_bmfont_label },
         { "new_container", lsprite_new_container },
+        { "new_primitive", lsprite_new_primitive },
         { "new_clip", lsprite_new_clip },
         { "free", lsprite_free },
         { "set_text", lsprite_set_text },
@@ -313,8 +358,8 @@ int luaopen_seal_sprite(lua_State* L) {
         { "remove_all_child", lsprite_remove_all_child},
         { NULL, NULL },
     };
-    
+
     luaL_newlib(L, lib);
-    
+
     return 1;
 }
