@@ -141,6 +141,7 @@ void sprite_init(struct sprite* self, float width, float height) {
     self->swallow = true;
     self->color = C4B_COLOR(255, 255, 255, 255);
     self->primitive_vertex = NULL;
+    self->line_width = 0;
     
     self->children = array_new(16);
     
@@ -242,15 +243,14 @@ struct sprite* sprite_new_clip(struct rect* r) {
     return s;
 }
 
+// vertex: float[4], start point:(v[0], v[1]), end point: (v[1], v[2])
 struct sprite* sprite_new_line(float* vertex, int width, color line_color) {
     struct sprite* s = STRUCT_NEW(sprite);
 
     struct rect r = {
-        .x = 0,
-        .y = 0,
-        .width = vertex[2] - vertex[0],
-        .height = width,
+        0, 0, vertex[2] - vertex[0], width
     };
+
     s->type = SPRITE_TYPE_PRIMITVE;
     sprite_init(s, r.width, r.height);
     sprite_set_glyph(s, &r, NULL, 0);
@@ -258,6 +258,8 @@ struct sprite* sprite_new_line(float* vertex, int width, color line_color) {
 
     s->primitive_vertex = s_malloc(sizeof(float) * 4);
     memcpy(s->primitive_vertex, vertex, sizeof(float)*4);
+
+    s->line_width = width;
 
     return s;
 }

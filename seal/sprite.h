@@ -103,6 +103,7 @@ struct sprite {
 
     // for primitive
     float* primitive_vertex;
+    int line_width;
 
     // for sprite bmfont.
     struct bmfont* bmfont;

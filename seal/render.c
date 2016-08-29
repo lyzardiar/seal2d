@@ -67,3 +67,8 @@ void render_switch(struct render* self, enum RENDER_TYPE type) {
     self->current = type;
     self->last = self->current;
 }
+
+void render_set_mvp(GLuint program, float* mat) {
+    GLint projection = glGetUniformLocation(program, "mvp");
+    glUniformMatrix4fv(projection, 1, GL_FALSE, mat);
+}

@@ -66,8 +66,7 @@ void sprite_render_func_start(struct render* R) {
     GLint texture_location = glGetUniformLocation(prog, "texture_0");
     glUniform1i(texture_location, 0);
 
-    GLint projection = glGetUniformLocation(prog, "mvp");
-    glUniformMatrix4fv(projection, 1, GL_FALSE, GAME->global_camera->camer_mat->m);
+    render_set_mvp(prog, GAME->global_camera->camer_mat->m);
     CHECK_GL_ERROR;
 }
 
@@ -78,7 +77,6 @@ void sprite_render_func_draw(struct render* R, void* object) {
     struct sprite_render_context* context = render_get_context(R, SPRITE_RENDER);
     if (context->n_objects+1 > MAX_OBJECTS) {
         sprite_render_func_flush(R);
-        return;
     }
 
     struct vertex_buffer* buffer = context->buffer;
@@ -121,7 +119,6 @@ void sprite_render_func_init(struct render* R) {
     R->R_objs[SPRITE_RENDER].type = SPRITE_RENDER;
     R->R_objs[SPRITE_RENDER].render_func.init = sprite_render_func_init;
     R->R_objs[SPRITE_RENDER].render_func.start = sprite_render_func_start;
-    R->R_objs[SPRITE_RENDER].render_func.draw = sprite_render_func_draw;
     R->R_objs[SPRITE_RENDER].render_func.end = sprite_render_func_end;
     R->R_objs[SPRITE_RENDER].render_func.flush = sprite_render_func_flush;
 

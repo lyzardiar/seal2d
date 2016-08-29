@@ -12,7 +12,8 @@
 
 
 #ifdef PLAT_DESKTOP
-static const char* vs_color = STRINGFY(#version 330\n)STRINGFY(\n
+//-------------------------- normal sprite shader for desktop --------------------------
+static const char* vs_sprite = STRINGFY(#version 330\n)STRINGFY(\n
     layout(location = 0) in vec2 vertex_pos; \n
     layout(location = 1) in vec4 vertex_color; \n
     layout(location = 2) in vec2 vertex_uv; \n
@@ -29,7 +30,7 @@ static const char* vs_color = STRINGFY(#version 330\n)STRINGFY(\n
     }\n
 );
 
-static const char* fs_color = STRINGFY(#version 330\n)STRINGFY(
+static const char* fs_sprite = STRINGFY(#version 330\n)STRINGFY(
     in vec4 frag_color;\n
     in vec2 frag_uv;\n
     out vec4 color;\n
@@ -40,10 +41,35 @@ static const char* fs_color = STRINGFY(#version 330\n)STRINGFY(
        color = texture_color;\n
     }\n
     );
+
+//-------------------------- normal primitive shader for desktop -----------------------
+
+static const char* vs_primitive = STRINGFY(#version 330\n)STRINGFY(\n
+    layout(location = 0) in vec2 vertex_pos; \n
+    layout(location = 1) in vec4 vertex_color; \n
+    out vec4 frag_color;\n
+    uniform mat4 mvp;\n
+
+    void main() {\n
+       gl_Position.xy = (mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0f, 1.0f)).xy;\n
+       gl_Position.z = 1.0;\n
+       gl_Position.w = 1.0;\n
+       frag_color = vertex_color;\n
+    }\n
+    );
+
+static const char* fs_primitive = STRINGFY(#version 330\n)STRINGFY(
+   in vec4 frag_color;\n
+   out vec4 color;\n
+   
+   void main() {\n
+       color = color;\n
+   }\n
+   );
 #endif
 
 #ifdef PLAT_MOBILE
-static const char* vs_color = STRINGFY(\n
+static const char* vs_sprite = STRINGFY(\n
                                        precision lowp float;\n
                                        attribute mediump vec2 vertex_pos;\n
                                        attribute lowp vec4 vertex_color;\n
@@ -59,7 +85,7 @@ static const char* vs_color = STRINGFY(\n
                                        }\n
                                        );
 
-static const char* fs_color = STRINGFY(\n
+static const char* fs_sprite = STRINGFY(\n
                                        precision lowp float;\n
                                        varying lowp vec4 fragement_color; \n
                                        varying mediump vec2 fragement_uv; \n\n
@@ -180,8 +206,11 @@ static GLuint craete_shader_from_file(GLenum shader_type, const char* file_path)
 
 static void shader_load_all(struct shader* self) {
     const char* shaders[] = {
-        vs_color,
-        fs_color,
+        vs_sprite,
+        fs_sprite,
+
+        vs_primitive,
+        fs_primitive,
     };
 
     int n = sizeof(shaders)/sizeof(const char*)/2;

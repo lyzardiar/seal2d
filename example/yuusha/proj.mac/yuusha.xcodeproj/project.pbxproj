@@ -105,6 +105,7 @@
 		A6291AF81D2CB05600B39E63 /* lua_handler.c in Sources */ = {isa = PBXBuildFile; fileRef = A6291AF61D2CB05600B39E63 /* lua_handler.c */; };
 		A62EEF5B1D2507F70065378C /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = A62EEF591D2507F70065378C /* render.c */; };
 		A633A7241D6ED2E300A270A7 /* sprite_render.c in Sources */ = {isa = PBXBuildFile; fileRef = A633A7221D6ED2E300A270A7 /* sprite_render.c */; };
+		A633A7271D6EE5AD00A270A7 /* primitive_render.c in Sources */ = {isa = PBXBuildFile; fileRef = A633A7251D6EE5AD00A270A7 /* primitive_render.c */; };
 		A63B5C731D3872A50093359C /* bmfont.c in Sources */ = {isa = PBXBuildFile; fileRef = A63B5C711D3872A50093359C /* bmfont.c */; };
 		A63F5E501D5ECBB1004538D9 /* lnanovg.c in Sources */ = {isa = PBXBuildFile; fileRef = A63F5E4E1D5ECBB1004538D9 /* lnanovg.c */; };
 		A63F5E541D5F3AED004538D9 /* lxplib.c in Sources */ = {isa = PBXBuildFile; fileRef = A63F5E521D5F3AED004538D9 /* lxplib.c */; };
@@ -308,6 +309,8 @@
 		A62EEF5A1D2507F70065378C /* render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render.h; sourceTree = "<group>"; };
 		A633A7221D6ED2E300A270A7 /* sprite_render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sprite_render.c; sourceTree = "<group>"; };
 		A633A7231D6ED2E300A270A7 /* sprite_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprite_render.h; sourceTree = "<group>"; };
+		A633A7251D6EE5AD00A270A7 /* primitive_render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = primitive_render.c; sourceTree = "<group>"; };
+		A633A7261D6EE5AD00A270A7 /* primitive_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = primitive_render.h; sourceTree = "<group>"; };
 		A63B5C711D3872A50093359C /* bmfont.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bmfont.c; sourceTree = "<group>"; };
 		A63B5C721D3872A50093359C /* bmfont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bmfont.h; sourceTree = "<group>"; };
 		A63F5E4E1D5ECBB1004538D9 /* lnanovg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lnanovg.c; sourceTree = "<group>"; };
@@ -728,6 +731,8 @@
 			children = (
 				A633A7221D6ED2E300A270A7 /* sprite_render.c */,
 				A633A7231D6ED2E300A270A7 /* sprite_render.h */,
+				A633A7251D6EE5AD00A270A7 /* primitive_render.c */,
+				A633A7261D6EE5AD00A270A7 /* primitive_render.h */,
 			);
 			path = renders;
 			sourceTree = "<group>";
@@ -907,6 +912,7 @@
 				B63A0F3A1D0B99F300CE6B7F /* lnuklear.c in Sources */,
 				4D0281451CC693A2001986C8 /* action.c in Sources */,
 				4D25D87E1C95C06000448F88 /* mime.c in Sources */,
+				A633A7271D6EE5AD00A270A7 /* primitive_render.c in Sources */,
 				4D25D88A1C95C06000448F88 /* udp.c in Sources */,
 				A6E74CB31CCA2271009392C8 /* ioapi_mem.c in Sources */,
 				4D25D8801C95C06000448F88 /* options.c in Sources */,

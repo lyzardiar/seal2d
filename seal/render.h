@@ -9,10 +9,13 @@
 #define MAX_OBJECTS (1024) // max objects in on drawcall
 #define MAX_RENDER_BATCH (MAX_OBJECTS) // we may use 1 draw call for each of the object
 
+#define INVALID_ATTR_LOCATION (-1)
+
 struct render;
 
 enum RENDER_TYPE {
     SPRITE_RENDER = 0,
+    PRIMITIVE_RENDER,
     
     RENDER_MAX,
 };
@@ -20,7 +23,6 @@ enum RENDER_TYPE {
 struct render_func {
     void (*init)(struct render*);
     void (*start)(struct render*);
-    void (*draw)(struct render*, void* render_object);
     void (*end)(struct render*);
     void (*flush)(struct render*);
     void (*destroy)(struct render*);
@@ -44,13 +46,15 @@ struct render {
 };
 
 struct vertex_buffer {
+    // vertex data
     GLuint vao;
-    GLuint vibo;
     GLuint vbo;
-    
     struct vertex* data;
-    GLushort* idata;
     int offset;
+
+    // index buffer
+    GLuint vibo;
+    GLushort* idata;
 };
 
 struct attr_location {
@@ -78,5 +82,7 @@ void render_clear(struct render* self, color c);
 void render_set_context(struct render* self, enum RENDER_TYPE render_object_type, void* context);
 void* render_get_context(struct render* self, enum RENDER_TYPE render_object_type);
 void render_switch(struct render* self, enum RENDER_TYPE type);
+
+void render_set_mvp(GLuint program, float* mat);
 
 #endif
