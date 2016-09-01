@@ -115,6 +115,7 @@ struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path);
 struct sprite* sprite_new_container(struct rect* r);
 struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* vertex, float width, color line_color);
+struct sprite* sprite_new_rect(struct rect r, color outline_color, color fill_color);
 
 void sprite_free(struct sprite* self);
 

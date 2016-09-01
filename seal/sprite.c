@@ -397,35 +397,42 @@ void sprite_update_transform(struct sprite* self) {
             af_concat(&tmp, &(self->parent->world_srt));
         }
 
-        float w0 = self->width * (1-self->anchor_x);
-        float w1 = self->width * (0-self->anchor_x);
-
-        float h0 = self->height * (1-self->anchor_y);
-        float h1 = self->height * (0-self->anchor_y);
-        float a = tmp.a;
-        float b = tmp.b;
-        float c = tmp.c;
-        float d = tmp.d;
-        float tx = tmp.x;
-        float ty = tmp.y;
-
-        float x0 = a * w1 + c * h1 + tx;
-        float y0 = d * h1 + b * w1 + ty;
-        float x1 = a * w0 + c * h1 + tx;
-        float y1 = d * h1 + b * w0 + ty;
-        float x2 = a * w0 + c * h0 + tx;
-        float y2 = d * h0 + b * w0 + ty;
-        float x3 = a * w1 + c * h0 + tx;
-        float y3 = d * h0 + b * w1 + ty;
-
         // TODO: refactor here someday. doesn't have any good idea right now.
         if (self->type == SPRITE_TYPE_PRIMITVE) {
-//            SET_VERTEX_POS(self->primitive_vertex[0], x0, y0);
-//            SET_VERTEX_POS(self->primitive_vertex[1], x2, y2);
+            float x0 = self->primitive_vertex[0].position[0];
+            float y0 = self->primitive_vertex[0].position[1];
+
+            float x1 = self->primitive_vertex[1].position[0];
+            float y1 = self->primitive_vertex[1].position[1];
+
+            SET_VERTEX_POS(self->primitive_vertex[0], x0 + tmp.x, y0 + tmp.y);
+            SET_VERTEX_POS(self->primitive_vertex[1], x1 + tmp.x, y1 + tmp.y);
+
         } else {
+            float w0 = self->width * (1-self->anchor_x);
+            float w1 = self->width * (0-self->anchor_x);
+
+            float h0 = self->height * (1-self->anchor_y);
+            float h1 = self->height * (0-self->anchor_y);
+            float a = tmp.a;
+            float b = tmp.b;
+            float c = tmp.c;
+            float d = tmp.d;
+            float tx = tmp.x;
+            float ty = tmp.y;
+
+            float x0 = a * w1 + c * h1 + tx;
+            float y0 = d * h1 + b * w1 + ty;
+            float x1 = a * w0 + c * h1 + tx;
+            float y1 = d * h1 + b * w0 + ty;
+            float x2 = a * w0 + c * h0 + tx;
+            float y2 = d * h0 + b * w0 + ty;
+            float x3 = a * w1 + c * h0 + tx;
+            float y3 = d * h0 + b * w1 + ty;
             struct glyph* g = &self->glyph;
             SET_VERTEX_POS(g->bl, x0, y0);
             SET_VERTEX_POS(g->br, x1, y1);
+
             SET_VERTEX_POS(g->tr, x2, y2);
             SET_VERTEX_POS(g->tl, x3, y3);
             
