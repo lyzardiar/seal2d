@@ -271,8 +271,39 @@ struct sprite* sprite_new_line(float* vertex, float width, color line_color) {
     SET_VERTEX_COLOR(v[0], r, g, b, a);
     SET_VERTEX_COLOR(v[1], r, g, b, a);
 
+
     s->primitive_vertex = v;
     s->line_width = width;
+
+    return s;
+}
+
+struct sprite* sprite_new_rect(struct rect* rect,
+                               unsigned int rect_flag,
+                               color fill_color, color outline_color) {
+    struct sprite* s = STRUCT_NEW(sprite);
+    s->type = SPRITE_TYPE_PRIMITVE;
+    s->primitive_type = PRIMITIVE_RECT;
+
+    sprite_init(s, rect->width, rect->height);
+    sprite_set_glyph(s, rect, NULL, 0);
+    sprite_set_color(s, fill_color);
+
+    struct primitive_vertex* v = s_malloc(PRIMITIVE_VERTEX_SIZE * 4);
+    float l = rect->x;
+    float r = rect->x + rect->width;
+    float b = rect->y;
+    float t = rect->y + rect->height;
+
+    // 4 lines forms an rect.
+    SET_VERTEX_POS(v[0], l, b);
+    SET_VERTEX_POS(v[1], l, t);
+    SET_VERTEX_POS(v[2], r, t);
+    SET_VERTEX_POS(v[3], r, b);
+
+    s->rect_flag = rect_flag;
+    s->fill_color = fill_color;
+    s->outline_color = outline_color;
 
     return s;
 }
@@ -280,6 +311,10 @@ struct sprite* sprite_new_line(float* vertex, float width, color line_color) {
 void sprite_free(struct sprite* self) {
     if(self->anim) {
         anim_free(self->anim);
+    }
+
+    if(self->primitive_vertex) {
+        s_free(self->primitive_vertex);
     }
     
     if (self->text) s_free(self->text);
@@ -370,6 +405,26 @@ void sprite_set_text(struct sprite* self, const char* label) {
     }
 }
 
+static void transform_vertex(struct primitive_vertex* v, struct affine* transform)
+{
+    v->position[0] += transform->x;
+    v->position[1] += transform->y;
+}
+
+static void sprite_update_primitive_line_transform(struct sprite* self, struct affine* transform)
+{
+    for (int i = 0; i < 2; ++i) {
+        transform_vertex(&self->primitive_vertex[i], transform);
+    }
+}
+
+static void sprite_update_primitive_rect_transform(struct sprite* self, struct affine* transform)
+{
+    for (int i = 0; i < 4; ++i) {
+        transform_vertex(&self->primitive_vertex[4], transform);
+    }
+}
+
 // update the coordinate from local to world
 void sprite_update_transform(struct sprite* self) {
     
@@ -399,15 +454,16 @@ void sprite_update_transform(struct sprite* self) {
 
         // TODO: refactor here someday. doesn't have any good idea right now.
         if (self->type == SPRITE_TYPE_PRIMITVE) {
-            float x0 = self->primitive_vertex[0].position[0];
-            float y0 = self->primitive_vertex[0].position[1];
-
-            float x1 = self->primitive_vertex[1].position[0];
-            float y1 = self->primitive_vertex[1].position[1];
-
-            SET_VERTEX_POS(self->primitive_vertex[0], x0 + tmp.x, y0 + tmp.y);
-            SET_VERTEX_POS(self->primitive_vertex[1], x1 + tmp.x, y1 + tmp.y);
-
+            switch (self->primitive_type) {
+                case PRIMITIVE_LINE:
+                    sprite_update_primitive_line_transform(self, &tmp);
+                    break;
+                case PRIMITIVE_RECT:
+                    sprite_update_primitive_rect_transform(self, &tmp);
+                    break;
+                default:
+                    break;
+            }
         } else {
             float w0 = self->width * (1-self->anchor_x);
             float w1 = self->width * (0-self->anchor_x);

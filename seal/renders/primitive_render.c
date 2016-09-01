@@ -117,6 +117,15 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
             break;
 
         case PRIMITIVE_RECT:
+            {
+                struct primitive_vertex* v = sprite->primitive_vertex;
+
+                // use two triangel to draw the fill rect
+                if (sprite->rect_flag & FILL_SOLID) {
+
+                }
+
+            }
 
             break;
 

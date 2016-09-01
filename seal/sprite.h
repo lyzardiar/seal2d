@@ -98,7 +98,14 @@ struct sprite {
     // for primitive
     int primitive_type;
     struct primitive_vertex* primitive_vertex;
+
+    // for primitive-line
     int line_width;
+
+    // for primitive-rect
+    unsigned int rect_flag;
+    color fill_color;
+    color outline_color;
 
     // for sprite bmfont.
     struct bmfont* bmfont;
@@ -115,14 +122,13 @@ struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path);
 struct sprite* sprite_new_container(struct rect* r);
 struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* vertex, float width, color line_color);
-struct sprite* sprite_new_rect(struct rect r, color outline_color, color fill_color);
+struct sprite* sprite_new_rect(struct rect* r, unsigned int rect_flag, color fill_color, color outline_color);
 
 void sprite_free(struct sprite* self);
 
 void sprite_touch(struct sprite* self, struct touch_event* touch_event);
 void sprite_visit(struct sprite* self, float dt);
 bool sprite_contains(struct sprite* self, float x, float y);
-
 
 void sprite_draw_primitive(struct sprite* self);
 

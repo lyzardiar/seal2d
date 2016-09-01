@@ -143,12 +143,16 @@ local function sprite_primitive_test()
 	print("run sprite_primitive_test")
 	root:cleanup()
 
+	local container = sprite.new_container()
 	local line = sprite.new_primitive("L", {	vertex = {0, 0, 100, 100},
 												width = 2.0,
 												color = {0, 255, 0, 255}
 												} )
 	line:set_pos(100, 200)
-	root:add_child(line)
+	container:set_pos(100, 0)
+	container:add_child(line)
+
+	root:add_child(container)
 end
 
 local function sprite_event_test()

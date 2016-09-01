@@ -10,6 +10,10 @@ enum primitive_type {
     PRIMITVE_MAX,
 };
 
+
+#define FILL_OUTLINE (1)
+#define FILL_SOLID   (2)
+
 struct primitive_render_batch {
     int offset;
     enum primitive_type type;
