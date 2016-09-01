@@ -19,6 +19,9 @@
 
 #include "util.h"
 
+#include "renders/primitive_render.h"
+#include "renders/sprite_render.h"
+
 
 EXTERN_GAME;
 
@@ -244,21 +247,31 @@ struct sprite* sprite_new_clip(struct rect* r) {
 }
 
 // vertex: float[4], start point:(v[0], v[1]), end point: (v[1], v[2])
-struct sprite* sprite_new_line(float* vertex, int width, color line_color) {
+struct sprite* sprite_new_line(float* vertex, float width, color line_color) {
     struct sprite* s = STRUCT_NEW(sprite);
 
-    struct rect r = {
+    struct rect rect = {
         0, 0, vertex[2] - vertex[0], width
     };
 
     s->type = SPRITE_TYPE_PRIMITVE;
-    sprite_init(s, r.width, r.height);
-    sprite_set_glyph(s, &r, NULL, 0);
+    sprite_init(s, rect.width, rect.height);
+    sprite_set_glyph(s, &rect, NULL, 0);
     sprite_set_color(s, line_color);
 
-    s->primitive_vertex = s_malloc(sizeof(float) * 4);
-    memcpy(s->primitive_vertex, vertex, sizeof(float)*4);
+    s->primitive_type = PRIMITIVE_LINE;
+    struct primitive_vertex* v = s_malloc(PRIMITIVE_VERTEX_SIZE * 2);
+    SET_VERTEX_POS(v[0], vertex[0], vertex[1]);
+    SET_VERTEX_POS(v[1], vertex[2], vertex[3]);
 
+    int r = (line_color >> 24) & 0xff;
+    int g = (line_color >> 16) & 0xff;
+    int b = (line_color >> 8 ) & 0xff;
+    int a = (line_color      ) & 0xff;
+    SET_VERTEX_COLOR(v[0], r, g, b, a);
+    SET_VERTEX_COLOR(v[1], r, g, b, a);
+
+    s->primitive_vertex = v;
     s->line_width = width;
 
     return s;
@@ -379,24 +392,23 @@ void sprite_update_transform(struct sprite* self) {
         struct affine tmp;
         af_identify(&tmp);
         af_concat(&tmp, &self->local_srt);
-        
+
         if (self->parent) {
             af_concat(&tmp, &(self->parent->world_srt));
         }
-        
+
         float w0 = self->width * (1-self->anchor_x);
         float w1 = self->width * (0-self->anchor_x);
-        
+
         float h0 = self->height * (1-self->anchor_y);
         float h1 = self->height * (0-self->anchor_y);
-        
         float a = tmp.a;
         float b = tmp.b;
         float c = tmp.c;
         float d = tmp.d;
         float tx = tmp.x;
         float ty = tmp.y;
-        
+
         float x0 = a * w1 + c * h1 + tx;
         float y0 = d * h1 + b * w1 + ty;
         float x1 = a * w0 + c * h1 + tx;
@@ -405,15 +417,21 @@ void sprite_update_transform(struct sprite* self) {
         float y2 = d * h0 + b * w0 + ty;
         float x3 = a * w1 + c * h0 + tx;
         float y3 = d * h0 + b * w1 + ty;
-        
-        struct glyph* g = &self->glyph;        
-        SET_VERTEX_POS(g->bl, x0, y0);
-        SET_VERTEX_POS(g->br, x1, y1);
-        SET_VERTEX_POS(g->tr, x2, y2);
-        SET_VERTEX_POS(g->tl, x3, y3);
 
-        self->width = fabs(x1 - x0);
-        self->height = fabs(y3 - y1);
+        // TODO: refactor here someday. doesn't have any good idea right now.
+        if (self->type == SPRITE_TYPE_PRIMITVE) {
+//            SET_VERTEX_POS(self->primitive_vertex[0], x0, y0);
+//            SET_VERTEX_POS(self->primitive_vertex[1], x2, y2);
+        } else {
+            struct glyph* g = &self->glyph;
+            SET_VERTEX_POS(g->bl, x0, y0);
+            SET_VERTEX_POS(g->br, x1, y1);
+            SET_VERTEX_POS(g->tr, x2, y2);
+            SET_VERTEX_POS(g->tl, x3, y3);
+            
+            self->width = fabs(x1 - x0);
+            self->height = fabs(y3 - y1);
+        }
 
         self->dirty &= (~SPRITE_SRT_DIRTY);
         self->world_srt = tmp;
@@ -500,14 +518,8 @@ bool sprite_contains(struct sprite* self, float x, float y) {
     return rect_contains(&world, x, y);
 }
 
-void sprite_visit(struct sprite* self, float dt) {
-    if (self->anim) {
-        anim_update(self->anim, dt);
-        sprite_set_sprite_frame(self, anim_current_frame(self->anim));
-    }
-    
-    sprite_update_transform(self);
-    
+static void sprite_before_visit(struct sprite* self)
+{
     switch (self->type) {
         case SPRITE_TYPE_PIC:
             sprite_draw_pic(self);
@@ -518,39 +530,52 @@ void sprite_visit(struct sprite* self, float dt) {
         case SPRITE_TYPE_CONTAINER:
             // do nothing.
             break;
-        case SPRITE_TYPE_CLIP:
-            sprite_draw_clip(self);
-            break;
-        default:
-            break;
-    }
-    
-    struct array* children = self->children;
-    for (int i = 0 ;i < array_size(children); ++i) {
-        struct sprite* child = (struct sprite*)array_at(children, i);
-        if (child) { // NULL indicates that the child has been removed
-            
-            // recursively visit the children.
-            sprite_visit(child, dt);
-        }
-    }
-    
-    switch (self->type) {
-        case SPRITE_TYPE_PIC:
-            sprite_render_func_flush(R);
-            break;
-            
-        case SPRITE_TYPE_CLIP:
-            sprite_clean_clip(self);
-            break;
-            
         default:
             break;
     }
 }
 
-void sprite_draw_primitive(struct sprite* self) {
+static void sprite_after_visit(struct sprite* self)
+{
+    switch (self->type) {
+        case SPRITE_TYPE_PIC:
+            sprite_render_func_flush(R);
+            break;
+        case SPRITE_TYPE_PRIMITVE:
+            primitive_render_func_flush(R);
+            break;
 
+        default:
+            break;
+    }
+}
+
+void sprite_visit(struct sprite* self, float dt)
+{
+    if (self->anim) {
+        anim_update(self->anim, dt);
+        sprite_set_sprite_frame(self, anim_current_frame(self->anim));
+    }
+    
+    sprite_update_transform(self);
+    sprite_before_visit(self);
+
+    struct array* children = self->children;
+    for (int i = 0 ;i < array_size(children); ++i) {
+        struct sprite* child = (struct sprite*)array_at(children, i);
+        if (child) { // NULL indicates that the child has been removed
+            // recursively visit the children.
+            sprite_visit(child, dt);
+        }
+    }
+
+    sprite_after_visit(self);
+}
+
+void sprite_draw_primitive(struct sprite* self)
+{
+    render_switch(R, PRIMITIVE_RENDER);
+    primitive_render_func_draw(R, self->primitive_type, self);
 }
 
 void sprite_draw_pic(struct sprite* self) {

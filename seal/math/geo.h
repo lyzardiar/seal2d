@@ -12,6 +12,11 @@ struct vertex {
     GLfloat uv[2];        // u, v
 };
 
+struct primitive_vertex {
+    GLfloat position[2];
+    GLubyte color[4];
+};
+
 #define SET_VERTEX_POS(vert, x, y) \
 do { \
 vert.position[0] = x; \
@@ -36,6 +41,10 @@ vert.uv[1] = v; \
 #define VERTEX_OFFSET_POS ((void*)offsetof(struct vertex, position))
 #define VERTEX_OFFSET_COLOR ((void*)offsetof(struct vertex, color))
 #define VERTEX_OFFSET_UV ((void*)offsetof(struct vertex, uv))
+
+#define PRIMITIVE_VERTEX_SIZE (sizeof(struct primitive_vertex))
+#define PRIMITIVE_VERTEX_OFFSET_POS ((void*)offsetof(struct primitive_vertex, position))
+#define PRIMITIVE_VERTEX_OFFSET_COLOR ((void*)offsetof(struct primitive_vertex, color))
 
 #define C4B_COLOR(r,g,b,a) ( (r<<24) | (g<<16) | (b<<8) | (a<<0) )
 

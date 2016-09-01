@@ -79,7 +79,7 @@ struct render* render_new();
 void render_free(struct render* self);
 void render_clear(struct render* self, color c);
 
-void render_set_context(struct render* self, enum RENDER_TYPE render_object_type, void* context);
+void render_set_object(struct render* self, struct render_object* object);
 void* render_get_context(struct render* self, enum RENDER_TYPE render_object_type);
 void render_switch(struct render* self, enum RENDER_TYPE type);
 

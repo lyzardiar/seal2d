@@ -140,17 +140,18 @@ local function sprite_clip_test()
 end
 
 local function sprite_primitive_test()
+	print("run sprite_primitive_test")
 	root:cleanup()
 
-	local line = sprite.new_primitive("L", {	vertex = {0, 20, 100, 20},
+	local line = sprite.new_primitive("L", {	vertex = {00, 0.0, 100, 100},
 												width = 2.0,
-												color = {255, 0, 0, 255}
+												color = {0, 255, 0, 255}
 												} )
 	root:add_child(line)
 end
 
 local function sprite_event_test()
-	print("run sprite_clip_test")
+	print("run sprite_event_test")
 	root:cleanup()
 
 	local touch_event_names = {
@@ -290,7 +291,7 @@ local tests = {
 	{name = "sprite srt test", create_func = sprite_srt_test },
 	{name = "sprite anchor test", create_func = sprite_anchor_test },
 	{name = "sprite animation test", create_func = sprite_animation_test},
-	{name = "sprite clip test", create_func = sprite_clip_test},
+	-- {name = "sprite clip test", create_func = sprite_clip_test},
 	{name = "sprite primitive test", create_func = sprite_primitive_test },
 	{name = "sprite touch test", create_func = sprite_event_test},
 	{name = "bmfont load test", create_func = bmfont_load_test},
@@ -348,6 +349,12 @@ function hello_world.entry()
 	-- root = sprite.new("ui.png", "smile_middle.png")
 	root = sprite.new_container()
 	root:set_pos(0, 0)
+
+	-- local root = sprite.new_primitive("L", {	vertex = {10, 20, 100, 20},
+	-- 											width = 2.0,
+	-- 											color = {255, 0, 0, 255}
+	-- 											} )
+	-- root:set_pos(0, 0)
 
 	menu = nuk_node.new()
 

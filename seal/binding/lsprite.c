@@ -137,27 +137,13 @@ int lsprite_new_container(lua_State* L) {
 }
 
 static int new_line(lua_State* L) {
-
-    float vertex[4];
-
-    lua_pushstring(L, "vertex");
-    lua_gettable(L, 2);
-    for (int i = 1; i < 5; ++i) {
-        vertex[i] = lua_rawgeti(L, -1, i);
-        lua_pop(L, 1);
-    }
-
-    int width = lua_tonumber(L, 3);
-    stackDump(L);
+    float vertex[4] = {0};
+    getarray_f(L, "vertex", vertex, 4);
 
     int color[4];
-    lua_gettable(L, 3);
-    lua_pushstring(L, "color");
+    getarray_i(L, "color", color, 4);
 
-    for (int i = 0; i < 4; ++i) {
-        color[i] = lua_rawgeti(L, -1, i);
-        lua_pop(L, 1);
-    }
+    lua_Number width = getfield_f(L, "width");
 
     struct sprite* line = sprite_new_line(vertex, width, C4B_COLOR(color[0], color[1], color[2], color[3]));
     lua_pushlightuserdata(L, line);

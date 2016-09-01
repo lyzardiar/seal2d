@@ -66,6 +66,10 @@ void exit_glfw(GLFWwindow* window) {
     glfwDestroyWindow(window);
     glfwTerminate();
 }
+//
+//#include "render.h"
+//#include "shader.h"
+//EXTERN_GAME;
 
 int main(int argc, char *argv[]) {
     struct game* game = seal_load_game_config();
@@ -84,16 +88,43 @@ int main(int argc, char *argv[]) {
     
     seal_init_graphics();
     seal_start_game();
-    
+
+//    float vertex[4] = {0.0f, 0.0f, 1.0f, 1.0f};
+//    GLuint vbo, vao;
+//    CHECK_GL_ERROR;
+//    glGenBuffers(1, &vbo);
+//    CHECK_GL_ERROR;
+//    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//    CHECK_GL_ERROR;
+//    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
+//    CHECK_GL_ERROR;
+//
+//    glGenVertexArrays(1, &vao);
+//    glBindVertexArray(vao);
+
+
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         last = gettime();
-        
+
+//        glClearColor(0.3, 0.3, 0.3, 1.0);
+//        glClear(GL_COLOR_BUFFER_BIT);
+//
+//        GLuint program = shader_get_program(GAME->render->shader, SHADER_PRIMITIVE);
+//        glUseProgram(program);
+//
+//        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//
+//        glEnableVertexAttribArray(0);
+//        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float), 0);
+//
+//        glDrawArrays(GL_LINES, 0, 2);
+//        CHECK_GL_ERROR;
+
         seal_update();
         seal_draw();
-
         glfwSwapBuffers(window);
-        
+
         long current = gettime();
         dt = current - last;
         

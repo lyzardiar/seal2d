@@ -14,7 +14,7 @@ struct primitive_render_batch {
     int offset;
     enum primitive_type type;
     int line_count;
-    int line_width;
+    float line_width;
 };
 
 struct primitive_render_state {
@@ -27,7 +27,7 @@ struct primitive_render_state {
 struct primitive_render_context {
     GLuint vao;
     GLuint vbo;
-    float* vertexes;
+    struct primitive_vertex* vertexes;
 
     struct primitive_render_batch batches[MAX_RENDER_BATCH];
     struct primitive_render_state state;

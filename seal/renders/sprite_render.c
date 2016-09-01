@@ -12,13 +12,15 @@
 EXTERN_GAME;
 
 #define VERTEX_PER_OBJECT (4)
-void sprite_render_batch_reset(struct render_batch* self) {
+void sprite_render_batch_reset(struct render_batch* self)
+{
     self->offset = 0;
     self->tex_id = 0;
     self->n_objects = 0;
 }
 
-void sprite_render_func_flush(struct render* R) {
+void sprite_render_func_flush(struct render* R)
+{
     struct sprite_render_context* context = render_get_context(R, SPRITE_RENDER);
 
     glBindVertexArray(context->buffer->vao);
@@ -52,7 +54,8 @@ void sprite_render_func_flush(struct render* R) {
     context->buffer->offset = 0;
 }
 
-void sprite_render_func_start(struct render* R) {
+void sprite_render_func_start(struct render* R)
+{
     GLuint prog = shader_get_program(R->shader, SHADER_COLOR);
     glUseProgram(prog);
     struct sprite_render_context* context = render_get_context(R, SPRITE_RENDER);
@@ -71,7 +74,8 @@ void sprite_render_func_start(struct render* R) {
 }
 
 /*-------------------- sprite_render --------------------*/
-void sprite_render_func_draw(struct render* R, void* object) {
+void sprite_render_func_draw(struct render* R, void* object)
+{
     struct sprite* sprite = (struct sprite*)object;
 
     struct sprite_render_context* context = render_get_context(R, SPRITE_RENDER);
@@ -111,17 +115,13 @@ void sprite_render_func_draw(struct render* R, void* object) {
     buffer->offset = offset;
 }
 
-void sprite_render_func_end(struct render* R) {
+void sprite_render_func_end(struct render* R)
+{
     // dummy
 }
 
-void sprite_render_func_init(struct render* R) {
-    R->R_objs[SPRITE_RENDER].type = SPRITE_RENDER;
-    R->R_objs[SPRITE_RENDER].render_func.init = sprite_render_func_init;
-    R->R_objs[SPRITE_RENDER].render_func.start = sprite_render_func_start;
-    R->R_objs[SPRITE_RENDER].render_func.end = sprite_render_func_end;
-    R->R_objs[SPRITE_RENDER].render_func.flush = sprite_render_func_flush;
-
+void sprite_render_func_init(struct render* R)
+{
     struct sprite_render_context* context = STRUCT_NEW(sprite_render_context);
     struct vertex_buffer* buffer = STRUCT_NEW(vertex_buffer);
 
@@ -163,7 +163,20 @@ void sprite_render_func_init(struct render* R) {
     context->n_objects = 0;
     context->current_batch_index = 0;
 
-    render_set_context(R, SPRITE_RENDER, context);
+    struct render_func func = {
+        sprite_render_func_init,
+        sprite_render_func_start,
+        sprite_render_func_end,
+        sprite_render_func_flush,
+        NULL,
+    };
+
+    struct render_object object = {
+        SPRITE_RENDER,
+        func,
+        context
+    };
+    render_set_object(R, &object);
 
     CHECK_GL_ERROR;
 }

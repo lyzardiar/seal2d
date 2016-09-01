@@ -33,11 +33,6 @@ enum sprite_type {
     SPRITE_TYPE_CONTAINER,
 };
 
-enum sprite_primitive_type {
-    SPRITE_PRIMITIVE_NONE = 0,
-    SPRITE_PRIMITIVE_LINE = 1,
-};
-
 struct sprite_frame {
     struct rect frame_rect;
     struct rect source_rect;
@@ -77,7 +72,6 @@ struct sprite {
     // basic info
     unsigned int __id;
     enum sprite_type type;
-    enum sprite_primitive_type primitive_type;
 
     // scene graph
     int zorder;
@@ -102,7 +96,8 @@ struct sprite {
     struct anim* anim; // for sprite's anim.
 
     // for primitive
-    float* primitive_vertex;
+    int primitive_type;
+    struct primitive_vertex* primitive_vertex;
     int line_width;
 
     // for sprite bmfont.
@@ -119,7 +114,7 @@ struct sprite* sprite_new_label(const char* label);
 struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path);
 struct sprite* sprite_new_container(struct rect* r);
 struct sprite* sprite_new_clip(struct rect* r);
-struct sprite* sprite_new_line(float* vertex, int width, color line_color);
+struct sprite* sprite_new_line(float* vertex, float width, color line_color);
 
 void sprite_free(struct sprite* self);
 

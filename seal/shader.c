@@ -23,7 +23,7 @@ static const char* vs_sprite = STRINGFY(#version 330\n)STRINGFY(\n
 
     void main() {\n
        gl_Position.xy = (mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0f, 1.0f)).xy;\n
-       gl_Position.z = 1.0;\n
+       gl_Position.z = 0.0;\n
        gl_Position.w = 1.0;\n
        frag_color = vertex_color;\n
        frag_uv = vec2(vertex_uv.x, 1.0f - vertex_uv.y);\n
@@ -49,10 +49,10 @@ static const char* vs_primitive = STRINGFY(#version 330\n)STRINGFY(\n
     layout(location = 1) in vec4 vertex_color; \n
     out vec4 frag_color;\n
     uniform mat4 mvp;\n
-
+                                                                   
     void main() {\n
        gl_Position.xy = (mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0f, 1.0f)).xy;\n
-       gl_Position.z = 1.0;\n
+       gl_Position.z = 0.0;\n
        gl_Position.w = 1.0;\n
        frag_color = vertex_color;\n
     }\n
@@ -63,7 +63,7 @@ static const char* fs_primitive = STRINGFY(#version 330\n)STRINGFY(
    out vec4 color;\n
    
    void main() {\n
-       color = color;\n
+       color = frag_color;\n
    }\n
    );
 #endif
