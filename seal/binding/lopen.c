@@ -90,10 +90,12 @@ const char* getfiled_s(lua_State* L, const char* key) {
 void getarray_f(lua_State* L, const char* key, float* f_array, int cnt) {
     lua_pushstring(L, key);
     lua_gettable(L, -2);
-    for (int i = 0; i < cnt; ++i) {
-        lua_rawgeti(L, -1, i+1);
-        f_array[i] = lua_tonumber(L, -1);
-        lua_pop(L, 1);
+    if(!lua_isnil(L, -1)) {
+        for (int i = 0; i < cnt; ++i) {
+            lua_rawgeti(L, -1, i+1);
+            f_array[i] = lua_tonumber(L, -1);
+            lua_pop(L, 1);
+        }
     }
     lua_pop(L, 1);
 }
@@ -101,10 +103,12 @@ void getarray_f(lua_State* L, const char* key, float* f_array, int cnt) {
 void getarray_i(lua_State* L, const char* key, int* f_array, int cnt) {
     lua_pushstring(L, key);
     lua_gettable(L, -2);
-    for (int i = 0; i < cnt; ++i) {
-        lua_rawgeti(L, -1, i+1);
-        f_array[i] = lua_tointeger(L, -1);
-        lua_pop(L, 1);
+    if (!lua_isnil(L, -1)) {
+        for (int i = 0; i < cnt; ++i) {
+            lua_rawgeti(L, -1, i+1);
+            f_array[i] = lua_tointeger(L, -1);
+            lua_pop(L, 1);
+        }
     }
     lua_pop(L, 1);
 }

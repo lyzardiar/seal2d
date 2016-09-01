@@ -144,12 +144,21 @@ local function sprite_primitive_test()
 	root:cleanup()
 
 	local container = sprite.new_container()
-	local line = sprite.new_primitive("L", {	vertex = {0, 0, 100, 100},
-												width = 2.0,
-												color = {0, 255, 0, 255}
-												} )
-	line:set_pos(100, 200)
 	container:set_pos(100, 0)
+
+	local line = sprite.new_primitive("L", {
+										vertex = {0, 0, 100, 100},
+										width = 2.0,
+										color = {0, 255, 0, 255}} )
+	line:set_pos(100, 200)
+
+	local rect = sprite.new_primitive("R", {
+										rect = {0, 0, 100, 200},
+										fill_color = {255, 0, 0, 255}
+										})
+	rect:set_pos(200, 200)
+
+	container:add_child(rect)
 	container:add_child(line)
 
 	root:add_child(container)
@@ -351,15 +360,8 @@ function hello_world.entry()
 	sprite_frame.load_from_json("res/images/anim_pirate.json")
 	sprite_frame.load_from_json("res/images/skeleton.json")
 
-	-- root = sprite.new("ui.png", "smile_middle.png")
 	root = sprite.new_container()
 	root:set_pos(0, 0)
-
-	-- local root = sprite.new_primitive("L", {	vertex = {10, 20, 100, 20},
-	-- 											width = 2.0,
-	-- 											color = {255, 0, 0, 255}
-	-- 											} )
-	-- root:set_pos(0, 0)
 
 	menu = nuk_node.new()
 

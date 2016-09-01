@@ -28,6 +28,14 @@ static void primitive_render_batch_reset(struct primitive_render_batch* self)
     self->line_width = -1;
 }
 
+static void dump_primitive_vertex(struct primitive_vertex* vertex, int count)
+{
+    for (int i = 0; i < count; ++i) {
+        printf("pos = {%.2f, %.2f}, color = {%d, %d, %d, %d}\n",
+               vertex[i].position[0], vertex[i].position[1],
+               vertex[i].color[0], vertex[i].color[1], vertex[i].color[2], vertex[i].color[3]);
+    }
+}
 
 void primitive_render_func_flush(struct render* R)
 {
@@ -51,10 +59,16 @@ void primitive_render_func_flush(struct render* R)
     for (int i = 0; i < n; ++i) {
         struct primitive_render_batch* b = context->batches + i;
         switch (b->type) {
-            case PRIMITIVE_LINE:
+            case PRIMITIVE_BATCH_LINE:
             {
-                glDrawArrays(GL_LINES, b->offset, b->line_count*2);
-                CHECK_GL_ERROR;
+                glDrawArrays(GL_LINES, b->offset, b->count.line_count*2);
+                R->drawcall++;
+            }
+                break;
+
+            case PRIMITIVE_BATCH_TRIANGLE:
+            {
+                glDrawArrays(GL_TRIANGLES, b->offset, b->count.triangle_count * 3);
                 R->drawcall++;
             }
                 break;
@@ -62,6 +76,7 @@ void primitive_render_func_flush(struct render* R)
             default:
                 break;
         }
+        CHECK_GL_ERROR;
         primitive_render_batch_reset(b);
     }
 
@@ -100,17 +115,18 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
 
                 if (context->state.last_type != PRIMITIVE_LINE ||
                     context->state.line_width != sprite->line_width) {
+                    context->state.line_width = sprite->line_width;
+                    context->state.last_type = PRIMITIVE_LINE;
+
+                    batch->type = PRIMITIVE_BATCH_LINE;
                     batch->line_width = sprite->line_width;
                     batch->offset = offset;
-                    batch->type = PRIMITIVE_LINE;
-                    batch->line_count = 1;
+                    batch->count.line_count = 1;
 
-                    context->state.line_width = sprite->line_width;
                     context->current_batch_index++;
-
                 } else {
                     batch->offset += 2;
-                    batch->line_count++;
+                    batch->count.line_count++;
                 }
                 context->offset += 2;
             }
@@ -119,12 +135,30 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
         case PRIMITIVE_RECT:
             {
                 struct primitive_vertex* v = sprite->primitive_vertex;
-
+                
                 // use two triangel to draw the fill rect
-                if (sprite->rect_flag & FILL_SOLID) {
+//                if (sprite->rect_flag & FILL_SOLID) {
+                    data[0] = v[0];
+                    data[1] = v[1];
+                    data[2] = v[2];
+                    data[3] = v[2];
+                    data[4] = v[3];
+                    data[5] = v[0];
+//                }
 
+                if (context->state.last_type != PRIMITIVE_RECT) {
+                    context->state.last_type = PRIMITIVE_RECT;
+
+                    batch->type = PRIMITIVE_BATCH_TRIANGLE;
+                    batch->offset = offset;
+                    batch->count.triangle_count = 2;
+
+                    context->current_batch_index++;
+                } else {
+                    batch->offset += 6;
+                    batch->count.triangle_count += 2;
                 }
-
+                context->offset += 6;
             }
 
             break;

@@ -39,19 +39,23 @@ EXTERN_GAME;
 static unsigned int __sprite_id = 0;
 static struct render* R = NULL;
 static struct sprite_frame_cache* C = NULL;
-void sprite_init_render(struct render* render) {
+void sprite_init_render(struct render* render)
+{
     R = render;
 }
 
-static int hash_str(void* key) {
+static int hash_str(void* key)
+{
     return hashmapHash(key, strlen(key));
 }
 
-static bool hash_equal(void* a, void* b) {
+static bool hash_equal(void* a, void* b)
+{
     return strcmp(a, b) == 0;
 }
 
-struct sprite_frame_cache* sprite_frame_cache_new() {
+struct sprite_frame_cache* sprite_frame_cache_new()
+{
     struct sprite_frame_cache* c = STRUCT_NEW(sprite_frame_cache);
     c->cache = hashmapCreate(128, hash_str, hash_equal);
     
@@ -59,16 +63,19 @@ struct sprite_frame_cache* sprite_frame_cache_new() {
     return c;
 }
 
-void sprite_frame_cache_free(struct sprite_frame_cache* self) {
+void sprite_frame_cache_free(struct sprite_frame_cache* self)
+{
     hashmapFree(self->cache);
     s_free(self);
 }
 
-void sprite_frame_cache_add(struct sprite_frame_cache* self, struct sprite_frame* frame) {
+void sprite_frame_cache_add(struct sprite_frame_cache* self, struct sprite_frame* frame)
+{
     hashmapPut(self->cache, frame->key, frame);
 }
 
-struct sprite_frame* sprite_frame_cache_get(struct sprite_frame_cache* self, const char* key) {
+struct sprite_frame* sprite_frame_cache_get(struct sprite_frame_cache* self, const char* key)
+{
     struct sprite_frame* f = hashmapGet(self->cache, (void*)key);
     if (!f) {
         f = sprite_frame_new(key);
@@ -77,7 +84,8 @@ struct sprite_frame* sprite_frame_cache_get(struct sprite_frame_cache* self, con
     return f;
 }
 
-struct sprite_frame* sprite_frame_new(const char* key) {
+struct sprite_frame* sprite_frame_new(const char* key)
+{
      struct sprite_frame* f = STRUCT_NEW(sprite_frame);
     memset(f, 0, sizeof(struct sprite_frame));
     
@@ -89,12 +97,14 @@ struct sprite_frame* sprite_frame_new(const char* key) {
     return f;
 }
 
-void sprite_frame_free(struct sprite_frame* self) {
+void sprite_frame_free(struct sprite_frame* self)
+{
     s_free(self->key);
     s_free(self);
 }
 
-void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id) {
+void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id)
+{
     self->tex_id = tex_id;
 }
 
@@ -106,7 +116,8 @@ void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float 
     self->uv.h = frame_rect->height / texture_height;
 }
 
-void sprite_frame_tostring(struct sprite_frame* self, char* buff) {
+void sprite_frame_tostring(struct sprite_frame* self, char* buff)
+{
     
     sprintf(buff, "{key = \"%s\",\n"
             "frame_rect = {%d, %d, %d, %d},\n"
@@ -126,7 +137,8 @@ void sprite_frame_tostring(struct sprite_frame* self, char* buff) {
             self->uv.u, self->uv.v, self->uv.w, self->uv.h);
 }
 
-void sprite_init(struct sprite* self, float width, float height) {
+void sprite_init(struct sprite* self, float width, float height)
+{
     self->__id = ++__sprite_id;
     self->frame = NULL;
     self->parent = NULL;
@@ -152,7 +164,8 @@ void sprite_init(struct sprite* self, float width, float height) {
     af_identify(&self->world_srt);
 }
 
-void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLuint tex_id) {
+void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLuint tex_id)
+{
     struct glyph* g = &self->glyph;
     
     SET_VERTEX_POS(g->bl, 0.0f, 0.0f);
@@ -177,7 +190,8 @@ void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLu
     g->tex_id = tex_id;
 }
 
-struct sprite* sprite_new(struct sprite_frame* frame){
+struct sprite* sprite_new(struct sprite_frame* frame)
+{
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_PIC;
     
@@ -187,7 +201,8 @@ struct sprite* sprite_new(struct sprite_frame* frame){
 }
 
 
-struct sprite* sprite_new_label(const char* label) {
+struct sprite* sprite_new_label(const char* label)
+{
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_TTF_LABEL;
 
@@ -212,7 +227,8 @@ struct sprite* sprite_new_label(const char* label) {
     return s;
 }
 
-struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path) {
+struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path)
+{
     struct rect r = {0, 0, 200, 200};
     struct sprite* root = sprite_new_container(&r);
     root->type = SPRITE_TYPE_BMFONT_LABEL;
@@ -225,7 +241,8 @@ struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path) 
     return root;
 }
 
-struct sprite* sprite_new_container(struct rect* r) {
+struct sprite* sprite_new_container(struct rect* r)
+{
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_CONTAINER;
     
@@ -234,7 +251,8 @@ struct sprite* sprite_new_container(struct rect* r) {
     return s;
 }
 
-struct sprite* sprite_new_clip(struct rect* r) {
+struct sprite* sprite_new_clip(struct rect* r)
+{
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_CLIP;
     
@@ -247,7 +265,8 @@ struct sprite* sprite_new_clip(struct rect* r) {
 }
 
 // vertex: float[4], start point:(v[0], v[1]), end point: (v[1], v[2])
-struct sprite* sprite_new_line(float* vertex, float width, color line_color) {
+struct sprite* sprite_new_line(float* vertex, float width, color line_color)
+{
     struct sprite* s = STRUCT_NEW(sprite);
 
     struct rect rect = {
@@ -264,13 +283,8 @@ struct sprite* sprite_new_line(float* vertex, float width, color line_color) {
     SET_VERTEX_POS(v[0], vertex[0], vertex[1]);
     SET_VERTEX_POS(v[1], vertex[2], vertex[3]);
 
-    int r = (line_color >> 24) & 0xff;
-    int g = (line_color >> 16) & 0xff;
-    int b = (line_color >> 8 ) & 0xff;
-    int a = (line_color      ) & 0xff;
-    SET_VERTEX_COLOR(v[0], r, g, b, a);
-    SET_VERTEX_COLOR(v[1], r, g, b, a);
-
+    SET_VERTEX_COLOR_UINT(v[0], line_color);
+    SET_VERTEX_COLOR_UINT(v[1], line_color);
 
     s->primitive_vertex = v;
     s->line_width = width;
@@ -280,7 +294,8 @@ struct sprite* sprite_new_line(float* vertex, float width, color line_color) {
 
 struct sprite* sprite_new_rect(struct rect* rect,
                                unsigned int rect_flag,
-                               color fill_color, color outline_color) {
+                               color fill_color, color outline_color)
+{
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_PRIMITVE;
     s->primitive_type = PRIMITIVE_RECT;
@@ -297,10 +312,16 @@ struct sprite* sprite_new_rect(struct rect* rect,
 
     // 4 lines forms an rect.
     SET_VERTEX_POS(v[0], l, b);
-    SET_VERTEX_POS(v[1], l, t);
+    SET_VERTEX_POS(v[1], r, b);
     SET_VERTEX_POS(v[2], r, t);
-    SET_VERTEX_POS(v[3], r, b);
+    SET_VERTEX_POS(v[3], l, t);
 
+    SET_VERTEX_COLOR_UINT(v[0], fill_color);
+    SET_VERTEX_COLOR_UINT(v[1], fill_color);
+    SET_VERTEX_COLOR_UINT(v[2], fill_color);
+    SET_VERTEX_COLOR_UINT(v[3], fill_color);
+
+    s->primitive_vertex = v;
     s->rect_flag = rect_flag;
     s->fill_color = fill_color;
     s->outline_color = outline_color;
@@ -308,7 +329,8 @@ struct sprite* sprite_new_rect(struct rect* rect,
     return s;
 }
 
-void sprite_free(struct sprite* self) {
+void sprite_free(struct sprite* self)
+{
     if(self->anim) {
         anim_free(self->anim);
     }
@@ -321,7 +343,8 @@ void sprite_free(struct sprite* self) {
     s_free(self);
 }
 
-void sprite_set_text(struct sprite* self, const char* label) {
+void sprite_set_text(struct sprite* self, const char* label)
+{
     if (self->text) {
         if (strcmp(self->text, label) == 0)
             return;
@@ -421,12 +444,13 @@ static void sprite_update_primitive_line_transform(struct sprite* self, struct a
 static void sprite_update_primitive_rect_transform(struct sprite* self, struct affine* transform)
 {
     for (int i = 0; i < 4; ++i) {
-        transform_vertex(&self->primitive_vertex[4], transform);
+        transform_vertex(&self->primitive_vertex[i], transform);
     }
 }
 
 // update the coordinate from local to world
-void sprite_update_transform(struct sprite* self) {
+void sprite_update_transform(struct sprite* self)
+{
     
     // pass the dirty flags to the children
     for (int i = 0; i < array_size(self->children); ++i) {
@@ -485,10 +509,10 @@ void sprite_update_transform(struct sprite* self) {
             float y2 = d * h0 + b * w0 + ty;
             float x3 = a * w1 + c * h0 + tx;
             float y3 = d * h0 + b * w1 + ty;
+
             struct glyph* g = &self->glyph;
             SET_VERTEX_POS(g->bl, x0, y0);
             SET_VERTEX_POS(g->br, x1, y1);
-
             SET_VERTEX_POS(g->tr, x2, y2);
             SET_VERTEX_POS(g->tl, x3, y3);
             
@@ -501,7 +525,8 @@ void sprite_update_transform(struct sprite* self) {
     }
 }
 
-void sprite_add_child(struct sprite* self, struct sprite* child) {
+void sprite_add_child(struct sprite* self, struct sprite* child)
+{
     s_assert(child);
     child->child_index = array_size(self->children);
     
@@ -511,7 +536,8 @@ void sprite_add_child(struct sprite* self, struct sprite* child) {
     child->parent = self;
 }
 
-void sprite_remove_child(struct sprite* self, struct sprite* child) {
+void sprite_remove_child(struct sprite* self, struct sprite* child)
+{
     
     // here we should release the memory??? yes.
     if (child) {
@@ -522,7 +548,8 @@ void sprite_remove_child(struct sprite* self, struct sprite* child) {
     }
 }
 
-void sprite_remove_all_child(struct sprite* self) {
+void sprite_remove_all_child(struct sprite* self)
+{
     struct array* children = self->children;
     for (int i = 0 ;i < array_size(children); ++i) {
         sprite_remove_child(self, array_at(children, i));
@@ -530,11 +557,13 @@ void sprite_remove_all_child(struct sprite* self) {
 }
 
 // TODO: we should add a covert space function
-void sprite_to_node_space(struct sprite* self, float x, float y, float* tox, float* toy) {
+void sprite_to_node_space(struct sprite* self, float x, float y, float* tox, float* toy)
+{
     
 }
 
-static int touch_event_set_func(lua_State* L, void* ud) {
+static int touch_event_set_func(lua_State* L, void* ud)
+{
     struct touch_event* event = (struct touch_event*)ud;
     lua_pushstring(L, SPRITE_EVENT_TYPE);
     lua_pushinteger(L, event->type);
@@ -543,7 +572,8 @@ static int touch_event_set_func(lua_State* L, void* ud) {
     return 4;
 }
 
-void sprite_touch(struct sprite* self, struct touch_event* touch_event) {
+void sprite_touch(struct sprite* self, struct touch_event* touch_event)
+{
     if(touch_event->swallowd) {
         return;
     }
@@ -641,33 +671,39 @@ void sprite_draw_primitive(struct sprite* self)
     primitive_render_func_draw(R, self->primitive_type, self);
 }
 
-void sprite_draw_pic(struct sprite* self) {
+void sprite_draw_pic(struct sprite* self)
+{
     render_switch(R, SPRITE_RENDER);
     sprite_render_func_draw(R, self);
 }
 
 
-void sprite_draw_label(struct sprite* self) {
+void sprite_draw_label(struct sprite* self)
+{
 
 }
 
-void sprite_draw_clip(struct sprite* self) {
+void sprite_draw_clip(struct sprite* self)
+{
 //    struct rect r = {self->world_srt.x, self->world_srt.y, self->width, self->height};
 //    render_set_scissors(R, &r);
 }
 
-void sprite_clean_clip(struct sprite* self) {
+void sprite_clean_clip(struct sprite* self)
+{
 //    render_clear_scissors(R);
 }
 
-void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame) {
+void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame)
+{
     sprite_set_glyph(self, &frame->source_rect, &frame->uv, frame->tex_id);
     self->frame = frame;
     
     self->dirty |= SPRITE_FRAME_DIRTY;
 }
 
-void sprite_set_anim(struct sprite* self, struct anim* anim) {
+void sprite_set_anim(struct sprite* self, struct anim* anim)
+{
     if (self->anim != anim) {
         if(self->anim) {
             anim_free(self->anim);
@@ -678,38 +714,45 @@ void sprite_set_anim(struct sprite* self, struct anim* anim) {
     }
 }
 
-void sprite_set_pos(struct sprite* self, float x, float y) {
+void sprite_set_pos(struct sprite* self, float x, float y)
+{
     self->x = x;
     self->y = y;
 
     self->dirty |= SPRITE_TRANSFORM_DIRTY;
 }
 
-void sprite_set_anchor(struct sprite* self, float x, float y) {
+void sprite_set_anchor(struct sprite* self, float x, float y)
+{
     self->anchor_x = x;
     self->anchor_y = y;
     
     self->dirty |= SPRITE_TRANSFORM_DIRTY;
 }
 
-void sprite_set_rotation(struct sprite* self, float rotation) {
+void sprite_set_rotation(struct sprite* self, float rotation)
+{
     self->rotation = rotation;
     
     self->dirty |= SPRITE_ROTATION_DIRTY;
 }
-void sprite_set_scale(struct sprite* self, float scale) {
+
+void sprite_set_scale(struct sprite* self, float scale)
+{
     self->scale_x = self->scale_y = scale;
     
     self->dirty |= SPRITE_SCALE_DIRTY;
 }
 
-void sprite_set_color(struct sprite* self, color color) {
+void sprite_set_color(struct sprite* self, color color)
+{
     self->color = color;
     
     self->dirty |= SPRITE_COLOR_DIRTY;
 }
 
-void sprite_set_size(struct sprite* self, float width, float height) {
+void sprite_set_size(struct sprite* self, float width, float height)
+{
     self->width = width;
     self->height = height;
     

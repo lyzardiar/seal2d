@@ -10,20 +10,25 @@ enum primitive_type {
     PRIMITVE_MAX,
 };
 
-
-#define FILL_OUTLINE (1)
-#define FILL_SOLID   (2)
+enum primitive_batch_type {
+    PRIMITIVE_BATCH_LINE = 0,
+    PRIMITIVE_BATCH_TRIANGLE,
+};
 
 struct primitive_render_batch {
+    enum primitive_batch_type type;
     int offset;
-    enum primitive_type type;
-    int line_count;
+    union {
+        int line_count;
+        int triangle_count;
+    } count;
+
     float line_width;
 };
 
 struct primitive_render_state {
-    GLuint program;
     enum primitive_type last_type;
+    GLuint program;
     struct attr_location loc;
     int line_width;
 };

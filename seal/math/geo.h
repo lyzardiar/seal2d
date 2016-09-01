@@ -37,6 +37,14 @@ vert.uv[0] = u; \
 vert.uv[1] = v; \
 } while(0);
 
+#define SET_VERTEX_COLOR_UINT(vert, c) \
+do { \
+vert.color[0] = (c >> 24) & 0xff; \
+vert.color[1] = (c >> 16) & 0xff; \
+vert.color[2] = (c >> 8 ) & 0xff; \
+vert.color[3] = (c      ) & 0xff; \
+} while(0);
+
 #define VERTEX_SIZE (sizeof(struct vertex))
 #define VERTEX_OFFSET_POS ((void*)offsetof(struct vertex, position))
 #define VERTEX_OFFSET_COLOR ((void*)offsetof(struct vertex, color))
@@ -46,7 +54,10 @@ vert.uv[1] = v; \
 #define PRIMITIVE_VERTEX_OFFSET_POS ((void*)offsetof(struct primitive_vertex, position))
 #define PRIMITIVE_VERTEX_OFFSET_COLOR ((void*)offsetof(struct primitive_vertex, color))
 
+
 #define C4B_COLOR(r,g,b,a) ( (r<<24) | (g<<16) | (b<<8) | (a<<0) )
+
+#define C4B_COLOR_A(arr) C4B_COLOR(arr[0], arr[1], arr[2], arr[3])
 
 struct glyph {
     struct vertex tl;

@@ -10,6 +10,9 @@
 #include "texture.h"
 #include "affine.h"
 
+#define FILL_OUTLINE (1)
+#define FILL_SOLID   (1)
+
 struct anim;
 struct render;
 struct touch_event;
