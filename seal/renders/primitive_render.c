@@ -187,6 +187,7 @@ void primitive_render_func_init(struct render* R)
     context->state.program = -1;
     context->current_batch_index = 0;
     context->n_objects = 0;
+    context->offset = 0;
     context->vertexes = s_malloc(PRIMITIVE_VERTEX_SIZE * VERTICE_SIZE);
     memset(context->vertexes, 0, PRIMITIVE_VERTEX_SIZE * VERTICE_SIZE);
 
