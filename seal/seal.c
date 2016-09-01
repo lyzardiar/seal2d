@@ -194,8 +194,10 @@ void seal_init_graphics() {
     GAME->lua_handler = lua_handler_new(GAME->lstate);
     sprite_init_render(GAME->render);
 
+#ifdef PLAT_DESKTOP
     nuk_init(GAME->window->ctx);
     nanovg_init(GAME->config.window_width, GAME->config.window_height);
+#endif
     // init the font
     // TODO: implement this later
 //    ttf_init_module();
@@ -223,7 +225,7 @@ void seal_load_file(const char* script_path) {
 #endif
 
 #ifdef PLAT_IOS
-    char* script_file_data = s_reads(script_path);
+    char* script_file_data = fs_reads(script_path);
     seal_load_string(script_file_data);
     s_free(script_file_data);
 #endif

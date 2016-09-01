@@ -23,7 +23,9 @@ static int win_h = 768;
 void nanovg_init(int w, int h)
 {
     if (!vg_ctx) {
+#ifdef PLAT_DESKTOP
         vg_ctx = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
+#endif
         win_w = w;
         win_h = h;
         px_ratio = (float)w/(float)h;

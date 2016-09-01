@@ -70,31 +70,54 @@ static const char* fs_primitive = STRINGFY(#version 330\n)STRINGFY(
 
 #ifdef PLAT_MOBILE
 static const char* vs_sprite = STRINGFY(\n
-                                       precision lowp float;\n
-                                       attribute mediump vec2 vertex_pos;\n
-                                       attribute lowp vec4 vertex_color;\n
-                                       attribute mediump vec2 vertex_uv; \n\n
-                                       uniform mat4 mvp; \n
+    precision lowp float;\n
+    attribute mediump vec2 vertex_pos;\n
+    attribute lowp vec4 vertex_color;\n
+    attribute mediump vec2 vertex_uv; \n\n
+    uniform mat4 mvp; \n
 
-                                       varying lowp vec4 fragement_color;\n
-                                       varying mediump vec2 fragement_uv; \n\n
-                                       void main() {\n
-                                           gl_Position = mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0, 1.0); \n
-                                           fragement_color = vertex_color;\n
-                                           fragement_uv = vec2(vertex_uv.x, 1.0 - vertex_uv.y); \n
-                                       }\n
-                                       );
+    varying lowp vec4 fragement_color;\n
+    varying mediump vec2 fragement_uv; \n\n
+    void main() {\n
+        gl_Position = mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0, 1.0); \n
+        fragement_color = vertex_color;\n
+        fragement_uv = vec2(vertex_uv.x, 1.0 - vertex_uv.y); \n
+    }\n
+    );
 
 static const char* fs_sprite = STRINGFY(\n
-                                       precision lowp float;\n
-                                       varying lowp vec4 fragement_color; \n
-                                       varying mediump vec2 fragement_uv; \n\n
+    precision lowp float;\n
+    varying lowp vec4 fragement_color; \n
+    varying mediump vec2 fragement_uv; \n\n
 
-                                       uniform sampler2D texture_0; \n\n
-                                       void main() {\n
-                                           gl_FragColor = texture2D(texture_0, fragement_uv); \n
-                                       }\n
-                                       );
+    uniform sampler2D texture_0; \n\n
+    void main() {\n
+        gl_FragColor = texture2D(texture_0, fragement_uv); \n
+    }\n
+    );
+
+static const char* vs_primitive = STRINGFY(\n
+    precision lowp float;\n
+    attribute mediump vec2 vertex_pos;\n
+    attribute lowp vec4 vertex_color;\n
+    uniform mat4 mvp; \n
+    varying lowp vec4 fragement_color;\n
+
+    void main() {\n
+        gl_Position = mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0, 1.0); \n
+        fragement_color = vertex_color;\n
+    }\n
+    );
+
+static const char* fs_primitive = STRINGFY(\n
+    precision lowp float;\n
+    varying lowp vec4 fragement_color; \n
+
+    void main() {\n
+        gl_FragColor = fragement_color;
+    }\n
+    );
+
 #endif
 
 #define set_builtin_uniform(uniform, i, t, n) uniform.type = i; \
@@ -103,8 +126,8 @@ static const char* fs_sprite = STRINGFY(\n
 
 void shader_set_uniform_object(struct shader* self,
                                enum BUILT_IN_UNIFORMS type,
-                               float* v) {
-    
+                               float* v)
+{    
     struct uniform_buffer_object* object = &(self->uniform_buffer_objects[type]);
     
     enum UNIFORM_ATTRIBUTE_TYPE attr_type = self->uniforms[type].attr_type;
@@ -132,14 +155,16 @@ void shader_set_uniform_object(struct shader* self,
     }
 }
 
-void check_gl_error(const char* file, int line) {
+void check_gl_error(const char* file, int line)
+{
     GLenum err = GL_NO_ERROR;
     if((err = glGetError()) != GL_NO_ERROR) {
         fprintf(stderr, "gl error: %04x. file = %s, line = %d\n", err, file, line);
     }
 }
 
-static GLuint create_program(GLuint vs, GLuint fs) {
+static GLuint create_program(GLuint vs, GLuint fs)
+{
     GLuint program = glCreateProgram();
     glAttachShader(program, vs);
     glAttachShader(program, fs);
@@ -163,7 +188,8 @@ static GLuint create_program(GLuint vs, GLuint fs) {
     return program;
 }
 
-static GLuint create_shader(GLenum shader_type, const char* shader_data) {
+static GLuint create_shader(GLenum shader_type, const char* shader_data)
+{
     GLuint shader = glCreateShader(shader_type);
     glShaderSource(shader, 1, &shader_data, NULL);
     glCompileShader(shader);
@@ -191,7 +217,8 @@ static GLuint create_shader(GLenum shader_type, const char* shader_data) {
     return shader;
 }
 
-static GLuint craete_shader_from_file(GLenum shader_type, const char* file_path) {
+static GLuint craete_shader_from_file(GLenum shader_type, const char* file_path)
+{
     char* bytes = fs_reads(file_path);
     GLuint shader = 0;
     if (bytes > 0) {
@@ -204,7 +231,8 @@ static GLuint craete_shader_from_file(GLenum shader_type, const char* file_path)
     return shader;
 }
 
-static void shader_load_all(struct shader* self) {
+static void shader_load_all(struct shader* self)
+{
     const char* shaders[] = {
         vs_sprite,
         fs_sprite,
@@ -224,7 +252,8 @@ static void shader_load_all(struct shader* self) {
     }
 }
 
-struct shader* shader_new() {
+struct shader* shader_new()
+{
     struct shader* shader = STRUCT_NEW(shader);
     memset(shader->shader_programs, 0, MAX_SHADER*sizeof(GLuint));
     
@@ -235,11 +264,13 @@ struct shader* shader_new() {
     return shader;
 }
 
-void shader_free(struct shader* self) {
+void shader_free(struct shader* self)
+{
     s_free(self);
 }
 
-void shader_set_uniform(struct shader* self, GLint program, enum BUILT_IN_UNIFORMS type, void* v) {
+void shader_set_uniform(struct shader* self, GLint program, enum BUILT_IN_UNIFORMS type, void* v)
+{
     const char* name = self->uniforms[type].name;
     
     GLint location = glGetUniformLocation(program, name);
@@ -263,13 +294,15 @@ void shader_set_uniform(struct shader* self, GLint program, enum BUILT_IN_UNIFOR
     CHECK_GL_ERROR;
 }
 
-void shader_commit_uniform(struct shader* self, GLint program) {
+void shader_commit_uniform(struct shader* self, GLint program)
+{
     for (int i = 0; i < BUILT_IN_UNIFORM_MAX; ++i) {
         shader_set_uniform(self, program, i, self->uniform_buffer_objects[i].v);
     }
 }
 
-GLuint shader_get_program(struct shader* self, enum SHADER_TYPE shader_index) {
+GLuint shader_get_program(struct shader* self, enum SHADER_TYPE shader_index)
+{
     assert(shader_index >= 0 && shader_index < MAX_SHADER);
     return self->shader_programs[shader_index];
 }

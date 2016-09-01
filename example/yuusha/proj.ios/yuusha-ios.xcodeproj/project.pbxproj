@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4D6486221D4DBE92002781A7 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = 4D6486211D4DBE92002781A7 /* scripts */; };
 		4D6486241D4DBEA8002781A7 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 4D6486231D4DBEA8002781A7 /* res */; };
+		4D7C54701D78A0ED00348A5D /* primitive_render.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D7C546C1D78A0ED00348A5D /* primitive_render.c */; };
+		4D7C54711D78A0ED00348A5D /* sprite_render.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D7C546E1D78A0ED00348A5D /* sprite_render.c */; };
 		4DC479571D4DB966002E444B /* fs.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DC479561D4DB966002E444B /* fs.m */; };
 		A6A8357E1D4CA87000A48B19 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A6A8357D1D4CA87000A48B19 /* main.m */; };
 		A6A835811D4CA87000A48B19 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A6A835801D4CA87000A48B19 /* AppDelegate.m */; };
@@ -38,7 +40,6 @@
 		A6A835EF1D4CA94C00A48B19 /* geo.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835BA1D4CA94C00A48B19 /* geo.c */; };
 		A6A835F01D4CA94C00A48B19 /* matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835BC1D4CA94C00A48B19 /* matrix.c */; };
 		A6A835F11D4CA94C00A48B19 /* memory.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835BE1D4CA94C00A48B19 /* memory.c */; };
-		A6A835F21D4CA94C00A48B19 /* nuk_node.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835C01D4CA94C00A48B19 /* nuk_node.c */; };
 		A6A835F51D4CA94C00A48B19 /* timer.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835C71D4CA94C00A48B19 /* timer.c */; };
 		A6A835F61D4CA94C00A48B19 /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835C91D4CA94C00A48B19 /* render.c */; };
 		A6A835F71D4CA94C00A48B19 /* seal.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A835CB1D4CA94C00A48B19 /* seal.c */; };
@@ -115,6 +116,10 @@
 /* Begin PBXFileReference section */
 		4D6486211D4DBE92002781A7 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../scripts; sourceTree = "<group>"; };
 		4D6486231D4DBEA8002781A7 /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../res; sourceTree = "<group>"; };
+		4D7C546C1D78A0ED00348A5D /* primitive_render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = primitive_render.c; sourceTree = "<group>"; };
+		4D7C546D1D78A0ED00348A5D /* primitive_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = primitive_render.h; sourceTree = "<group>"; };
+		4D7C546E1D78A0ED00348A5D /* sprite_render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sprite_render.c; sourceTree = "<group>"; };
+		4D7C546F1D78A0ED00348A5D /* sprite_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprite_render.h; sourceTree = "<group>"; };
 		4DC479561D4DB966002E444B /* fs.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = fs.m; sourceTree = "<group>"; };
 		A6A835791D4CA87000A48B19 /* yuusha-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "yuusha-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6A8357D1D4CA87000A48B19 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -164,8 +169,6 @@
 		A6A835BD1D4CA94C00A48B19 /* matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matrix.h; sourceTree = "<group>"; };
 		A6A835BE1D4CA94C00A48B19 /* memory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memory.c; sourceTree = "<group>"; };
 		A6A835BF1D4CA94C00A48B19 /* memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memory.h; sourceTree = "<group>"; };
-		A6A835C01D4CA94C00A48B19 /* nuk_node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nuk_node.c; sourceTree = "<group>"; };
-		A6A835C11D4CA94C00A48B19 /* nuk_node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuk_node.h; sourceTree = "<group>"; };
 		A6A835C41D4CA94C00A48B19 /* fs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fs.h; sourceTree = "<group>"; };
 		A6A835C61D4CA94C00A48B19 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		A6A835C71D4CA94C00A48B19 /* timer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = timer.c; sourceTree = "<group>"; };
@@ -324,6 +327,17 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		4D7C546B1D78A0ED00348A5D /* renders */ = {
+			isa = PBXGroup;
+			children = (
+				4D7C546C1D78A0ED00348A5D /* primitive_render.c */,
+				4D7C546D1D78A0ED00348A5D /* primitive_render.h */,
+				4D7C546E1D78A0ED00348A5D /* sprite_render.c */,
+				4D7C546F1D78A0ED00348A5D /* sprite_render.h */,
+			);
+			path = renders;
+			sourceTree = "<group>";
+		};
 		A6A835701D4CA87000A48B19 = {
 			isa = PBXGroup;
 			children = (
@@ -372,6 +386,7 @@
 		A6A835971D4CA94C00A48B19 /* seal */ = {
 			isa = PBXGroup;
 			children = (
+				4D7C546B1D78A0ED00348A5D /* renders */,
 				A6A8359C1D4CA94C00A48B19 /* base */,
 				A6A835A41D4CA94C00A48B19 /* binding */,
 				A6A835B21D4CA94C00A48B19 /* image */,
@@ -392,8 +407,6 @@
 				A6A835B61D4CA94C00A48B19 /* lua_handler.h */,
 				A6A835BE1D4CA94C00A48B19 /* memory.c */,
 				A6A835BF1D4CA94C00A48B19 /* memory.h */,
-				A6A835C01D4CA94C00A48B19 /* nuk_node.c */,
-				A6A835C11D4CA94C00A48B19 /* nuk_node.h */,
 				A6A835C91D4CA94C00A48B19 /* render.c */,
 				A6A835CA1D4CA94C00A48B19 /* render.h */,
 				A6A835CB1D4CA94C00A48B19 /* seal.c */,
@@ -811,6 +824,7 @@
 				A6A836601D4CABF800A48B19 /* lctype.c in Sources */,
 				A6A8365C1D4CABF800A48B19 /* lbaselib.c in Sources */,
 				A6A8366B1D4CABF800A48B19 /* lmem.c in Sources */,
+				4D7C54701D78A0ED00348A5D /* primitive_render.c in Sources */,
 				A6A835811D4CA87000A48B19 /* AppDelegate.m in Sources */,
 				A6A836641D4CABF800A48B19 /* ldump.c in Sources */,
 				A6A836721D4CABF800A48B19 /* lstring.c in Sources */,
@@ -837,11 +851,11 @@
 				A6A8357E1D4CA87000A48B19 /* main.m in Sources */,
 				A6A835E61D4CA94C00A48B19 /* lseal_core.c in Sources */,
 				A6A8366F1D4CABF800A48B19 /* loslib.c in Sources */,
+				4D7C54711D78A0ED00348A5D /* sprite_render.c in Sources */,
 				A6A836791D4CABF800A48B19 /* lundump.c in Sources */,
 				A6A836701D4CABF800A48B19 /* lparser.c in Sources */,
 				A6A835FE1D4CA94C00A48B19 /* ttf_font.c in Sources */,
 				A6A835EE1D4CA94C00A48B19 /* affine.c in Sources */,
-				A6A835F21D4CA94C00A48B19 /* nuk_node.c in Sources */,
 				A6A835F81D4CA94C00A48B19 /* shader.c in Sources */,
 				A6A835DE1D4CA94C00A48B19 /* action.c in Sources */,
 			);
