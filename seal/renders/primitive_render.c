@@ -88,7 +88,7 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
 {
     static int vertex_size[PRIMITVE_MAX] = {
         4, // line takes 4 floats
-        8  // rect takes 8 floats
+        6  // rect takes 8 floats
     };
 
     struct primitive_render_context* context = render_get_context(R, PRIMITIVE_RENDER);

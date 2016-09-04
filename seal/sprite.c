@@ -12,6 +12,7 @@
 #include "sprite.h"
 #include "anim.h"
 #include "bmfont.h"
+#include "spine_anim.h"
 #include "render.h"
 #include "event.h"
 
@@ -69,12 +70,14 @@ void sprite_frame_cache_free(struct sprite_frame_cache* self)
     s_free(self);
 }
 
-void sprite_frame_cache_add(struct sprite_frame_cache* self, struct sprite_frame* frame)
+void sprite_frame_cache_add(struct sprite_frame_cache* self,
+                            struct sprite_frame* frame)
 {
     hashmapPut(self->cache, frame->key, frame);
 }
 
-struct sprite_frame* sprite_frame_cache_get(struct sprite_frame_cache* self, const char* key)
+struct sprite_frame* sprite_frame_cache_get(struct sprite_frame_cache* self,
+                                            const char* key)
 {
     struct sprite_frame* f = hashmapGet(self->cache, (void*)key);
     if (!f) {
@@ -108,7 +111,8 @@ void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id)
     self->tex_id = tex_id;
 }
 
-void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float texture_height) {
+void sprite_frame_init_uv(struct sprite_frame* self,
+                          float texture_width, float texture_height) {
     struct rect* frame_rect = &self->frame_rect;
     self->uv.u = frame_rect->x / texture_width;
     self->uv.v = 1.0f - (frame_rect->y + frame_rect->height) / texture_height; // left corner is (0, 0)
@@ -118,7 +122,6 @@ void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float 
 
 void sprite_frame_tostring(struct sprite_frame* self, char* buff)
 {
-    
     sprintf(buff, "{key = \"%s\",\n"
             "frame_rect = {%d, %d, %d, %d},\n"
             "source_rect = {%d, %d, %d, %d},\n"
@@ -128,8 +131,10 @@ void sprite_frame_tostring(struct sprite_frame* self, char* buff)
             "trimmed = %s,\n"
             "uv = {%.2f, %.2f, %.2f, %.2f}}\n",
             self->key,
-            self->frame_rect.x, self->frame_rect.y, self->frame_rect.width, self->frame_rect.height,
-            self->source_rect.x, self->source_rect.y, self->source_rect.width, self->source_rect.height,
+            self->frame_rect.x, self->frame_rect.y,
+            self->frame_rect.width, self->frame_rect.height,
+            self->source_rect.x, self->source_rect.y,
+            self->source_rect.width, self->source_rect.height,
             self->source_size.width, self->source_size.height,
             self->tex_id,
             stringfy_bool(self->rotated),
@@ -157,6 +162,7 @@ void sprite_init(struct sprite* self, float width, float height)
     self->color = C4B_COLOR(255, 255, 255, 255);
     self->primitive_vertex = NULL;
     self->line_width = 0;
+    self->spine_anim = NULL;
     
     self->children = array_new(16);
     
@@ -164,7 +170,8 @@ void sprite_init(struct sprite* self, float width, float height)
     af_identify(&self->world_srt);
 }
 
-void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLuint tex_id)
+void sprite_set_glyph(struct sprite* self, struct rect* rect,
+                      struct uv* uv, GLuint tex_id)
 {
     struct glyph* g = &self->glyph;
     
@@ -248,6 +255,27 @@ struct sprite* sprite_new_container(struct rect* r)
     
     sprite_init(s, r->width, r->height);
     sprite_set_glyph(s, r, NULL, 0);
+    return s;
+}
+
+struct sprite* sprite_new_spine(const char* atlas_path,
+                                const char* spine_data_path,
+                                float scale)
+{
+    struct sprite* s = STRUCT_NEW(sprite);
+    s->type = SPRITE_TYPE_SPINE;
+
+    struct rect r;
+    struct spine_anim* spine_anim = spine_anim_new(atlas_path,
+                                                   spine_data_path,
+                                                   scale);
+    spine_get_boundingbox(spine_anim, &r);
+
+    sprite_init(s, r.width, r.height);
+    sprite_set_glyph(s, &r, NULL, 0);
+
+    s->spine_anim = spine_anim;
+    
     return s;
 }
 
@@ -338,16 +366,22 @@ void sprite_free(struct sprite* self)
     if(self->primitive_vertex) {
         s_free(self->primitive_vertex);
     }
+
+    if (self->spine_anim) {
+        spine_anim_free(self->spine_anim);
+    }
     
-    if (self->text) s_free(self->text);
+    if (self->text) {
+        s_free(self->text);
+    }
+    
     s_free(self);
 }
 
 void sprite_set_text(struct sprite* self, const char* label)
 {
-    if (self->text) {
-        if (strcmp(self->text, label) == 0)
-            return;
+    if (self->text && (!strcmp(self->text, label))) {
+        return;
     }
         
     if (self->type == SPRITE_TYPE_BMFONT_LABEL && self->bmfont) {

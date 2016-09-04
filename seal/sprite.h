@@ -18,6 +18,7 @@ struct render;
 struct touch_event;
 struct array;
 struct bmfont;
+struct spine_anim;
 
 enum sprite_type {
     // single sprite
@@ -26,6 +27,7 @@ enum sprite_type {
     SPRITE_TYPE_PRIMITVE, // contains line, rect, polygon, bezier line
 
     // muti sprite
+    SPRITE_TYPE_SPINE,
     SPRITE_TYPE_BMFONT_LABEL,
     SPRITE_TYPE_MESH,
     SPRITE_TYPE_TILE_MAP,
@@ -114,6 +116,9 @@ struct sprite {
     struct bmfont* bmfont;
     char* text;
 
+    // for spine.
+    struct spine_anim* spine_anim;
+
     bool swallow;
 };
 
@@ -123,6 +128,7 @@ struct sprite* sprite_new(struct sprite_frame* frame);
 struct sprite* sprite_new_label(const char* label);
 struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path);
 struct sprite* sprite_new_container(struct rect* r);
+struct sprite* sprite_new_spine(const char* atlas_path, const char* spine_data_path, float scale);
 struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* vertex, float width, color line_color);
 struct sprite* sprite_new_rect(struct rect* r, unsigned int rect_flag, color fill_color, color outline_color);

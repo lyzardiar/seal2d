@@ -145,6 +145,18 @@ int lsprite_new_container(lua_State* L)
     return 1;
 }
 
+int lsprite_new_spine(lua_State* L)
+{
+    const char* atlas_path = luaL_checkstring(L, 1);
+    const char* spine_data_path = luaL_checkstring(L, 2);
+    lua_Number scale = luaL_checknumber(L, 3);
+
+    struct sprite* s = sprite_new_spine(atlas_path, spine_data_path, scale);
+    lua_pushlightuserdata(L, s);
+
+    return 1;
+}
+
 static int new_line(lua_State* L)
 {
     float vertex[4] = {0};
@@ -373,6 +385,7 @@ int luaopen_seal_sprite(lua_State* L)
         { "new_label", lsprite_new_label },
         { "new_bmfont_label", lsprite_new_bmfont_label },
         { "new_container", lsprite_new_container },
+        { "new_spine", lsprite_new_spine },
         { "new_primitive", lsprite_new_primitive },
         { "new_clip", lsprite_new_clip },
         { "free", lsprite_free },

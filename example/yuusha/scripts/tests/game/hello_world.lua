@@ -164,6 +164,16 @@ local function sprite_primitive_test()
 	root:add_child(container)
 end
 
+local function sprite_spine_test()
+	print("run sprite_spine_test")
+	root:cleanup()
+
+	local spine = sprite.new_spine("res/spine_anim/spineboy.atlas",
+									"res/spine_anim/spineboy.json")
+	spine:set_pos(0, 0)
+	root:add_child(spine)
+end
+
 local function sprite_event_test()
 	print("run sprite_event_test")
 	root:cleanup()
@@ -308,6 +318,7 @@ local tests = {
 	-- {name = "sprite clip test", create_func = sprite_clip_test},
 	{name = "sprite primitive test", create_func = sprite_primitive_test },
 	{name = "sprite touch test", create_func = sprite_event_test},
+	{name = "sprite spine test", create_func = sprite_spine_test},
 	{name = "bmfont load test", create_func = bmfont_load_test},
 	{name = "bunny test", create_func = bunny_test},
 	{name = "multi texture test", create_func = multi_texture_test},

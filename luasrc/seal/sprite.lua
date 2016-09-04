@@ -47,6 +47,13 @@ function sprite.new_bmfont_label(...)
 	return self
 end
 
+function sprite.new_spine(atlas_file, spine_data_file, scale)
+	local self = {}
+	setmetatable(self, meta)
+	self.__cobj = sprite_core.new_spine(atlas_file, spine_data_file, scale or 1.0)
+	return self
+end
+
 function sprite.new_container(...)
 	local self = {}
 	setmetatable(self, meta)
