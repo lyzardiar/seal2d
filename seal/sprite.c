@@ -645,11 +645,32 @@ bool sprite_contains(struct sprite* self, float x, float y) {
     return rect_contains(&world, x, y);
 }
 
-static void sprite_before_visit(struct sprite* self)
+static void sprite_draw_pic(struct sprite* self)
+{
+    render_switch(R, RENDER_TYPE_SPRITE);
+    sprite_render_func_draw(R, self);
+}
+
+static void sprite_draw_spine(struct sprite* self, float dt)
+{
+    spine_anim_update(self->spine_anim, dt);
+    spine_anim_draw(self->spine_anim, R, self);
+}
+
+static void sprite_draw_primitive(struct sprite* self)
+{
+    render_switch(R, RENDER_TYPE_PRIMITIVE);
+    primitive_render_func_draw(R, self->primitive_type, self);
+}
+
+static void sprite_before_visit(struct sprite* self, float dt)
 {
     switch (self->type) {
         case SPRITE_TYPE_PIC:
             sprite_draw_pic(self);
+            break;
+        case SPRITE_TYPE_SPINE:
+            sprite_draw_spine(self, dt);
             break;
         case SPRITE_TYPE_PRIMITVE:
             sprite_draw_primitive(self);
@@ -683,9 +704,9 @@ void sprite_visit(struct sprite* self, float dt)
         anim_update(self->anim, dt);
         sprite_set_sprite_frame(self, anim_current_frame(self->anim));
     }
-    
+
     sprite_update_transform(self);
-    sprite_before_visit(self);
+    sprite_before_visit(self, dt);
 
     struct array* children = self->children;
     for (int i = 0 ;i < array_size(children); ++i) {
@@ -699,17 +720,6 @@ void sprite_visit(struct sprite* self, float dt)
     sprite_after_visit(self);
 }
 
-void sprite_draw_primitive(struct sprite* self)
-{
-    render_switch(R, PRIMITIVE_RENDER);
-    primitive_render_func_draw(R, self->primitive_type, self);
-}
-
-void sprite_draw_pic(struct sprite* self)
-{
-    render_switch(R, SPRITE_RENDER);
-    sprite_render_func_draw(R, self);
-}
 
 
 void sprite_draw_label(struct sprite* self)

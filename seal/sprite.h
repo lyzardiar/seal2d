@@ -139,13 +139,6 @@ void sprite_touch(struct sprite* self, struct touch_event* touch_event);
 void sprite_visit(struct sprite* self, float dt);
 bool sprite_contains(struct sprite* self, float x, float y);
 
-void sprite_draw_primitive(struct sprite* self);
-
-void sprite_draw_pic(struct sprite* self);
-void sprite_draw_label(struct sprite* self);
-void sprite_draw_clip(struct sprite* self);
-void sprite_clean_clip(struct sprite* self);
-
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame);
 void sprite_set_anim(struct sprite* self, struct anim* anim);
 

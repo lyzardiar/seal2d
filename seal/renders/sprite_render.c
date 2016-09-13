@@ -21,7 +21,7 @@ void sprite_render_batch_reset(struct render_batch* self)
 
 void sprite_render_func_flush(struct render* R)
 {
-    struct sprite_render_context* context = render_get_context(R, SPRITE_RENDER);
+    struct sprite_render_context* context = render_get_context(R, RENDER_TYPE_SPRITE);
 
     glBindVertexArray(context->buffer->vao);
 
@@ -58,7 +58,7 @@ void sprite_render_func_start(struct render* R)
 {
     GLuint prog = shader_get_program(R->shader, SHADER_COLOR);
     glUseProgram(prog);
-    struct sprite_render_context* context = render_get_context(R, SPRITE_RENDER);
+    struct sprite_render_context* context = render_get_context(R, RENDER_TYPE_SPRITE);
     context->state.program = prog;
 
     context->state.loc.position = glGetAttribLocation(context->state.program, "vertex_pos" );
@@ -78,7 +78,7 @@ void sprite_render_func_draw(struct render* R, void* object)
 {
     struct sprite* sprite = (struct sprite*)object;
 
-    struct sprite_render_context* context = render_get_context(R, SPRITE_RENDER);
+    struct sprite_render_context* context = render_get_context(R, RENDER_TYPE_SPRITE);
     if (context->n_objects+1 > MAX_OBJECTS) {
         sprite_render_func_flush(R);
     }
@@ -172,7 +172,7 @@ void sprite_render_func_init(struct render* R)
     };
 
     struct render_object object = {
-        SPRITE_RENDER,
+        RENDER_TYPE_SPRITE,
         func,
         context
     };

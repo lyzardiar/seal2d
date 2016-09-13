@@ -14,8 +14,8 @@
 struct render;
 
 enum RENDER_TYPE {
-    SPRITE_RENDER = 0,
-    PRIMITIVE_RENDER,
+    RENDER_TYPE_SPRITE = 0,
+    RENDER_TYPE_PRIMITIVE,
     
     RENDER_MAX,
 };

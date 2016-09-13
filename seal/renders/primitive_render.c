@@ -9,7 +9,7 @@ void primitive_render_func_start(struct render* R)
 {
     GLuint prog = shader_get_program(R->shader, SHADER_PRIMITIVE);
     glUseProgram(prog);
-    struct primitive_render_context* context = render_get_context(R, PRIMITIVE_RENDER);
+    struct primitive_render_context* context = render_get_context(R, RENDER_TYPE_PRIMITIVE);
     context->state.program = prog;
 
     context->state.loc.position = glGetAttribLocation(context->state.program, "vertex_pos" );
@@ -39,7 +39,7 @@ static void dump_primitive_vertex(struct primitive_vertex* vertex, int count)
 
 void primitive_render_func_flush(struct render* R)
 {
-    struct primitive_render_context* context = render_get_context(R, PRIMITIVE_RENDER);
+    struct primitive_render_context* context = render_get_context(R, RENDER_TYPE_PRIMITIVE);
 
     glBindBuffer(GL_ARRAY_BUFFER, context->vbo);
     glBufferData(GL_ARRAY_BUFFER, PRIMITIVE_VERTEX_SIZE * context->offset, context->vertexes, GL_DYNAMIC_DRAW);
@@ -91,7 +91,7 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
         6  // rect takes 8 floats
     };
 
-    struct primitive_render_context* context = render_get_context(R, PRIMITIVE_RENDER);
+    struct primitive_render_context* context = render_get_context(R, RENDER_TYPE_PRIMITIVE);
     if (context->current_batch_index >= MAX_RENDER_BATCH ||
         context->offset + vertex_size[primitive_type] >= VERTICE_SIZE) {
         primitive_render_func_flush(R);
@@ -201,7 +201,7 @@ void primitive_render_func_init(struct render* R)
         NULL,
     };
     struct render_object object = {
-        PRIMITIVE_RENDER,
+        RENDER_TYPE_PRIMITIVE,
         func,
         context
     };
