@@ -1,6 +1,6 @@
 #include "seal.h"
 #include "render.h"
-#include "renders/sprite_render.h"
+#include "renders/spine_render.h"
 #include "texture.h"
 #include "platform/fs.h"
 #include "math/geo.h"
@@ -93,7 +93,20 @@ static void spine_anim_render_region(struct spine_anim* self,
     spRegionAttachment* region = (spRegionAttachment*)slot->attachment;
     spRegionAttachment_computeWorldVertices(region, slot->bone, self->vertices);
     struct texture* texture =(struct texture*)((spAtlasRegion*)region->rendererObject)->page->rendererObject;
-    memcpy(self->uvs, region->uvs, sizeof(self->uvs));
+
+    struct spine_render_vertex_desc d = {
+        self->vertices,
+        region->uvs,
+        NULL,
+        texture->id
+    };
+
+    spine_render_func_draw(R, &d);
+
+    for (int i = 0; i < 8; i+=2) {
+        printf("vertice[%d] = (%.2f, %.2f) ", i, self->vertices[i], self->vertices[i+1]);
+        printf("uv[%d] = (%.2f, %.2f) \n", i, region->uvs[i], region->uvs[i+1]);
+    }
 
     // coord of spine
     // (x2, y2)------(x1, y1)
@@ -101,40 +114,31 @@ static void spine_anim_render_region(struct spine_anim* self,
     //  |               |
     //  |               |
     // (x3, y3)------(x4, y4)
-    float* vert = self->vertices;
-    float *uvs = region->uvs;
 
-    struct glyph* g = &spr->glyph;
+//    struct glyph* g = &spr->glyph;
 
-    g->tr.position[0] = vert[0];
-    g->tr.position[1] = vert[1];
-    g->tl.position[0] = vert[2];
-    g->tl.position[1] = vert[3];
-    g->bl.position[0] = vert[4];
-    g->bl.position[1] = vert[5];
-    g->br.position[0] = vert[6];
-    g->br.position[1] = vert[7];
-
-    g->tr.uv[0] = uvs[0];
-    g->tr.uv[1] = uvs[1];
-    g->tl.uv[0] = uvs[2];
-    g->tl.uv[1] = uvs[3];
-    g->bl.uv[0] = uvs[4];
-    g->bl.uv[1] = uvs[5];
-    g->br.uv[0] = uvs[6];
-    g->br.uv[1] = uvs[7];
-
-    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
-    SET_VERTEX_COLOR(g->tr, 255, 255, 255, 255);
-    SET_VERTEX_COLOR(g->tl, 255, 255, 255, 255);
-    SET_VERTEX_COLOR(g->br, 255, 255, 255, 255);
-    for (int i = 0; i < 8; i+=2) {
-        printf("vertice[%d] = (%.2f, %.2f) ", i, self->vertices[i], self->vertices[i+1]);
-        printf("uv[%d] = (%.2f, %.2f) \n", i, uvs[i], uvs[i+1]);
-    }
-
-    render_switch(R, RENDER_TYPE_SPRITE);
-    sprite_render_func_draw(R, spr);
+//    g->tr.position[0] = vert[0];
+//    g->tr.position[1] = vert[1];
+//    g->tl.position[0] = vert[2];
+//    g->tl.position[1] = vert[3];
+//    g->bl.position[0] = vert[4];
+//    g->bl.position[1] = vert[5];
+//    g->br.position[0] = vert[6];
+//    g->br.position[1] = vert[7];
+//
+//    g->tr.uv[0] = uvs[0];
+//    g->tr.uv[1] = uvs[1];
+//    g->tl.uv[0] = uvs[2];
+//    g->tl.uv[1] = uvs[3];
+//    g->bl.uv[0] = uvs[4];
+//    g->bl.uv[1] = uvs[5];
+//    g->br.uv[0] = uvs[6];
+//    g->br.uv[1] = uvs[7];
+//
+//    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
+//    SET_VERTEX_COLOR(g->tr, 255, 255, 255, 255);
+//    SET_VERTEX_COLOR(g->tl, 255, 255, 255, 255);
+//    SET_VERTEX_COLOR(g->br, 255, 255, 255, 255);
 }
 
 void spine_anim_draw(struct spine_anim* self, struct render* R, struct sprite* spr)

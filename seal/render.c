@@ -16,6 +16,7 @@
 
 extern void sprite_render_func_init(struct render* R);
 extern void primitive_render_func_init(struct render* R);
+extern void spine_render_func_init(struct render* R);
 
 struct render* render_new()
 {
@@ -24,6 +25,7 @@ struct render* render_new()
 
     sprite_render_func_init(r);
     primitive_render_func_init(r);
+    spine_render_func_init(r);
 
     r->shader = shader_new();
     return r;
@@ -74,6 +76,14 @@ void render_switch(struct render* self, enum RENDER_TYPE type)
     
     self->current = type;
     self->last = self->current;
+}
+
+void render_flush(struct render* self)
+{
+    if(self->current != RENDER_INVALID) {
+        struct render_object* LR = &self->R_objs[self->current];
+        LR->render_func.flush(self);
+    }
 }
 
 void render_set_mvp(GLuint program, float* mat)

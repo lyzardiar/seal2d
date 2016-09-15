@@ -16,6 +16,7 @@ struct render;
 enum RENDER_TYPE {
     RENDER_TYPE_SPRITE = 0,
     RENDER_TYPE_PRIMITIVE,
+    RENDER_TYPE_SPINE,
     
     RENDER_MAX,
 };
@@ -82,6 +83,7 @@ void render_clear(struct render* self, color c);
 void render_set_object(struct render* self, struct render_object* object);
 void* render_get_context(struct render* self, enum RENDER_TYPE render_object_type);
 void render_switch(struct render* self, enum RENDER_TYPE type);
+void render_flush(struct render* self);
 
 void render_set_mvp(GLuint program, float* mat);
 

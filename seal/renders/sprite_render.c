@@ -39,12 +39,14 @@ void sprite_render_func_flush(struct render* R)
     glVertexAttribPointer(loc_uv, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context->buffer->vibo);
+    CHECK_GL_ERROR;
     int n = context->current_batch_index;
     for (int i = 0; i < n; ++i) {
         struct render_batch* b = context->batches + i;
         glBindTexture(GL_TEXTURE_2D, b->tex_id);
+        CHECK_GL_ERROR;
         glDrawElements(GL_TRIANGLES, b->n_objects*6, GL_UNSIGNED_SHORT, 0);
-
+        CHECK_GL_ERROR;
         sprite_render_batch_reset(b);
         R->drawcall++;
     }
@@ -52,6 +54,7 @@ void sprite_render_func_flush(struct render* R)
     context->current_batch_index = 0;
     context->n_objects = 0;
     context->buffer->offset = 0;
+    CHECK_GL_ERROR;
 }
 
 void sprite_render_func_start(struct render* R)
@@ -94,7 +97,7 @@ void sprite_render_func_draw(struct render* R, void* object)
 
     int new_tex_id = sprite->frame->tex_id;
 
-    int n = context->current_batch_index;
+    int n = (context->current_batch_index-1) <= 0 ? 0 : context->current_batch_index ;
 
     struct render_batch* batch = context->batches + n;
 
@@ -105,6 +108,7 @@ void sprite_render_func_draw(struct render* R, void* object)
         batch->offset = offset;
         batch->n_objects = 1;
         batch->tex_id = new_tex_id;
+        
         context->current_batch_index++;
     }
 
@@ -113,6 +117,11 @@ void sprite_render_func_draw(struct render* R, void* object)
     context->n_objects++;
 
     buffer->offset = offset;
+}
+
+void sprite_render_func_destroy(struct render* R)
+{
+
 }
 
 void sprite_render_func_end(struct render* R)

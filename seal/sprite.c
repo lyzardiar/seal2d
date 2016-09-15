@@ -22,6 +22,7 @@
 
 #include "renders/primitive_render.h"
 #include "renders/sprite_render.h"
+#include "renders/spine_render.h"
 
 
 EXTERN_GAME;
@@ -688,6 +689,9 @@ static void sprite_after_visit(struct sprite* self)
     switch (self->type) {
         case SPRITE_TYPE_PIC:
             sprite_render_func_flush(R);
+            break;
+        case SPRITE_TYPE_SPINE:
+            spine_render_func_flush(R);
             break;
         case SPRITE_TYPE_PRIMITVE:
             primitive_render_func_flush(R);
