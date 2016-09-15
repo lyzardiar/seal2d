@@ -51,6 +51,8 @@ void sprite_render_func_flush(struct render* R)
         R->drawcall++;
     }
 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     context->current_batch_index = 0;
     context->n_objects = 0;
     context->buffer->offset = 0;
@@ -108,7 +110,6 @@ void sprite_render_func_draw(struct render* R, void* object)
         batch->offset = offset;
         batch->n_objects = 1;
         batch->tex_id = new_tex_id;
-        
         context->current_batch_index++;
     }
 
