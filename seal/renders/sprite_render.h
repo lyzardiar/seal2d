@@ -7,6 +7,7 @@ struct sprite_render_context {
     struct vertex_buffer* buffer;
     struct render_batch batches[MAX_RENDER_BATCH];
     struct render_state state;
+    struct render_batch* current_batch;
 
     int current_batch_index;
     int n_objects;

@@ -314,8 +314,7 @@ void seal_draw() {
     lua_pushvalue(L, DRAW_FUNC_INDEX);
     seal_call(L, 0, 0);
     lua_settop(L, TOP_FUNC_INDEX);
-
-    printf("drawcall = %d\n", GAME->render->drawcall);
+    
     CHECK_GL_ERROR
 }
 

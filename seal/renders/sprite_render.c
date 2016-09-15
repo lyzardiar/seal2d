@@ -39,14 +39,13 @@ void sprite_render_func_flush(struct render* R)
     glVertexAttribPointer(loc_uv, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context->buffer->vibo);
-    CHECK_GL_ERROR;
     int n = context->current_batch_index;
+    unsigned long element_start = 0;
     for (int i = 0; i < n; ++i) {
         struct render_batch* b = context->batches + i;
         glBindTexture(GL_TEXTURE_2D, b->tex_id);
-        CHECK_GL_ERROR;
-        glDrawElements(GL_TRIANGLES, b->n_objects*6, GL_UNSIGNED_SHORT, 0);
-        CHECK_GL_ERROR;
+        glDrawElements(GL_TRIANGLES, (b->n_objects)*6, GL_UNSIGNED_SHORT, (void*)element_start);//);
+        element_start += b->n_objects * 6 * 2;
         sprite_render_batch_reset(b);
         R->drawcall++;
     }
@@ -56,6 +55,7 @@ void sprite_render_func_flush(struct render* R)
     context->current_batch_index = 0;
     context->n_objects = 0;
     context->buffer->offset = 0;
+    context->current_batch = &context->batches[0];
     CHECK_GL_ERROR;
 }
 
@@ -99,17 +99,15 @@ void sprite_render_func_draw(struct render* R, void* object)
 
     int new_tex_id = sprite->frame->tex_id;
 
-    int n = (context->current_batch_index-1) <= 0 ? 0 : context->current_batch_index ;
-
-    struct render_batch* batch = context->batches + n;
-
-    if (new_tex_id == batch->tex_id) {
-        batch->offset += VERTEX_PER_OBJECT;
-        batch->n_objects++;
+    struct render_batch* cur_batch = context->current_batch;
+    if (new_tex_id == cur_batch->tex_id) {
+        cur_batch->n_objects++;
     } else {
-        batch->offset = offset;
-        batch->n_objects = 1;
-        batch->tex_id = new_tex_id;
+        struct render_batch* new_batch = &context->batches[context->current_batch_index];
+        new_batch->offset = buffer->offset;
+        new_batch->n_objects = 1;
+        new_batch->tex_id = new_tex_id;
+        context->current_batch = new_batch;
         context->current_batch_index++;
     }
 
@@ -117,7 +115,7 @@ void sprite_render_func_draw(struct render* R, void* object)
     context->state.tex_id = sprite->frame->tex_id;
     context->n_objects++;
 
-    buffer->offset = offset;
+    buffer->offset += 4;
 }
 
 void sprite_render_func_destroy(struct render* R)
@@ -172,6 +170,7 @@ void sprite_render_func_init(struct render* R)
     memset(context->batches, 0, MAX_RENDER_BATCH*sizeof(struct render_batch));
     context->n_objects = 0;
     context->current_batch_index = 0;
+    context->current_batch = &context->batches[0];
 
     struct render_func func = {
         sprite_render_func_init,

@@ -44,7 +44,7 @@ local function load_skeltons(sprites, x0, y0)
 	local x, y = x0 or 0, y0 or 0
 	local last_width
 	for i = 1, #sprites do
-		s = load_sprite("skeleton.png", sprites[i], x, y)
+		s = load_sprite("skeleton.png", sprites[i], x + 100, y)
 		x = x + s:get_size()
 		root:add_child(s)
 		child[#child+1] = s
@@ -58,7 +58,7 @@ local function sprite_srt_test()
 
 	local sprites = {
 		{ frame = "skeleton_1.png" },
-		{ frame = "skeleton_2.png", scale = 2},
+		{ frame = "skeleton_2.png", scale = 1.5},
 		{ frame = "skeleton_3.png", rotation = 90 },
 		{ frame = "skeleton_4.png", rotation = 360, scale = 2 },
 	}
@@ -70,7 +70,10 @@ local function sprite_anchor_test()
 	print("run sprite_anchor_test")
 	root:cleanup()
 	local sprites = {
-		{ frame = "skeleton_1.png" },
+		{ frame = "skeleton_1.png",
+			anchor = { x = 0, y = 0},
+			pos = { x = 0, y = 0},
+		 },
 
 		{ 	frame = "skeleton_1.png",
 			anchor = {x = 0.5, y = 0.5},
@@ -285,11 +288,18 @@ local function multi_texture_test()
 	root:cleanup()
 
 	local s1 = sprite.new("ui.png", "smile_middle.png")
-	root:add_child(s1)
 
 	local s2 = sprite.new("anim_pirate.png", "attack_0.png")
 	s2:set_pos(200, 200)
+	local s3 = sprite.new("anim_pirate.png", "attack_0.png")
+	s3:set_pos(400, 200)
+
+	local s4 = sprite.new("ui.png", "smile_middle.png")
+	s4:set_pos(400, 0)
+	root:add_child(s1)
 	root:add_child(s2)
+	root:add_child(s3)
+	root:add_child(s4)
 end
 
 local naovg_draw
@@ -372,6 +382,8 @@ function hello_world.entry()
 	sprite_frame.load_from_json("res/images/skeleton.json")
 
 	root = sprite.new_container()
+	-- root = sprite.new("anim_pirate.png", "attack_0.png")
+
 	root:set_pos(0, 0)
 
 	menu = nuk_node.new()
