@@ -654,6 +654,7 @@ static void sprite_draw_pic(struct sprite* self)
 
 static void sprite_draw_spine(struct sprite* self, float dt)
 {
+    render_switch(R, RENDER_TYPE_SPINE);
     spine_anim_update(self->spine_anim, dt);
     spine_anim_draw(self->spine_anim, R, self);
 }
