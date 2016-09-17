@@ -1,0 +1,1 @@
+{"skeleton":{"hash":"7ljYFGFoyUcqP3yUP38+euugsWI","spine":"2.1.27","width":120,"height":80,"images":""},"bones":[{"name":"root","y":40.99}],"slots":[{"name":"bone_right","bone":"root","attachment":"bone_right"}],"skins":{"default":{"bone_right":{"bone_right":{"width":120,"height":80}}}},"animations":{"animation":{}}}
