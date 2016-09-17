@@ -102,12 +102,12 @@ void spine_render_func_draw(struct render* R, void* object)
     SET_VERTEX_POS(data[4], v[6] + 250.0f, v[7]);
     SET_VERTEX_POS(data[5], v[2] + 250.0f, v[3]);
 
-    SET_VERTEX_UV(data[0], uv[0], uv[1]);
-    SET_VERTEX_UV(data[1], uv[2], uv[3]);
-    SET_VERTEX_UV(data[2], uv[6], uv[7]);
-    SET_VERTEX_UV(data[3], uv[4], uv[5]);
-    SET_VERTEX_UV(data[4], uv[6], uv[7]);
-    SET_VERTEX_UV(data[5], uv[2], uv[3]);
+    SET_VERTEX_UV(data[0], uv[0], 1.0 - uv[1]);
+    SET_VERTEX_UV(data[1], uv[2], 1.0 - uv[3]);
+    SET_VERTEX_UV(data[2], uv[6], 1.0 - uv[7]);
+    SET_VERTEX_UV(data[3], uv[4], 1.0 - uv[5]);
+    SET_VERTEX_UV(data[4], uv[6], 1.0 - uv[7]);
+    SET_VERTEX_UV(data[5], uv[2], 1.0 - uv[3]);
 
     for (int i = 0; i < 6; ++i) {
         SET_VERTEX_COLOR(data[i], 255, 255, 255, 255);
