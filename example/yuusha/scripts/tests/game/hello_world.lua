@@ -5,7 +5,7 @@ local game = require "game"
 local util = require "util"
 local consts = require "consts"
 local nuklear = require "nuklear_core"
-local nuk_node = require "nuk_node"
+
 
 local hello_world = {}
 
@@ -155,13 +155,13 @@ local function sprite_primitive_test()
 										color = {0, 255, 0, 255}} )
 	line:set_pos(100, 200)
 
-	local rect = sprite.new_primitive("R", {
-										rect = {0, 0, 100, 200},
-										fill_color = {255, 0, 0, 255}
-										})
-	rect:set_pos(200, 200)
+	-- local rect = sprite.new_primitive("R", {
+	-- 									rect = {0, 0, 100, 200},
+	-- 									fill_color = {255, 0, 0, 255}
+	-- 									})
+	-- rect:set_pos(200, 200)
+	-- container:add_child(rect)
 
-	container:add_child(rect)
 	container:add_child(line)
 
 	root:add_child(container)
@@ -336,6 +336,7 @@ local tests = {
 }
 
 local function draw_gui()
+	local nuk_node = require "nuk_node"
 	nuklear.nuk_draw_start()
 
 	if(menu:nk_begin("tests",
@@ -367,7 +368,7 @@ end
 
 function hello_world.draw()
 	local platform = require ("platform_core").get_platform()
-	if platform == 'mac' or platform == 'win' then
+	if device.is_pc() then
 		draw_gui()
 	end
 
@@ -386,7 +387,12 @@ function hello_world.entry()
 
 	root:set_pos(0, 0)
 
-	menu = nuk_node.new()
+
+	if device.is_pc() then
+		menu = nuk_node.new()
+	else
+		sprite_primitive_test()
+	end
 
 	return root.__cobj
 end

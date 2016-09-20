@@ -27,10 +27,8 @@ struct primitive_render_batch {
 };
 
 struct primitive_render_state {
-    enum primitive_type last_type;
     GLuint program;
     struct attr_location loc;
-    int line_width;
 };
 
 struct primitive_render_context {
@@ -40,6 +38,7 @@ struct primitive_render_context {
 
     struct primitive_render_batch batches[MAX_RENDER_BATCH];
     struct primitive_render_state state;
+    struct primitive_render_batch* current_batch;
 
     int current_batch_index;
     int offset;

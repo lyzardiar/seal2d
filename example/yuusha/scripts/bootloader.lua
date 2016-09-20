@@ -1,6 +1,7 @@
 local function pmain()
 	local platform = require("platform_core")
 	local script_search_path = {
+		"?.lua",
 		"scripts/?.lua",
 		"seal/?.lua",
 		"thirdparty/socket/?.lua",
@@ -17,6 +18,7 @@ local function pmain()
 
 	elseif plat == 'ios' then
 		local root = platform.get_sandbox_root_path()
+        print("ios root path is ", root)
 		for _, path in ipairs(script_search_path) do
 			package.path = package.path .. ";" .. root .. "/" .. path
 		end
@@ -32,10 +34,13 @@ local function pmain()
 			_G[k] = mod[k]
 			print(string.format("inject: %s.%s", mod_name, k))
 		end
+		_G[mod_name] = mod
 	end
 
 	local util = require "seal.util"
+	local device = require "seal.device"
 	inject("util", util)
+	inject("device", device)
 
 	local game = require "game"
 	require("seal.engine").start(game)

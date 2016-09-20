@@ -26,6 +26,7 @@ static void primitive_render_batch_reset(struct primitive_render_batch* self)
     self->offset = 0;
     self->type = PRIMITIVE_INVALID;
     self->line_width = -1;
+    self->count.line_count = 0;
 }
 
 static void dump_primitive_vertex(struct primitive_vertex* vertex, int count)
@@ -80,6 +81,7 @@ void primitive_render_func_flush(struct render* R)
         primitive_render_batch_reset(b);
     }
 
+    context->current_batch = &context->batches[0];
     context->current_batch_index = 0;
     context->offset = 0;
 }
@@ -102,7 +104,8 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
     struct primitive_vertex* data = buffer + context->offset;
 
     struct sprite* sprite = (struct sprite*) object;
-    struct primitive_render_batch* batch = context->batches + context->current_batch_index;
+
+    struct primitive_render_batch* cur_batch = context->current_batch;
 
     switch (primitive_type) {
         case PRIMITIVE_LINE:
@@ -113,20 +116,18 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
                 data[2] = v[2];
                 data[3] = v[3];
 
-                if (context->state.last_type != PRIMITIVE_LINE ||
-                    context->state.line_width != sprite->line_width) {
-                    context->state.line_width = sprite->line_width;
-                    context->state.last_type = PRIMITIVE_LINE;
+                if (cur_batch->type != PRIMITIVE_LINE ) {
+                    struct primitive_render_batch* new_batch = &context->batches[context->current_batch_index];
+                    new_batch->type = PRIMITIVE_BATCH_LINE;
 
-                    batch->type = PRIMITIVE_BATCH_LINE;
-                    batch->line_width = sprite->line_width;
-                    batch->offset = offset;
-                    batch->count.line_count = 1;
+                    new_batch->offset = offset;
+                    new_batch->count.line_count = 1;
 
+                    context->current_batch = new_batch;
                     context->current_batch_index++;
                 } else {
-                    batch->offset += 2;
-                    batch->count.line_count++;
+                    cur_batch->offset += 2;
+                    cur_batch->count.line_count++;
                 }
                 context->offset += 2;
             }
@@ -146,17 +147,17 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
                     data[5] = v[0];
 //                }
 
-                if (context->state.last_type != PRIMITIVE_RECT) {
-                    context->state.last_type = PRIMITIVE_RECT;
+                if (cur_batch->type != PRIMITIVE_RECT) {
+                    struct primitive_render_batch* new_batch = &context->batches[context->current_batch_index];
 
-                    batch->type = PRIMITIVE_BATCH_TRIANGLE;
-                    batch->offset = offset;
-                    batch->count.triangle_count = 2;
+                    new_batch->type = PRIMITIVE_BATCH_TRIANGLE;
+                    new_batch->offset = offset;
+                    new_batch->count.triangle_count = 2;
 
                     context->current_batch_index++;
                 } else {
-                    batch->offset += 6;
-                    batch->count.triangle_count += 2;
+                    cur_batch->offset += 6;
+                    cur_batch->count.triangle_count += 2;
                 }
                 context->offset += 6;
             }
@@ -182,8 +183,6 @@ void primitive_render_func_init(struct render* R)
     
     glGenBuffers(1, &context->vbo);
 
-    context->state.last_type = PRIMITIVE_INVALID;
-    context->state.line_width = -1;
     context->state.program = -1;
     context->current_batch_index = 0;
     context->n_objects = 0;
@@ -192,6 +191,11 @@ void primitive_render_func_init(struct render* R)
     memset(context->vertexes, 0, PRIMITIVE_VERTEX_SIZE * VERTICE_SIZE);
 
     memset(context->batches, 0, MAX_RENDER_BATCH*sizeof(struct primitive_render_batch));
+    context->current_batch = &context->batches[0];
+
+    for (int i = 0; i < MAX_RENDER_BATCH; ++i) {
+        primitive_render_batch_reset(&context->batches[i]);
+    }
 
     struct render_func func = {
         primitive_render_func_init,

@@ -866,6 +866,8 @@
 				4D77986D1C6F229700021ED6 /* shader.h */,
 				4D7798641C6F0EC800021ED6 /* sprite.c */,
 				4D7798651C6F0EC800021ED6 /* sprite.h */,
+				4D67C1401D7BEAE100BFA14A /* spine_anim.c */,
+				4D67C1411D7BEAE100BFA14A /* spine_anim.h */,
 				4D887C481C70BFCA006EA5DA /* texture.c */,
 				4D887C491C70BFCA006EA5DA /* texture.h */,
 				4D46F80D1C8F37480081A1DC /* ttf_font.c */,
@@ -873,8 +875,6 @@
 				4D46F8061C8F25D30081A1DC /* util.h */,
 				4D1CF5831CB2A04E00A1FFB9 /* window.c */,
 				4D1CF5841CB2A04E00A1FFB9 /* window.h */,
-				4D67C1401D7BEAE100BFA14A /* spine_anim.c */,
-				4D67C1411D7BEAE100BFA14A /* spine_anim.h */,
 			);
 			name = seal;
 			path = ../../../seal;
