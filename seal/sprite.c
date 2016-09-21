@@ -750,6 +750,11 @@ void sprite_set_anim(struct sprite* self, struct anim* anim)
     }
 }
 
+void sprite_set_spine_anim(struct sprite* self, const char* anim_name, int track, bool loop)
+{
+    spine_anim_set_anim(self->spine_anim, anim_name, track, loop);
+}
+
 void sprite_set_pos(struct sprite* self, float x, float y)
 {
     self->x = x;

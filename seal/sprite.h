@@ -141,6 +141,7 @@ bool sprite_contains(struct sprite* self, float x, float y);
 
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame);
 void sprite_set_anim(struct sprite* self, struct anim* anim);
+void sprite_set_spine_anim(struct sprite* self, const char* anim_name, int track, bool loop);
 
 // common
 void sprite_set_pos(struct sprite* self, float x, float y);

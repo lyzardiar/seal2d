@@ -162,7 +162,7 @@ static int new_line(lua_State* L)
     float vertex[4] = {0};
     getarray_f(L, "vertex", vertex, 4);
 
-    int color[4];
+    int color[4] = {0};
     getarray_i(L, "color", color, 4);
 
     lua_Number width = getfield_f(L, "width");
@@ -276,6 +276,17 @@ int lsprite_set_anim(lua_State* L)
     sprite_set_anim(self, anim);
 
     array_free(frames);
+    return 0;
+}
+
+int lsprite_set_spine_anim(lua_State* L)
+{
+    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    const char* anim_name = luaL_checkstring(L, 2);
+    int track = luaL_checknumber(L, 3);
+    bool loop = lua_toboolean(L, 4);
+
+    sprite_set_spine_anim(self, anim_name, track, loop);
     return 0;
 }
 
@@ -393,6 +404,7 @@ int luaopen_seal_sprite(lua_State* L)
         { "register_handler", lsprite_register_handler },
         { "clean_handler", lsprite_clean_handler },
         { "set_anim", lsprite_set_anim },
+        { "set_spine_anim", lsprite_set_spine_anim},
         { "set_anim_interval", lsprite_set_anim_interval},
         { "set_pos", lsprite_set_pos },
         { "set_anchor", lsprite_set_anchor },

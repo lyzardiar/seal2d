@@ -103,10 +103,11 @@ static void spine_anim_render_region(struct spine_anim* self,
 
     spine_render_func_draw(R, &d);
 
-//    for (int i = 0; i < 8; i+=2) {
-//        printf("vertice[%d] = (%.2f, %.2f) ", i, self->vertices[i], self->vertices[i+1]);
+    static int t = 0;
+    for (int i = 0; i < 1; i+=2) {
+        printf("%d: vertice[%d] = (%.2f, %.2f) \n", t, i, self->vertices[i], self->vertices[i+1]);
 //        printf("uv[%d] = (%.2f, %.2f) \n", i, region->uvs[i], region->uvs[i+1]);
-//    }
+    }
 
 }
 
@@ -132,9 +133,9 @@ void spine_anim_draw(struct spine_anim* self, struct render* R, struct sprite* s
     }
 }
 
-void spine_anim_set_anim(struct spine_anim* self, const char* anim_name)
+void spine_anim_set_anim(struct spine_anim* self, const char* anim_name, int track, bool loop)
 {
-
+    spAnimationState_setAnimationByName(self->anim_state, track, anim_name, true);
 }
 
 void spine_get_boundingbox(struct spine_anim* self, struct rect* r)

@@ -150,9 +150,9 @@ local function sprite_primitive_test()
 	container:set_pos(100, 0)
 
 	local line = sprite.new_primitive("L", {
-										vertex = {0, 0, 100, 100},
+										vertex = {30, 20, 135, 257},
 										width = 2.0,
-										color = {0, 255, 0, 255}} )
+										color = {30, 0, 0, 255}} )
 	line:set_pos(100, 200)
 
 	-- local rect = sprite.new_primitive("R", {
@@ -171,8 +171,18 @@ local function sprite_spine_test()
 	print("run sprite_spine_test")
 	root:cleanup()
 
+-- 	self->animations[0]->name = death
+-- self->animations[1]->name = hit
+-- self->animations[2]->name = idle
+-- self->animations[3]->name = jump
+-- self->animations[4]->name = run
+-- self->animations[5]->name = shoot
+-- self->animations[6]->name = test
+-- self->animations[7]->name = walk
+
 	local spine = sprite.new_spine("res/spine_anim/spineboy.atlas",
 									"res/spine_anim/spineboy.json")
+	spine:set_spine_anim("death", 0, true)
 	spine:set_pos(0, 0)
 	root:add_child(spine)
 end
@@ -389,6 +399,7 @@ function hello_world.entry()
 
 
 	if device.is_pc() then
+		local nuk_node = require "nuk_node"
 		menu = nuk_node.new()
 	else
 		sprite_primitive_test()

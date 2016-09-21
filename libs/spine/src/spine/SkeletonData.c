@@ -119,9 +119,10 @@ spEventData* spSkeletonData_findEvent (const spSkeletonData* self, const char* e
 	return 0;
 }
 
+#include <stdio.h>
 spAnimation* spSkeletonData_findAnimation (const spSkeletonData* self, const char* animationName) {
 	int i;
-	for (i = 0; i < self->animationsCount; ++i)
+    for (i = 0; i < self->animationsCount; ++i)
 		if (strcmp(self->animations[i]->name, animationName) == 0) return self->animations[i];
 	return 0;
 }
