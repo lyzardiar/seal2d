@@ -632,7 +632,11 @@ void sprite_touch(struct sprite* self, struct touch_event* touch_event)
         }
         
         //TODO: this call is ugly, refactor someday.
-        lua_handler_exe_func(GAME->lua_handler, GAME->lstate, self, touch_event_set_func, touch_event);
+        lua_handler_exe_func(GAME->lua_handler,
+                             GAME->lstate,
+                             self,
+                             touch_event_set_func,
+                             touch_event);
     }
 }
 
@@ -656,7 +660,7 @@ static void sprite_draw_spine(struct sprite* self, float dt)
 {
     render_switch(R, RENDER_TYPE_SPINE);
     spine_anim_update(self->spine_anim, dt);
-    spine_anim_draw(self->spine_anim, R, self);
+    spine_anim_draw(self->spine_anim, R, self->world_srt.x, self->world_srt.y);
 }
 
 static void sprite_draw_primitive(struct sprite* self)

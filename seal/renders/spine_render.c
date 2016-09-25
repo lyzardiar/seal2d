@@ -112,15 +112,16 @@ void spine_render_func_draw(struct render* R, void* object)
     // copy the vertexes of the spine region attachment.
     float* v = spine_vertex->vertex;
     float* uv = spine_vertex->uv;
-
+    float x = spine_vertex->x;
+    float y = spine_vertex->y;
     int offset = context->buffer->offset;
     struct vertex* data = context->buffer->data + offset;
-    SET_VERTEX_POS(data[0], v[0] + 250.0f, v[1]);
-    SET_VERTEX_POS(data[1], v[2] + 250.0f, v[3]);
-    SET_VERTEX_POS(data[2], v[6] + 250.0f, v[7]);
-    SET_VERTEX_POS(data[3], v[4] + 250.0f, v[5]);
-    SET_VERTEX_POS(data[4], v[6] + 250.0f, v[7]);
-    SET_VERTEX_POS(data[5], v[2] + 250.0f, v[3]);
+    SET_VERTEX_POS(data[0], v[0] + x, v[1] + y);
+    SET_VERTEX_POS(data[1], v[2] + x, v[3] + y);
+    SET_VERTEX_POS(data[2], v[6] + x, v[7] + y);
+    SET_VERTEX_POS(data[3], v[4] + x, v[5] + y);
+    SET_VERTEX_POS(data[4], v[6] + x, v[7] + y);
+    SET_VERTEX_POS(data[5], v[2] + x, v[3] + y);
 
     SET_VERTEX_UV(data[0], uv[0], 1.0 - uv[1]);
     SET_VERTEX_UV(data[1], uv[2], 1.0 - uv[3]);

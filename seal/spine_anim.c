@@ -86,7 +86,7 @@ void spine_anim_update(struct spine_anim* self, float dt)
 
 static void spine_anim_render_region(struct spine_anim* self,
                                      struct render* R,
-                                     struct sprite* spr,
+                                     float x, float y,
                                      spSlot* slot,
                                      spAttachment* attachment)
 {
@@ -98,20 +98,16 @@ static void spine_anim_render_region(struct spine_anim* self,
         self->vertices,
         region->uvs,
         NULL,
-        texture->id
+        texture->id,
+        x, y
     };
 
     spine_render_func_draw(R, &d);
-
-    static int t = 0;
-    for (int i = 0; i < 1; i+=2) {
-//        printf("%d: vertice[%d] = (%.2f, %.2f) \n", t, i, self->vertices[i], self->vertices[i+1]);
-//        printf("uv[%d] = (%.2f, %.2f) \n", i, region->uvs[i], region->uvs[i+1]);
-    }
-
 }
 
-void spine_anim_draw(struct spine_anim* self, struct render* R, struct sprite* spr)
+void spine_anim_draw(struct spine_anim* self,
+                     struct render* R,
+                     float x, float y)
 {
     spSkeleton* skeleton = self->skeleton;
     int i = 0;
@@ -122,7 +118,7 @@ void spine_anim_draw(struct spine_anim* self, struct render* R, struct sprite* s
         if (attachment) {
             switch (attachment->type) {
                 case SP_ATTACHMENT_REGION: {
-                    spine_anim_render_region(self, R, spr, slot, attachment);
+                    spine_anim_render_region(self, R, x, y, slot, attachment);
                     break;
                 }
 

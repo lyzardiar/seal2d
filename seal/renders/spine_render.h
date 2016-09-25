@@ -13,6 +13,7 @@ struct spine_render_vertex_desc {
     float* uv;
     float* color;
     GLuint tex_id;
+    float x, y;
 };
 
 void spine_render_batch_reset(struct render_batch* self);
