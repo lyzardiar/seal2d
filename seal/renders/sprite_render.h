@@ -21,4 +21,4 @@ void sprite_render_func_flush(struct render* R);
 void sprite_render_func_draw(struct render* R, void* object);
 void sprite_render_func_destroy(struct render* R);
 
-#endif /* sprite_render_h */
+#endif

@@ -105,7 +105,7 @@ static void spine_anim_render_region(struct spine_anim* self,
 
     static int t = 0;
     for (int i = 0; i < 1; i+=2) {
-        printf("%d: vertice[%d] = (%.2f, %.2f) \n", t, i, self->vertices[i], self->vertices[i+1]);
+//        printf("%d: vertice[%d] = (%.2f, %.2f) \n", t, i, self->vertices[i], self->vertices[i+1]);
 //        printf("uv[%d] = (%.2f, %.2f) \n", i, region->uvs[i], region->uvs[i+1]);
     }
 

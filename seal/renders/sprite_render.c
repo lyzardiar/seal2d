@@ -113,7 +113,6 @@ void sprite_render_func_draw(struct render* R, void* object)
     }
 
     // save the last tex_id
-    context->state.tex_id = sprite->frame->tex_id;
     context->n_objects++;
 
     buffer->offset += 4;
@@ -166,7 +165,6 @@ void sprite_render_func_init(struct render* R)
     buffer->data = s_malloc(VERTEX_SIZE * MAX_OBJECTS * VERTEX_PER_OBJECT);
     buffer->offset = 0;
 
-    context->state.tex_id = 0;
     context->buffer = buffer;
     memset(context->batches, 0, MAX_RENDER_BATCH*sizeof(struct render_batch));
     context->n_objects = 0;

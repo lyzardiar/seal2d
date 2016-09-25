@@ -10,13 +10,45 @@
 #include "render.h"
 #include "shader.h"
 #include "camera.h"
-/*-------------------- render --------------------*/
 
 #define RENDER_INVALID (-1)
 
 extern void sprite_render_func_init(struct render* R);
 extern void primitive_render_func_init(struct render* R);
 extern void spine_render_func_init(struct render* R);
+
+void render_context_reset(struct render_context* self)
+{
+    memset(self, 0, sizeof(struct render_context));
+
+    self->current_batch = &self->batches[0];
+    self->current_batch_index = 0;
+    self->n_objects = 0;
+}
+
+bool render_context_object_incfull(struct render_context* self)
+{
+    return self->n_objects+1 > MAX_OBJECTS;
+}
+
+struct render_batch* render_context_pop_batch(struct render_context* self)
+{
+    return &self->batches[self->current_batch_index];
+}
+
+bool render_context_update_batch(struct render_context* self,
+                                 int offset,
+                                 int tex_id)
+{
+    struct render_batch* nb = render_context_pop_batch(self);
+    nb->n_objects = 1;
+    nb->offset = offset;
+    nb->tex_id = tex_id;
+    self->current_batch = nb;
+    int index = ++self->current_batch_index;
+    self->current_batch_index %= MAX_RENDER_BATCH;
+    return index >= MAX_RENDER_BATCH;
+}
 
 struct render* render_new()
 {
@@ -31,20 +63,26 @@ struct render* render_new()
     return r;
 }
 
+void render_free(struct render* self)
+{
+    shader_free(self->shader);
+    s_free(self);
+}
+
+void* render_get_context(struct render* self, enum RENDER_TYPE type)
+{
+    return self->R_objs[type].context;
+}
+
 void render_set_object(struct render* self, struct render_object* object)
 {
     memcpy(&self->R_objs[object->type], object, sizeof(*object));
 }
 
-void* render_get_context(struct render* self, enum RENDER_TYPE render_object_type)
+void render_set_mvp(GLuint program, float* mat)
 {
-    return self->R_objs[render_object_type].context;
-}
-
-void render_free(struct render* self)
-{
-    shader_free(self->shader);
-    s_free(self);
+    GLint projection = glGetUniformLocation(program, "mvp");
+    glUniformMatrix4fv(projection, 1, GL_FALSE, mat);
 }
 
 void render_clear(struct render* self, color c)
@@ -84,10 +122,4 @@ void render_flush(struct render* self)
         struct render_object* LR = &self->R_objs[self->current];
         LR->render_func.flush(self);
     }
-}
-
-void render_set_mvp(GLuint program, float* mat)
-{
-    GLint projection = glGetUniformLocation(program, "mvp");
-    glUniformMatrix4fv(projection, 1, GL_FALSE, mat);
 }
