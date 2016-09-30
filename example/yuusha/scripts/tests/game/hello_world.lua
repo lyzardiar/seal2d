@@ -172,34 +172,30 @@ local function sprite_spine_test()
 	root:cleanup()
 
 	local test_cases = {
-		{anim_name = 'walk', x = 30, y = 0, scale = 0.2},
-		{anim_name = 'run',   x = WINDOW_WIDTH/2 - 30, y = WINDOW_HEIGHT/2, scale = 0.2},
-		{anim_name = 'walk',  x = 30, y = WINDOW_HEIGHT - 200, scale = 0.2},
-		{anim_name = 'shoot',  x = 30, y = WINDOW_HEIGHT - 300, scale = 0.1},
-		{anim_name = 'shoot',  x = 30, y = WINDOW_HEIGHT - 400, scale = 0.1},
-		{anim_name = 'shoot',  x = 30, y = WINDOW_HEIGHT - 500, scale = 0.1},
-		{anim_name = 'shoot',  x = 30, y = WINDOW_HEIGHT - 600, scale = 0.1},
-		-- {anim_name = 'run',   x = 0, y = 0, scale = 0.2},
-		-- {anim_name = 'shoot', x = 0, y = 0, scale = 0.2},
-		-- {anim_name = 'walk',  x = 0, y = 0, scale = 0.2},
+		{
+			atlas = "res/spine_anim/spineboy.atlas",
+		 	json = "res/spine_anim/spineboy.json",
+		 	anim_name = 'walk', x = 30, y = 0, scale = 0.2
+	    },
+		{
+			atlas = "res/spine_anim/spineboy.atlas",
+		 	json = "res/spine_anim/spineboy.json",
+			anim_name = 'run', x = WINDOW_WIDTH/2 - 30, y = WINDOW_HEIGHT/2, scale = 0.2
+		},
+		{
+			atlas = "res/spine_anim/powerup.atlas",
+		 	json = "res/spine_anim/powerup.json",
+			anim_name = 'animation', x = WINDOW_WIDTH/2 - 30, y = WINDOW_HEIGHT/2 + 100, scale = 0.2
+		},
 	}
--- self->animations[0]->name = death
--- self->animations[1]->name = hit
--- self->animations[2]->name = idle
--- self->animations[3]->name = jump
--- self->animations[4]->name = run
--- self->animations[5]->name = shoot
--- self->animations[6]->name = test
--- self->animations[7]->name = walk
-
 	for i = 1, #test_cases do
 		local c = test_cases[i]
-		local spine = sprite.new_spine("res/spine_anim/spineboy.atlas",
-										"res/spine_anim/spineboy.json", c.scale)
+		local spine = sprite.new_spine(c.atlas, c.json, c.scale)
 		spine:set_pos(c.x, c.y)
 		spine:set_spine_anim(c.anim_name, 0, true)
 		root:add_child(spine)
 	end
+
 end
 
 local function sprite_event_test()

@@ -82,6 +82,7 @@ struct render_context {
     int n_objects;
 };
 
+#define render_context_nbatches(ctx) ((ctx)->current_batch_index+1)
 void render_context_reset(struct render_context* self);
 bool render_context_object_incfull(struct render_context* self);
 struct render_batch* render_context_pop_batch(struct render_context* self);

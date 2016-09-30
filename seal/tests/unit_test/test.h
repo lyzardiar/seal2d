@@ -4,5 +4,6 @@
 void test_2d_array();
 void test_array_map();
 void test_array();
+void test_hash_map();
 
 #endif

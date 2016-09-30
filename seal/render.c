@@ -21,7 +21,7 @@ void render_context_reset(struct render_context* self)
 {
     memset(self, 0, sizeof(struct render_context));
 
-    self->current_batch = &self->batches[0];
+    self->current_batch = NULL;
     self->current_batch_index = 0;
     self->n_objects = 0;
 }
@@ -33,7 +33,7 @@ bool render_context_object_incfull(struct render_context* self)
 
 struct render_batch* render_context_pop_batch(struct render_context* self)
 {
-    return &self->batches[self->current_batch_index];
+    return &self->batches[self->current_batch_index+1];
 }
 
 bool render_context_update_batch(struct render_context* self,

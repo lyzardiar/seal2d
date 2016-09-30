@@ -35,6 +35,7 @@
 		4D25D88E1C95C06000448F88 /* usocket.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D86A1C95C06000448F88 /* usocket.c */; };
 		4D46F80B1C8F2B0A0081A1DC /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D46F80A1C8F2B0A0081A1DC /* libfreetype.a */; };
 		4D46F80F1C8F38C90081A1DC /* ttf_font.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D46F80D1C8F37480081A1DC /* ttf_font.c */; };
+		4D586AAA1D9E2D7800F94BD0 /* test_hash_map.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D586AA91D9E2D7800F94BD0 /* test_hash_map.c */; };
 		4D67C13F1D7BE03300BFA14A /* spine_render.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D67C13D1D7BE03300BFA14A /* spine_render.c */; };
 		4D67C1421D7BEAE100BFA14A /* spine_anim.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D67C1401D7BEAE100BFA14A /* spine_anim.c */; };
 		4D6D56B81C737F5B00328A62 /* array_map.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D6D56B61C737F5B00328A62 /* array_map.c */; };
@@ -222,6 +223,7 @@
 		4D46F80A1C8F2B0A0081A1DC /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = "../../../libs/freetype-2.6.2/mac/libs/libfreetype.a"; sourceTree = "<group>"; };
 		4D46F80D1C8F37480081A1DC /* ttf_font.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ttf_font.c; sourceTree = "<group>"; };
 		4D46F80E1C8F37480081A1DC /* ttf_font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttf_font.h; sourceTree = "<group>"; };
+		4D586AA91D9E2D7800F94BD0 /* test_hash_map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_hash_map.c; sourceTree = "<group>"; };
 		4D67C13D1D7BE03300BFA14A /* spine_render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = spine_render.c; sourceTree = "<group>"; };
 		4D67C13E1D7BE03300BFA14A /* spine_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spine_render.h; sourceTree = "<group>"; };
 		4D67C1401D7BEAE100BFA14A /* spine_anim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = spine_anim.c; sourceTree = "<group>"; };
@@ -830,6 +832,7 @@
 				4DE47B471C7AD8C8001D2F8C /* test_array.c */,
 				4DE4D1B51C74058200410891 /* test_array_map.c */,
 				4DE4D1B81C74059400410891 /* test.h */,
+				4D586AA91D9E2D7800F94BD0 /* test_hash_map.c */,
 			);
 			path = unit_test;
 			sourceTree = "<group>";
@@ -1121,6 +1124,7 @@
 				4D822B8A1C6F62490083122E /* fs.m in Sources */,
 				4DDA8E361C4F5AE700ED5325 /* ldump.c in Sources */,
 				4DCBEF7A1D7B3F4A009C05EC /* PathAttachment.c in Sources */,
+				4D586AAA1D9E2D7800F94BD0 /* test_hash_map.c in Sources */,
 				4D25D8701C95C06000448F88 /* buffer.c in Sources */,
 				4DDA8E441C4F5AE700ED5325 /* lstring.c in Sources */,
 				4DDA8E2C1C4F5AE700ED5325 /* lapi.c in Sources */,

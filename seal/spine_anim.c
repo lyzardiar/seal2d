@@ -12,6 +12,7 @@ EXTERN_GAME;
 
 void _spAtlasPage_createTexture (spAtlasPage* self, const char* path)
 {
+
     struct texture* tex = texture_cache_load(GAME->texture_cache, path);
     self->rendererObject = tex;
     self->width = tex->width;

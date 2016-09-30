@@ -84,11 +84,20 @@ static void spine_render_update_batch(struct render* R,
     buffer->offset += 6;
 
     struct render_batch* cur_batch = context->__super.current_batch;
-    if (tex_id == cur_batch->tex_id) {
-        cur_batch->n_objects++;
+    if (cur_batch == NULL) {
+        cur_batch = &context->__super.batches[0];
+        cur_batch->n_objects = 1;
+        cur_batch->offset = 0;
+        cur_batch->tex_id = tex_id;
+        context->__super.current_batch = cur_batch;
+        context->__super.current_batch_index = 0;
     } else {
-        if(render_context_update_batch(&context->__super, offset, tex_id)) {
-            spine_render_func_flush(R);
+        if (tex_id == cur_batch->tex_id) {
+            cur_batch->n_objects++;
+        } else {
+            if(render_context_update_batch(&context->__super, offset, tex_id)) {
+                spine_render_func_flush(R);
+            }
         }
     }
 }
@@ -164,7 +173,7 @@ void spine_render_func_flush(struct render* R)
     glVertexAttribPointer(loc_color, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
     glVertexAttribPointer(loc_uv, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
 
-    int n = ctx->__super.current_batch_index;
+    int n = render_context_nbatches(&ctx->__super);
     for (int i = 0; i < n; ++i) {
         struct render_batch* b = ctx->__super.batches + i;
         glBindTexture(GL_TEXTURE_2D, b->tex_id);

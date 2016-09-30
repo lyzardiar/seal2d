@@ -309,6 +309,8 @@ void seal_draw() {
 
     render_flush(R);
 
+    printf("drawcall = %d\n", R->drawcall);
+
     // call the injected draw function in Lua Layer.
     lua_State* L = GAME->lstate;
     lua_pushvalue(L, DRAW_FUNC_INDEX);

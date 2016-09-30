@@ -10,13 +10,15 @@
 #include "window.h"
 
 #include "GLFW/glfw3.h"
+#include "test.h"
 
-static void
-_glfw_error_cb(int error, const char* desc) {
-    printf("glfw: %s\n", desc);
+static void _glfw_error_cb(int error, const char* desc)
+{
+    fprintf(stderr, "glfw: %s\n", desc);
 }
 
-void set_title(GLFWwindow* window, float dt) {
+void set_title(GLFWwindow* window, float dt)
+{
     static int counter = 0;
     counter++;
     counter = counter % 10;
@@ -30,11 +32,11 @@ void set_title(GLFWwindow* window, float dt) {
     }
 }
 
-GLFWwindow* init_glfw(int window_width, int window_height, const char* title) {
+GLFWwindow* init_glfw(int window_width, int window_height, const char* title)
+{
     GLFWwindow* window;
     glfwSetErrorCallback(_glfw_error_cb);
 
-    /* Initialize the library */
     if (!glfwInit()) {
         fprintf(stderr, "glfwInit failed.\n");
         exit(-1);
@@ -46,8 +48,7 @@ GLFWwindow* init_glfw(int window_width, int window_height, const char* title) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
     window = glfwCreateWindow(window_width, window_height, title, NULL, NULL);
-    if (!window)
-    {
+    if (!window) {
         fprintf(stderr, "Error, glfwCreateWindow failed.\n");
         glfwTerminate();
         exit(-1);
@@ -62,16 +63,14 @@ GLFWwindow* init_glfw(int window_width, int window_height, const char* title) {
     return window;
 }
 
-void exit_glfw(GLFWwindow* window) {
+void exit_glfw(GLFWwindow* window)
+{
     glfwDestroyWindow(window);
     glfwTerminate();
 }
-//
-//#include "render.h"
-//#include "shader.h"
-//EXTERN_GAME;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     struct game* game = seal_load_game_config();
     
     int window_width = game->config.window_width;
@@ -89,37 +88,9 @@ int main(int argc, char *argv[]) {
     seal_init_graphics();
     seal_start_game();
 
-//    float vertex[4] = {0.0f, 0.0f, 1.0f, 1.0f};
-//    GLuint vbo, vao;
-//    CHECK_GL_ERROR;
-//    glGenBuffers(1, &vbo);
-//    CHECK_GL_ERROR;
-//    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-//    CHECK_GL_ERROR;
-//    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
-//    CHECK_GL_ERROR;
-//
-//    glGenVertexArrays(1, &vao);
-//    glBindVertexArray(vao);
-
-
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         last = gettime();
-
-//        glClearColor(0.3, 0.3, 0.3, 1.0);
-//        glClear(GL_COLOR_BUFFER_BIT);
-//
-//        GLuint program = shader_get_program(GAME->render->shader, SHADER_PRIMITIVE);
-//        glUseProgram(program);
-//
-//        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-//
-//        glEnableVertexAttribArray(0);
-//        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float), 0);
-//
-//        glDrawArrays(GL_LINES, 0, 2);
-//        CHECK_GL_ERROR;
 
         seal_update();
         seal_draw();
