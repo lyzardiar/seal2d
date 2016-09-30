@@ -13,6 +13,7 @@ struct spine_anim {
     // TODO: refactor this when we have a better render.
     float vertices[8];
     float uvs[8];
+    unsigned char color[4];
 };
 
 struct spine_anim* spine_anim_new(const char* atlas_path,

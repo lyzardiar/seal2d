@@ -121,6 +121,7 @@ void spine_render_func_draw(struct render* R, void* object)
     // copy the vertexes of the spine region attachment.
     float* v = spine_vertex->vertex;
     float* uv = spine_vertex->uv;
+    unsigned char* color = spine_vertex->color;
     float x = spine_vertex->x;
     float y = spine_vertex->y;
     int offset = context->buffer->offset;
@@ -140,7 +141,13 @@ void spine_render_func_draw(struct render* R, void* object)
     SET_VERTEX_UV(data[5], uv[2], 1.0 - uv[3]);
 
     for (int i = 0; i < 6; ++i) {
-        SET_VERTEX_COLOR(data[i], 255, 255, 255, 255);
+//        printf("color = %d, %d, %d, %d\n", color[0],
+//               color[1],
+//               color[2],
+//               color[3]);
+        SET_VERTEX_COLOR(data[i],
+                         color[0], color[1],
+                         color[2], color[3]);
     }
 
     spine_render_update_batch(R, context, spine_vertex->tex_id, offset);

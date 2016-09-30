@@ -11,7 +11,7 @@ struct spine_render_context {
 struct spine_render_vertex_desc {
     float* vertex;
     float* uv;
-    float* color;
+    unsigned char* color;
     GLuint tex_id;
     float x, y;
 };

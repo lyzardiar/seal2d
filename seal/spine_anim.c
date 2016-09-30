@@ -51,7 +51,8 @@ struct spine_anim* spine_anim_new(const char* atlas_path,
     spSkeletonJson* json = spSkeletonJson_create(atlas);
     json->scale = scale;
 
-    spSkeletonData* skeletonData = spSkeletonJson_readSkeletonDataFile(json, spine_data_path);
+    spSkeletonData* skeletonData =
+        spSkeletonJson_readSkeletonDataFile(json, spine_data_path);
     if (!skeletonData || json->error) {
         fprintf(stderr, "error reading skeleton json, error = %s", json->error);
         spSkeletonJson_dispose(json);
@@ -93,12 +94,19 @@ static void spine_anim_render_region(struct spine_anim* self,
 {
     spRegionAttachment* region = (spRegionAttachment*)slot->attachment;
     spRegionAttachment_computeWorldVertices(region, slot->bone, self->vertices);
-    struct texture* texture =(struct texture*)((spAtlasRegion*)region->rendererObject)->page->rendererObject;
+    struct texture* texture = (struct texture*)((spAtlasRegion*)
+                                region->rendererObject)->page->rendererObject;
 
+    unsigned char color[4];
+    color[0] = (slot->r * region->r) * 255;
+    color[1] = (slot->g * region->g) * 255;
+    color[2] = (slot->b * region->b) * 255;
+    color[3] = (slot->a * region->a) * 255;
+    
     struct spine_render_vertex_desc d = {
         self->vertices,
         region->uvs,
-        NULL,
+        color,
         texture->id,
         x, y
     };
@@ -130,7 +138,8 @@ void spine_anim_draw(struct spine_anim* self,
     }
 }
 
-void spine_anim_set_anim(struct spine_anim* self, const char* anim_name, int track, bool loop)
+void spine_anim_set_anim(struct spine_anim* self,
+                         const char* anim_name, int track, bool loop)
 {
     spAnimationState_setAnimationByName(self->anim_state, track, anim_name, true);
 }

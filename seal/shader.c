@@ -38,7 +38,7 @@ static const char* fs_sprite = STRINGFY(#version 330\n)STRINGFY(
 
     void main() {\n
        vec4 texture_color = texture(texture_0, frag_uv);\n
-       color = texture_color;\n
+       color = texture_color * frag_color;\n
     }\n
     );
 
@@ -92,7 +92,7 @@ static const char* fs_sprite = STRINGFY(\n
 
     uniform sampler2D texture_0; \n\n
     void main() {\n
-        gl_FragColor = texture2D(texture_0, fragement_uv); \n
+        gl_FragColor = texture2D(texture_0, fragement_uv) * fragement_color; \n
     }\n
     );
 
