@@ -7,8 +7,8 @@ end
 
 local root
 function game.init()
-	root = require ("tests.game.hello_world")
-	-- root = require("tests.game.drum_meastro")
+	-- root = require ("tests.game.hello_world")
+	root = require("tests.game.game_editor")
 
 	return root.entry()
 end
