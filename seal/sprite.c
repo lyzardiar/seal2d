@@ -180,13 +180,13 @@ void sprite_set_glyph(struct sprite* self, struct rect* rect,
     SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
 
     SET_VERTEX_POS(g->br, rect->width, 0.0f);
-    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
+    SET_VERTEX_COLOR(g->br, 255, 255, 255, 255);
 
     SET_VERTEX_POS(g->tl, 0.0f, rect->height);
-    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
+    SET_VERTEX_COLOR(g->tl, 255, 255, 255, 255);
 
     SET_VERTEX_POS(g->tr, rect->width, rect->height);
-    SET_VERTEX_COLOR(g->bl, 255, 255, 255, 255);
+    SET_VERTEX_COLOR(g->tr, 255, 255, 255, 255);
 
     if (uv) {
         SET_VERTEX_UV(g->bl, uv->u,         uv->v);

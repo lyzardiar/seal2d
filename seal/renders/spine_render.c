@@ -54,7 +54,7 @@ void spine_render_destroy(struct render* R)
 
 void spine_render_func_start(struct render* R)
 {
-    GLuint prog = shader_get_program(R->shader, SHADER_COLOR);
+    GLuint prog = shader_get_program(R->shader, SHADER_SPRITE);
     glUseProgram(prog);
     struct spine_render_context* context = render_get_context(R, RENDER_TYPE_SPINE);
 

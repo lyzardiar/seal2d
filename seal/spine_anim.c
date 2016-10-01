@@ -21,7 +21,11 @@ void _spAtlasPage_createTexture (spAtlasPage* self, const char* path)
 
 void _spAtlasPage_disposeTexture (spAtlasPage* self)
 {
-    texture_unload(self->rendererObject);
+    struct texture* tex = self->rendererObject;
+    tex->ref--;
+    if (tex->ref == 0) {
+        texture_unload(tex);
+    }
 }
 
 char* _spUtil_readFile (const char* path, int* length)

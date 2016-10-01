@@ -17,9 +17,9 @@ local function load_sprite(texture, data, x, y)
 	s:set_pos(x, y)
 
 	s:set_scale(data.scale or 1.0)
-	if data.color then
-		s:set_color(data.color[1], data.color[2], data.color[3], data.color[4])
-	end
+	-- if data.color then
+		-- s:set_color(data.color[1], data.color[2], data.color[3], data.color[4])
+	-- end
 
 	if data.rotation then
 		s:set_rotation(data.rotation)

@@ -12,7 +12,7 @@
 
 
 #ifdef PLAT_DESKTOP
-//-------------------------- normal sprite shader for desktop --------------------------
+//-------------------------- sprite shader for desktop -------------------------
 static const char* vs_sprite = STRINGFY(#version 330\n)STRINGFY(\n
     layout(location = 0) in vec2 vertex_pos; \n
     layout(location = 1) in vec4 vertex_color; \n
@@ -42,7 +42,7 @@ static const char* fs_sprite = STRINGFY(#version 330\n)STRINGFY(
     }\n
     );
 
-//-------------------------- normal primitive shader for desktop -----------------------
+//-------------------------- primitive shader for desktop ----------------------
 
 static const char* vs_primitive = STRINGFY(#version 330\n)STRINGFY(\n
     layout(location = 0) in vec2 vertex_pos; \n
@@ -68,6 +68,7 @@ static const char* fs_primitive = STRINGFY(#version 330\n)STRINGFY(
    );
 #endif
 
+//-------------------------- sprite shader for mobile --------------------------
 #ifdef PLAT_MOBILE
 static const char* vs_sprite = STRINGFY(\n
     precision lowp float;\n
@@ -96,6 +97,7 @@ static const char* fs_sprite = STRINGFY(\n
     }\n
     );
 
+//-------------------------- primitive shader for mobile -----------------------
 static const char* vs_primitive = STRINGFY(\n
     precision lowp float;\n
     attribute mediump vec2 vertex_pos;\n

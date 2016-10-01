@@ -62,7 +62,7 @@ void sprite_render_func_flush(struct render* R)
 
 void sprite_render_func_start(struct render* R)
 {
-    GLuint prog = shader_get_program(R->shader, SHADER_COLOR);
+    GLuint prog = shader_get_program(R->shader, SHADER_SPRITE);
     glUseProgram(prog);
     struct sprite_render_context* context = render_get_context(R, RENDER_TYPE_SPRITE);
     context->state.program = prog;

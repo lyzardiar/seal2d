@@ -19,6 +19,7 @@ void texture_cache_unload(struct texture_cache* self, const char* key);
 
 #define TEX_NAME_LEN (128)
 struct texture {
+    unsigned int ref;
     GLuint id;
     unsigned int width, height;
     

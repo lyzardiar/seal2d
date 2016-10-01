@@ -6,8 +6,9 @@
 #define CHECK_GL_ERROR check_gl_error(__FILE__, __LINE__);
 
 enum SHADER_TYPE {
-    SHADER_COLOR = 0,
+    SHADER_SPRITE = 0,
     SHADER_PRIMITIVE = 1,
+    SHADER_SPINE = 2,
     
     MAX_SHADER = 16,
 };

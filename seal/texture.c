@@ -54,6 +54,8 @@ struct texture* texture_cache_load(struct texture_cache* self,
         strncpy(tex->name, key, strlen(key));
         printf("texture load key = %s, tex = %p\n", key, tex);
         hashmapPut(self->cache, (void*)tex->name, (void*)tex);
+    } else {
+        tex->ref++;
     }
     return tex;
 }
@@ -125,6 +127,7 @@ struct texture* texture_load_from_mem(const unsigned char* pixel,
     
     tex->width = width;
     tex->height = height;
+    tex->ref = 1;
     return tex;
 }
 
