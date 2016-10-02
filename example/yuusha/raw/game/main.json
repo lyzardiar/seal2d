@@ -1,0 +1,47 @@
+{
+	"type" : "container",
+	"size" : {
+				"width" : 1024,
+				"height" : 768
+			},
+	"anchor" : {
+				"x" : 0,
+				"y" : 0,
+			},
+	"pos" : {
+		"x" : 0,
+		"y" : 0,
+	},
+	"children" : [
+		{
+			"type" : "sprite",
+			"frame" : {
+				"texture" : "images/ui.png",
+				"name" : "smile_middle.png",
+			},
+			"pos" : {
+				"x" : 512,
+				"y" : 384,
+			},
+			"anchor" : {
+				"x" : 0.5,
+				"y" : 0.5,
+			},
+			"zorder" : 0,
+			"time_line" : {
+				"name" : "shake",
+			}
+		}
+	],
+	"animation" : {
+		"shake" : {
+			"duration" : 1.0,
+			"pos" : [
+				{"time" : 0,    "x" : 512, "y" : 384},
+				{"time" : 0.15, "x" : 500, "y" : 384},
+				{"time" : 0.30, "x" : 512, "y" : 384},
+				{"time" : 0.45, "x" : 524, "y" : 384},
+			]
+		}
+	}
+}
