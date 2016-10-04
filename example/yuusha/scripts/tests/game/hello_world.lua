@@ -195,7 +195,15 @@ local function sprite_spine_test()
 		spine:set_spine_anim(c.anim_name, 0, true)
 		root:add_child(spine)
 	end
+end
 
+local function sprite_loader_test()
+	print("run sprite_loader_test")
+	root:cleanup()
+
+	local loader = require("editor_runtime.seal_loader")
+	local s = loader.load("res/game/main.json")
+	root:add_child(s)
 end
 
 local function sprite_event_test()
@@ -350,6 +358,7 @@ local tests = {
 	{name = "sprite primitive test", create_func = sprite_primitive_test },
 	{name = "sprite touch test", create_func = sprite_event_test},
 	{name = "sprite spine test", create_func = sprite_spine_test},
+	{name = "sprite loader test", create_func = sprite_loader_test},
 	{name = "bmfont load test", create_func = bmfont_load_test},
 	{name = "bunny test", create_func = bunny_test},
 	{name = "multi texture test", create_func = multi_texture_test},
@@ -399,6 +408,8 @@ function hello_world.draw()
 end
 
 function hello_world.entry()
+	-- the sprite frame info is often very small.
+	-- we don't need to release them anyway.
 	sprite_frame.load_from_json("res/images/ui.json")
 	sprite_frame.load_from_json("res/images/anim_pirate.json")
 	sprite_frame.load_from_json("res/images/skeleton.json")
