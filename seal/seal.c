@@ -38,6 +38,8 @@ extern void nanovg_init(int w, int h);
 #define DRAW_FUNC_INDEX       3
 #define TOP_FUNC_INDEX        3
 
+#define EVENT_GAME_START (0)
+#define EVENT_GAME_END   (1)
 struct game* GAME = NULL;
 
 int seal_call(lua_State *L, int n, int r) {
@@ -246,6 +248,12 @@ static int traceback (lua_State *L) {
 
 static struct timeval _lastUpdate;
 
+static int on_seal_game_start(lua_State* L, void* ud)
+{
+    lua_pushinteger(L, EVENT_GAME_START);
+    return 1;
+}
+
 void seal_start_game() {
     gettimeofday(&_lastUpdate, NULL);
 
@@ -269,6 +277,8 @@ void seal_start_game() {
     camera_pos(GAME->global_camera,
                GAME->config.window_width/2,
                GAME->config.window_height/2);
+
+    seal_event(EVENT_GAME_START, on_seal_game_start, NULL);
 }
 
 void seal_update() {
@@ -295,6 +305,22 @@ void seal_update() {
     lua_settop(L, TOP_FUNC_INDEX);
 }
 
+void seal_event(int event_type,
+                int (*stack_set_func)(lua_State*, void* ud),
+                void* ud) {
+    lua_State* L = GAME->lstate;
+    lua_getfield(L, LUA_REGISTRYINDEX, GAME_EVENT);
+
+    // push your event value here
+    int n = 0;
+    if (stack_set_func) {
+        n = stack_set_func(L, ud);
+    }
+
+    seal_call(L, n, 0);
+    lua_settop(L, TOP_FUNC_INDEX);
+}
+
 void seal_touch_event(struct touch_event* touch_event) {
 
     sprite_touch(GAME->root, touch_event);
@@ -318,7 +344,14 @@ void seal_draw() {
     CHECK_GL_ERROR
 }
 
+static int on_seal_game_end(lua_State* L, void* ud)
+{
+    lua_pushinteger(L, EVENT_GAME_END);
+    return 1;
+}
+
 void seal_destroy() {
+    seal_event(EVENT_GAME_END, on_seal_game_end, NULL);
 
     lua_close(GAME->lstate);
     texture_cache_free(GAME->texture_cache);
