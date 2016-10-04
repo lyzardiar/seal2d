@@ -15,7 +15,8 @@ extern int luaopen_zlib(lua_State* L);
 extern int luaopen_nuklear_core(lua_State* L);
 extern int luaopen_nanovg_core(lua_State* L);
 
-void stackDump (lua_State *L) {
+void stackDump (lua_State *L)
+{
     int i;
     int top = lua_gettop(L);
     for (i = 1; i <= top; i++) {  /* repeat for each level */
@@ -44,25 +45,29 @@ void stackDump (lua_State *L) {
     printf("\n");  /* end the listing */
 }
 
-void setfiled_f(lua_State *L, const char* key, float f) {
+void setfiled_f(lua_State *L, const char* key, float f)
+{
     lua_pushstring(L, key);
     lua_pushnumber(L, f);
     lua_settable(L, -3);
 }
 
-void setfiled_i(lua_State* L, const char* key, lua_Integer n) {
+void setfiled_i(lua_State* L, const char* key, lua_Integer n)
+{
     lua_pushstring(L, key);
     lua_pushinteger(L, n);
     lua_settable(L, -3);
 }
 
-void setfiled_s(lua_State *L, const char* key, const char* s) {
+void setfiled_s(lua_State *L, const char* key, const char* s)
+{
     lua_pushstring(L, key);
     lua_pushstring(L, s);
     lua_settable(L, -3);
 }
 
-lua_Integer getfield_i(lua_State* L, const char* key) {
+lua_Integer getfield_i(lua_State* L, const char* key)
+{
     lua_pushstring(L, key);
     lua_gettable(L, -2);
     lua_Integer value = lua_tointeger(L, -1);
@@ -70,7 +75,8 @@ lua_Integer getfield_i(lua_State* L, const char* key) {
     return value;
 }
 
-lua_Number getfield_f(lua_State* L, const char* key) {
+lua_Number getfield_f(lua_State* L, const char* key)
+{
     lua_pushstring(L, key);
     lua_gettable(L, -2);
     lua_Integer value = lua_tonumber(L, -1);
@@ -78,7 +84,8 @@ lua_Number getfield_f(lua_State* L, const char* key) {
     return value;
 }
 
-const char* getfiled_s(lua_State* L, const char* key) {
+const char* getfiled_s(lua_State* L, const char* key)
+{
     lua_pushstring(L, key);
     lua_gettable(L, -2);
     const char* value = lua_tostring(L, -1);
@@ -86,7 +93,8 @@ const char* getfiled_s(lua_State* L, const char* key) {
     return value;
 }
 
-void getarray_f(lua_State* L, const char* key, float* f_array, int cnt) {
+void getarray_f(lua_State* L, const char* key, float* f_array, int cnt)
+{
     lua_pushstring(L, key);
     lua_gettable(L, -2);
     if(!lua_isnil(L, -1)) {
@@ -99,7 +107,8 @@ void getarray_f(lua_State* L, const char* key, float* f_array, int cnt) {
     lua_pop(L, 1);
 }
 
-void getarray_i(lua_State* L, const char* key, int* f_array, int cnt) {
+void getarray_i(lua_State* L, const char* key, int* f_array, int cnt)
+{
     lua_pushstring(L, key);
     lua_gettable(L, -2);
     if (!lua_isnil(L, -1)) {

@@ -29,7 +29,8 @@ static struct nk_context* ctx = NULL;
 #define MAX_VERTEX_BUFFER (512 * 1024)
 #define MAX_ELEMENT_BUFFER (128 * 1024)
 
-void nuk_init(void* winctx) {
+void nuk_init(void* winctx)
+{
 #ifdef PLAT_DESKTOP
     if (!ctx) {
         ctx = nk_glfw3_init(winctx, NK_GLFW3_DEFAULT);
@@ -44,29 +45,34 @@ void nuk_init(void* winctx) {
 #endif
 }
 
-int lnuk_new_panel(lua_State* L) {
+int lnuk_new_panel(lua_State* L)
+{
     struct nk_panel* panel = STRUCT_NEW(nk_panel);
     lua_pushlightuserdata(L, panel);
     return 1;
 }
 
-int lnuk_free_panel(lua_State* L) {
+int lnuk_free_panel(lua_State* L)
+{
     struct nk_panel* panel = lua_touserdata(L, 1);
     s_free(panel);
     return 0;
 }
 
-int lnuk_draw_start(lua_State* L) {
+int lnuk_draw_start(lua_State* L)
+{
     nk_glfw3_new_frame();
     return 0;
 }
 
-int lnuk_draw_end(lua_State* L) {
+int lnuk_draw_end(lua_State* L)
+{
     nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
     return 0;
 }
 
-int lnk_begin(lua_State* L) {
+int lnk_begin(lua_State* L)
+{
     const char* panel_title = luaL_checkstring(L, 1);
     struct nk_panel* panel = lua_touserdata(L, 2);
     luaL_checktype(L, 3, LUA_TTABLE);
@@ -88,12 +94,14 @@ int lnk_begin(lua_State* L) {
     return 1;
 }
 
-int lnk_end(lua_State* L) {
+int lnk_end(lua_State* L)
+{
     nk_end(ctx);
     return 0;
 }
 
-int lnk_layout_row_static(lua_State* L) {
+int lnk_layout_row_static(lua_State* L)
+{
     nk_layout_row_static(ctx,
                          luaL_checknumber(L, 1),
                          luaL_checknumber(L, 2),
@@ -101,7 +109,8 @@ int lnk_layout_row_static(lua_State* L) {
     return 0;
 }
 
-int lnk_layout_row_dynamic(lua_State* L) {
+int lnk_layout_row_dynamic(lua_State* L)
+{
     nk_layout_row_dynamic(ctx,
                           luaL_checknumber(L, 1),
                           luaL_checknumber(L, 2));
@@ -109,26 +118,30 @@ int lnk_layout_row_dynamic(lua_State* L) {
     return 0;
 }
 
-int lnk_button_label(lua_State* L) {
+int lnk_button_label(lua_State* L)
+{
     lua_pushboolean(L, nk_button_label(ctx,
                                        luaL_checkstring(L, 1),
                                        luaL_checkinteger(L, 2)));
     return 1;
 }
 
-int lnk_option_label(lua_State* L) {
+int lnk_option_label(lua_State* L)
+{
     
     return 1;
 }
 
-int lnk_property_int(lua_State* L) {
+int lnk_property_int(lua_State* L)
+{
     
     return 0;
 }
 
 
 // we support only 1 nk_node.
-int luaopen_nuklear_core(lua_State* L) {
+int luaopen_nuklear_core(lua_State* L)
+{
 #ifdef luaL_checkversion
     luaL_checkversion(L);
 #endif
@@ -154,7 +167,8 @@ int luaopen_nuklear_core(lua_State* L) {
 }
 #else
 // make this compliable on mobile platform
-    int luaopen_nuklear_core(lua_State* L) {
+    int luaopen_nuklear_core(lua_State* L)
+    {
         printf("nuklear not implemented on mobile platform.\n");
         return 0;
     }

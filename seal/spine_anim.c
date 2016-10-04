@@ -55,9 +55,9 @@ struct spine_anim* spine_anim_new(const char* atlas_path,
     spSkeletonJson* json = spSkeletonJson_create(atlas);
     json->scale = scale;
 
-    spSkeletonData* skeletonData =
+    spSkeletonData* sk_data =
         spSkeletonJson_readSkeletonDataFile(json, spine_data_path);
-    if (!skeletonData || json->error) {
+    if (!sk_data || json->error) {
         fprintf(stderr, "error reading skeleton json, error = %s", json->error);
         spSkeletonJson_dispose(json);
         return NULL;
@@ -65,10 +65,10 @@ struct spine_anim* spine_anim_new(const char* atlas_path,
     spSkeletonJson_dispose(json);
 
     // step 3: load skeleton
-    spSkeleton* skeleton = spSkeleton_create(skeletonData);
+    spSkeleton* skeleton = spSkeleton_create(sk_data);
 
     // step 4: load animation state and init
-    spAnimationStateData* state_data = spAnimationStateData_create(skeletonData);
+    spAnimationStateData* state_data = spAnimationStateData_create(sk_data);
     spAnimationState* state = spAnimationState_create(state_data);
 
     self->atlas = atlas;
@@ -145,7 +145,10 @@ void spine_anim_draw(struct spine_anim* self,
 void spine_anim_set_anim(struct spine_anim* self,
                          const char* anim_name, int track, bool loop)
 {
-    spAnimationState_setAnimationByName(self->anim_state, track, anim_name, true);
+    spAnimationState_setAnimationByName(self->anim_state,
+                                        track,
+                                        anim_name,
+                                        true);
 }
 
 void spine_get_boundingbox(struct spine_anim* self, struct rect* r)

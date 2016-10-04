@@ -640,7 +640,8 @@ void sprite_touch(struct sprite* self, struct touch_event* touch_event)
     }
 }
 
-bool sprite_contains(struct sprite* self, float x, float y) {
+bool sprite_contains(struct sprite* self, float x, float y)
+{
     struct rect world = {
         self->glyph.bl.position[0],
         self->glyph.bl.position[1],

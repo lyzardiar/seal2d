@@ -60,7 +60,8 @@ void shader_set_uniform_object(struct shader* self,
                                float* v);
 
 void shader_commit_uniform(struct shader* self, GLint program);
-void shader_set_uniform(struct shader* self, GLint program, enum BUILT_IN_UNIFORMS type, void* v);
+void shader_set_uniform(struct shader* self, GLint program,
+                        enum BUILT_IN_UNIFORMS type, void* v);
 
 GLuint shader_get_program(struct shader* self, enum SHADER_TYPE shader_index);
 

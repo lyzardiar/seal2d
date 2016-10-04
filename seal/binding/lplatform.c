@@ -5,7 +5,8 @@
 
 #include "platform/fs.h"
 
-int lplatform_write_s(lua_State* L) {
+int lplatform_write_s(lua_State* L)
+{
     const char* path = luaL_checkstring(L, -1);
     const char* data = luaL_checkstring(L, -2);
     size_t size = fs_writes(path, data);
@@ -15,7 +16,8 @@ int lplatform_write_s(lua_State* L) {
     return 0;
 }
 
-int lplatform_read_s(lua_State* L) {
+int lplatform_read_s(lua_State* L)
+{
     const char* path = luaL_checkstring(L, -1);
     const char* data = fs_reads(path);
     if (data) {
@@ -26,17 +28,20 @@ int lplatform_read_s(lua_State* L) {
     return 0;
 }
 
-int lplatform_get_write_path(lua_State* L) {
+int lplatform_get_write_path(lua_State* L)
+{
     lua_pushstring(L, fs_get_write_path());
     return 1;
 }
 
-int lplatform_get_sandbox_dir(lua_State* L) {
+int lplatform_get_sandbox_dir(lua_State* L)
+{
     lua_pushstring(L, fs_sandbox_root_path());
     return 1;
 }
 
-int lplatform_get_platform(lua_State* L) {
+int lplatform_get_platform(lua_State* L)
+{
 #ifdef PLAT_MAC
     lua_pushstring(L, "mac");
 #elif PLAT_IOS
@@ -45,7 +50,8 @@ int lplatform_get_platform(lua_State* L) {
     return 1;
 }
 
-int luaopen_seal_platform(lua_State* L) {
+int luaopen_seal_platform(lua_State* L)
+{
 #ifdef luaL_checkversion
     luaL_checkversion(L);
 #endif

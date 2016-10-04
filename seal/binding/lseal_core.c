@@ -4,7 +4,8 @@
 
 extern void stackDump (lua_State *L);
 
-int lsealinject(lua_State* L) {
+int lsealinject(lua_State* L)
+{
     if(!lua_istable(L, -1)) {
         fprintf(stderr, "seal.start require a table to start.");
         exit(1);
@@ -32,13 +33,14 @@ int lsealinject(lua_State* L) {
     return 0;
 }
 
-int lseal_reload_script(lua_State* L) {
+int lseal_reload_script(lua_State* L)
+{
     seal_reload_scripts();
     return 0;
 }
 
-int luaopen_seal_core(lua_State* L) {
-    
+int luaopen_seal_core(lua_State* L)
+{    
 #ifdef luaL_checkversion
     luaL_checkversion(L);
 #endif

@@ -167,7 +167,7 @@ static int new_line(lua_State* L)
 
     lua_Number width = getfield_f(L, "width");
 
-    struct sprite* line = sprite_new_line(vertex, width, C4B_COLOR(color[0], color[1], color[2], color[3]));
+    struct sprite* line = sprite_new_line(vertex, width, C4B_COLOR_A(color));
     lua_pushlightuserdata(L, line);
     return 1;
 }
@@ -187,7 +187,10 @@ static int new_rect(lua_State* L)
         r[0], r[1], r[2], r[3]
     };
 
-    struct sprite* s = sprite_new_rect(&rect, FILL_SOLID, C4B_COLOR_A(fill_color), C4B_COLOR_A(outline_color));
+    struct sprite* s = sprite_new_rect(&rect,
+                                       FILL_SOLID,
+                                       C4B_COLOR_A(fill_color),
+                                       C4B_COLOR_A(outline_color));
     lua_pushlightuserdata(L, s);
     return 1;
 }

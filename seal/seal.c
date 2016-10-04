@@ -42,7 +42,8 @@ extern void nanovg_init(int w, int h);
 #define EVENT_GAME_END   (1)
 struct game* GAME = NULL;
 
-int seal_call(lua_State *L, int n, int r) {
+int seal_call(lua_State *L, int n, int r)
+{
     int err = lua_pcall(L, n, r, TRACE_BACK_FUNC_INDEX);
     switch(err) {
         case LUA_OK:
@@ -71,7 +72,8 @@ int seal_call(lua_State *L, int n, int r) {
     return err;
 }
 
-lua_State* seal_new_lua() {
+lua_State* seal_new_lua()
+{
     lua_State* L = luaL_newstate();
     luaL_openlibs(L);
     return L;
@@ -79,7 +81,8 @@ lua_State* seal_new_lua() {
 
 struct ttf_font* font = NULL;
 
-int load_game_scripts(lua_State* L, const char* zipfile) {
+int load_game_scripts(lua_State* L, const char* zipfile)
+{
     size_t size = 0;
     unsigned char* filedata = fs_read(zipfile, &size, 0);
     if (!filedata) {
@@ -151,11 +154,13 @@ int load_game_scripts(lua_State* L, const char* zipfile) {
     return succeed ? 1 : 0;
 }
 
-void seal_reload_scripts() {
+void seal_reload_scripts()
+{
     load_game_scripts(GAME->lstate, "res/code.zip");
 }
 
-struct game* seal_load_game_config() {
+struct game* seal_load_game_config()
+{
     GAME = (struct game*)s_malloc(sizeof(struct game));
     // lua modules
     lua_State* L = seal_new_lua();
@@ -186,7 +191,8 @@ struct game* seal_load_game_config() {
     return GAME;
 }
 
-void seal_init_graphics() {
+void seal_init_graphics()
+{
     // baisc graphic modules
     GAME->texture_cache = texture_cache_new();
     GAME->sprite_frame_cache = sprite_frame_cache_new();
@@ -211,14 +217,16 @@ void seal_init_graphics() {
     seal_load_string("main()");
 }
 
-void seal_load_string(const char* script_data) {
+void seal_load_string(const char* script_data)
+{
     if(luaL_dostring(GAME->lstate, script_data)) {
         fprintf(stderr, "run start script Failed. %s\n", lua_tostring(GAME->lstate, -1));
         abort();
     }
 }
 
-void seal_load_file(const char* script_path) {
+void seal_load_file(const char* script_path)
+{
 #ifdef PLAT_DESKTOP
     if(luaL_dofile(GAME->lstate, script_path)) {
         fprintf(stderr, "run start script Failed. %s \n", lua_tostring(GAME->lstate, -1));
@@ -234,7 +242,8 @@ void seal_load_file(const char* script_path) {
 
 }
 
-static int traceback (lua_State *L) {
+static int traceback (lua_State *L)
+{
     const char *msg = lua_tostring(L, 1);
     if (msg) {
         luaL_traceback(L, L, msg, 1);
@@ -254,7 +263,8 @@ static int on_seal_game_start(lua_State* L, void* ud)
     return 1;
 }
 
-void seal_start_game() {
+void seal_start_game()
+{
     gettimeofday(&_lastUpdate, NULL);
 
     lua_State *L = GAME->lstate;
@@ -281,7 +291,8 @@ void seal_start_game() {
     seal_event(EVENT_GAME_START, on_seal_game_start, NULL);
 }
 
-void seal_update() {
+void seal_update()
+{
     struct timeval now;
     gettimeofday(&now, NULL);
 
@@ -307,7 +318,8 @@ void seal_update() {
 
 void seal_event(int event_type,
                 int (*stack_set_func)(lua_State*, void* ud),
-                void* ud) {
+                void* ud)
+{
     lua_State* L = GAME->lstate;
     lua_getfield(L, LUA_REGISTRYINDEX, GAME_EVENT);
 
@@ -321,13 +333,14 @@ void seal_event(int event_type,
     lua_settop(L, TOP_FUNC_INDEX);
 }
 
-void seal_touch_event(struct touch_event* touch_event) {
-
+void seal_touch_event(struct touch_event* touch_event)
+{
     sprite_touch(GAME->root, touch_event);
 }
 
 
-void seal_draw() {
+void seal_draw()
+{
     struct render* R = GAME->render;
     render_clear(R, C4B_COLOR(255, 255, 255, 255));
 
@@ -350,7 +363,8 @@ static int on_seal_game_end(lua_State* L, void* ud)
     return 1;
 }
 
-void seal_destroy() {
+void seal_destroy()
+{
     seal_event(EVENT_GAME_END, on_seal_game_end, NULL);
 
     lua_close(GAME->lstate);

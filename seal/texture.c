@@ -87,7 +87,9 @@ struct texture* texture_load_from_png(const char* file_path)
     unsigned int height = 0;
     unsigned int error = 0;
     
-    error = lodepng_decode32(&pixel_data, &width, &height, origin_data, file_size);
+    error = lodepng_decode32(&pixel_data,
+                             &width, &height,
+                             origin_data, file_size);
     s_free(origin_data);
     if(error) {
         fprintf(stderr, "error %u: %s\n", error, lodepng_error_text(error));
@@ -115,7 +117,10 @@ struct texture* texture_load_from_mem(const unsigned char* pixel,
     s_assert(tex->id != 0);
         
     glBindTexture(GL_TEXTURE_2D, tex->id);
-    glTexImage2D(GL_TEXTURE_2D, 0, mode, width, height, 0, mode, GL_UNSIGNED_BYTE, pixel);
+    glTexImage2D(GL_TEXTURE_2D, 0, mode,
+                 width, height,
+                 0, mode,
+                 GL_UNSIGNED_BYTE, pixel);
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -160,7 +165,10 @@ void texture_append(struct texture* self,
 //    glPixelStorei(GL_UNPACK_SKIP_PIXELS, self->cursor_x);
 //    glPixelStorei(GL_UNPACK_SKIP_ROWS, self->cursor_y);
 
-    glTexSubImage2D(GL_TEXTURE_2D, 0, self->cursor_x, self->cursor_y, w, h, mode, GL_UNSIGNED_BYTE, pixel);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+                    self->cursor_x, self->cursor_y,
+                    w, h, mode,
+                    GL_UNSIGNED_BYTE, pixel);
     
     glBindTexture(GL_TEXTURE_2D, 0);
     

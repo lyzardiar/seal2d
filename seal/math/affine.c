@@ -3,7 +3,8 @@
 
 #include "affine.h"
 
-struct affine* af_alloc() {
+struct affine* af_alloc()
+{
     struct affine* af = (struct affine*)s_malloc(sizeof(struct affine));
     if(!af) {
         fprintf(stderr, "malloc affine failed for oom.");
@@ -13,11 +14,13 @@ struct affine* af_alloc() {
     return af;
 }
 
-void af_free(struct affine* af) {
+void af_free(struct affine* af)
+{
     s_free(af);
 }
 
-void af_identify(struct affine* af) {
+void af_identify(struct affine* af)
+{
     af->a = 1.0f;
     af->b = 0.0f;
     af->x = 0.0f;
@@ -30,7 +33,8 @@ void af_identify(struct affine* af) {
 void af_srt(struct affine* af,
             float x, float y,
             float scale_x, float scale_y,
-            float rotation) {
+            float rotation)
+{
     struct affine scale_matrix;
     struct affine rotation_matrix;
     af_identify(&scale_matrix);
@@ -46,21 +50,25 @@ void af_srt(struct affine* af,
     af->y += y;
 }
 
-void af_copy(struct affine* af, struct affine* other) {
+void af_copy(struct affine* af, struct affine* other)
+{
     memcpy(af, other, sizeof(struct affine));
 }
 
-void af_set_translate(struct affine* af, float x, float y) {
+void af_set_translate(struct affine* af, float x, float y)
+{
     af->x = x;
     af->y = y;
 }
 
-void af_set_scale(struct affine* af, float scale_x, float scale_y) {
+void af_set_scale(struct affine* af, float scale_x, float scale_y)
+{
     af->a = scale_x;
     af->d = scale_y;
 }
 
-void af_set_rotation(struct affine* af, float rotate) {
+void af_set_rotation(struct affine* af, float rotate)
+{
     float sin = sinf(rotate*M_PI/180.0f);
     float cos = cosf(rotate*M_PI/180.0f);
     af->a = cos;
@@ -72,7 +80,8 @@ void af_set_rotation(struct affine* af, float rotate) {
 // [a1, b1, x1]   [a2, b2, x2]   [a1*a2+b1*c2, a1*b2+b1*d2, a1*x2+b1*y2+x1]
 // [c1, d1, y1] * [c2, d2, y2] = [c1*a2+d1*c2, c1*b2+d1*d2, c1*x2+d1*y2+y1]
 // [0,  0,  1]    [0,  0,  1]    [0,           0,           1             ]
-void af_concat(struct affine* m1, struct affine* m2) {
+void af_concat(struct affine* m1, struct affine* m2)
+{
     float a = m1->a*m2->a + m1->b*m2->c;
     float b = m1->a*m2->b + m1->b*m2->d;
     float x = m1->a*m2->x + m1->b*m2->y + m1->x;
@@ -89,7 +98,8 @@ void af_concat(struct affine* m1, struct affine* m2) {
     m1->y = y;
 }
 
-void af_tostring(struct affine* af, char* buff) {
+void af_tostring(struct affine* af, char* buff)
+{
     sprintf(buff, "{a = %.2f, b = %.2f, c = %.2f, d = %.2f, x = %.2f, y = %.2f}",
             af->a, af->b, af->c, af->d, af->x, af->y);
 }

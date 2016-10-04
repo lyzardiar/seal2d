@@ -7,7 +7,8 @@
 
 #include "action.h"
 
-int laction_move_to(lua_State* L) {
+int laction_move_to(lua_State* L)
+{
     lua_Number duration = luaL_checknumber(L, 1);
     lua_Number x = luaL_checknumber(L, 2);
     lua_Number y = luaL_checknumber(L, 3);
@@ -17,7 +18,8 @@ int laction_move_to(lua_State* L) {
     return 1;
 }
 
-int luaopen_action(lua_State* L) {
+int luaopen_action(lua_State* L)
+{
 #ifdef luaL_checkversion
     luaL_checkversion(L);
 #endif

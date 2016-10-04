@@ -5,7 +5,8 @@
 #include "bmfont.h"
 #include "platform/fs.h"
 
-static int parse_int(char* data) {
+static int parse_int(char* data)
+{
     int n = 0;
     char* pos = strchr(data, '='); // go through the key
     
@@ -13,16 +14,19 @@ static int parse_int(char* data) {
     return n;
 }
 
-static void parse_str(char* data, char* val) {
+static void parse_str(char* data, char* val)
+{
     char* pos = strchr(data, '=');
     sscanf(pos+1, "%s", val);
 }
 
-static int hash_str(void* key) {
+static int hash_str(void* key)
+{
     return hashmapHash(key, strlen(key));
 }
 
-static bool hash_equal(void* a, void* b) {
+static bool hash_equal(void* a, void* b)
+{
     return strcmp(a, b) == 0;
 }
 
@@ -36,12 +40,14 @@ static bool hash_equal(void* a, void* b) {
 //char id=32     x=125   y=472   width=0     height=0     xoffset=0     yoffset=66    xadvance=16    page=0 chnl=0 letter="space"
 //char id=33     x=404   y=316   width=20    height=58    xoffset=3     yoffset=8     xadvance=17    page=0 chnl=0 letter="!"
 
-static void remove_quote(char* dst, const char* src) {
+static void remove_quote(char* dst, const char* src)
+{
     memcpy(dst, src+1, strlen(src)-2);
     dst[strlen(src)-2] = 0;
 }
 
-struct bmfont* bmfont_new(const char* bmfont_data) {
+struct bmfont* bmfont_new(const char* bmfont_data)
+{
     struct bmfont* font = STRUCT_NEW(bmfont);
     memset(font, 0, sizeof(struct bmfont));
     
@@ -132,14 +138,16 @@ struct bmfont* bmfont_new(const char* bmfont_data) {
     return font;
 }
 
-void bmfont_free(struct bmfont* self) {
+void bmfont_free(struct bmfont* self)
+{
     hashmapFree(self->characters);
     
     s_free(self);
 }
 
 // add a len param we may avoid a lot string copy.
-struct charc* bmfont_load_charc(struct bmfont* self, const char* c) {
+struct charc* bmfont_load_charc(struct bmfont* self, const char* c)
+{
     // TODO: implement a function which convert utf-8 to integer.
     // NOW we simply return A
     
@@ -157,16 +165,21 @@ struct bmfont_cache* bmfont_cache_new() {
     return c;
 }
 
-void bmfont_cache_free(struct bmfont_cache* self) {
+void bmfont_cache_free(struct bmfont_cache* self)
+{
     hashmapFree(self->cache);
     s_free(self);
 }
 
-void bmfont_cache_add(struct bmfont_cache* self, struct bmfont* font, const char* fnt_path) {
+void bmfont_cache_add(struct bmfont_cache* self,
+                      struct bmfont* font, const char* fnt_path)
+{
     hashmapPut(self->cache, (void*)fnt_path, font);
 }
 
-struct bmfont* bmfont_cache_get(struct bmfont_cache* self, const char* fnt_path) {
+struct bmfont* bmfont_cache_get(struct bmfont_cache* self,
+                                const char* fnt_path)
+{
     struct bmfont* f = hashmapGet(self->cache, (void*)fnt_path);
     if (!f) {
         char* bmfont_data = fs_reads(fnt_path);

@@ -219,20 +219,6 @@ static GLuint create_shader(GLenum shader_type, const char* shader_data)
     return shader;
 }
 
-static GLuint craete_shader_from_file(GLenum shader_type, const char* file_path)
-{
-    char* bytes = fs_reads(file_path);
-    GLuint shader = 0;
-    if (bytes > 0) {
-        shader = create_shader(shader_type, (const char*)bytes);
-    } else {
-        fprintf(stderr, "craete_shader_from_file failed with path = %s\n", file_path);
-        assert(0);
-    }
-    s_free(bytes);
-    return shader;
-}
-
 static void shader_load_all(struct shader* self)
 {
     const char* shaders[] = {
@@ -261,7 +247,8 @@ struct shader* shader_new()
     
     shader_load_all(shader);
     
-    set_builtin_uniform(shader->uniforms[BUILT_IN_MIX_COLOR], BUILT_IN_MIX_COLOR, UNIFORM_4F, "mix_color");
+    set_builtin_uniform(shader->uniforms[BUILT_IN_MIX_COLOR],
+                        BUILT_IN_MIX_COLOR, UNIFORM_4F, "mix_color");
     
     return shader;
 }
@@ -271,7 +258,9 @@ void shader_free(struct shader* self)
     s_free(self);
 }
 
-void shader_set_uniform(struct shader* self, GLint program, enum BUILT_IN_UNIFORMS type, void* v)
+void shader_set_uniform(struct shader* self, 
+                        GLint program, 
+                        enum BUILT_IN_UNIFORMS type, void* v)
 {
     const char* name = self->uniforms[type].name;
     
