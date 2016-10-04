@@ -25,11 +25,6 @@ function game.resume()
 	print('call game.resume()')
 end
 
-local TOUCH_BEGIN  = consts.TOUCH_BEGIN
-local TOUCH_MOVE   = consts.TOUCH_MOVE
-local TOUCH_END    = consts.TOUCH_END
-local TOUCH_CANCEL = consts.TOUCH_CANCEL
-
 function game.reload()
 	local loaded = {}
 	for k,v in pairs(package.loaded) do
@@ -44,20 +39,15 @@ function game.reload()
 	hello_world.print_hello()
 end
 
-function game.event(e)
-	if e.type == TOUCH_BEGIN then
-		-- print(string.format("begin, (%.2f, %.2f)", e.x, e.y))
-	elseif e.type == TOUCH_MOVE then
-		-- print(string.format("move, (%.2f, %.2f)", e.x, e.y))
-	elseif e.type == TOUCH_END then
-		-- print(string.format("end, (%.2f, %.2f)", e.x, e.y))
-
-		-- game.reload()
-
-	elseif e.type == TOUCH_CANCEL then
-		-- print(string.format("cancel, (%.2f, %.2f)", e.x, e.y))
+local EVENT_GAME_START = (0)
+local EVENT_GAME_END   = (1)
+function game.event(event_type, ...)
+	if event_type == EVENT_GAME_START then
+		print("Game Started")
+	elseif event_type == EVENT_GAME_END then
+		print("Game Ended")
 	else
-		assert(false, "invalid event type = ", e.type)
+		assert(false, "unprocessed game event.")
 	end
 end
 

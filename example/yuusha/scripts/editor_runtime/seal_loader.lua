@@ -25,6 +25,8 @@ local function load_scene(opt)
 		error(string.format("unsupported type: %s", opt.type))
 	end
 
+	local s = load_func()
+
 end
 
 function seal_loader.load(data)
