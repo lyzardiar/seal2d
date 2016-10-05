@@ -126,7 +126,6 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
                     context->current_batch = new_batch;
                     context->current_batch_index++;
                 } else {
-                    cur_batch->offset += 2;
                     cur_batch->count.line_count++;
                 }
                 context->offset += 2;
@@ -156,7 +155,7 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
 
                     context->current_batch_index++;
                 } else {
-                    cur_batch->offset += 6;
+
                     cur_batch->count.triangle_count += 2;
                 }
                 context->offset += 6;
