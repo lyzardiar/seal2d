@@ -362,6 +362,24 @@ int lsprite_get_size(lua_State* L)
     return 2;
 }
 
+int lsprite_get_glyph(lua_State* L)
+{
+    struct sprite* self = lua_touserdata(L, 1);
+    struct glyph* g = sprite_get_glyph(self);
+
+    lua_newtable(L);
+    setarray_n(L, 1, g->bl.position[0]);
+    setarray_n(L, 2, g->bl.position[1]);
+    setarray_n(L, 3, g->br.position[0]);
+    setarray_n(L, 4, g->br.position[1]);
+    setarray_n(L, 5, g->tr.position[0]);
+    setarray_n(L, 6, g->tr.position[1]);
+    setarray_n(L, 7, g->tl.position[0]);
+    setarray_n(L, 8, g->tl.position[1]);
+
+    return 1;
+}
+
 int lsprite_add_child(lua_State* L)
 {
     luaL_argcheck(L, lua_isuserdata(L, 1), 1, "sprite expected for arg 1");
@@ -417,6 +435,7 @@ int luaopen_seal_sprite(lua_State* L)
         { "set_size", lsprite_set_size },
         { "get_pos", lsprite_get_pos},
         { "get_size", lsprite_get_size},
+        { "get_glyph", lsprite_get_glyph},
         { "add_child", lsprite_add_child },
         { "remove_all_child", lsprite_remove_all_child},
         { NULL, NULL },

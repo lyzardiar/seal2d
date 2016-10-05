@@ -66,6 +66,13 @@ void setfiled_s(lua_State *L, const char* key, const char* s)
     lua_settable(L, -3);
 }
 
+void setarray_n(lua_State* L, int index, lua_Number n)
+{
+    lua_pushinteger(L, index);
+    lua_pushnumber(L, n);
+    lua_settable(L, -3);
+}
+
 lua_Integer getfield_i(lua_State* L, const char* key)
 {
     lua_pushstring(L, key);

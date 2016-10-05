@@ -165,4 +165,6 @@ void sprite_set_text(struct sprite* self, const char* label);
 void sprite_init(struct sprite* self, float width, float height);
 void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLuint tex_id);
 
+struct glyph* sprite_get_glyph(struct sprite* self);
+
 #endif

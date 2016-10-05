@@ -804,3 +804,8 @@ void sprite_set_size(struct sprite* self, float width, float height)
     
     self->dirty |= SPRITE_SRT_DIRTY;
 }
+
+struct glyph* sprite_get_glyph(struct sprite* self)
+{
+    return &self->glyph;
+}
