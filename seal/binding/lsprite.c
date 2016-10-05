@@ -301,6 +301,13 @@ int lsprite_set_anim_interval(lua_State* L)
     return 0;
 }
 
+int lsprite_set_visible(lua_State* L)
+{
+    struct sprite* self = lua_touserdata(L, 1);
+    sprite_set_visible(self, lua_toboolean(L, 2));
+    return 0;
+}
+
 int lsprite_set_pos(lua_State* L)
 {
     struct sprite* self = lua_touserdata(L, 1);
@@ -427,6 +434,7 @@ int luaopen_seal_sprite(lua_State* L)
         { "set_anim", lsprite_set_anim },
         { "set_spine_anim", lsprite_set_spine_anim},
         { "set_anim_interval", lsprite_set_anim_interval},
+        { "set_visible", lsprite_set_visible },
         { "set_pos", lsprite_set_pos },
         { "set_anchor", lsprite_set_anchor },
         { "set_rotation", lsprite_set_rotation },

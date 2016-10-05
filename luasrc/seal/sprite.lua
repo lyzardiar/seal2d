@@ -80,4 +80,31 @@ function sprite:cleanup(...)
 	self:clean_handler()
 end
 
+function sprite:set_bbox_visible(visible)
+	if not self.__bbox_lines then
+		local g = self:get_glyph()
+
+		local lines = {
+			{g[1], g[2], g[3], g[4]},
+			{g[3], g[4], g[5], g[6]},
+			{g[5], g[6], g[7], g[8]},
+			{g[7], g[8], g[1], g[2]},
+		}
+		local bbox_lines = {}
+		for i = 1, #lines do
+			local line = sprite.new_primitive("L", {
+											vertex = lines[i],
+											width = 2.0,
+											color = {30, 0, 0, 255}} )
+			self:add_child(line)
+			bbox_lines[#bbox_lines+1] = line
+		end
+		self.__bbox_lines = bbox_lines
+	end
+
+	for _, line in pairs(self.__bbox_lines) do
+		line:set_visible(visible)
+	end
+end
+
 return sprite

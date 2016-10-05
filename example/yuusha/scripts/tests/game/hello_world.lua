@@ -147,22 +147,29 @@ local function sprite_primitive_test()
 	root:cleanup()
 
 	local container = sprite.new_container()
-	container:set_pos(100, 0)
+	container:set_pos(100, 100)
 
-	local line = sprite.new_primitive("L", {
-										vertex = {30, 20, 135, 257},
+	local g = {0, 0, 160, 0, 160, 116, 0, 116}
+	local lines = {
+		{g[1], g[2], g[3], g[4]},
+		{g[3], g[4], g[5], g[6]},
+		{g[5], g[6], g[7], g[8]},
+		{g[7], g[8], g[1], g[2]},
+	}
+	for i = 1, #lines do
+		local line = sprite.new_primitive("L", {
+										vertex = lines[i],
 										width = 2.0,
 										color = {30, 0, 0, 255}} )
-	line:set_pos(100, 200)
+		container:add_child(line)
+	end
 
-	-- local rect = sprite.new_primitive("R", {
-	-- 									rect = {0, 0, 100, 200},
-	-- 									fill_color = {255, 0, 0, 255}
-	-- 									})
-	-- rect:set_pos(200, 200)
-	-- container:add_child(rect)
-
-	container:add_child(line)
+	local rect = sprite.new_primitive("R", {
+										rect = {0, 0, 100, 200},
+										fill_color = {255, 0, 0, 255}
+										})
+	rect:set_pos(200, 200)
+	container:add_child(rect)
 
 	root:add_child(container)
 end
@@ -204,6 +211,21 @@ local function sprite_loader_test()
 	local loader = require("editor_runtime.seal_loader")
 	local s = loader.load("res/game/main.json")
 	root:add_child(s)
+end
+
+local function sprite_glyph_test()
+	print("run sprite_loader_test")
+	root:cleanup()
+
+	local s = sprite.new("anim_pirate.png", "attack_0.png")
+	s:set_pos(100, 100)
+	s:set_bbox_visible(true)
+	root:add_child(s)
+
+	local s2 = sprite.new("anim_pirate.png", "attack_0.png")
+	s2:set_pos(300, 100)
+	s2:set_bbox_visible(false)
+	root:add_child(s2)
 end
 
 local function sprite_event_test()
@@ -359,6 +381,7 @@ local tests = {
 	{name = "sprite touch test", create_func = sprite_event_test},
 	{name = "sprite spine test", create_func = sprite_spine_test},
 	{name = "sprite loader test", create_func = sprite_loader_test},
+	{name = "sprite glyph test", create_func = sprite_glyph_test},
 	{name = "bmfont load test", create_func = bmfont_load_test},
 	{name = "bunny test", create_func = bunny_test},
 	{name = "multi texture test", create_func = multi_texture_test},

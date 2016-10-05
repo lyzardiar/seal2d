@@ -120,6 +120,7 @@ struct sprite {
     struct spine_anim* spine_anim;
 
     bool swallow;
+    bool visible;
 };
 
 void sprite_init_render(struct render* render);
@@ -144,6 +145,7 @@ void sprite_set_anim(struct sprite* self, struct anim* anim);
 void sprite_set_spine_anim(struct sprite* self, const char* anim_name, int track, bool loop);
 
 // common
+void sprite_set_visible(struct sprite* self, bool visible);
 void sprite_set_pos(struct sprite* self, float x, float y);
 void sprite_set_anchor(struct sprite* self, float x, float y);
 void sprite_set_rotation(struct sprite* self, float rotation);

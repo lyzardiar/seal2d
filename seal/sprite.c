@@ -164,6 +164,7 @@ void sprite_init(struct sprite* self, float width, float height)
     self->primitive_vertex = NULL;
     self->line_width = 0;
     self->spine_anim = NULL;
+    self->visible = true;
     
     self->children = array_new(16);
     
@@ -670,8 +671,12 @@ static void sprite_draw_primitive(struct sprite* self)
     primitive_render_func_draw(R, self->primitive_type, self);
 }
 
-static void sprite_before_visit(struct sprite* self, float dt)
+static void sprite_draw(struct sprite* self, float dt)
 {
+    if (!self->visible) {
+        return;
+    }
+
     switch (self->type) {
         case SPRITE_TYPE_PIC:
             sprite_draw_pic(self);
@@ -703,7 +708,7 @@ void sprite_visit(struct sprite* self, float dt)
     }
 
     sprite_update_transform(self);
-    sprite_before_visit(self, dt);
+    sprite_draw(self, dt);
 
     struct array* children = self->children;
     for (int i = 0 ;i < array_size(children); ++i) {
@@ -758,6 +763,11 @@ void sprite_set_anim(struct sprite* self, struct anim* anim)
 void sprite_set_spine_anim(struct sprite* self, const char* anim_name, int track, bool loop)
 {
     spine_anim_set_anim(self->spine_anim, anim_name, track, loop);
+}
+
+void sprite_set_visible(struct sprite* self, bool visible)
+{
+    self->visible = visible;
 }
 
 void sprite_set_pos(struct sprite* self, float x, float y)
