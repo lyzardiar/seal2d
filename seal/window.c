@@ -66,4 +66,12 @@ void glfw_mouse_pos_callback(GLFWwindow* window, double x, double y)
     }
 }
 
+void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if(key != GLFW_KEY_UNKNOWN) {
+        struct key_event e = {key, action};
+        seal_event(EVENT_KEY_RECEIVE, on_seal_key_receive, &e);
+    }
+}
+
 #endif

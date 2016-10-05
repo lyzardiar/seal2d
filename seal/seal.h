@@ -72,6 +72,10 @@ struct game {
 #define GAME_EVENT       "GAME_EVENT"
 #define GAME_HANDLERS    "GAME_HANDLERS"
 
+#define EVENT_GAME_START (0)
+#define EVENT_GAME_END   (1)
+#define EVENT_KEY_RECEIVE (2)
+
 struct game* seal_load_game_config();
 void seal_init_graphics();
 void seal_load_string(const char* script_data);
@@ -88,5 +92,7 @@ int  seal_call(lua_State *L, int n, int r);
 void seal_touch_event(struct touch_event* e);
 
 void seal_reload_scripts();
+
+int on_seal_key_receive(lua_State* L, void* ud);
 
 #endif

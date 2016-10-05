@@ -38,8 +38,6 @@ extern void nanovg_init(int w, int h);
 #define DRAW_FUNC_INDEX       3
 #define TOP_FUNC_INDEX        3
 
-#define EVENT_GAME_START (0)
-#define EVENT_GAME_END   (1)
 struct game* GAME = NULL;
 
 int seal_call(lua_State *L, int n, int r)
@@ -377,4 +375,13 @@ void seal_destroy()
 
     sprite_free(GAME->root);
     s_free(GAME);
+}
+
+int on_seal_key_receive(lua_State* L, void* ud)
+{
+    struct key_event* event = (struct key_event*)ud;
+    lua_pushinteger(L, EVENT_KEY_RECEIVE);
+    lua_pushinteger(L, event->key);
+    lua_pushinteger(L, event->action);
+    return 3;
 }
