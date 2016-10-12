@@ -18,13 +18,13 @@ int laction_move_to(lua_State* L)
     return 1;
 }
 
-int luaopen_action(lua_State* L)
+int luaopen_seal_action(lua_State* L)
 {
 #ifdef luaL_checkversion
     luaL_checkversion(L);
 #endif
     luaL_Reg lib[] = {
-        { "action_move_to", laction_move_to },
+        { "move_to", laction_move_to },
         { NULL, NULL },
     };
 

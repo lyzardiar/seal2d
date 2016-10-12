@@ -5,6 +5,7 @@ extern int luaopen_seal_core(lua_State* L);
 extern int luaopen_seal_platform(lua_State* L);
 extern int luaopen_seal_texture(lua_State* L);
 extern int luaopen_seal_sprite(lua_State* L);
+extern int luaopen_seal_action(lua_State* L);
 
 // third part part.
 extern int luaopen_socket_core(lua_State *L);
@@ -136,6 +137,7 @@ void luaopen_lua_extensions(lua_State *L)
         { "platform_core", luaopen_seal_platform },
         { "texure_core", luaopen_seal_texture },
         { "sprite_core", luaopen_seal_sprite },
+        { "action_core", luaopen_seal_action },
         
         { "socket.core", luaopen_socket_core },
         { "mime.core", luaopen_mime_core },

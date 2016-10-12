@@ -261,6 +261,14 @@ int lsprite_clean_handler(lua_State* L)
     return 0;
 }
 
+int lsprite_run_action(lua_State* L)
+{
+    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    struct action* action = (struct action*)lua_touserdata(L, 2);
+    sprite_run_action(self, action);
+    return 0;
+}
+
 int lsprite_set_anim(lua_State* L)
 {
     struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
@@ -431,6 +439,7 @@ int luaopen_seal_sprite(lua_State* L)
         { "set_text", lsprite_set_text },
         { "register_handler", lsprite_register_handler },
         { "clean_handler", lsprite_clean_handler },
+        { "run_action", lsprite_run_action },
         { "set_anim", lsprite_set_anim },
         { "set_spine_anim", lsprite_set_spine_anim},
         { "set_anim_interval", lsprite_set_anim_interval},

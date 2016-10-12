@@ -16,12 +16,14 @@ enum action_state {
 };
 
 struct action {
+    unsigned long __id;
     enum action_type type;
     enum action_state state;
     void* data;
 };
 
 struct action_interval {
+    struct action __super;
     float current;
     float duration;
 };

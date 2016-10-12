@@ -20,6 +20,7 @@
 #include "bmfont.h"
 #include "camera.h"
 #include "render.h"
+#include "scheduler.h"
 #include "lua_handler.h"
 
 #include "util.h"
@@ -77,8 +78,6 @@ lua_State* seal_new_lua()
     return L;
 }
 
-struct ttf_font* font = NULL;
-
 int load_game_scripts(lua_State* L, const char* zipfile)
 {
     size_t size = 0;
@@ -107,9 +106,11 @@ int load_game_scripts(lua_State* L, const char* zipfile)
     bool succeed = true;
     while (true) {
         unz_file_info info;
-        err = unzGetCurrentFileInfo(unzfile, &info, filename, 1024, NULL, 0, NULL, 0);
+        err = unzGetCurrentFileInfo(unzfile, &info, filename,
+                                    1024, NULL, 0, NULL, 0);
         if (err) {
-            fprintf(stderr, "get current file info failed, filename = %s\n", filename);
+            fprintf(stderr, "get current file info failed,"
+                              "filename = %s\n", filename);
             succeed = false;
             break;
         }
@@ -120,16 +121,19 @@ int load_game_scripts(lua_State* L, const char* zipfile)
         err = unzOpenCurrentFile(unzfile);
         unsigned long size = info.uncompressed_size;
         unsigned char* buffer = s_malloc(size);
-        unsigned int readed = unzReadCurrentFile(unzfile, buffer, (unsigned int)size);
+        unsigned int readed = unzReadCurrentFile(unzfile,
+                                                    buffer,
+                                                    (unsigned int)size);
         if(readed != size) {
             succeed = false;
-            fprintf(stderr, "read zip file failed? error size, required = %ld, readed = %d, filename = %s\n",
-                        size, readed, filename);
+            fprintf(stderr, "read zip file failed? error size,"
+                            "required = %ld, readed = %d, filename = %s\n",
+                            size, readed, filename);
             goto error;
         }
         err = luaL_loadbuffer(L, (const char*)buffer, size, filename);
         if(err) {
-            fprintf(stderr, "error loadL_loadbuffer, filename = %s\n", filename);
+            fprintf(stderr, "error loadbuffer, filename = %s\n", filename);
             goto error;
         }
         lua_setfield(L, -2, filename);
@@ -195,9 +199,11 @@ void seal_init_graphics()
     GAME->texture_cache = texture_cache_new();
     GAME->sprite_frame_cache = sprite_frame_cache_new();
     GAME->bmfont_cache = bmfont_cache_new();
-    GAME->global_camera = camera_new(GAME->config.window_height, GAME->config.window_height);
+    GAME->global_camera = camera_new( GAME->config.window_height,
+                                        GAME->config.window_height);
     GAME->render = render_new();
     GAME->lua_handler = lua_handler_new(GAME->lstate);
+    GAME->scheduler = scheduler_new();
     sprite_init_render(GAME->render);
 
 #ifdef PLAT_DESKTOP
@@ -218,8 +224,8 @@ void seal_init_graphics()
 void seal_load_string(const char* script_data)
 {
     if(luaL_dostring(GAME->lstate, script_data)) {
-        fprintf(stderr, "run start script Failed. %s\n", lua_tostring(GAME->lstate, -1));
-        abort();
+        fprintf(stderr, "run start script Failed. %s\n",
+                lua_tostring(GAME->lstate, -1));
     }
 }
 
@@ -227,8 +233,8 @@ void seal_load_file(const char* script_path)
 {
 #ifdef PLAT_DESKTOP
     if(luaL_dofile(GAME->lstate, script_path)) {
-        fprintf(stderr, "run start script Failed. %s \n", lua_tostring(GAME->lstate, -1));
-        abort();
+        fprintf(stderr, "run start script Failed. %s \n",
+                lua_tostring(GAME->lstate, -1));
     }
 #endif
 
@@ -253,8 +259,6 @@ static int traceback (lua_State *L)
     return 1;
 }
 
-static struct timeval _lastUpdate;
-
 static int on_seal_game_start(lua_State* L, void* ud)
 {
     lua_pushinteger(L, EVENT_GAME_START);
@@ -263,7 +267,7 @@ static int on_seal_game_start(lua_State* L, void* ud)
 
 void seal_start_game()
 {
-    gettimeofday(&_lastUpdate, NULL);
+    gettimeofday(&GAME->__last_update, NULL);
 
     lua_State *L = GAME->lstate;
     assert(lua_gettop(L) == 0);
@@ -295,10 +299,10 @@ void seal_update()
     gettimeofday(&now, NULL);
 
     // delta只计算draw的时间
-    float dt = ((now.tv_sec - _lastUpdate.tv_sec) +
-                   (now.tv_usec - _lastUpdate.tv_usec))/1000000.0f;
+    float dt = ((now.tv_sec - GAME->__last_update.tv_sec) +
+                   (now.tv_usec - GAME->__last_update.tv_usec))/1000000.0f;
 
-    _lastUpdate = now;
+    GAME->__last_update = now;
 
     if (dt < FLT_EPSILON) {
         return;
@@ -306,6 +310,7 @@ void seal_update()
 
     GAME->global_dt = dt;
     camera_update(GAME->global_camera);
+    scheduler_update(GAME->scheduler, dt);
 
     lua_State* L = GAME->lstate;
     lua_pushvalue(L, UPDATE_FUNC_INDEX);
@@ -335,7 +340,6 @@ void seal_touch_event(struct touch_event* touch_event)
 {
     sprite_touch(GAME->root, touch_event);
 }
-
 
 void seal_draw()
 {
@@ -374,9 +378,9 @@ void seal_destroy()
 #endif
 
     sprite_free(GAME->root);
+    scheduler_free(GAME->scheduler);
     s_free(GAME);
 }
-
 int on_seal_key_receive(lua_State* L, void* ud)
 {
     struct key_event* event = (struct key_event*)ud;

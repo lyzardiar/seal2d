@@ -33,6 +33,7 @@
 		4D25D88A1C95C06000448F88 /* udp.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D8651C95C06000448F88 /* udp.c */; };
 		4D25D88C1C95C06000448F88 /* unix.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D8671C95C06000448F88 /* unix.c */; };
 		4D25D88E1C95C06000448F88 /* usocket.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D25D86A1C95C06000448F88 /* usocket.c */; };
+		4D3676691DAE9EFD00F3E816 /* scheduler.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D3676671DAE9EFD00F3E816 /* scheduler.c */; };
 		4D46F80B1C8F2B0A0081A1DC /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D46F80A1C8F2B0A0081A1DC /* libfreetype.a */; };
 		4D46F80F1C8F38C90081A1DC /* ttf_font.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D46F80D1C8F37480081A1DC /* ttf_font.c */; };
 		4D586AAA1D9E2D7800F94BD0 /* test_hash_map.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D586AA91D9E2D7800F94BD0 /* test_hash_map.c */; };
@@ -217,6 +218,8 @@
 		4D25D8681C95C06000448F88 /* unix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unix.h; sourceTree = "<group>"; };
 		4D25D86A1C95C06000448F88 /* usocket.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = usocket.c; sourceTree = "<group>"; };
 		4D25D86B1C95C06000448F88 /* usocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = usocket.h; sourceTree = "<group>"; };
+		4D3676671DAE9EFD00F3E816 /* scheduler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scheduler.c; sourceTree = "<group>"; };
+		4D3676681DAE9EFD00F3E816 /* scheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scheduler.h; sourceTree = "<group>"; };
 		4D46F8061C8F25D30081A1DC /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		4D46F80A1C8F2B0A0081A1DC /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = "../../../libs/freetype-2.6.2/mac/libs/libfreetype.a"; sourceTree = "<group>"; };
 		4D46F80D1C8F37480081A1DC /* ttf_font.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ttf_font.c; sourceTree = "<group>"; };
@@ -839,6 +842,8 @@
 				4D822B7F1C6F621E0083122E /* platform */,
 				4DE4D1B31C74056000410891 /* tests */,
 				4DE642BE1C5B3BCA003EBBC0 /* math */,
+				4D3676671DAE9EFD00F3E816 /* scheduler.c */,
+				4D3676681DAE9EFD00F3E816 /* scheduler.h */,
 				4D0281431CC693A2001986C8 /* action.c */,
 				4D0281441CC693A2001986C8 /* action.h */,
 				4D1FECBC1D1850EF0077444D /* anim.c */,
@@ -1148,6 +1153,7 @@
 				A633A7271D6EE5AD00A270A7 /* primitive_render.c in Sources */,
 				4D25D88A1C95C06000448F88 /* udp.c in Sources */,
 				A6E74CB31CCA2271009392C8 /* ioapi_mem.c in Sources */,
+				4D3676691DAE9EFD00F3E816 /* scheduler.c in Sources */,
 				4D25D8801C95C06000448F88 /* options.c in Sources */,
 				4D822B911C6F672D0083122E /* timer.c in Sources */,
 				4DCBEF721D7B3F4A009C05EC /* BoundingBoxAttachment.c in Sources */,

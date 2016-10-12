@@ -228,6 +228,18 @@ local function sprite_glyph_test()
 	root:add_child(s2)
 end
 
+local function sprite_action_test()
+	print("run sprite_action_test")
+	root:cleanup()
+	local s = sprite.new("anim_pirate.png", "attack_0.png")
+	s:set_pos(100, 100)
+	root:add_child(s)
+
+	local move = require("action_core").move_to(1, 200, 100)
+	s:run_action(move)
+
+end
+
 local function sprite_event_test()
 	print("run sprite_event_test")
 	root:cleanup()
@@ -382,6 +394,7 @@ local tests = {
 	{name = "sprite spine test", create_func = sprite_spine_test},
 	{name = "sprite loader test", create_func = sprite_loader_test},
 	{name = "sprite glyph test", create_func = sprite_glyph_test},
+	{name = "sprite action test", create_func = sprite_action_test},
 	{name = "bmfont load test", create_func = bmfont_load_test},
 	{name = "bunny test", create_func = bunny_test},
 	{name = "multi texture test", create_func = multi_texture_test},

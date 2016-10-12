@@ -21,6 +21,7 @@ struct render;
 struct touch_event;
 struct lua_handler;
 struct nuk_node;
+struct scheduler;
 
 enum GAME_STATE {
     GAME_STATE_INIT = 0,
@@ -53,11 +54,15 @@ struct game {
     struct sprite* root;             // the root node of the world
     struct shader* shader;
     struct render* render;
+
+    // extra util
     struct lua_handler* lua_handler;
     struct sprite_frame_cache* sprite_frame_cache;
     struct bmfont_cache* bmfont_cache;
     struct nuk_node* nuk_node;
+    struct scheduler* scheduler;
 
+    struct timeval __last_update;
     int game_state;
 };
 

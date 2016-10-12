@@ -46,11 +46,18 @@ void action_free(struct action* action)
     s_free(action);
 }
 
-struct action* move_to(float duration, float to_x, float to_y)
+static unsigned long action_id_counter = 0;
+static struct action* action_new(enum action_type type)
 {
     struct action* action = STRUCT_NEW(action);
-    action->type = ACTION_MOVE_TO;
+    action->__id = ++action_id_counter;
+    action->type = type;
     action->state = ACTION_STATE_READY;
+    return action;
+}
+struct action* move_to(float duration, float to_x, float to_y)
+{
+    struct action* action = action_new(ACTION_MOVE_TO);
     
     struct action_move* data = STRUCT_NEW(action_move);
     data->to_x = to_x;
@@ -58,6 +65,7 @@ struct action* move_to(float duration, float to_x, float to_y)
     data->start_x = data->start_y = 0;
     data->__super.current = 0;
     data->__super.duration = duration;
+
     action->data = data;
     
     return action;

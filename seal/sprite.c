@@ -15,6 +15,7 @@
 #include "spine_anim.h"
 #include "render.h"
 #include "event.h"
+#include "scheduler.h"
 
 #include "lua_handler.h"
 
@@ -487,7 +488,6 @@ static void sprite_update_primitive_rect_transform(struct sprite* self, struct a
 // update the coordinate from local to world
 void sprite_update_transform(struct sprite* self)
 {
-    
     // pass the dirty flags to the children
     for (int i = 0; i < array_size(self->children); ++i) {
         struct sprite* child = (struct sprite*)array_at(self->children, i);
@@ -650,6 +650,11 @@ bool sprite_contains(struct sprite* self, float x, float y)
         self->height,
     };
     return rect_contains(&world, x, y);
+}
+
+void sprite_run_action(struct sprite* self, struct action* action)
+{
+    scheduler_schedule(GAME->scheduler, self, action);
 }
 
 static void sprite_draw_pic(struct sprite* self)
