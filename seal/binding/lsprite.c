@@ -251,7 +251,7 @@ int lsprite_set_size(lua_State* L)
 int lsprite_register_handler(lua_State* L)
 {
     struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
-    lua_handler_set_func(GAME->lua_handler, L, self, 2);
+    lua_handler_new_func(GAME->lua_handler, L, self, 2);
 
     return 0;
 }

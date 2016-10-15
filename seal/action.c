@@ -83,6 +83,15 @@ bool action_update(struct action* self, struct sprite* sprite, float dt)
             break;
         }
 
+        case ACTION_CALL:
+        {
+            struct action_call_lua_func* call = self->__child;
+            s_assert(call->lua_func > 0);
+            seal_call_func(self, NULL, NULL);
+            action_stop(self);
+            break;
+        }
+
         default:
             break;
     }
@@ -138,6 +147,13 @@ struct action* sequence(struct array* actions)
     return action_new(ACTION_SEQUENCE, sequence);
 }
 
+struct action* call_lua_func()
+{
+    struct action_call_lua_func* call = STRUCT_NEW(action_call_lua_func);
+    call->lua_func = -1;
+    return action_new(ACTION_CALL, call);
+}
+
 void action_play(struct action* self, struct sprite* target)
 {
     enum action_state state = self->state;
@@ -171,6 +187,10 @@ void action_play(struct action* self, struct sprite* target)
             struct action* running = array_at(sequence->seqence,
                                               sequence->running_index);
             action_play(running, target);
+            break;
+        }
+        case ACTION_CALL:
+        {
             break;
         }
 

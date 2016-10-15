@@ -632,12 +632,7 @@ void sprite_touch(struct sprite* self, struct touch_event* touch_event)
             touch_event->swallowd = true;
         }
         
-        //TODO: this call is ugly, refactor someday.
-        lua_handler_exe_func(GAME->lua_handler,
-                             GAME->lstate,
-                             self,
-                             touch_event_set_func,
-                             touch_event);
+        seal_call_func(self, touch_event_set_func, touch_event);
     }
 }
 

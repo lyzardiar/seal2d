@@ -1,6 +1,8 @@
 #ifndef __seal__action__
 #define __seal__action__
 
+#include "lua_handler.h"
+
 struct sprite;
 struct Hashmap;
 struct array;
@@ -9,6 +11,7 @@ enum action_type {
     ACTION_MOVE_TO = 0,
     ACTION_EASE_IN,
     ACTION_SEQUENCE,
+    ACTION_CALL,
 };
 
 enum action_state {
@@ -48,12 +51,17 @@ struct action_sequence {
     int running_index;
 };
 
+struct action_call_lua_func {
+    LUA_FUNCTION_HANDLER lua_func;
+};
+
 void action_interval_init(struct action_interval* self, float duration);
 bool action_interval_update(struct action_interval* self, float dt);
 
 struct action* move_to(float duration, float to_x, float to_y);
 struct action* ease_in(struct action* action, float rate);
 struct action* sequence(struct array* actions);
+struct action* call_lua_func();
 
 void action_play(struct action* self, struct sprite* target);
 void action_stop(struct action* self);

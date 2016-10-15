@@ -81,6 +81,7 @@ struct game {
 #define EVENT_GAME_END   (1)
 #define EVENT_KEY_RECEIVE (2)
 
+// main game state functions
 struct game* seal_load_game_config();
 void seal_init_graphics();
 void seal_load_string(const char* script_data);
@@ -89,13 +90,17 @@ void seal_start_game();
 void seal_main_loop();
 void seal_update();
 void seal_draw();
-void seal_event(int event_type,
-                int (*stack_set_func)(lua_State*, void* ud),
-                void* ud);
 void seal_destroy();
-int  seal_call(lua_State *L, int n, int r);
-void seal_touch_event(struct touch_event* e);
 
+// Lua
+int  seal_call(lua_State *L, int n, int r);
+void seal_call_func(void* object,
+                    int (*stack_set_func)(lua_State*, void* ud),
+                    void* ud);
+void seal_event(int event_type,
+                int (*stack_set_func)(lua_State*, void*),
+                void* ud);
+void seal_touch_event(struct touch_event* e);
 void seal_reload_scripts();
 
 int on_seal_key_receive(lua_State* L, void* ud);

@@ -71,6 +71,15 @@ int seal_call(lua_State *L, int n, int r)
     return err;
 }
 
+void seal_call_func(void* object,
+                    int (*stack_set_func)(lua_State*, void* ud),
+                    void* ud)
+{
+    lua_handler_exe_func(GAME->lua_handler,
+                            GAME->lstate,
+                            object, stack_set_func, ud);
+}
+
 lua_State* seal_new_lua()
 {
     lua_State* L = luaL_newstate();
@@ -298,7 +307,6 @@ void seal_update()
     struct timeval now;
     gettimeofday(&now, NULL);
 
-    // delta只计算draw的时间
     float dt = ((now.tv_sec - GAME->__last_update.tv_sec) +
                    (now.tv_usec - GAME->__last_update.tv_usec))/1000000.0f;
 
@@ -320,7 +328,7 @@ void seal_update()
 }
 
 void seal_event(int event_type,
-                int (*stack_set_func)(lua_State*, void* ud),
+                int (*stack_set_func)(lua_State*, void*),
                 void* ud)
 {
     lua_State* L = GAME->lstate;
@@ -381,6 +389,7 @@ void seal_destroy()
     scheduler_free(GAME->scheduler);
     s_free(GAME);
 }
+
 int on_seal_key_receive(lua_State* L, void* ud)
 {
     struct key_event* event = (struct key_event*)ud;

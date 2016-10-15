@@ -7,6 +7,9 @@
 #include "base/array.h"
 
 #include "action.h"
+#include "lua_handler.h"
+
+EXTERN_GAME;
 
 int laction_move_to(lua_State* L)
 {
@@ -45,6 +48,18 @@ int laction_sequence(lua_State* L)
     return 1;
 }
 
+int laction_call_func(lua_State* L)
+{
+    struct action* call = call_lua_func();
+    LUA_FUNCTION_HANDLER handler = lua_handler_new_func(GAME->lua_handler,
+                         L,
+                         call,
+                         1);
+    ((struct action_call_lua_func*)call->__child)->lua_func = handler;
+    lua_pushlightuserdata(L, call);
+    return 1;
+}
+
 int luaopen_seal_action(lua_State* L)
 {
 #ifdef luaL_checkversion
@@ -54,6 +69,7 @@ int luaopen_seal_action(lua_State* L)
         { "move_to", laction_move_to },
         { "ease_in", laction_ease_in },
         { "sequence", laction_sequence },
+        { "call_func", laction_call_func },
         { NULL, NULL },
     };
 
