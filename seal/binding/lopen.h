@@ -18,6 +18,7 @@ const char* getfiled_s(lua_State* L, const char* key);
 void getarray_f(lua_State* L, const char* key, float* f_array, int cnt);
 void getarray_i(lua_State* L, const char* key, int* i_array, int cnt);
 
+
 #define bind_func_implemention_v(bind, to, ctx) \
     int l##bind(lua_State* L) { \
         to(ctx);\

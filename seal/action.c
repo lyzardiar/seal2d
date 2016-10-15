@@ -4,31 +4,6 @@
 #include "sprite.h"
 #include "action.h"
 
-float easeIn(float time, float rate)
-{
-    return powf(time, rate);
-}
-
-float easeOut(float time, float rate)
-{
-    return powf(time, 1 / rate);
-}
-
-float easeInOut(float time, float rate)
-{
-    time *= 2;
-    if (time < 1)
-    {
-        return 0.5f * powf(time, rate);
-    }
-    else
-    {
-        return (1.0f - 0.5f * powf(2 - time, rate));
-    }
-}
-
-
-
 void action_interval_init(struct action_interval* self, float duration)
 {
     self->duration = duration;
@@ -45,10 +20,10 @@ bool action_interval_update(struct action_interval* self, float dt)
     return false;
 }
 
-void action_update(struct action* self, struct sprite* sprite, float dt)
+bool action_update(struct action* self, struct sprite* sprite, float dt)
 {
     if (action_is_stop(self)) {
-        return;
+        return true;
     }
 
     switch (self->type) {
@@ -82,9 +57,36 @@ void action_update(struct action* self, struct sprite* sprite, float dt)
             break;
         }
 
+        case ACTION_SEQUENCE:
+        {
+            struct action_sequence* seq = self->__child;
+
+            struct array* action_seq = seq->seqence;
+            int running_index = seq->running_index;
+            struct action* running = array_at(action_seq, running_index);
+            if(action_update(running, sprite, dt)) {
+                // action finished
+                seq->running_index++;
+
+                if (seq->running_index < array_size(action_seq)) {
+                    // play the next action
+                    struct action* next = array_at(action_seq,
+                                                     seq->running_index);
+                    action_play(next, sprite);
+                } else {
+                    // all the sequence has finished :)
+                    action_stop(self);
+                }
+            } else {
+                // current action is running, pass
+            }
+            break;
+        }
+
         default:
             break;
     }
+    return false;
 }
 
 void action_free(struct action* action)
@@ -94,11 +96,12 @@ void action_free(struct action* action)
 }
 
 static unsigned long action_id_counter = 0;
-static struct action* action_new(enum action_type type)
+static struct action* action_new(enum action_type type, void* child)
 {
     struct action* action = STRUCT_NEW(action);
     action->__id = ++action_id_counter;
     action->type = type;
+    action->__child = child;
     action->state = ACTION_STATE_READY;
     return action;
 }
@@ -111,24 +114,28 @@ struct action* move_to(float duration, float to_x, float to_y)
     move->to_y = to_y;
     move->start_x = move->start_y = 0;
 
-    struct action* act = action_new(ACTION_MOVE_TO);
-    act->__child = move;
-    
-    return act;
+    return action_new(ACTION_MOVE_TO, move);
 }
 
 struct action* ease_in(struct action* action, float rate)
 {
     struct action_ease_in* ease_in = STRUCT_NEW(action_ease_in);
     action_interval_init(&ease_in->__super,
-                         ((struct action_interval*)(action->__child))->duration
+                         ((struct action_interval*)action->__child)->duration
                          );
     ease_in->rate = rate;
     ease_in->wrapped = action;
 
-    struct action* act = action_new(ACTION_EASE_IN);
-    act->__child = ease_in;
-    return act;
+    return action_new(ACTION_EASE_IN, ease_in);
+}
+
+struct action* sequence(struct array* actions)
+{
+    struct action_sequence* sequence = STRUCT_NEW(action_sequence);
+    sequence->seqence = actions;
+    sequence->running_index = -1;
+
+    return action_new(ACTION_SEQUENCE, sequence);
 }
 
 void action_play(struct action* self, struct sprite* target)
@@ -148,14 +155,25 @@ void action_play(struct action* self, struct sprite* target)
 
             move->start_x = target->x;
             move->start_y = target->y;
-        }
             break;
+        }
 
         case ACTION_EASE_IN:
         {
-
-        }
             break;
+        }
+
+        case ACTION_SEQUENCE:
+        {
+            struct action_sequence* sequence =
+                                (struct action_sequence*)self->__child;
+            sequence->running_index = 0;
+            struct action* running = array_at(sequence->seqence,
+                                              sequence->running_index);
+            action_play(running, target);
+            break;
+        }
+
         default:
             break;
     }
