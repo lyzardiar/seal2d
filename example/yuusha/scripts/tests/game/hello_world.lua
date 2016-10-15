@@ -464,7 +464,7 @@ function hello_world.entry()
 		local nuk_node = require "nuk_node"
 		menu = nuk_node.new()
 	else
-		sprite_primitive_test()
+		sprite_spine_test()
 	end
 
 	return root.__cobj
