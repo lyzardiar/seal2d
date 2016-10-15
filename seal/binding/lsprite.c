@@ -379,6 +379,14 @@ int lsprite_get_size(lua_State* L)
     return 2;
 }
 
+int lsprite_get_anchor(lua_State* L)
+{
+    struct sprite* self = lua_touserdata(L, 1);
+    lua_pushnumber(L, self->anchor_x);
+    lua_pushnumber(L, self->anchor_y);
+    return 2;
+}
+
 int lsprite_get_glyph(lua_State* L)
 {
     struct sprite* self = lua_touserdata(L, 1);
@@ -467,6 +475,7 @@ int luaopen_seal_sprite(lua_State* L)
         { "set_size", lsprite_set_size },
         { "get_pos", lsprite_get_pos },
         { "get_size", lsprite_get_size },
+        { "get_anchor", lsprite_get_anchor },
         { "get_glyph", lsprite_get_glyph },
         { "add_child", lsprite_add_child },
         { "remove_from_parent", lsprite_remove_from_parent },

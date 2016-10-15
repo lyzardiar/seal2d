@@ -218,13 +218,15 @@ local function sprite_glyph_test()
 	root:cleanup()
 
 	local s = sprite.new("anim_pirate.png", "attack_0.png")
-	s:set_pos(100, 100)
+	s:set_pos(0, 0)
+	s:set_anchor(0, 0)
 	s:set_bbox_visible(true)
 	root:add_child(s)
 
 	local s2 = sprite.new("anim_pirate.png", "attack_0.png")
 	s2:set_pos(300, 100)
-	s2:set_bbox_visible(false)
+	s2:set_anchor(0, 0.5)
+	s2:set_bbox_visible(true)
 	root:add_child(s2)
 end
 

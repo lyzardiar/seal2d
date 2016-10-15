@@ -446,6 +446,7 @@ void sprite_set_text(struct sprite* self, const char* label)
             struct sprite* c_sprite = sprite_new(frame);
             int yoffset = self->bmfont->common.lineHeight - character->yoffset - character->height;
             sprite_set_pos(c_sprite, x + character->xoffset, y + yoffset);
+            sprite_set_anchor(c_sprite, 0, 0);
             sprite_add_child(self, c_sprite, 0);
             
             // coord caculation
@@ -500,11 +501,6 @@ static void sprite_sort_zorder(struct sprite* self)
             }
         }
 
-//        printf("after sort:\n");
-
-//        for (int i = 0; i < n; ++i) {
-//            printf("%d ", ((struct sprite*)(array_at(self->children, i)))->zorder);
-//        }
         self->dirty &= (~SPRITE_ZORDER_DIRTY);
     }
 }

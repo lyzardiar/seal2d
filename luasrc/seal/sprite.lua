@@ -81,12 +81,18 @@ function sprite:set_bbox_visible(visible)
 	if not self.__bbox_lines then
 		local g = self:get_glyph()
 
+		local ax, ay = self:get_anchor()
+		local w, h = self:get_size()
+		local xoffset = w * (ax)
+		local yoffset = h * (ay)
+
 		local lines = {
-			{g[1], g[2], g[3], g[4]},
-			{g[3], g[4], g[5], g[6]},
-			{g[5], g[6], g[7], g[8]},
-			{g[7], g[8], g[1], g[2]},
+			{g[1] - xoffset, g[2] - yoffset, g[3] - xoffset, g[4] - yoffset},
+			{g[3] - xoffset, g[4] - yoffset, g[5] - xoffset, g[6] - yoffset},
+			{g[5] - xoffset, g[6] - yoffset, g[7] - xoffset, g[8] - yoffset},
+			{g[7] - xoffset, g[8] - yoffset, g[1] - xoffset, g[2] - yoffset},
 		}
+
 		local bbox_lines = {}
 		for i = 1, #lines do
 			local line = sprite.new_primitive("L", {
