@@ -45,10 +45,6 @@ function util.log(level, ...)
 	print(log_level_tag .. '\t', ...)
 end
 
--- TODO: implement a ordered pairs.
-function util.opairs(t)
-
-end
 
 function util.print_r(root)
 	if not root then
@@ -114,6 +110,73 @@ function util.tobytes(s)
         tinsert(t, string.byte(s, i))
     end
     return table.concat(t, " ")
+end
+
+function util.shuffle_t(t)
+	return util.shuffle(#t)
+end
+
+function util.shuffle(total)
+	assert(total)
+    local base = {}
+    local results = {}
+    for i=1, total do
+        base[i] = i
+    end
+    for i=1, total do
+        local k = math.random(i, total)
+        base[i], base[k] =  base[k],  base[i]
+    end
+    for i=1, total do
+        results[i] = base[i]
+    end
+    return results
+end
+
+function util.order_pairs(t)
+    local tinsert = table.insert
+
+    local ot = {}
+    -- sort the keys
+    for k, _ in pairs(t) do
+        tinsert(ot, k)
+    end
+
+    table.sort(ot, function(a, b)
+            return tostring(a) < tostring(b)
+        end)
+
+    local index = 0
+    local function iter()
+        index = index + 1
+        if t[ot[index]] then
+            return index, t[ot[index]]
+        end
+    end
+
+    return iter, t, nil
+end
+
+function util.shuffle_pairs(t)
+    local tinsert = table.insert
+    local index = 0
+    local ot = {}
+    -- sort the keys
+    for k, _ in pairs(t) do
+        tinsert(ot, k)
+    end
+
+    local shuffle_t = util.shuffle_t(ot)
+
+    local index = 0
+    local function iter()
+        index = index + 1
+        if t[shuffle_t[index]] then
+            return index, t[shuffle_t[index]]
+        end
+    end
+
+    return iter, t, nil
 end
 
 return util

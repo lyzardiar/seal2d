@@ -34,6 +34,7 @@ EXTERN_GAME;
 #define SPRITE_ROTATION_DIRTY   (1 << 2)
 #define SPRITE_COLOR_DIRTY      (1 << 3)
 #define SPRITE_FRAME_DIRTY      (1 << 4)
+#define SPRITE_ZORDER_DIRTY     (1 << 5)
 
 #define SPRITE_SRT_DIRTY        (SPRITE_TRANSFORM_DIRTY | SPRITE_SCALE_DIRTY | SPRITE_ROTATION_DIRTY)
 
@@ -445,7 +446,7 @@ void sprite_set_text(struct sprite* self, const char* label)
             struct sprite* c_sprite = sprite_new(frame);
             int yoffset = self->bmfont->common.lineHeight - character->yoffset - character->height;
             sprite_set_pos(c_sprite, x + character->xoffset, y + yoffset);
-            sprite_add_child(self, c_sprite);
+            sprite_add_child(self, c_sprite, 0);
             
             // coord caculation
             x += character->xadvance;
@@ -485,8 +486,30 @@ static void sprite_update_primitive_rect_transform(struct sprite* self, struct a
     }
 }
 
-// update the coordinate from local to world
-void sprite_update_transform(struct sprite* self)
+static void sprite_sort_zorder(struct sprite* self)
+{
+    if (self->dirty & SPRITE_ZORDER_DIRTY) {
+        int n = array_size(self->children);
+        for (int i = 0; i < n-1; ++i) {
+            for (int j = i+1; j < n; ++j) {
+                struct sprite* a = array_at(self->children, i);
+                struct sprite* b = array_at(self->children, j);
+                if (a && b && a->zorder > b->zorder) {
+                    array_swap(self->children, i, j);
+                }
+            }
+        }
+
+//        printf("after sort:\n");
+
+//        for (int i = 0; i < n; ++i) {
+//            printf("%d ", ((struct sprite*)(array_at(self->children, i)))->zorder);
+//        }
+        self->dirty &= (~SPRITE_ZORDER_DIRTY);
+    }
+}
+
+static void sprite_update_transform(struct sprite* self)
 {
     // pass the dirty flags to the children
     for (int i = 0; i < array_size(self->children); ++i) {
@@ -499,7 +522,7 @@ void sprite_update_transform(struct sprite* self)
     
     // TODO: we could improve performance by seprating transform from SRT,
     // but for simpler implemention, we have use SRT_DIRTY right now. :)
-    if (self->dirty & SPRITE_SRT_DIRTY ) {
+    if (self->dirty & SPRITE_SRT_DIRTY) {
         
         struct affine* local = &self->local_srt;
         af_srt(local, self->x, self->y, self->scale_x, self->scale_y, self->rotation);
@@ -561,15 +584,17 @@ void sprite_update_transform(struct sprite* self)
     }
 }
 
-void sprite_add_child(struct sprite* self, struct sprite* child)
+void sprite_add_child(struct sprite* self, struct sprite* child, int zorder)
 {
     s_assert(child);
-    child->child_index = array_size(self->children);
     
     // TODO: when we add the child, search the first NULL position.
     // TODO: consider the ZORDER
     array_push_back(self->children, child);
+    child->zorder = zorder;
     child->parent = self;
+
+    self->dirty |= SPRITE_ZORDER_DIRTY;
 }
 
 void sprite_remove_from_parent(struct sprite* self)
@@ -582,10 +607,9 @@ void sprite_remove_child(struct sprite* self, struct sprite* child)
 {
     // here we should release the memory??? yes.
     if (child) {
-        sprite_free(child);
         // we only remove the child, but we don't move the array
-        // TODO: move the array after set the element to NULL :)
-        array_set(self->children, child->child_index, NULL);
+        array_remove(self->children, child);
+        sprite_free(child);
     }
 }
 
@@ -712,6 +736,7 @@ void sprite_visit(struct sprite* self, float dt)
         sprite_set_sprite_frame(self, anim_current_frame(self->anim));
     }
 
+    sprite_sort_zorder(self);
     sprite_update_transform(self);
     sprite_draw(self, dt);
 

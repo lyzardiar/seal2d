@@ -1,4 +1,4 @@
-local nfc = {} 
+local nfc = {}
 
 local listeners = {}
 
@@ -11,7 +11,7 @@ function nfc.register(event, callback)
 		t = {}
 		listeners[event] = t
 	end
-		
+
 	t[#t+1] = callback
 end
 
@@ -38,7 +38,7 @@ function nfc.remove(event, callback)
 	if found then
 		t[found] = nil
 		if not next(t) then
-			print(string.format("*** All listener of [%s] has been removed", event))
+			print(string.format("All listener of [%s] has been removed", event))
 			listeners[event] = nil
 		end
 	else

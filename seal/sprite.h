@@ -83,7 +83,6 @@ struct sprite {
     int zorder;
     struct sprite* parent;
     struct array* children; // NULL indicates the children has been removed.
-    size_t child_index;
 
     // geometry
     float x, y;
@@ -158,7 +157,7 @@ void sprite_set_scale_y(struct sprite* self, float scale_y);
 void sprite_set_color(struct sprite* self, color color);
 void sprite_set_size(struct sprite* self, float width, float height);
 
-void sprite_add_child(struct sprite* self, struct sprite* child);
+void sprite_add_child(struct sprite* self, struct sprite* child, int zorder);
 void sprite_remove_from_parent(struct sprite* self);
 void sprite_remove_child(struct sprite* self, struct sprite* child);
 void sprite_remove_all_child(struct sprite* self);

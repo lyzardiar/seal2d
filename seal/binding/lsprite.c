@@ -406,7 +406,12 @@ int lsprite_add_child(lua_State* L)
     struct sprite* child = lua_touserdata(L, -1);
 
     struct sprite* self = lua_touserdata(L, 1);
-    sprite_add_child(self, child);
+
+    int zorder = 0;
+    if (lua_isinteger(L, 3)) {
+        zorder = lua_tointeger(L, 3);
+    }
+    sprite_add_child(self, child, zorder);
 
     return 0;
 }
