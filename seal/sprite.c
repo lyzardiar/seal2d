@@ -154,7 +154,7 @@ void sprite_init(struct sprite* self, float width, float height)
     self->scale_x = self->scale_y = 1;
     self->rotation = 0;
     self->x = self->y = 0;
-    self->anchor_x = self->anchor_y = 0;
+    self->anchor_x = self->anchor_y = 0.5f;
     self->width = width;
     self->height = height;
     self->anim = NULL;
