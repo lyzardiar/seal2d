@@ -58,26 +58,30 @@ void action_update(struct action* self, struct sprite* sprite, float dt)
             struct action_interval* super = &move->__super;
 
             float ratio = super->current / super->duration;
-            if (!action_interval_update(&move->__super, dt)) {
+            if (!action_interval_update(super, dt)) {
                 float x = (move->to_x - move->start_x) * ratio;
                 float y = (move->to_y - move->start_y) * ratio;
                 sprite_set_pos(sprite, move->start_x + x, move->start_y + y);
             } else {
                 action_stop(self);
             }
-        }
             break;
+        }
 
         case ACTION_EASE_IN:
         {
             struct action_ease_in* ease_in = self->__child;
-            float time = powf(dt, ease_in->rate);
-            printf("dt = %.4f, time = %.4f\n", dt, time);
-            action_update(ease_in->wrapped, sprite, time);
+            struct action_interval* super = &ease_in->__super;
 
-        }
+            if (!action_interval_update(super, dt)) {
+                float time = powf(super->current, ease_in->rate);
+                action_update(ease_in->wrapped, sprite, time);
+            } else {
+                action_stop(self);
+            }
             break;
-            
+        }
+
         default:
             break;
     }

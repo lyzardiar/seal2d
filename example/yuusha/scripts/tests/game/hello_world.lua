@@ -237,9 +237,8 @@ local function sprite_action_test()
 
 	local action = require("action_core")
 	local move = action.move_to(1, 200, 100)
-	s:run_action(move)
-	-- local ease_move = action.ease_in(move, 5)
-	-- s:run_action(ease_move)
+	local ease_move = action.ease_in(move, 5)
+	s:run_action(ease_move)
 end
 
 local function sprite_event_test()
