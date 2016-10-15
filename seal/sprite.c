@@ -572,9 +572,14 @@ void sprite_add_child(struct sprite* self, struct sprite* child)
     child->parent = self;
 }
 
+void sprite_remove_from_parent(struct sprite* self)
+{
+    s_assert(self->parent);
+    sprite_remove_child(self->parent, self);
+}
+
 void sprite_remove_child(struct sprite* self, struct sprite* child)
 {
-    
     // here we should release the memory??? yes.
     if (child) {
         sprite_free(child);
@@ -797,6 +802,18 @@ void sprite_set_scale(struct sprite* self, float scale)
 {
     self->scale_x = self->scale_y = scale;
     
+    self->dirty |= SPRITE_SCALE_DIRTY;
+}
+
+void sprite_set_scale_x(struct sprite* self, float scale_x)
+{
+    self->scale_x = scale_x;
+    self->dirty |= SPRITE_SCALE_DIRTY;
+}
+
+void sprite_set_scale_y(struct sprite* self, float scale_y)
+{
+    self->scale_y = scale_y;
     self->dirty |= SPRITE_SCALE_DIRTY;
 }
 

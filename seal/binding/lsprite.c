@@ -411,6 +411,14 @@ int lsprite_add_child(lua_State* L)
     return 0;
 }
 
+int lsprite_remove_from_parent(lua_State* L)
+{
+    luaL_argcheck(L, lua_isuserdata(L, 1), 1, "sprite expected for arg 1");
+    sprite_remove_from_parent(lua_touserdata(L, 1));
+    return 0;
+}
+
+
 int lsprite_remove_all_child(lua_State* L)
 {
     sprite_remove_all_child(lua_touserdata(L, 1));
@@ -456,6 +464,7 @@ int luaopen_seal_sprite(lua_State* L)
         { "get_size", lsprite_get_size},
         { "get_glyph", lsprite_get_glyph},
         { "add_child", lsprite_add_child },
+        { "remove_from_parent", lsprite_remove_from_parent },
         { "remove_all_child", lsprite_remove_all_child},
         { NULL, NULL },
     };

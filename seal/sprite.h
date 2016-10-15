@@ -152,13 +152,17 @@ void sprite_set_pos(struct sprite* self, float x, float y);
 void sprite_set_anchor(struct sprite* self, float x, float y);
 void sprite_set_rotation(struct sprite* self, float rotation);
 void sprite_set_scale(struct sprite* self, float scale);
+void sprite_set_scale_x(struct sprite* self, float scale_x);
+void sprite_set_scale_y(struct sprite* self, float scale_y);
 
 void sprite_set_color(struct sprite* self, color color);
 void sprite_set_size(struct sprite* self, float width, float height);
 
 void sprite_add_child(struct sprite* self, struct sprite* child);
+void sprite_remove_from_parent(struct sprite* self);
 void sprite_remove_child(struct sprite* self, struct sprite* child);
 void sprite_remove_all_child(struct sprite* self);
+
 
 void sprite_to_node_space(struct sprite* self, float x, float y, float* tox, float* toy);
 

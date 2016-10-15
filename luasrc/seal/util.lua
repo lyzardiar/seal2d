@@ -19,7 +19,6 @@ function util.class(name, super)
 	end
 
 	class.__class_name = name
-
 	class.new = function(...)
 		local obj = {}
 		setmetatable(obj, {__index = class})

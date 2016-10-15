@@ -34,9 +34,26 @@ bool action_update(struct action* self, struct sprite* sprite, float dt)
 
             float ratio = super->current / super->duration;
             if (!action_interval_update(super, dt)) {
-                float x = (move->to_x - move->start_x) * ratio;
-                float y = (move->to_y - move->start_y) * ratio;
-                sprite_set_pos(sprite, move->start_x + x, move->start_y + y);
+                float x = (move->to_x - move->from_x) * ratio;
+                float y = (move->to_y - move->from_y) * ratio;
+                sprite_set_pos(sprite, move->from_x + x, move->from_y + y);
+            } else {
+                action_stop(self);
+            }
+            break;
+        }
+
+        case ACTION_SCALE_TO:
+        {
+            struct action_move* scale = self->__child;
+            struct action_interval* super = &scale->__super;
+
+            float ratio = super->current / super->duration;
+            if (!action_interval_update(super, dt)) {
+                float x = (scale->to_x - scale->from_x) * ratio;
+                float y = (scale->to_y - scale->from_y) * ratio;
+                sprite_set_scale_x(sprite, scale->from_x + x);
+                sprite_set_scale_y(sprite, scale->from_y + y);
             } else {
                 action_stop(self);
             }
@@ -121,9 +138,20 @@ struct action* move_to(float duration, float to_x, float to_y)
     action_interval_init(&move->__super, duration);
     move->to_x = to_x;
     move->to_y = to_y;
-    move->start_x = move->start_y = 0;
+    move->from_x = move->from_y = 0;
 
     return action_new(ACTION_MOVE_TO, move);
+}
+
+struct action* scale_to(float duration, float to_x, float to_y)
+{
+    struct action_scale* scale = STRUCT_NEW(action_scale);
+    action_interval_init(&scale->__super, duration);
+    scale->to_x = to_x;
+    scale->to_y = to_y;
+    scale->from_x = scale->from_y = 0;
+
+    return action_new(ACTION_SCALE_TO, scale);
 }
 
 struct action* ease_in(struct action* action, float rate)
@@ -169,8 +197,17 @@ void action_play(struct action* self, struct sprite* target)
         {
             struct action_move* move = self->__child;
 
-            move->start_x = target->x;
-            move->start_y = target->y;
+            move->from_x = target->x;
+            move->from_y = target->y;
+            break;
+        }
+
+        case ACTION_SCALE_TO:
+        {
+            struct action_scale* scale = self->__child;
+
+            scale->from_x = target->scale_x;
+            scale->from_y = target->scale_y;
             break;
         }
 

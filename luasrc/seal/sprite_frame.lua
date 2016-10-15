@@ -19,7 +19,7 @@ function sprite_frame.load_from_json(json_path)
 	local frames = cjson.decode(data)
 	local frame_data = frames.frames
 	local meta = frames.meta
-	
+
 	-- TODO : hard code here, fix with the path searching.
 
 	local tex_id = texture_core.load_from_cache("res/images/" .. meta.image)
