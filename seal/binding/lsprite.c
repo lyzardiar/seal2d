@@ -259,7 +259,7 @@ int lsprite_register_handler(lua_State* L)
 int lsprite_clean_handler(lua_State* L)
 {
     struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
-    lua_handler_clean(GAME->lua_handler, self);
+    lua_handler_clean(GAME->lua_handler, L, self);
     return 0;
 }
 

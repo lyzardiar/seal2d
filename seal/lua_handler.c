@@ -40,9 +40,18 @@ void lua_handler_set(struct lua_handler* self,
     hashmapPut(self->__handlers, object, (void*)lua_function);
 }
 
-void lua_handler_clean(struct lua_handler* self, void* object) {
+void lua_handler_clean(struct lua_handler* self,
+                       lua_State* L,
+                       void* object) {
     s_assert(object);
+
+    unsigned long index = (unsigned long)hashmapGet(self->__handlers, object);
     hashmapRemove(self->__handlers, object);
+    lua_getfield(L, LUA_REGISTRYINDEX, LUA_FUNCTION_HANDLER_KEY);
+    lua_pushinteger(L, index);
+    lua_pushnil(L);
+    lua_rawset(L, -3);
+    lua_pop(L, 1);
 }
 
 unsigned int lua_handler_new_func(struct lua_handler* self,
@@ -71,7 +80,8 @@ void lua_handler_exe_func(struct lua_handler* self,
                           lua_State* L,
                           void* object,
                           int (*stack_set_func)(lua_State*, void* ud),
-                          void* ud) {
+                          void* ud,
+                          bool cleanup) {
     s_assert(object);
     int n = 0;
     unsigned int index = (unsigned int)hashmapGet(self->__handlers, object);
@@ -86,6 +96,12 @@ void lua_handler_exe_func(struct lua_handler* self,
             n = stack_set_func(L, ud);
         }
         seal_call(L, n, 0);
+
+        if (cleanup) {
+            lua_pushinteger(L, index);
+            lua_pushnil(L);
+            lua_rawset(L, -3);
+        }
     } else {
         // it's ok that there's no handler for certain object. :)
         // fprintf(stderr, "no handler for object (%p)\n", object);

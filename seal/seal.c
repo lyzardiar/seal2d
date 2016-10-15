@@ -73,11 +73,11 @@ int seal_call(lua_State *L, int n, int r)
 
 void seal_call_func(void* object,
                     int (*stack_set_func)(lua_State*, void* ud),
-                    void* ud)
+                    void* ud,
+                    bool cleanup)
 {
     lua_handler_exe_func(GAME->lua_handler,
-                            GAME->lstate,
-                            object, stack_set_func, ud);
+                            GAME->lstate, object, stack_set_func, ud, cleanup);
 }
 
 lua_State* seal_new_lua()

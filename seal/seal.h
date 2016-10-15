@@ -96,7 +96,8 @@ void seal_destroy();
 int  seal_call(lua_State *L, int n, int r);
 void seal_call_func(void* object,
                     int (*stack_set_func)(lua_State*, void* ud),
-                    void* ud);
+                    void* ud,
+                    bool cleanup);
 void seal_event(int event_type,
                 int (*stack_set_func)(lua_State*, void*),
                 void* ud);

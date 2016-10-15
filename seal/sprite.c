@@ -632,7 +632,7 @@ void sprite_touch(struct sprite* self, struct touch_event* touch_event)
             touch_event->swallowd = true;
         }
         
-        seal_call_func(self, touch_event_set_func, touch_event);
+        seal_call_func(self, touch_event_set_func, touch_event, false);
     }
 }
 

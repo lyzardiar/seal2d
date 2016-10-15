@@ -87,7 +87,7 @@ bool action_update(struct action* self, struct sprite* sprite, float dt)
         {
             struct action_call_lua_func* call = self->__child;
             s_assert(call->lua_func > 0);
-            seal_call_func(self, NULL, NULL);
+            seal_call_func(self, NULL, NULL, true);
             action_stop(self);
             break;
         }

@@ -238,7 +238,16 @@ local function sprite_action_test()
 	local action = require("action_core")
 	local move = action.move_to(1, 100, 100)
 	local back = action.move_to(1, 0, 0)
+
+	local t = {
+		a = "1"
+	}
+	setmetatable(t, {__gc = function()
+			print("collect the garbage of t")
+		end})
 	local finish = action.call_func(function()
+			t.b = "c"
+			print("set the t")
 			print("finished.")
 		end)
 	local seq = action.sequence({move, back, finish})
@@ -391,6 +400,11 @@ local function nanovg_test()
 	end
 end
 
+local function call_collectgarbage()
+	print("call collectgarbage")
+	collectgarbage("collect")
+end
+
 local tests = {
 	{name = "sprite srt test", create_func = sprite_srt_test },
 	{name = "sprite anchor test", create_func = sprite_anchor_test },
@@ -406,6 +420,7 @@ local tests = {
 	{name = "bunny test", create_func = bunny_test},
 	{name = "multi texture test", create_func = multi_texture_test},
 	{name = "nanovg_test", create_func = nanovg_test },
+	{name = "collect garbage", create_func = call_collectgarbage},
 }
 
 local function draw_gui()
