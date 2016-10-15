@@ -239,21 +239,35 @@ local function sprite_action_test()
 	local move = action.move_to(1, 100, 100)
 	local back = action.move_to(1, 0, 0)
 
-	local t = {
-		a = "1"
-	}
-	setmetatable(t, {__gc = function()
-			print("collect the garbage of t")
-		end})
 	local finish = action.call_func(function()
-			t.b = "c"
-			print("set the t")
-			print("finished.")
+			print("action fin.")
 		end)
 	local seq = action.sequence({move, back, finish})
 	s:run_action(seq)
-	-- local ease_move = action.ease_in(move, 5)
-	-- s:run_action(ease_move)
+end
+
+local function sprite_zorder_test()
+	print("run sprite_zorder_test" ..
+		  "same result should be given even we add the children randomly")
+	root:cleanup()
+	local zorders = {100, 0, -1, 0, 1}
+	local offset_x = 30
+	local pos = {
+		{x = WINDOW_WIDTH/2, y = WINDOW_HEIGHT/2},
+		{x = WINDOW_WIDTH/2 - offset_x, y = WINDOW_HEIGHT/2 + 50},
+		{x = WINDOW_WIDTH/2 - offset_x, y = WINDOW_HEIGHT/2 + 100},
+		{x = WINDOW_WIDTH/2 + offset_x, y = WINDOW_HEIGHT/2 - 50},
+		{x = WINDOW_WIDTH/2 + offset_x, y = WINDOW_HEIGHT/2 + 50},
+	}
+
+	for i, v in shuffle_pairs(zorders) do
+		local order = zorders[i]
+		local p = pos[i]
+		local name = string.format("smile_middle_zorder_%d.png", order)
+		local s = sprite.new("ui.png", name)
+		s:set_pos(p.x, p.y)
+		root:add_child(s, order)
+	end
 end
 
 local function sprite_event_test()
@@ -416,6 +430,7 @@ local tests = {
 	{name = "sprite loader test", create_func = sprite_loader_test},
 	{name = "sprite glyph test", create_func = sprite_glyph_test},
 	{name = "sprite action test", create_func = sprite_action_test},
+	{name = "sprite zorder test", create_func = sprite_zorder_test},
 	{name = "bmfont load test", create_func = bmfont_load_test},
 	{name = "bunny test", create_func = bunny_test},
 	{name = "multi texture test", create_func = multi_texture_test},
