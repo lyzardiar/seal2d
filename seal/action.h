@@ -6,6 +6,7 @@ struct Hashmap;
 
 enum action_type {
     ACTION_MOVE_TO = 0,
+    ACTION_EASE_IN,
 };
 
 enum action_state {
@@ -19,7 +20,7 @@ struct action {
     unsigned long __id;
     enum action_type type;
     enum action_state state;
-    void* data;
+    void* __child;
 };
 
 struct action_interval {
@@ -28,15 +29,23 @@ struct action_interval {
     float duration;
 };
 
-bool action_interval_update(struct action_interval* self, float dt);
-
 struct action_move {
     struct action_interval __super;
     float to_x, to_y;
     float start_x, start_y;
 };
 
+struct action_ease_in {
+    struct action_interval __super;
+    float rate;
+    struct action* wrapped;
+};
+
+void action_interval_init(struct action_interval* self, float duration);
+bool action_interval_update(struct action_interval* self, float dt);
+
 struct action* move_to(float duration, float to_x, float to_y);
+struct action* ease_in(struct action* action, float rate);
 
 void action_play(struct action* self, struct sprite* target);
 void action_stop(struct action* self);

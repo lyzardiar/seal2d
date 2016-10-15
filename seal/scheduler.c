@@ -32,6 +32,8 @@ void scheduler_schedule(struct scheduler* self,
                         struct sprite* sprite,
                         struct action* action)
 {
+    action_play(action, sprite);
+
     struct schedule_entry* entry = STRUCT_NEW(schedule_entry);
     entry->action = action;
     entry->target = sprite;
@@ -57,6 +59,17 @@ void scheduler_update(struct scheduler* self, float dt)
     hashmapForEach(self->entries, scheduler_entries_update, self);
 }
 
-void scheduler_pause(struct scheduler* self);
-void scheduler_resume(struct scheduler* self);
-void scheduler_set_time_scale(struct scheduler* self, float time_scale);
+void scheduler_pause(struct scheduler* self)
+{
+
+}
+
+void scheduler_resume(struct scheduler* self)
+{
+
+}
+
+void scheduler_set_time_scale(struct scheduler* self, float time_scale)
+{
+    self->time_scale = time_scale;
+}

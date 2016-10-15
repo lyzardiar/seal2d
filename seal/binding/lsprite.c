@@ -15,7 +15,8 @@ EXTERN_GAME;
 int lsprite_frame_cache_get(lua_State* L)
 {
     const char* key = luaL_checkstring(L, 1);
-    struct sprite_frame* frame = sprite_frame_cache_get(GAME->sprite_frame_cache, key);
+    struct sprite_frame* frame =
+                    sprite_frame_cache_get(GAME->sprite_frame_cache, key);
     lua_pushlightuserdata(L, frame);
     return 1;
 }
@@ -26,7 +27,8 @@ int lsprite_load_spriteframe(lua_State* L)
     luaL_checktype(L, 2, LUA_TTABLE);
 
     const char* key = luaL_checkstring(L, 3);
-    struct sprite_frame* frame = sprite_frame_cache_get(GAME->sprite_frame_cache, key);
+    struct sprite_frame* frame =
+                    sprite_frame_cache_get(GAME->sprite_frame_cache, key);
     if (!frame->__initialized) {
         frame->rotated = (int)getfield_i(L, "rotated");
         frame->trimmed = (int)getfield_i(L, "trimmed");
