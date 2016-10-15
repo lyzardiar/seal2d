@@ -18,6 +18,11 @@ function util.class(name, super)
 		end
 	end
 
+	local super_meta = getmetatable(super)
+	if super_meta and super_meta.__index then
+		setmetatable(class, {__index = super_meta.__index})
+	end
+
 	class.__class_name = name
 	class.new = function(...)
 		local obj = {}

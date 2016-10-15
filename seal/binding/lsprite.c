@@ -436,7 +436,7 @@ int luaopen_seal_sprite(lua_State* L)
 
         { "load_sprite_frame", lsprite_load_spriteframe },
         { "unload_sprite_frame", lsprite_unload_spriteframe },
-        { "set_frame_texture_id", lsprite_set_texture_id},
+        { "set_frame_texture_id", lsprite_set_texture_id },
 
         { "new", lsprite_new },
         { "new_label", lsprite_new_label },
@@ -451,8 +451,8 @@ int luaopen_seal_sprite(lua_State* L)
         { "clean_handler", lsprite_clean_handler },
         { "run_action", lsprite_run_action },
         { "set_anim", lsprite_set_anim },
-        { "set_spine_anim", lsprite_set_spine_anim},
-        { "set_anim_interval", lsprite_set_anim_interval},
+        { "set_spine_anim", lsprite_set_spine_anim },
+        { "set_anim_interval", lsprite_set_anim_interval },
         { "set_visible", lsprite_set_visible },
         { "set_pos", lsprite_set_pos },
         { "set_anchor", lsprite_set_anchor },
@@ -460,12 +460,12 @@ int luaopen_seal_sprite(lua_State* L)
         { "set_scale", lsprite_set_scale },
         { "set_color", lsprite_set_color },
         { "set_size", lsprite_set_size },
-        { "get_pos", lsprite_get_pos},
-        { "get_size", lsprite_get_size},
-        { "get_glyph", lsprite_get_glyph},
+        { "get_pos", lsprite_get_pos },
+        { "get_size", lsprite_get_size },
+        { "get_glyph", lsprite_get_glyph },
         { "add_child", lsprite_add_child },
         { "remove_from_parent", lsprite_remove_from_parent },
-        { "remove_all_child", lsprite_remove_all_child},
+        { "remove_all_child", lsprite_remove_all_child },
         { NULL, NULL },
     };
 

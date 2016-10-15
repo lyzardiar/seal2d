@@ -1,6 +1,6 @@
 local sprite_core = require "sprite_core"
-
 local sprite_frame = require "seal.sprite_frame"
+
 local sprite = {}
 
 local meta = {
@@ -20,15 +20,12 @@ local meta = {
 	end
 }
 
-local all_sprites = {}
-
 function sprite.new(...)
 	local self = {}
 	setmetatable(self, meta)
 	local __frame = sprite_frame.get(...)
 	self.__cobj = sprite_core.new(__frame)
 
-	all_sprites[self] = self
 	return self
 end
 
