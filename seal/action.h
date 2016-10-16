@@ -10,6 +10,7 @@ struct array;
 enum action_type {
     ACTION_MOVE_TO = 0,
     ACTION_SCALE_TO,
+    ACTION_FADE_TO,
     ACTION_EASE_IN,
     ACTION_SEQUENCE,
     ACTION_CALL,
@@ -47,6 +48,11 @@ struct action_scale {
     float to_x, to_y;
 };
 
+struct action_fade_to {
+    struct action_interval __super;
+    unsigned char from, to;
+};
+
 struct action_ease_in {
     struct action_interval __super;
     float rate;
@@ -67,6 +73,7 @@ bool action_interval_update(struct action_interval* self, float dt);
 
 struct action* move_to(float duration, float to_x, float to_y);
 struct action* scale_to(float duration, float to_x, float to_y);
+struct action* fade_to(float duration, unsigned char to);
 struct action* ease_in(struct action* action, float rate);
 struct action* sequence(struct array* actions);
 struct action* call_lua_func();

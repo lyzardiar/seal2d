@@ -234,17 +234,18 @@ local function sprite_action_test()
 	print("run sprite_action_test")
 	root:cleanup()
 	local s = sprite.new("anim_pirate.png", "attack_0.png")
-	s:set_pos(0, 0)
+	s:set_pos(300, 300)
+	-- s:set_color(255, 0, 0, 255)
 	root:add_child(s)
 
 	local action = require("action_core")
-	local move = action.move_to(1, 100, 100)
-	local back = action.move_to(1, 0, 0)
 
+	local fade_out = action.fade_to(1, 0)
 	local finish = action.call_func(function()
 			print("action fin.")
 		end)
-	local seq = action.sequence({move, back, finish})
+	local actions = {fade_out, finish}
+	local seq = action.sequence(actions)
 	s:run_action(seq)
 end
 

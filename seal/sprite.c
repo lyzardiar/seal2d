@@ -580,6 +580,19 @@ static void sprite_update_transform(struct sprite* self)
     }
 }
 
+static void sprite_update_color(struct sprite* self)
+{
+    if (self->dirty & SPRITE_COLOR_DIRTY)
+    {
+        struct glyph* g = &self->glyph;
+        SET_VERTEX_COLOR_UINT(g->bl, self->color);
+        SET_VERTEX_COLOR_UINT(g->br, self->color);
+        SET_VERTEX_COLOR_UINT(g->tr, self->color);
+        SET_VERTEX_COLOR_UINT(g->tl, self->color);
+        self->dirty &= (~SPRITE_COLOR_DIRTY);
+    }
+}
+
 void sprite_add_child(struct sprite* self, struct sprite* child, int zorder)
 {
     s_assert(child);
@@ -734,6 +747,7 @@ void sprite_visit(struct sprite* self, float dt)
 
     sprite_sort_zorder(self);
     sprite_update_transform(self);
+    sprite_update_color(self);
     sprite_draw(self, dt);
 
     struct array* children = self->children;
@@ -808,21 +822,18 @@ void sprite_set_anchor(struct sprite* self, float x, float y)
 {
     self->anchor_x = x;
     self->anchor_y = y;
-    
     self->dirty |= SPRITE_TRANSFORM_DIRTY;
 }
 
 void sprite_set_rotation(struct sprite* self, float rotation)
 {
     self->rotation = rotation;
-    
     self->dirty |= SPRITE_ROTATION_DIRTY;
 }
 
 void sprite_set_scale(struct sprite* self, float scale)
 {
     self->scale_x = self->scale_y = scale;
-    
     self->dirty |= SPRITE_SCALE_DIRTY;
 }
 
@@ -841,7 +852,12 @@ void sprite_set_scale_y(struct sprite* self, float scale_y)
 void sprite_set_color(struct sprite* self, color color)
 {
     self->color = color;
-    
+    self->dirty |= SPRITE_COLOR_DIRTY;
+}
+
+void sprite_set_opacity(struct sprite* self, unsigned char opacity)
+{
+    self->color = (self->color & 0xffffff00) | opacity;
     self->dirty |= SPRITE_COLOR_DIRTY;
 }
 
@@ -849,7 +865,6 @@ void sprite_set_size(struct sprite* self, float width, float height)
 {
     self->width = width;
     self->height = height;
-    
     self->dirty |= SPRITE_SRT_DIRTY;
 }
 

@@ -31,6 +31,15 @@ int laction_scale_to(lua_State* L)
     return 1;
 }
 
+int laction_fade_to(lua_State* L)
+{
+    lua_Number duration = luaL_checknumber(L, 1);
+    lua_Integer to = luaL_checkinteger(L, 2);
+
+    lua_pushlightuserdata(L, fade_to(duration, to));
+    return 1;
+}
+
 int laction_ease_in(lua_State* L)
 {
     struct action* action = lua_touserdata(L, 1);
@@ -78,6 +87,7 @@ int luaopen_seal_action(lua_State* L)
     luaL_Reg lib[] = {
         { "move_to", laction_move_to },
         { "scale_to", laction_scale_to },
+        { "fade_to", laction_fade_to },
         { "ease_in", laction_ease_in },
         { "sequence", laction_sequence },
         { "call_func", laction_call_func },

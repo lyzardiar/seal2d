@@ -13,7 +13,7 @@ void action_interval_init(struct action_interval* self, float duration)
 bool action_interval_update(struct action_interval* self, float dt)
 {
     float next = self->current + dt;
-    if (next >= self->duration) {
+    if (next > self->duration) {
         return true;
     }
     self->current = next;
@@ -54,6 +54,21 @@ bool action_update(struct action* self, struct sprite* sprite, float dt)
                 float y = (scale->to_y - scale->from_y) * ratio;
                 sprite_set_scale_x(sprite, scale->from_x + x);
                 sprite_set_scale_y(sprite, scale->from_y + y);
+            } else {
+                action_stop(self);
+            }
+            break;
+        }
+
+        case ACTION_FADE_TO:
+        {
+            struct action_fade_to* fade = self->__child;
+            struct action_interval* super = &fade->__super;
+
+            float ratio = super->current / super->duration;
+            if (!action_interval_update(super, dt)) {
+                unsigned char opacity = (fade->to - fade->from) * ratio;
+                sprite_set_opacity(sprite, fade->from + opacity);
             } else {
                 action_stop(self);
             }
@@ -154,6 +169,17 @@ struct action* scale_to(float duration, float to_x, float to_y)
     return action_new(ACTION_SCALE_TO, scale);
 }
 
+struct action* fade_to(float duration, unsigned char to)
+{
+    struct action_fade_to* fade = STRUCT_NEW(action_fade_to);
+    action_interval_init(&fade->__super, duration);
+
+    fade->from = 255;
+    fade->to = to;
+
+    return action_new(ACTION_FADE_TO, fade);
+}
+
 struct action* ease_in(struct action* action, float rate)
 {
     struct action_ease_in* ease_in = STRUCT_NEW(action_ease_in);
@@ -209,6 +235,15 @@ void action_play(struct action* self, struct sprite* target)
             scale->from_x = target->scale_x;
             scale->from_y = target->scale_y;
             break;
+        }
+
+        case ACTION_FADE_TO:
+        {
+            struct action_fade_to* fade = self->__child;
+
+            fade->from = target->color & 0xff;
+            break;
+
         }
 
         case ACTION_EASE_IN:

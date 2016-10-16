@@ -59,6 +59,9 @@ vert.color[3] = (c      ) & 0xff; \
 
 #define C4B_COLOR_A(arr) C4B_COLOR(arr[0], arr[1], arr[2], arr[3])
 
+#define COLOR_OPACITY(color) (color & 0xff)
+#define COLOR_OPACITY_F(color) (COLOR_OPACITY(color)/255.0f)
+
 struct glyph {
     struct vertex tl;
     struct vertex bl;

@@ -155,6 +155,7 @@ void sprite_set_scale_x(struct sprite* self, float scale_x);
 void sprite_set_scale_y(struct sprite* self, float scale_y);
 
 void sprite_set_color(struct sprite* self, color color);
+void sprite_set_opacity(struct sprite* self, unsigned char opacity);
 void sprite_set_size(struct sprite* self, float width, float height);
 
 void sprite_add_child(struct sprite* self, struct sprite* child, int zorder);
