@@ -145,7 +145,7 @@ void sprite_frame_tostring(struct sprite_frame* self, char* buff)
             self->uv.u, self->uv.v, self->uv.w, self->uv.h);
 }
 
-void sprite_init(struct sprite* self, float width, float height)
+static void sprite_init(struct sprite* self, float width, float height)
 {
     self->__id = ++__sprite_id;
     self->frame = NULL;
@@ -164,7 +164,6 @@ void sprite_init(struct sprite* self, float width, float height)
     self->swallow = true;
     self->color = C4B_COLOR(255, 255, 255, 255);
     self->primitive_vertex = NULL;
-    self->line_width = 0;
     self->spine_anim = NULL;
     self->visible = true;
     
@@ -174,7 +173,7 @@ void sprite_init(struct sprite* self, float width, float height)
     af_identify(&self->world_srt);
 }
 
-void sprite_set_glyph(struct sprite* self, struct rect* rect,
+static void sprite_set_glyph(struct sprite* self, struct rect* rect,
                       struct uv* uv, GLuint tex_id)
 {
     struct glyph* g = &self->glyph;
@@ -219,22 +218,6 @@ struct sprite* sprite_new_label(const char* label)
 
     //TODO: implement this later
     s_assert(false);
-//    // we new a frame
-//    struct sprite_frame* frame = sprite_frame_new(label);
-//    frame->source_rect.x = 0;
-//    frame->source_rect.y = 0;
-//    frame->source_rect.width = GAME->font->tex->width;
-//    frame->source_rect.height = GAME->font->tex->height;
-//    frame->tex_id = GAME->font->tex->id;
-//    
-//    frame->uv.u = 0.0f;
-//    frame->uv.v = 0.0f;
-//    frame->uv.w = 1.0f;
-//    frame->uv.h = 1.0f;
-//    
-//    sprite_init(s, GAME->font->tex->width, GAME->font->tex->height);
-//    sprite_set_sprite_frame(s, frame);
-
     return s;
 }
 
@@ -319,8 +302,6 @@ struct sprite* sprite_new_line(float* vertex, float width, color line_color)
     SET_VERTEX_COLOR_UINT(v[1], line_color);
 
     s->primitive_vertex = v;
-    s->line_width = width;
-
     return s;
 }
 
@@ -391,13 +372,6 @@ void sprite_set_text(struct sprite* self, const char* label)
     if (self->type == SPRITE_TYPE_BMFONT_LABEL && self->bmfont) {
         sprite_remove_all_child(self);
         const char* fnt_path = self->bmfont->fnt_file;
-        
-        /*for simpler implemention, each character will use a sprite,
-         but will only cost one draw call at most. :)*/
-        //    sprite_init(root, 0, 0);
-        
-        // get the path and append before page.file
-        
         char* p = strrchr(fnt_path, '/');
         char tmp[128] = "";
         strncpy(tmp, fnt_path, p - fnt_path);
@@ -628,12 +602,6 @@ void sprite_remove_all_child(struct sprite* self)
     for (int i = 0 ;i < array_size(children); ++i) {
         sprite_remove_child(self, array_at(children, i));
     }
-}
-
-// TODO: we should add a covert space function
-void sprite_to_node_space(struct sprite* self, float x, float y, float* tox, float* toy)
-{
-    
 }
 
 static int touch_event_set_func(lua_State* L, void* ud)

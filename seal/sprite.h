@@ -93,9 +93,12 @@ struct sprite {
     struct affine local_srt;
     struct affine world_srt;
     unsigned int dirty;
-
-    // advanced
     color color;
+
+    // control block
+    bool visible;
+    bool swallow;
+
     struct sprite_frame* frame;
     struct glyph glyph; // glphy information for rect sprites, this may waste some bytes.
     struct anim* anim; // for sprite's anim.
@@ -103,9 +106,6 @@ struct sprite {
     // for primitive
     int primitive_type;
     struct primitive_vertex* primitive_vertex;
-
-    // for primitive-line
-    int line_width;
 
     // for primitive-rect
     unsigned int rect_flag;
@@ -118,9 +118,6 @@ struct sprite {
 
     // for spine.
     struct spine_anim* spine_anim;
-
-    bool swallow;
-    bool visible;
 };
 
 void sprite_init_render(struct render* render);
@@ -163,15 +160,8 @@ void sprite_remove_from_parent(struct sprite* self);
 void sprite_remove_child(struct sprite* self, struct sprite* child);
 void sprite_remove_all_child(struct sprite* self);
 
-
-void sprite_to_node_space(struct sprite* self, float x, float y, float* tox, float* toy);
-
 // for label
 void sprite_set_text(struct sprite* self, const char* label);
-
-// !!! don't use this 2 methods unless you known what the you were doing. :)
-void sprite_init(struct sprite* self, float width, float height);
-void sprite_set_glyph(struct sprite* self, struct rect* rect, struct uv* uv, GLuint tex_id);
 
 struct glyph* sprite_get_glyph(struct sprite* self);
 

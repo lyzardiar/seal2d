@@ -25,7 +25,6 @@ static void primitive_render_batch_reset(struct primitive_render_batch* self)
 {
     self->offset = 0;
     self->type = PRIMITIVE_INVALID;
-    self->line_width = -1;
     self->count.line_count = 0;
 }
 

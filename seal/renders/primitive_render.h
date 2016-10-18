@@ -22,8 +22,6 @@ struct primitive_render_batch {
         int line_count;
         int triangle_count;
     } count;
-
-    float line_width;
 };
 
 struct primitive_render_state {
