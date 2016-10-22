@@ -66,10 +66,10 @@ bool action_update(struct action* self, struct sprite* sprite, float dt)
             struct action_interval* super = &fade->__super;
 
             float ratio = super->current / super->duration;
-            if (!action_interval_update(super, dt)) {
-                unsigned char opacity = (fade->to - fade->from) * ratio;
-                sprite_set_opacity(sprite, fade->from + opacity);
-            } else {
+            unsigned char opacity = (fade->to - fade->from) * ratio;
+            sprite_set_opacity(sprite, fade->from + opacity);
+            bool time_over = action_interval_update(super, dt);
+            if (time_over) {
                 action_stop(self);
             }
             break;
