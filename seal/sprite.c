@@ -569,7 +569,7 @@ static void sprite_update_color(struct sprite* self)
 
 void sprite_add_child(struct sprite* self, struct sprite* child, int zorder)
 {
-    s_assert(child);
+    s_assert(child && child != self);
     
     // TODO: when we add the child, search the first NULL position.
     // TODO: consider the ZORDER
@@ -584,6 +584,7 @@ void sprite_remove_from_parent(struct sprite* self)
 {
     s_assert(self->parent);
     sprite_remove_child(self->parent, self);
+    scheduler_stop_target(GAME->scheduler, self);
 }
 
 void sprite_remove_child(struct sprite* self, struct sprite* child)
@@ -598,6 +599,7 @@ void sprite_remove_child(struct sprite* self, struct sprite* child)
 
 void sprite_remove_all_child(struct sprite* self)
 {
+    scheduler_stop_target(GAME->scheduler, self);
     struct array* children = self->children;
     for (int i = 0 ;i < array_size(children); ++i) {
         sprite_remove_child(self, array_at(children, i));

@@ -27,7 +27,6 @@ struct array* array_new(int cap) {
     return a;
 }
 
-#include "sprite.h"
 struct array* array_copy(struct array* self) {
     struct array* a = STRUCT_NEW(array);
     a->n = self->n;

@@ -1,38 +1,25 @@
 local util = {}
 
 function util.class(name, super)
-	local class = {}
-	if type(super) == 'table' then
-		class.__super = super
-	elseif type(super) == 'function' then
-		class.__super = super()
-	else
-		assert(super == nil, 'invalid super type, must be table, function or nil.')
-		class.__super = {}
-	end
+    local __class
+    if type(super) == 'function' then
+        __class = super()
+    elseif type(super) == 'table' then
+        __class = super
+    else
+        assert(type(self) == nil)
+    end
 
-	super = class.__super
-	for k,v in pairs(super) do
-		if k ~= '__super' then
-			class[k] = v
-		end
-	end
+    __class.new = function(...)
+        local obj = {}
+        setmetatable(obj, {__index = __class})
+        obj:ctor(...)
+        return obj
+    end
 
-	local super_meta = getmetatable(super)
-	if super_meta and super_meta.__index then
-		setmetatable(class, {__index = super_meta.__index})
-	end
-
-	class.__class_name = name
-	class.new = function(...)
-		local obj = {}
-		setmetatable(obj, {__index = class})
-		class.ctor(obj, ...)
-		return obj
-	end
-
-	return class
+    return __class
 end
+
 
 local log_level_tag = {
 	[1] = 'D',

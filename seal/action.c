@@ -20,114 +20,128 @@ bool action_interval_update(struct action_interval* self, float dt)
     return false;
 }
 
+static bool action_move_update(struct action* self, struct sprite* sprite, float dt)
+{
+    struct action_move* move = self->__child;
+    struct action_interval* super = &move->__super;
+
+    float ratio = super->current / super->duration;
+    if (!action_interval_update(super, dt)) {
+        float x = (move->to_x - move->from_x) * ratio;
+        float y = (move->to_y - move->from_y) * ratio;
+        sprite_set_pos(sprite, move->from_x + x, move->from_y + y);
+        return false;
+    } else {
+        action_stop(self);
+        return true;
+    }
+}
+
+static bool action_scale_update(struct action* self, struct sprite* sprite, float dt)
+{
+    struct action_move* scale = self->__child;
+    struct action_interval* super = &scale->__super;
+
+    float ratio = super->current / super->duration;
+    if (!action_interval_update(super, dt)) {
+        float x = (scale->to_x - scale->from_x) * ratio;
+        float y = (scale->to_y - scale->from_y) * ratio;
+        sprite_set_scale_x(sprite, scale->from_x + x);
+        sprite_set_scale_y(sprite, scale->from_y + y);
+        return false;
+    } else {
+        action_stop(self);
+        return true;
+    }
+}
+
+static bool action_fade_update(struct action* self, struct sprite* sprite, float dt)
+{
+    struct action_fade_to* fade = self->__child;
+    struct action_interval* super = &fade->__super;
+
+    float ratio = super->current / super->duration;
+    unsigned char opacity = (fade->to - fade->from) * ratio;
+    sprite_set_opacity(sprite, fade->from + opacity);
+    bool stop = action_interval_update(super, dt);
+    if (stop) {
+        action_stop(self);
+    }
+    return stop;
+}
+
+static bool action_ease_in_update(struct action* self, struct sprite* sprite, float dt)
+{
+    struct action_ease_in* ease_in = self->__child;
+    struct action_interval* super = &ease_in->__super;
+
+    if (!action_interval_update(super, dt)) {
+        float time = powf(super->current, ease_in->rate);
+        action_update(ease_in->wrapped, sprite, time);
+        return false;
+    } else {
+        action_stop(self);
+        return true;
+    }
+}
+
+static bool action_sequence_update(struct action* self, struct sprite* sprite, float dt)
+{
+    struct action_sequence* seq = self->__child;
+
+    struct array* action_seq = seq->seqence;
+    int running_index = seq->running_index;
+    struct action* running = array_at(action_seq, running_index);
+    if(action_update(running, sprite, dt)) {
+        // action finished
+        seq->running_index++;
+
+        if (seq->running_index < array_size(action_seq)) {
+            // play the next action
+            struct action* next = array_at(action_seq,
+                                           seq->running_index);
+            action_play(next, sprite);
+            return false;
+        } else {
+            // all the sequence has finished :)
+            action_stop(self);
+            return true;
+        }
+    } else {
+        // current action is running, pass
+        return false;
+    }
+}
+
+static bool action_call_update(struct action* self, struct sprite* sprite, float dt)
+{
+    struct action_call_lua_func* call = self->__child;
+    s_assert(call->lua_func > 0);
+    seal_call_func(self, NULL, NULL, true);
+    action_stop(self);
+    return true;
+}
+
+typedef bool (*ACTION_UPDATE_FUNC)(struct action*, struct sprite*, float);
+static bool(*action_update_func[ACTION_TYPE_MAX])(struct action*, struct sprite*, float) = {
+    action_move_update,
+    action_scale_update,
+    action_fade_update,
+    action_ease_in_update,
+    action_sequence_update,
+    action_call_update
+};
+
 bool action_update(struct action* self, struct sprite* sprite, float dt)
 {
     if (action_is_stop(self)) {
         return true;
     }
+    printf("action update sprite = %p\n", sprite);
 
-    switch (self->type) {
-        case ACTION_MOVE_TO:
-        {
-            struct action_move* move = self->__child;
-            struct action_interval* super = &move->__super;
-
-            float ratio = super->current / super->duration;
-            if (!action_interval_update(super, dt)) {
-                float x = (move->to_x - move->from_x) * ratio;
-                float y = (move->to_y - move->from_y) * ratio;
-                sprite_set_pos(sprite, move->from_x + x, move->from_y + y);
-            } else {
-                action_stop(self);
-            }
-            break;
-        }
-
-        case ACTION_SCALE_TO:
-        {
-            struct action_move* scale = self->__child;
-            struct action_interval* super = &scale->__super;
-
-            float ratio = super->current / super->duration;
-            if (!action_interval_update(super, dt)) {
-                float x = (scale->to_x - scale->from_x) * ratio;
-                float y = (scale->to_y - scale->from_y) * ratio;
-                sprite_set_scale_x(sprite, scale->from_x + x);
-                sprite_set_scale_y(sprite, scale->from_y + y);
-            } else {
-                action_stop(self);
-            }
-            break;
-        }
-
-        case ACTION_FADE_TO:
-        {
-            struct action_fade_to* fade = self->__child;
-            struct action_interval* super = &fade->__super;
-
-            float ratio = super->current / super->duration;
-            unsigned char opacity = (fade->to - fade->from) * ratio;
-            sprite_set_opacity(sprite, fade->from + opacity);
-            bool time_over = action_interval_update(super, dt);
-            if (time_over) {
-                action_stop(self);
-            }
-            break;
-        }
-
-        case ACTION_EASE_IN:
-        {
-            struct action_ease_in* ease_in = self->__child;
-            struct action_interval* super = &ease_in->__super;
-
-            if (!action_interval_update(super, dt)) {
-                float time = powf(super->current, ease_in->rate);
-                action_update(ease_in->wrapped, sprite, time);
-            } else {
-                action_stop(self);
-            }
-            break;
-        }
-
-        case ACTION_SEQUENCE:
-        {
-            struct action_sequence* seq = self->__child;
-
-            struct array* action_seq = seq->seqence;
-            int running_index = seq->running_index;
-            struct action* running = array_at(action_seq, running_index);
-            if(action_update(running, sprite, dt)) {
-                // action finished
-                seq->running_index++;
-
-                if (seq->running_index < array_size(action_seq)) {
-                    // play the next action
-                    struct action* next = array_at(action_seq,
-                                                     seq->running_index);
-                    action_play(next, sprite);
-                } else {
-                    // all the sequence has finished :)
-                    action_stop(self);
-                }
-            } else {
-                // current action is running, pass
-            }
-            break;
-        }
-
-        case ACTION_CALL:
-        {
-            struct action_call_lua_func* call = self->__child;
-            s_assert(call->lua_func > 0);
-            seal_call_func(self, NULL, NULL, true);
-            action_stop(self);
-            break;
-        }
-
-        default:
-            break;
-    }
-    return false;
+    ACTION_UPDATE_FUNC update_func = action_update_func[self->type];
+    s_assert(update_func);
+    return update_func(self, sprite, dt);
 }
 
 void action_free(struct action* action)

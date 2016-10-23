@@ -1,74 +1,76 @@
-local sprite_core = require "sprite_core"
+local core = require "sprite_core"
 local sprite_frame = require "seal.sprite_frame"
 
-local sprite = {}
-
-local meta = {
-	__index = function(t, key, ...)
-		local core_filed = sprite_core[key]
-		if core_filed then
-			if type(core_filed) == 'function' then
-				local handle = function(t, ...)
-					return core_filed(t.__cobj, ...)
-				end
-				rawset(t, key, handle)
-				return handle
-			end
-		else
-			return rawget(sprite, key)
-		end
-	end
+local sprite = {
+	get_frame_from_cache = core.get_frame_from_cache,
+	load_sprite_frame = core.load_sprite_frame,
+	unload_sprite_frame = core.unload_sprite_frame,
+	set_frame_texture_id = core.set_frame_texture_id,
+	set_text = core.set_text,
+	register_handler = core.register_handler,
+	clean_handler = core.clean_handler,
+	run_action = core.run_action,
+	set_anim = core.set_anim,
+	set_spine_anim = core.set_spine_anim,
+	set_anim_interval = core.set_anim_interval,
+	set_visible = core.set_visible,
+	set_pos = core.set_pos,
+	set_anchor = core.set_anchor,
+	set_rotation = core.set_rotation,
+	set_scale = core.set_scale,
+	set_color = core.set_color,
+	set_size = core.set_size,
+	get_pos = core.get_pos,
+	get_size = core.get_size,
+	get_anchor = core.get_anchor,
+	get_glyph = core.get_glyph,
+	add_child = core.add_child,
+	remove_from_parent = core.remove_from_parent,
+	remove_all_child = core.remove_all_child
 }
+
+local meta = {__index = sprite}
 
 function sprite.new(...)
 	local self = {}
 	setmetatable(self, meta)
 	local __frame = sprite_frame.get(...)
-	self.__cobj = sprite_core.new(__frame)
-
-	return self
-end
-
-function sprite.new_label(...)
-	local self = {}
-	setmetatable(self, meta)
-	self.__cobj = sprite_core.new_label(...)
-
-	return self
-end
-
-function sprite.new_bmfont_label(...)
-	local self = {}
-	setmetatable(self, meta)
-	self.__cobj = sprite_core.new_bmfont_label(...)
-	return self
-end
-
-function sprite.new_spine(atlas_file, spine_data_file, scale)
-	local self = {}
-	setmetatable(self, meta)
-	self.__cobj = sprite_core.new_spine(atlas_file, spine_data_file, scale or 1.0)
+	self.__cobj = core.new(__frame)
 	return self
 end
 
 function sprite.new_container(...)
 	local self = {}
 	setmetatable(self, meta)
-	self.__cobj = sprite_core.new_container(...)
+	self.__cobj = core.new_container(...)
+	return self
+end
+
+function sprite.new_bmfont_label(...)
+	local self = {}
+	setmetatable(self, meta)
+	self.__cobj = core.new_bmfont_label(...)
+	return self
+end
+
+function sprite.new_spine(atlas_file, spine_data_file, scale)
+	local self = {}
+	setmetatable(self, meta)
+	self.__cobj = core.new_spine(atlas_file, spine_data_file, scale or 1.0)
 	return self
 end
 
 function sprite.new_primitive(...)
 	local self = {}
 	setmetatable(self, meta)
-	self.__cobj = sprite_core.new_primitive(...)
+	self.__cobj = core.new_primitive(...)
 	return self
 end
 
 function sprite.new_clip(...)
 	local self = {}
 	setmetatable(self, meta)
-	self.__cobj = sprite_core.new_clip(...)
+	self.__cobj = core.new_clip(...)
 	return self
 end
 

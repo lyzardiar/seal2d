@@ -12,6 +12,14 @@
 
 EXTERN_GAME;
 
+static struct sprite* __self(lua_State* L)
+{
+    lua_getfield(L, 1, "__cobj");
+    struct sprite* ret = (struct sprite*)lua_touserdata(L, -1);
+    lua_pop(L, 1);
+    return ret;
+}
+
 int lsprite_frame_cache_get(lua_State* L)
 {
     const char* key = luaL_checkstring(L, 1);
@@ -227,13 +235,13 @@ int lsprite_new_clip(lua_State* L)
 
 int lsprite_free(lua_State* L)
 {
-    sprite_free(lua_touserdata(L, 1));
+    sprite_free(__self(L));
     return 0;
 }
 
 int lsprite_set_text(lua_State* L)
 {
-    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     const char* label = luaL_checkstring(L, 2);
     sprite_set_text(self, label);
     return 0;
@@ -241,7 +249,7 @@ int lsprite_set_text(lua_State* L)
 
 int lsprite_set_size(lua_State* L)
 {
-    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     lua_Integer width = luaL_checkinteger(L, 2);
     lua_Integer height = luaL_checkinteger(L, 3);
     sprite_set_size(self, width, height);
@@ -250,22 +258,21 @@ int lsprite_set_size(lua_State* L)
 
 int lsprite_register_handler(lua_State* L)
 {
-    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     lua_handler_new_func(GAME->lua_handler, L, self, 2);
-
     return 0;
 }
 
 int lsprite_clean_handler(lua_State* L)
 {
-    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     lua_handler_clean(GAME->lua_handler, L, self);
     return 0;
 }
 
 int lsprite_run_action(lua_State* L)
 {
-    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     struct action* action = (struct action*)lua_touserdata(L, 2);
     sprite_run_action(self, action);
     return 0;
@@ -273,7 +280,7 @@ int lsprite_run_action(lua_State* L)
 
 int lsprite_set_anim(lua_State* L)
 {
-    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     luaL_checktype(L, 2, LUA_TTABLE);
 
     int len = luaL_len(L, 2);
@@ -284,7 +291,6 @@ int lsprite_set_anim(lua_State* L)
         array_push_back(frames, frame);
         lua_pop(L, 1);
     }
-
     struct anim* anim = anim_new(frames);
     sprite_set_anim(self, anim);
 
@@ -294,7 +300,7 @@ int lsprite_set_anim(lua_State* L)
 
 int lsprite_set_spine_anim(lua_State* L)
 {
-    struct sprite* self = (struct sprite*)lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     const char* anim_name = luaL_checkstring(L, 2);
     int track = luaL_checknumber(L, 3);
     bool loop = lua_toboolean(L, 4);
@@ -305,7 +311,7 @@ int lsprite_set_spine_anim(lua_State* L)
 
 int lsprite_set_anim_interval(lua_State* L)
 {
-    struct sprite* self = lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     float interval = luaL_checknumber(L, 2);
     anim_set_interval(self->anim, interval);
     return 0;
@@ -313,14 +319,14 @@ int lsprite_set_anim_interval(lua_State* L)
 
 int lsprite_set_visible(lua_State* L)
 {
-    struct sprite* self = lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     sprite_set_visible(self, lua_toboolean(L, 2));
     return 0;
 }
 
 int lsprite_set_pos(lua_State* L)
 {
-    struct sprite* self = lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     lua_Number x = luaL_checknumber(L, 2);
     lua_Number y = luaL_checknumber(L, 3);
     sprite_set_pos(self, x, y);
@@ -329,7 +335,7 @@ int lsprite_set_pos(lua_State* L)
 
 int lsprite_set_anchor(lua_State* L)
 {
-    struct sprite* self = lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     lua_Number x = luaL_checknumber(L, 2);
     lua_Number y = luaL_checknumber(L, 3);
     sprite_set_anchor(self, x, y);
@@ -338,7 +344,7 @@ int lsprite_set_anchor(lua_State* L)
 
 int lsprite_set_rotation(lua_State* L)
 {
-    struct sprite* self = lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     lua_Number rotation = luaL_checknumber(L, 2);
     sprite_set_rotation(self, rotation);
     return 0;
@@ -346,7 +352,7 @@ int lsprite_set_rotation(lua_State* L)
 
 int lsprite_set_scale(lua_State* L)
 {
-    struct sprite* self = lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     lua_Number scale = luaL_checknumber(L, 2);
     sprite_set_scale(self, scale);
     return 0;
@@ -354,7 +360,7 @@ int lsprite_set_scale(lua_State* L)
 
 int lsprite_set_color(lua_State* L)
 {
-    struct sprite* self = lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     lua_Integer r = lua_tonumber(L, 2);
     lua_Integer g = lua_tonumber(L, 3);
     lua_Integer b = lua_tonumber(L, 4);
@@ -365,7 +371,7 @@ int lsprite_set_color(lua_State* L)
 
 int lsprite_get_pos(lua_State* L)
 {
-    struct sprite* self = lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     lua_pushnumber(L, self->x);
     lua_pushnumber(L, self->y);
     return 2;
@@ -373,7 +379,7 @@ int lsprite_get_pos(lua_State* L)
 
 int lsprite_get_size(lua_State* L)
 {
-    struct sprite* self = lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     lua_pushnumber(L, self->width);
     lua_pushnumber(L, self->height);
     return 2;
@@ -381,7 +387,7 @@ int lsprite_get_size(lua_State* L)
 
 int lsprite_get_anchor(lua_State* L)
 {
-    struct sprite* self = lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     lua_pushnumber(L, self->anchor_x);
     lua_pushnumber(L, self->anchor_y);
     return 2;
@@ -389,7 +395,7 @@ int lsprite_get_anchor(lua_State* L)
 
 int lsprite_get_glyph(lua_State* L)
 {
-    struct sprite* self = lua_touserdata(L, 1);
+    struct sprite* self = __self(L);
     struct glyph* g = sprite_get_glyph(self);
 
     lua_newtable(L);
@@ -407,13 +413,11 @@ int lsprite_get_glyph(lua_State* L)
 
 int lsprite_add_child(lua_State* L)
 {
-    luaL_argcheck(L, lua_isuserdata(L, 1), 1, "sprite expected for arg 1");
-    luaL_checktype(L, 2, LUA_TTABLE);
+    struct sprite* self = __self(L);
 
     lua_getfield(L, 2, "__cobj");
     struct sprite* child = lua_touserdata(L, -1);
-
-    struct sprite* self = lua_touserdata(L, 1);
+    lua_pop(L, 1);
 
     int zorder = 0;
     if (lua_isinteger(L, 3)) {
@@ -426,15 +430,14 @@ int lsprite_add_child(lua_State* L)
 
 int lsprite_remove_from_parent(lua_State* L)
 {
-    luaL_argcheck(L, lua_isuserdata(L, 1), 1, "sprite expected for arg 1");
-    sprite_remove_from_parent(lua_touserdata(L, 1));
+    sprite_remove_from_parent(__self(L));
     return 0;
 }
 
 
 int lsprite_remove_all_child(lua_State* L)
 {
-    sprite_remove_all_child(lua_touserdata(L, 1));
+    sprite_remove_all_child(__self(L));
     return 0;
 }
 

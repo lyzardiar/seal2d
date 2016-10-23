@@ -14,6 +14,7 @@ enum action_type {
     ACTION_EASE_IN,
     ACTION_SEQUENCE,
     ACTION_CALL,
+    ACTION_TYPE_MAX,
 };
 
 enum action_state {
