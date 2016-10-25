@@ -236,7 +236,6 @@ struct sprite* sprite_new_container(struct rect* r)
     s->type = SPRITE_TYPE_CONTAINER;
     
     sprite_init(s, SPRITE_TYPE_CONTAINER, r->width, r->height);
-//    sprite_set_glyph(s, r, NULL, 0);
     return s;
 }
 
@@ -252,12 +251,8 @@ struct sprite* sprite_new_spine(const char* atlas_path,
                                                    spine_data_path,
                                                    scale);
     spine_get_boundingbox(spine_anim, &r);
-
-//    sprite_init(s, r.width, r.height);
-//    sprite_set_glyph(s, &r, NULL, 0);
-//
-//    s->spine_anim = spine_anim;
-//    
+    sprite_init(s, SPRITE_TYPE_SPINE, r.width, r.height);
+    s->__expand.spine_data.spine_anim = spine_anim;
     return s;
 }
 
@@ -339,23 +334,42 @@ struct sprite* sprite_new_rect(struct rect* rect,
 
 void sprite_free(struct sprite* self)
 {
-//    if(self->anim) {
-//        anim_free(self->anim);
-//    }
-//
-//    if(self->primitive_vertex) {
-//        s_free(self->primitive_vertex);
-//    }
-//
-//    if (self->spine_anim) {
-//        spine_anim_free(self->spine_anim);
-//    }
-//    
-//    if (self->text) {
-//        s_free(self->text);
-//    }
-//    
-//    s_free(self);
+    switch (self->type) {
+        case SPRITE_TYPE_PIC:
+        {
+            if (self->__expand.sprite_data.anim) {
+                anim_free(self->__expand.sprite_data.anim);
+            }
+            break;
+        }
+
+        case SPRITE_TYPE_BMFONT_LABEL:
+        {
+            if (self->__expand.bmfont_data.text) {
+                s_free(self->__expand.bmfont_data.text);
+            }
+        }
+
+        case SPRITE_TYPE_SPINE:
+        {
+            if (self->__expand.spine_data.spine_anim) {
+                spine_anim_free(self->__expand.spine_data.spine_anim);
+            }
+            break;
+        }
+
+        case SPRITE_TYPE_PRIMITVE:
+        {
+            if (self->__expand.primitive_data.primitive_vertex) {
+                s_free(self->__expand.primitive_data.primitive_vertex);
+            }
+            break;
+        }
+
+        default:
+            break;
+    }
+    s_free(self);
 }
 
 void sprite_set_text(struct sprite* self, const char* label)
@@ -668,9 +682,10 @@ static void sprite_draw_pic(struct sprite* self)
 
 static void sprite_draw_spine(struct sprite* self, float dt)
 {
-//    render_switch(R, RENDER_TYPE_SPINE);
-//    spine_anim_update(self->spine_anim, dt);
-//    spine_anim_draw(self->spine_anim, R, self->world_srt.x, self->world_srt.y);
+    struct spine_anim* anim = self->__expand.spine_data.spine_anim;
+    render_switch(R, RENDER_TYPE_SPINE);
+    spine_anim_update(anim, dt);
+    spine_anim_draw(anim, R, self->world_srt.x, self->world_srt.y);
 }
 
 static void sprite_draw_primitive(struct sprite* self)
@@ -772,7 +787,7 @@ void sprite_set_anim(struct sprite* self, struct anim* anim)
 
 void sprite_set_spine_anim(struct sprite* self, const char* anim_name, int track, bool loop)
 {
-//    spine_anim_set_anim(self->spine_anim, anim_name, track, loop);
+    spine_anim_set_anim(self->__expand.spine_data.spine_anim, anim_name, track, loop);
 }
 
 void sprite_set_visible(struct sprite* self, bool visible)
