@@ -313,7 +313,7 @@ int lsprite_set_anim_interval(lua_State* L)
 {
     struct sprite* self = __self(L);
     float interval = luaL_checknumber(L, 2);
-    anim_set_interval(self->anim, interval);
+//    anim_set_interval(self->anim, interval);
     return 0;
 }
 

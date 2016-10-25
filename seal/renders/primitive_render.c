@@ -85,14 +85,17 @@ void primitive_render_func_flush(struct render* R)
     context->offset = 0;
 }
 
-void primitive_render_func_draw(struct render* R, enum primitive_type primitive_type, void* object)
+void primitive_render_func_draw(struct render* R,
+                                enum primitive_type primitive_type,
+                                void* object)
 {
     static int vertex_size[PRIMITVE_MAX] = {
         4, // line takes 4 floats
         6  // rect takes 8 floats
     };
 
-    struct primitive_render_context* context = render_get_context(R, RENDER_TYPE_PRIMITIVE);
+    struct primitive_render_context* context =
+                                render_get_context(R, RENDER_TYPE_PRIMITIVE);
     if (context->current_batch_index >= MAX_RENDER_BATCH ||
         context->offset + vertex_size[primitive_type] >= VERTICE_SIZE) {
         primitive_render_func_flush(R);
@@ -105,11 +108,11 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
     struct sprite* sprite = (struct sprite*) object;
 
     struct primitive_render_batch* cur_batch = context->current_batch;
-
+    struct primitive_vertex* v = sprite->__expand.primitive_data.primitive_vertex;
     switch (primitive_type) {
         case PRIMITIVE_LINE:
             {
-                struct primitive_vertex* v = sprite->primitive_vertex;
+
                 data[0] = v[0];
                 data[1] = v[1];
                 data[2] = v[2];
@@ -133,8 +136,6 @@ void primitive_render_func_draw(struct render* R, enum primitive_type primitive_
 
         case PRIMITIVE_RECT:
             {
-                struct primitive_vertex* v = sprite->primitive_vertex;
-                
                 // use two triangel to draw the fill rect
 //                if (sprite->rect_flag & FILL_SOLID) {
                     data[0] = v[0];

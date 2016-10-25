@@ -74,10 +74,37 @@ void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id);
 void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float texture_height);
 void sprite_frame_tostring(struct sprite_frame* self, char* buff);
 
+struct sprite_data {
+    struct sprite_frame* frame;
+    struct glyph glyph; // glphy information for rect sprites, this may waste some bytes.
+    struct anim* anim; // for sprite's anim.
+};
+
+struct primitive_data {
+    // for primitive
+    int primitive_type;
+    struct primitive_vertex* primitive_vertex;
+
+    // for primitive-rect
+    unsigned int rect_flag;
+    color fill_color;
+    color outline_color;
+};
+
+struct bmfont_data {
+    // for sprite bmfont.
+    struct bmfont* bmfont;
+    char* text;
+};
+
+struct spine_data {
+    // for spine.
+    struct spine_anim* spine_anim;
+};
+
 struct sprite {
     // basic info
     unsigned int __id;
-    enum sprite_type type;
 
     // scene graph
     int zorder;
@@ -99,25 +126,14 @@ struct sprite {
     bool visible;
     bool swallow;
 
-    struct sprite_frame* frame;
-    struct glyph glyph; // glphy information for rect sprites, this may waste some bytes.
-    struct anim* anim; // for sprite's anim.
-
-    // for primitive
-    int primitive_type;
-    struct primitive_vertex* primitive_vertex;
-
-    // for primitive-rect
-    unsigned int rect_flag;
-    color fill_color;
-    color outline_color;
-
-    // for sprite bmfont.
-    struct bmfont* bmfont;
-    char* text;
-
-    // for spine.
-    struct spine_anim* spine_anim;
+    // specific sprite data
+    enum sprite_type type;
+    union sprite_expand {
+        struct sprite_data sprite_data;
+        struct primitive_data primitive_data;
+        struct bmfont_data bmfont_data;
+        struct spine_data spine_data;
+    } __expand;
 };
 
 void sprite_init_render(struct render* render);
