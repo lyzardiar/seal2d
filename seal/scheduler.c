@@ -50,6 +50,7 @@ static bool scheduler_stop_target_foreach(void* key, void* value, void* context)
     struct scheduler* self = (struct scheduler*)context;
     struct schedule_entry* entry = value;
     if (entry->target == self->__removing_target) {
+        printf("try to remove target = %p for entry = %p\n", self->__removing_target, entry);
         array_push_back(self->__entries_to_remove, entry);
     }
     return true;
@@ -58,19 +59,9 @@ static bool scheduler_stop_target_foreach(void* key, void* value, void* context)
 void scheduler_stop_target(struct scheduler* self,
                            struct sprite* sprite)
 {
+    printf("stop target = %p\n", sprite);
     self->__removing_target = sprite;
-    struct array* to_remove = self->__entries_to_remove;
-    array_clear(to_remove, false);
     hashmapForEach(self->entries, scheduler_stop_target_foreach, self);
-
-    int n = array_size(to_remove);
-    for (int i = 0; i < n; ++i) {
-        struct schedule_entry* e = array_at(to_remove, i);
-        struct action* a = e->action;
-        action_stop(a);
-    }
-
-    array_clear(self->__entries_to_remove, false);
 }
 
 static bool scheduler_entries_update(void* key, void* value, void* context)
@@ -78,11 +69,10 @@ static bool scheduler_entries_update(void* key, void* value, void* context)
     struct schedule_entry* entry = (struct schedule_entry*)value;
     struct scheduler* self = (struct scheduler*)context;
     struct action* act = entry->action;
-    action_update(act, entry->target, self->dt);
-    if (action_is_stop(act)) {
-        hashmapRemove(self->entries, act);
-        action_free(act);
+    if(action_update(act, entry->target, self->dt)) {
+        array_push_back(self->__entries_to_remove, entry);
     }
+
     return true;
 }
 
@@ -90,6 +80,19 @@ void scheduler_update(struct scheduler* self, float dt)
 {
     self->dt = dt * self->time_scale;
     hashmapForEach(self->entries, scheduler_entries_update, self);
+
+    struct array* to_remove = self->__entries_to_remove;
+    int n = array_size(to_remove);
+    if (n > 0) {
+        for (int i = 0; i < n; ++i) {
+            struct schedule_entry* e = array_at(to_remove, i);
+            printf("free action = %p, id = %ld\n", e->action, e->action->__id);
+            hashmapRemove(self->entries, e->action);
+            action_free(e->action);
+        }
+        array_clear(self->__entries_to_remove, false);
+        printf("after remove n = %d, total_action = %ld\n", n, hashmapSize(self->entries));
+    }
 }
 
 void scheduler_pause(struct scheduler* self)

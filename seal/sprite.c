@@ -607,13 +607,13 @@ void sprite_remove_from_parent(struct sprite* self)
 {
     s_assert(self->parent);
     sprite_remove_child(self->parent, self);
-    scheduler_stop_target(GAME->scheduler, self);
 }
 
 void sprite_remove_child(struct sprite* self, struct sprite* child)
 {
     // here we should release the memory??? yes.
     if (child) {
+        scheduler_stop_target(GAME->scheduler, child);
         // we only remove the child, but we don't move the array
         array_remove(self->children, child);
         sprite_free(child);

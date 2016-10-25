@@ -241,12 +241,13 @@ local function sprite_action_test()
     local action = require("action_core")
 
     local fade_out = action.fade_to(1, 0)
-    local finish = action.call_func(function()
-            print("action fin.")
-        end)
-    local actions = {fade_out, finish}
-    local seq = action.sequence(actions)
-    s:run_action(seq)
+    s:run_action(fade_out)
+    -- local finish = action.call_func(function()
+            -- print("action fin.")
+        -- end)
+    -- local actions = {fade_out, finish}
+    -- local seq = action.sequence(actions)
+    -- s:run_action(seq)
 end
 
 local function sprite_zorder_test()
