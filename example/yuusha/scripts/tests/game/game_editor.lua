@@ -10,14 +10,14 @@ function game_editor.on_reload()
 end
 
 function game_editor.draw()
-	main_panel.draw()
+    main_panel.draw()
 end
 
 function game_editor.entry()
-	root = sprite.new_container()
+    root = sprite.new_container()
 
-	main_panel.load()
-	return root.__cobj
+    main_panel.load()
+    return root.__cobj
 end
 
 return game_editor

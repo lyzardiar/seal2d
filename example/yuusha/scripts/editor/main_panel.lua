@@ -10,17 +10,17 @@ local anim_panel
 local prop_panel
 
 function main_panel.draw()
-	nuk_core.nuk_draw_start()
+    nuk_core.nuk_draw_start()
 
-	menu_panel.draw()
-	title_panel.draw()
+    menu_panel.draw()
+    title_panel.draw()
 
-	nuk_core.nuk_draw_end()
+    nuk_core.nuk_draw_end()
 end
 
 function main_panel.load()
-	menu_panel.load()
-	title_panel.load()
+    menu_panel.load()
+    title_panel.load()
 end
 
 return main_panel
