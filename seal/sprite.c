@@ -199,6 +199,7 @@ struct sprite* sprite_new(struct sprite_frame* frame)
 {
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_PIC;
+    s->__expand.sprite_data.anim = NULL;
     sprite_init(s, SPRITE_TYPE_PIC, frame->source_rect.width, frame->source_rect.height);
     sprite_set_sprite_frame(s, frame);
     return s;
@@ -278,20 +279,19 @@ struct sprite* sprite_new_line(float* vertex, float width, color line_color)
         0, 0, vertex[2] - vertex[0], width
     };
 
-//    s->type = SPRITE_TYPE_PRIMITVE;
-//    sprite_init(s, rect.width, rect.height);
-//    sprite_set_glyph(s, &rect, NULL, 0);
-//    sprite_set_color(s, line_color);
-//
-//    s->primitive_type = PRIMITIVE_LINE;
-//    struct primitive_vertex* v = s_malloc(PRIMITIVE_VERTEX_SIZE * 2);
-//    SET_VERTEX_POS(v[0], vertex[0], vertex[1]);
-//    SET_VERTEX_POS(v[1], vertex[2], vertex[3]);
-//
-//    SET_VERTEX_COLOR_UINT(v[0], line_color);
-//    SET_VERTEX_COLOR_UINT(v[1], line_color);
-//
-//    s->primitive_vertex = v;
+    s->type = SPRITE_TYPE_PRIMITVE;
+    sprite_init(s, SPRITE_TYPE_PRIMITVE, rect.width, rect.height);
+    sprite_set_color(s, line_color);
+
+    s->__expand.primitive_data.primitive_type = PRIMITIVE_LINE;
+    struct primitive_vertex* v = s_malloc(PRIMITIVE_VERTEX_SIZE * 2);
+    SET_VERTEX_POS(v[0], vertex[0], vertex[1]);
+    SET_VERTEX_POS(v[1], vertex[2], vertex[3]);
+
+    SET_VERTEX_COLOR_UINT(v[0], line_color);
+    SET_VERTEX_COLOR_UINT(v[1], line_color);
+
+    s->__expand.primitive_data.primitive_vertex = v;
     return s;
 }
 
@@ -301,33 +301,34 @@ struct sprite* sprite_new_rect(struct rect* rect,
 {
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_PRIMITVE;
-//    s->primitive_type = PRIMITIVE_RECT;
-//
-//    sprite_init(s, rect->width, rect->height);
-//    sprite_set_glyph(s, rect, NULL, 0);
-//    sprite_set_color(s, fill_color);
-//
-//    struct primitive_vertex* v = s_malloc(PRIMITIVE_VERTEX_SIZE * 4);
-//    float l = rect->x;
-//    float r = rect->x + rect->width;
-//    float b = rect->y;
-//    float t = rect->y + rect->height;
-//
-//    // 4 lines forms an rect.
-//    SET_VERTEX_POS(v[0], l, b);
-//    SET_VERTEX_POS(v[1], r, b);
-//    SET_VERTEX_POS(v[2], r, t);
-//    SET_VERTEX_POS(v[3], l, t);
-//
-//    SET_VERTEX_COLOR_UINT(v[0], fill_color);
-//    SET_VERTEX_COLOR_UINT(v[1], fill_color);
-//    SET_VERTEX_COLOR_UINT(v[2], fill_color);
-//    SET_VERTEX_COLOR_UINT(v[3], fill_color);
-//
-//    s->primitive_vertex = v;
-//    s->rect_flag = rect_flag;
-//    s->fill_color = fill_color;
-//    s->outline_color = outline_color;
+    struct primitive_data* primitive_data = &s->__expand.primitive_data;
+    primitive_data->primitive_type = PRIMITIVE_RECT;
+
+    sprite_init(s, SPRITE_TYPE_PRIMITVE, rect->width, rect->height);
+    sprite_set_glyph(s, rect, NULL, 0);
+    sprite_set_color(s, fill_color);
+
+    struct primitive_vertex* v = s_malloc(PRIMITIVE_VERTEX_SIZE * 4);
+    float l = rect->x;
+    float r = rect->x + rect->width;
+    float b = rect->y;
+    float t = rect->y + rect->height;
+
+    // 4 lines forms an rect.
+    SET_VERTEX_POS(v[0], l, b);
+    SET_VERTEX_POS(v[1], r, b);
+    SET_VERTEX_POS(v[2], r, t);
+    SET_VERTEX_POS(v[3], l, t);
+
+    SET_VERTEX_COLOR_UINT(v[0], fill_color);
+    SET_VERTEX_COLOR_UINT(v[1], fill_color);
+    SET_VERTEX_COLOR_UINT(v[2], fill_color);
+    SET_VERTEX_COLOR_UINT(v[3], fill_color);
+
+    primitive_data->primitive_vertex = v;
+    primitive_data->rect_flag = rect_flag;
+    primitive_data->fill_color = fill_color;
+    primitive_data->outline_color = outline_color;
 
     return s;
 }
@@ -489,6 +490,15 @@ static void sprite_sort_zorder(struct sprite* self)
         }
 
         self->dirty &= (~SPRITE_ZORDER_DIRTY);
+    }
+}
+
+static void sprite_update_anim(struct sprite* self, float dt)
+{
+    struct anim* anim = self->__expand.sprite_data.anim;
+    if (self->type == SPRITE_TYPE_PIC && anim) {
+        anim_update(anim, dt);
+        sprite_set_sprite_frame(self, anim_current_frame(anim));
     }
 }
 
@@ -725,12 +735,8 @@ static void sprite_after_visit(struct sprite* self)
 
 void sprite_visit(struct sprite* self, float dt)
 {
-//    if (self->anim) {
-//        anim_update(self->anim, dt);
-//        sprite_set_sprite_frame(self, anim_current_frame(self->anim));
-//    }
-
     sprite_sort_zorder(self);
+    sprite_update_anim(self, dt);
     sprite_update_transform(self);
     sprite_update_color(self);
     sprite_draw(self, dt);
@@ -743,11 +749,8 @@ void sprite_visit(struct sprite* self, float dt)
             sprite_visit(child, dt);
         }
     }
-
     sprite_after_visit(self);
 }
-
-
 
 void sprite_draw_label(struct sprite* self)
 {
@@ -775,14 +778,15 @@ void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame)
 
 void sprite_set_anim(struct sprite* self, struct anim* anim)
 {
-//    if (self->anim != anim) {
-//        if(self->anim) {
-//            anim_free(self->anim);
-//        }
-//        
-//        self->anim = anim;
-//        anim_play(anim);
-//    }
+    struct anim* origin = self->__expand.sprite_data.anim;
+    if (origin != anim) {
+        if(origin) {
+            anim_free(origin);
+        }
+        
+        self->__expand.sprite_data.anim = anim;
+        anim_play(anim);
+    }
 }
 
 void sprite_set_spine_anim(struct sprite* self, const char* anim_name, int track, bool loop)
