@@ -12,8 +12,10 @@ void    array_free(struct array* a);
 struct array* array_copy(struct array* self);
 
 void    array_push_back(struct array* self, void* data);
+void    array_remove(struct array* self, void* data);
 void    array_set(struct array* self, size_t index, void* data);
 void*   array_at(struct array* self, size_t index);
+void    array_swap(struct array* self, int i, int j);
 
 // if free is set to none-zero, it will call s_free to dealloc the memory
 // allocated by the user.

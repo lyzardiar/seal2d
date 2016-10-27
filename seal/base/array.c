@@ -27,14 +27,11 @@ struct array* array_new(int cap) {
     return a;
 }
 
-#include "sprite.h"
 struct array* array_copy(struct array* self) {
     struct array* a = STRUCT_NEW(array);
     a->n = self->n;
     a->cap = self->cap;
-    
-   
-    
+
     a->data = (DATA_TYPE*)s_malloc(sizeof(DATA_TYPE) * (a->cap));
 
     memcpy(a->data, self->data, self->n * sizeof(DATA_TYPE));
@@ -77,14 +74,37 @@ void array_push_back(struct array* self, void* data) {
     self->data[self->n++] = data;
 }
 
+void array_remove(struct array* self, void* data)
+{
+    int found = -1;
+    for (int i = 0; i < self->n; ++i)
+    {
+        if (array_at(self, i) == data) {
+            found = i;
+            break;
+        }
+    }
+    if (found >= 0) {
+        self->data[found] = NULL;
+    }
+
+}
 void array_set(struct array* self, size_t index, void* data) {
     s_assert(index < self->n);
     self->data[index] = data;
 }
 
 void* array_at(struct array* self, size_t index) {
-    s_assert(index < self->n);
+    s_assert(index <= self->n);
     return self->data[index];
+}
+
+void array_swap(struct array* self, int i, int j)
+{
+    s_assert(i < self->n && j < self->n);
+    void* tmp = self->data[j];
+    self->data[j] = self->data[i];
+    self->data[i] = tmp;
 }
 
 void array_clear(struct array* self, bool cleanup) {

@@ -6,7 +6,9 @@
 #include "window.h"
 
 EXTERN_GAME;
-struct window* win_alloc() {
+#ifdef PLAT_DESKTOP
+struct window* win_alloc()
+{
     struct window* win = STRUCT_NEW(window);
     win->cursor_x = 0.0f;
     win->cursor_y = 0.0f;
@@ -14,12 +16,14 @@ struct window* win_alloc() {
     return win;
 }
 
-void win_free(struct window* win) {
+void win_free(struct window* win)
+{
     s_free(win);
 }
 
-#ifdef PLAT_DESKTOP
-void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int modify) {
+void glfw_mouse_button_callback(GLFWwindow* window,
+                                int button, int action, int modify)
+{
     switch (action) {
         case GLFW_PRESS: {
                 struct touch_event e = {TOUCH_BEGIN,
@@ -48,7 +52,8 @@ void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int 
     }
 }
 
-void glfw_mouse_pos_callback(GLFWwindow* window, double x, double y) {
+void glfw_mouse_pos_callback(GLFWwindow* window, double x, double y)
+{
     struct window* win = GAME->window;
     win->cursor_x = x;
     win->cursor_y = y;
@@ -58,6 +63,14 @@ void glfw_mouse_pos_callback(GLFWwindow* window, double x, double y) {
                                 GAME->config.window_height - y,
                                 false, false};
         seal_touch_event(&e);
+    }
+}
+
+void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if(key != GLFW_KEY_UNKNOWN) {
+        struct key_event e = {key, action};
+        seal_event(EVENT_KEY_RECEIVE, on_seal_key_receive, &e);
     }
 }
 

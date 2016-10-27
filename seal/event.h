@@ -22,4 +22,9 @@ struct touch_event {
     bool swallowd;
 };
 
+struct key_event {
+    int key;
+    int action;
+};
+
 #endif

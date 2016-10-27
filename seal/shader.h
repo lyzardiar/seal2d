@@ -1,13 +1,14 @@
 #ifndef __seal__shader__
 #define __seal__shader__
 
-#include <OpenGL/gl3.h>
+#include "platform/render_opengl.h"
 
 #define CHECK_GL_ERROR check_gl_error(__FILE__, __LINE__);
 
 enum SHADER_TYPE {
-    SHADER_COLOR = 0,
-    SHADER_TTF_LABEL = 1,
+    SHADER_SPRITE = 0,
+    SHADER_PRIMITIVE = 1,
+    SHADER_SPINE = 2,
     
     MAX_SHADER = 16,
 };
@@ -41,7 +42,6 @@ struct uniform_buffer_object {
 
 //void uniform_buffer_object_free(struct uniform_buffer_object* self);
 
-
 struct shader {
     GLuint shader_programs[MAX_SHADER];
     struct builtin_uniform uniforms[BUILT_IN_UNIFORM_MAX];
@@ -60,10 +60,8 @@ void shader_set_uniform_object(struct shader* self,
                                float* v);
 
 void shader_commit_uniform(struct shader* self, GLint program);
-void shader_set_uniform(struct shader* self, GLint program, enum BUILT_IN_UNIFORMS type, void* v);
-
-//GLint shader_get_uniform(struct shader* self, GLint program, const char* name);
-//void shader_set_uniform(struct shader* self, GLint location, enum UNIFORM_TYPE uniform_type, float* v);
+void shader_set_uniform(struct shader* self, GLint program,
+                        enum BUILT_IN_UNIFORMS type, void* v);
 
 GLuint shader_get_program(struct shader* self, enum SHADER_TYPE shader_index);
 

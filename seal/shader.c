@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <OpenGL/gl3.h>
+
+#include "platform/render_opengl.h"
 
 #include "shader.h"
 #include "memory.h"
@@ -9,14 +10,126 @@
 
 #include "platform/fs.h"
 
+
+#ifdef PLAT_DESKTOP
+//-------------------------- sprite shader for desktop -------------------------
+static const char* vs_sprite = STRINGFY(#version 330\n)STRINGFY(\n
+    layout(location = 0) in vec2 vertex_pos; \n
+    layout(location = 1) in vec4 vertex_color; \n
+    layout(location = 2) in vec2 vertex_uv; \n
+    out vec4 frag_color;\n
+    out vec2 frag_uv;\n
+    uniform mat4 mvp;\n
+
+    void main() {\n
+       gl_Position.xy = (mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0f, 1.0f)).xy;\n
+       gl_Position.z = 0.0;\n
+       gl_Position.w = 1.0;\n
+       frag_color = vertex_color;\n
+       frag_uv = vec2(vertex_uv.x, 1.0f - vertex_uv.y);\n
+    }\n
+);
+
+static const char* fs_sprite = STRINGFY(#version 330\n)STRINGFY(
+    in vec4 frag_color;\n
+    in vec2 frag_uv;\n
+    out vec4 color;\n
+    uniform sampler2D texture_0;\n
+
+    void main() {\n
+       vec4 texture_color = texture(texture_0, frag_uv);\n
+       color = texture_color * frag_color;\n
+    }\n
+    );
+
+//-------------------------- primitive shader for desktop ----------------------
+
+static const char* vs_primitive = STRINGFY(#version 330\n)STRINGFY(\n
+    layout(location = 0) in vec2 vertex_pos; \n
+    layout(location = 1) in vec4 vertex_color; \n
+    out vec4 frag_color;\n
+    uniform mat4 mvp;\n
+                                                                   
+    void main() {\n
+       gl_Position.xy = (mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0f, 1.0f)).xy;\n
+       gl_Position.z = 0.0;\n
+       gl_Position.w = 1.0;\n
+       frag_color = vertex_color;\n
+    }\n
+    );
+
+static const char* fs_primitive = STRINGFY(#version 330\n)STRINGFY(
+   in vec4 frag_color;\n
+   out vec4 color;\n
+   
+   void main() {\n
+       color = frag_color;\n
+   }\n
+   );
+#endif
+
+//-------------------------- sprite shader for mobile --------------------------
+#ifdef PLAT_MOBILE
+static const char* vs_sprite = STRINGFY(\n
+    precision lowp float;\n
+    attribute mediump vec2 vertex_pos;\n
+    attribute lowp vec4 vertex_color;\n
+    attribute mediump vec2 vertex_uv; \n\n
+    uniform mat4 mvp; \n
+
+    varying lowp vec4 fragement_color;\n
+    varying mediump vec2 fragement_uv; \n\n
+    void main() {\n
+        gl_Position = mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0, 1.0); \n
+        fragement_color = vertex_color;\n
+        fragement_uv = vec2(vertex_uv.x, 1.0 - vertex_uv.y); \n
+    }\n
+    );
+
+static const char* fs_sprite = STRINGFY(\n
+    precision lowp float;\n
+    varying lowp vec4 fragement_color; \n
+    varying mediump vec2 fragement_uv; \n\n
+
+    uniform sampler2D texture_0; \n\n
+    void main() {\n
+        gl_FragColor = texture2D(texture_0, fragement_uv) * fragement_color; \n
+    }\n
+    );
+
+//-------------------------- primitive shader for mobile -----------------------
+static const char* vs_primitive = STRINGFY(\n
+    precision lowp float;\n
+    attribute mediump vec2 vertex_pos;\n
+    attribute lowp vec4 vertex_color;\n
+    uniform mat4 mvp; \n
+    varying lowp vec4 fragement_color;\n
+
+    void main() {\n
+        gl_Position = mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0, 1.0); \n
+        fragement_color = vertex_color;\n
+    }\n
+    );
+
+static const char* fs_primitive = STRINGFY(\n
+    precision lowp float;\n
+    varying lowp vec4 fragement_color; \n
+
+    void main() {\n
+        gl_FragColor = fragement_color;
+    }\n
+    );
+
+#endif
+
 #define set_builtin_uniform(uniform, i, t, n) uniform.type = i; \
                                                       uniform.attr_type = t; \
                                                       uniform.name = n; \
 
 void shader_set_uniform_object(struct shader* self,
                                enum BUILT_IN_UNIFORMS type,
-                               float* v) {
-    
+                               float* v)
+{    
     struct uniform_buffer_object* object = &(self->uniform_buffer_objects[type]);
     
     enum UNIFORM_ATTRIBUTE_TYPE attr_type = self->uniforms[type].attr_type;
@@ -44,24 +157,21 @@ void shader_set_uniform_object(struct shader* self,
     }
 }
 
-
-void check_gl_error(const char* file, int line) {
+void check_gl_error(const char* file, int line)
+{
     GLenum err = GL_NO_ERROR;
     if((err = glGetError()) != GL_NO_ERROR) {
         fprintf(stderr, "gl error: %04x. file = %s, line = %d\n", err, file, line);
     }
 }
 
-static GLuint create_program(GLuint vs, GLuint fs) {
+static GLuint create_program(GLuint vs, GLuint fs)
+{
     GLuint program = glCreateProgram();
-    CHECK_GL_ERROR;
     glAttachShader(program, vs);
-    CHECK_GL_ERROR;
     glAttachShader(program, fs);
-    CHECK_GL_ERROR;
     
     glLinkProgram(program);
-    CHECK_GL_ERROR;
     
     GLint status;
     glGetProgramiv (program, GL_LINK_STATUS, &status);
@@ -73,23 +183,20 @@ static GLuint create_program(GLuint vs, GLuint fs) {
         glGetProgramInfoLog(program, infoLogLength, NULL, strInfoLog);
         fprintf(stderr, "Linker failure: %s\n", strInfoLog);
     }
-    
     glDetachShader(program, vs);
-    CHECK_GL_ERROR;
     glDetachShader(program, fs);
+
     CHECK_GL_ERROR;
     return program;
 }
 
-static GLuint create_shader(GLenum shader_type, const char* shader_data) {
+static GLuint create_shader(GLenum shader_type, const char* shader_data)
+{
     GLuint shader = glCreateShader(shader_type);
     glShaderSource(shader, 1, &shader_data, NULL);
-    CHECK_GL_ERROR;
     glCompileShader(shader);
-    CHECK_GL_ERROR;
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    CHECK_GL_ERROR;
     if (status == GL_FALSE)
     {
         GLint infoLogLength;
@@ -105,61 +212,56 @@ static GLuint create_shader(GLenum shader_type, const char* shader_data) {
             default: strShaderType = "unkown"; break;
         }
         
-        fprintf(stderr, "Compile failure in %s bshader:\n%s\n", strShaderType, strInfoLog);
+        fprintf(stderr, "Compile failure in %s shader:\n%s\n shader_src = %s",
+                strShaderType, strInfoLog, shader_data);
     }
     
     return shader;
 }
 
-static GLuint craete_shader_from_file(GLenum shader_type, const char* file_path) {
-    char* bytes = s_reads(file_path);
-    GLuint shader = 0;
-    if (bytes > 0) {
-        shader = create_shader(shader_type, (const char*)bytes);
-    } else {
-        fprintf(stderr, "craete_shader_from_file failed with path = %s\n", file_path);
-        assert(0);
-    }
-    s_free(bytes);
-    return shader;
-}
-
-static void shader_load_all(struct shader* self) {
+static void shader_load_all(struct shader* self)
+{
     const char* shaders[] = {
-        "res/shaders/color.vert",
-        "res/shaders/color.frag",
-        
-        "res/shaders/text.vert",
-        "res/shaders/text.frag",
+        vs_sprite,
+        fs_sprite,
+
+        vs_primitive,
+        fs_primitive,
     };
-    
+
     int n = sizeof(shaders)/sizeof(const char*)/2;
     for (int i = 0; i < n; ++i) {
         int index = i*2;
-        GLuint vs = craete_shader_from_file(GL_VERTEX_SHADER, shaders[index]);
-        GLuint fs = craete_shader_from_file(GL_FRAGMENT_SHADER, shaders[index+1]);
+        GLuint vs = create_shader(GL_VERTEX_SHADER, shaders[index]);
+        GLuint fs = create_shader(GL_FRAGMENT_SHADER, shaders[index+1]);
         
         GLuint program = create_program(vs, fs);
         self->shader_programs[i] = program;
     }
 }
 
-struct shader* shader_new() {
+struct shader* shader_new()
+{
     struct shader* shader = STRUCT_NEW(shader);
     memset(shader->shader_programs, 0, MAX_SHADER*sizeof(GLuint));
     
     shader_load_all(shader);
     
-    set_builtin_uniform(shader->uniforms[BUILT_IN_MIX_COLOR], BUILT_IN_MIX_COLOR, UNIFORM_4F, "mix_color");
+    set_builtin_uniform(shader->uniforms[BUILT_IN_MIX_COLOR],
+                        BUILT_IN_MIX_COLOR, UNIFORM_4F, "mix_color");
     
     return shader;
 }
 
-void shader_free(struct shader* self) {
+void shader_free(struct shader* self)
+{
     s_free(self);
 }
 
-void shader_set_uniform(struct shader* self, GLint program, enum BUILT_IN_UNIFORMS type, void* v) {
+void shader_set_uniform(struct shader* self, 
+                        GLint program, 
+                        enum BUILT_IN_UNIFORMS type, void* v)
+{
     const char* name = self->uniforms[type].name;
     
     GLint location = glGetUniformLocation(program, name);
@@ -183,13 +285,15 @@ void shader_set_uniform(struct shader* self, GLint program, enum BUILT_IN_UNIFOR
     CHECK_GL_ERROR;
 }
 
-void shader_commit_uniform(struct shader* self, GLint program) {
+void shader_commit_uniform(struct shader* self, GLint program)
+{
     for (int i = 0; i < BUILT_IN_UNIFORM_MAX; ++i) {
         shader_set_uniform(self, program, i, self->uniform_buffer_objects[i].v);
     }
 }
 
-GLuint shader_get_program(struct shader* self, enum SHADER_TYPE shader_index) {
+GLuint shader_get_program(struct shader* self, enum SHADER_TYPE shader_index)
+{
     assert(shader_index >= 0 && shader_index < MAX_SHADER);
     return self->shader_programs[shader_index];
 }

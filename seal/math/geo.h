@@ -2,7 +2,7 @@
 #define __seal__geo__
 
 #include <stdbool.h>
-#include <OpenGL/OpenGL.h>
+#include "platform/render_opengl.h"
 
 typedef unsigned long color;
 
@@ -10,6 +10,11 @@ struct vertex {
     GLfloat position[2]; // x, y
     GLubyte color[4];   // r, g, b, a
     GLfloat uv[2];        // u, v
+};
+
+struct primitive_vertex {
+    GLfloat position[2];
+    GLubyte color[4];
 };
 
 #define SET_VERTEX_POS(vert, x, y) \
@@ -32,14 +37,30 @@ vert.uv[0] = u; \
 vert.uv[1] = v; \
 } while(0);
 
+#define SET_VERTEX_COLOR_UINT(vert, c) \
+do { \
+vert.color[0] = (c >> 24) & 0xff; \
+vert.color[1] = (c >> 16) & 0xff; \
+vert.color[2] = (c >> 8 ) & 0xff; \
+vert.color[3] = (c      ) & 0xff; \
+} while(0);
+
 #define VERTEX_SIZE (sizeof(struct vertex))
 #define VERTEX_OFFSET_POS ((void*)offsetof(struct vertex, position))
 #define VERTEX_OFFSET_COLOR ((void*)offsetof(struct vertex, color))
 #define VERTEX_OFFSET_UV ((void*)offsetof(struct vertex, uv))
 
-#define MAX_OBJECTS (1024)
+#define PRIMITIVE_VERTEX_SIZE (sizeof(struct primitive_vertex))
+#define PRIMITIVE_VERTEX_OFFSET_POS ((void*)offsetof(struct primitive_vertex, position))
+#define PRIMITIVE_VERTEX_OFFSET_COLOR ((void*)offsetof(struct primitive_vertex, color))
+
 
 #define C4B_COLOR(r,g,b,a) ( (r<<24) | (g<<16) | (b<<8) | (a<<0) )
+
+#define C4B_COLOR_A(arr) C4B_COLOR(arr[0], arr[1], arr[2], arr[3])
+
+#define COLOR_OPACITY(color) (color & 0xff)
+#define COLOR_OPACITY_F(color) (COLOR_OPACITY(color)/255.0f)
 
 struct glyph {
     struct vertex tl;
@@ -68,5 +89,6 @@ bool rect_contains(struct rect* rect, float x, float y);
 
 void color_vec4(unsigned long color, float v[4]);
 void color_c4f(unsigned long color, float* r, float* g, float* b, float* a);
+void vertex_tostring(char* buff, struct vertex* vertex);
 
 #endif /* defined(__yuusha__geo__) */

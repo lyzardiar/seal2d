@@ -10,13 +10,15 @@
 #include "window.h"
 
 #include "GLFW/glfw3.h"
+#include "test.h"
 
-static void
-_glfw_error_cb(int error, const char* desc) {
-    printf("glfw: %s\n", desc);
+static void _glfw_error_cb(int error, const char* desc)
+{
+    fprintf(stderr, "glfw: %s\n", desc);
 }
 
-void set_title(GLFWwindow* window, float dt) {
+void set_title(GLFWwindow* window, float dt)
+{
     static int counter = 0;
     counter++;
     counter = counter % 10;
@@ -30,11 +32,11 @@ void set_title(GLFWwindow* window, float dt) {
     }
 }
 
-GLFWwindow* init_glfw(int window_width, int window_height, const char* title) {
+GLFWwindow* init_glfw(int window_width, int window_height, const char* title)
+{
     GLFWwindow* window;
     glfwSetErrorCallback(_glfw_error_cb);
 
-    /* Initialize the library */
     if (!glfwInit()) {
         fprintf(stderr, "glfwInit failed.\n");
         exit(-1);
@@ -46,8 +48,7 @@ GLFWwindow* init_glfw(int window_width, int window_height, const char* title) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
     window = glfwCreateWindow(window_width, window_height, title, NULL, NULL);
-    if (!window)
-    {
+    if (!window) {
         fprintf(stderr, "Error, glfwCreateWindow failed.\n");
         glfwTerminate();
         exit(-1);
@@ -62,12 +63,14 @@ GLFWwindow* init_glfw(int window_width, int window_height, const char* title) {
     return window;
 }
 
-void exit_glfw(GLFWwindow* window) {
+void exit_glfw(GLFWwindow* window)
+{
     glfwDestroyWindow(window);
     glfwTerminate();
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     struct game* game = seal_load_game_config();
     
     int window_width = game->config.window_width;
@@ -84,16 +87,15 @@ int main(int argc, char *argv[]) {
     
     seal_init_graphics();
     seal_start_game();
-    
+
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         last = gettime();
-        
+
         seal_update();
         seal_draw();
-
         glfwSwapBuffers(window);
-        
+
         long current = gettime();
         dt = current - last;
         

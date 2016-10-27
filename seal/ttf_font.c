@@ -1,3 +1,5 @@
+#ifdef PLAT_DESKTOP
+
 #include <stdio.h>
 
 #include "platform/fs.h"
@@ -14,7 +16,8 @@ static FT_Library library = NULL;
 
 //#define TTF_LOG // uncomment this if you need log
 
-void ttf_init_module() {
+void ttf_init_module()
+{
     if (!library) {
         FT_Error err = FT_Init_FreeType(&library);
         if (err) {
@@ -23,7 +26,8 @@ void ttf_init_module() {
     }
 }
 
-static FT_Face ttf_load_face(const char* path, size_t font_size) {
+static FT_Face ttf_load_face(const char* path, size_t font_size)
+{
     s_assert(library);
     
     size_t file_size = 0;
@@ -80,7 +84,8 @@ static FT_Face ttf_load_face(const char* path, size_t font_size) {
 
 #define USE_RGBA
 
-struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
+struct ttf_font* ttf_font_new(const char* path, size_t font_size)
+{
     struct ttf_font* font = STRUCT_NEW(ttf_font);
     font->path = path;
     font->font_size = font_size;
@@ -183,6 +188,9 @@ struct ttf_font* ttf_font_new(const char* path, size_t font_size) {
     return font;
 }
 
-void ttf_font_free(struct ttf_font* font) {
+void ttf_font_free(struct ttf_font* font)
+{
     s_free(font);
 }
+
+#endif

@@ -1,58 +1,121 @@
 #ifndef render_h
 #define render_h
 
-#include <OpenGL/gl3.h>
+
 #include "geo.h"
 #include "shader.h"
+#include "sprite.h"
 
-#define RENDER_STATE_TEXTURE_BIT  (1)
-#define RENDER_STATE_VERTEX_BIT   (1 << 1)
-#define RENDER_STATE_SCISSORS_BIT (1 << 2)
-#define RENDER_STATE_PROGRAM_BIT  (1 << 3)
+#define MAX_OBJECTS (1024) // max objects in on drawcall
 
-struct glyph;
-struct array;
+// we may use 1 draw call at most for each of the object
+// the implemention could be improved for sure,
+// TODO: consider a better implemention.
+#define MAX_RENDER_BATCH (MAX_OBJECTS)
+
+#define INVALID_ATTR_LOCATION (-1)
+
+struct render;
+
+enum RENDER_TYPE {
+    RENDER_TYPE_SPRITE = 0,
+    RENDER_TYPE_PRIMITIVE,
+    RENDER_TYPE_SPINE,
+    
+    RENDER_MAX,
+};
+
+struct render_func {
+    void (*init)(struct render*);
+    void (*start)(struct render*);
+    void (*end)(struct render*);
+    void (*flush)(struct render*);
+    void (*destroy)(struct render*);
+};
+
+struct render_object {
+    enum RENDER_TYPE type;
+    
+    struct render_func render_func;
+    void* context;
+};
 
 struct vertex_buffer {
-    GLuint vbo;
+    // vertex data
     GLuint vao;
+    GLuint vbo;
     struct vertex* data;
-    int n_objs;
+    int offset;
+
+    // index buffer
+    GLuint vibo;
+    GLushort* idata;
 };
 
+struct attr_location {
+    GLuint position;
+    GLuint color;
+    GLuint uv;
+};
+
+struct render_state {
+    GLuint program;
+    struct attr_location loc;
+};
+
+struct render_batch {
+    int n_objects;
+    int offset;
+    GLint tex_id;
+};
+
+/*
+ *  render context class
+ */
+
+struct render_context {
+    struct render_batch batches[MAX_RENDER_BATCH];
+    struct render_batch* current_batch;
+    int current_batch_index;
+
+    struct render_state state;
+    int n_objects;
+};
+
+#define render_context_nbatches(ctx) ((ctx)->current_batch_index+1)
+void render_context_reset(struct render_context* self);
+bool render_context_object_incfull(struct render_context* self);
+struct render_batch* render_context_pop_batch(struct render_context* self);
+bool render_context_update_batch(struct render_context* self,
+                                 int offset,
+                                 int tex_id);
+
+/*
+ * render class
+ * it's instance is stored in the global GAME context
+ */
 struct render {
-    struct shader* shader;
-    
-    GLuint cur_tex_id;
-    GLuint cur_program;
-    
-    struct vertex_buffer* vertex_buffer;
-    struct rect scissors;
-    
-    unsigned int render_state;
-    
-    unsigned int drawcall;
-};
+    struct render_object R_objs[RENDER_MAX]; // each render has a target object
 
-struct vertex_buffer* vertex_buffer_new();
-void vertex_buffer_free(struct vertex_buffer* self);
+    struct shader* shader;  // shader instance.
+    int last;               // last render type.
+    int current;            // current render type.
+
+    int drawcall;
+};
 
 struct render* render_new();
 void render_free(struct render* self);
 
-void render_clear_state(struct render* self);
+void* render_get_context(struct render* self, enum RENDER_TYPE type);
+void render_set_object(struct render* self, struct render_object* object);
+void render_set_mvp(GLuint program, float* mat);
+
 void render_clear(struct render* self, color c);
-void render_commit(struct render* self);
+void render_switch(struct render* self, enum RENDER_TYPE type);
+void render_flush(struct render* self);
 
-void render_buffer_append(struct render* self, const struct glyph* glyph);
 
-void render_set_scissors(struct render* self, struct rect* rect);
-void render_clear_scissors(struct render* self);
-
-void render_use_texture(struct render* self, GLuint tex_id);
-void render_use_shader(struct render* self, enum SHADER_TYPE shader_type);
-void render_use_program(struct render* self, GLuint program);
-
-void render_set_unfiorm(struct render* self, enum BUILT_IN_UNIFORMS uniform_type, float* v);
+/*----------------------------------------------------------------------------*/
 
 #endif

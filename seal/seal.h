@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "platform/platform.h"
 
 #include "lua.h"
 
@@ -20,6 +21,7 @@ struct render;
 struct touch_event;
 struct lua_handler;
 struct nuk_node;
+struct scheduler;
 
 enum GAME_STATE {
     GAME_STATE_INIT = 0,
@@ -52,11 +54,15 @@ struct game {
     struct sprite* root;             // the root node of the world
     struct shader* shader;
     struct render* render;
+
+    // extra util
     struct lua_handler* lua_handler;
     struct sprite_frame_cache* sprite_frame_cache;
     struct bmfont_cache* bmfont_cache;
     struct nuk_node* nuk_node;
+    struct scheduler* scheduler;
 
+    struct timeval __last_update;
     int game_state;
 };
 
@@ -71,8 +77,11 @@ struct game {
 #define GAME_EVENT       "GAME_EVENT"
 #define GAME_HANDLERS    "GAME_HANDLERS"
 
-// seal system
+#define EVENT_GAME_START (0)
+#define EVENT_GAME_END   (1)
+#define EVENT_KEY_RECEIVE (2)
 
+// main game state functions
 struct game* seal_load_game_config();
 void seal_init_graphics();
 void seal_load_string(const char* script_data);
@@ -82,9 +91,19 @@ void seal_main_loop();
 void seal_update();
 void seal_draw();
 void seal_destroy();
-int  seal_call(lua_State *L, int n, int r);
-void seal_touch_event(struct touch_event* e);
 
+// Lua
+int  seal_call(lua_State *L, int n, int r);
+void seal_call_func(void* object,
+                    int (*stack_set_func)(lua_State*, void* ud),
+                    void* ud,
+                    bool cleanup);
+void seal_event(int event_type,
+                int (*stack_set_func)(lua_State*, void*),
+                void* ud);
+void seal_touch_event(struct touch_event* e);
 void seal_reload_scripts();
+
+int on_seal_key_receive(lua_State* L, void* ud);
 
 #endif

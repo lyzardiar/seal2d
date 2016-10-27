@@ -6,13 +6,11 @@
 #define stringfy_bool(v) (v ? "true" : "false")
 
 #ifdef DEBUG
-// others
-#define s_assert(condition)     assert(condition)
-
+#define s_assert(e) ((void)((e)|| \
+(fprintf(stderr, "%s:%d: Assertion failed: %s\n", \
+__FILE__, (int)__LINE__, #e), abort(), 0)))
 #else
-
-#define s_assert(condition)
-
+#define s_assert(e) (0)
 #endif
 
 #endif

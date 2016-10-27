@@ -1,13 +1,11 @@
-.PHONY: test coverage run mac ios android clean
+.PHONY: mac build run clean
 
 project_name=$(shell basename `pwd`)
-test:
-
-coverage: test
-	luacov
 
 mac:
 	make -C raw
+
+build:
 	xcodebuild -project proj.mac/$(project_name).xcodeproj -target $(project_name)
 
 run:
