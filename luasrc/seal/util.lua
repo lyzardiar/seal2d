@@ -1,21 +1,30 @@
 local util = {}
 
 function util.class(name, super)
-    local __class
-    if type(super) == 'function' then
-        __class = super()
-    elseif type(super) == 'table' then
-        __class = super
+    local __class = {}
+    if type(super) == 'table' then
+        __class.new = function(...)
+            local obj = {}
+            setmetatable(obj, {__index = __class})
+            obj:ctor(...)
+            return obj
+        end
+
+    elseif type(super) == 'function' then
+        __class.new = function(...)
+            local obj = super()
+            for k,v in pairs(__class) do
+                obj[k] = v
+            end
+            obj:ctor(...)
+            return obj
+        end
+
     else
-        assert(type(self) == nil)
+        print("invalid super type = ", type(super))
+        assert(type(super) == nil)
     end
 
-    __class.new = function(...)
-        local obj = {}
-        setmetatable(obj, {__index = __class})
-        obj:ctor(...)
-        return obj
-    end
 
     return __class
 end

@@ -74,10 +74,38 @@ void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id);
 void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float texture_height);
 void sprite_frame_tostring(struct sprite_frame* self, char* buff);
 
+struct sprite_data {
+    struct sprite_frame* frame;
+    struct anim* anim; // for sprite's anim.
+    struct glyph glyph; // glphy information for rect sprites, this may waste some bytes.
+};
+
+struct primitive_data {
+    // for primitive
+    int primitive_type;
+    struct primitive_vertex* primitive_vertex;
+
+    // for primitive-rect
+    unsigned int rect_flag;
+    color fill_color;
+    color outline_color;
+};
+
+struct bmfont_data {
+    // for sprite bmfont.
+    struct bmfont* bmfont;
+    char* text;
+    int line_width;
+};
+
+struct spine_data {
+    // for spine.
+    struct spine_anim* spine_anim;
+};
+
 struct sprite {
     // basic info
     unsigned int __id;
-    enum sprite_type type;
 
     // scene graph
     int zorder;
@@ -99,32 +127,21 @@ struct sprite {
     bool visible;
     bool swallow;
 
-    struct sprite_frame* frame;
-    struct glyph glyph; // glphy information for rect sprites, this may waste some bytes.
-    struct anim* anim; // for sprite's anim.
-
-    // for primitive
-    int primitive_type;
-    struct primitive_vertex* primitive_vertex;
-
-    // for primitive-rect
-    unsigned int rect_flag;
-    color fill_color;
-    color outline_color;
-
-    // for sprite bmfont.
-    struct bmfont* bmfont;
-    char* text;
-
-    // for spine.
-    struct spine_anim* spine_anim;
+    // specific sprite data
+    enum sprite_type type;
+    union sprite_expand {
+        struct sprite_data sprite_data;
+        struct primitive_data primitive_data;
+        struct bmfont_data bmfont_data;
+        struct spine_data spine_data;
+    } __expand;
 };
 
 void sprite_init_render(struct render* render);
 
 struct sprite* sprite_new(struct sprite_frame* frame);
 struct sprite* sprite_new_label(const char* label);
-struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path);
+struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path, int line_width);
 struct sprite* sprite_new_container(struct rect* r);
 struct sprite* sprite_new_spine(const char* atlas_path, const char* spine_data_path, float scale);
 struct sprite* sprite_new_clip(struct rect* r);
@@ -164,5 +181,8 @@ void sprite_remove_all_child(struct sprite* self);
 void sprite_set_text(struct sprite* self, const char* label);
 
 struct glyph* sprite_get_glyph(struct sprite* self);
+
+// for debug usage
+void sprite_dump_children(struct sprite* self);
 
 #endif

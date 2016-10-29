@@ -8,5 +8,4 @@ function nanovg_node.new(cmds)
     return self
 end
 
-
 return nanovg_node

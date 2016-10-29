@@ -39,6 +39,9 @@ function nuk_node.new()
     return obj
 end
 
+nuk_node.draw_start = nuk_core.nuk_draw_start
+nuk_node.draw_end = nuk_core.nuk_draw_end
+
 function nuk_node:nk_begin(title, rect, flags)
     local flags = flags or (nuk_node.NK_WINDOW_BORDER      |
                             nuk_node.NK_WINDOW_MOVABLE     |

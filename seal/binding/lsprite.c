@@ -120,7 +120,8 @@ int lsprite_new_bmfont_label(lua_State* L)
 {
     const char* label = luaL_checkstring(L, 1);
     const char* fnt_path = luaL_checkstring(L, 2);
-    struct sprite* sprite = sprite_new_bmfont_label(label, fnt_path);
+    lua_Integer line_width = luaL_checkinteger(L, 3);
+    struct sprite* sprite = sprite_new_bmfont_label(label, fnt_path, line_width);
     lua_pushlightuserdata(L, sprite);
     return 1;
 }
@@ -313,7 +314,7 @@ int lsprite_set_anim_interval(lua_State* L)
 {
     struct sprite* self = __self(L);
     float interval = luaL_checknumber(L, 2);
-    anim_set_interval(self->anim, interval);
+    anim_set_interval(self->__expand.sprite_data.anim, interval);
     return 0;
 }
 

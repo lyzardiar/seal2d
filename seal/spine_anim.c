@@ -148,7 +148,7 @@ void spine_anim_set_anim(struct spine_anim* self,
     spAnimationState_setAnimationByName(self->anim_state,
                                         track,
                                         anim_name,
-                                        true);
+                                        loop);
 }
 
 void spine_get_boundingbox(struct spine_anim* self, struct rect* r)

@@ -1,20 +1,19 @@
 local consts = require "seal.consts"
-local game = {}
 
+local game = {}
 function game.load_shader(shader_index)
 
 end
 
-local root
 function game.init()
-    root = require ("tests.game.hello_world")
-    -- root = require("tests.game.game_editor")
+    local stage = require("tests.game.stage").new()
+    game.stage = stage
 
-    return root.entry()
+    return stage.__cobj
 end
 
 function game.draw()
-    root.draw()
+    game.stage:draw()
 end
 
 function game.pause()
@@ -34,9 +33,6 @@ function game.reload()
     for k,v in pairs(loaded) do
         package.loaded[v] = nil
     end
-
-    local hello_world = require("tests.game.hello_world")
-    hello_world.print_hello()
 end
 
 local EVENT_GAME_START = (0)

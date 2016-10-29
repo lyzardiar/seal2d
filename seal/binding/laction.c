@@ -70,11 +70,12 @@ int laction_sequence(lua_State* L)
 int laction_call_func(lua_State* L)
 {
     struct action* call = call_lua_func();
-    LUA_FUNCTION_HANDLER handler = lua_handler_new_func(GAME->lua_handler,
-                         L,
-                         call,
-                         1);
-    ((struct action_call_lua_func*)call->__child)->lua_func = handler;
+    LUA_FUNCTION_HANDLER handler = lua_handler_new_func(
+                                                        GAME->lua_handler,
+                                                        L,
+                                                        call,
+                                                        1);
+    call->__internal.action_call.lua_func = handler;
     lua_pushlightuserdata(L, call);
     return 1;
 }

@@ -24,15 +24,8 @@ enum action_state {
     ACTION_STATE_STOPPED,
 };
 
-struct action {
-    unsigned long __id;
-    enum action_type type;
-    enum action_state state;
-    void* __child;
-};
-
+#define ACTION_SEQUENCE_MAX (8)
 struct action_interval {
-    struct action __super;
     float current;
     float duration;
 };
@@ -61,13 +54,28 @@ struct action_ease_in {
 };
 
 struct action_sequence {
-    struct array* seqence; // sequence of actions
+    void* sequence[ACTION_SEQUENCE_MAX];
     int running_index;
 };
 
 struct action_call_lua_func {
     LUA_FUNCTION_HANDLER lua_func;
 };
+
+struct action {
+    unsigned long __id;
+    enum action_type type;
+    enum action_state state;
+    union action_data {
+        struct action_move action_move;
+        struct action_scale action_sacle;
+        struct action_fade_to action_fade_to;
+        struct action_ease_in action_ease_in;
+        struct action_sequence action_sequence;
+        struct action_call_lua_func action_call;
+    } __internal;
+};
+
 
 void action_interval_init(struct action_interval* self, float duration);
 bool action_interval_update(struct action_interval* self, float dt);

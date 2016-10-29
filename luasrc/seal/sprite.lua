@@ -46,10 +46,10 @@ function sprite.new_container(...)
     return self
 end
 
-function sprite.new_bmfont_label(...)
+function sprite.new_bmfont_label(label, path, line_width)
     local self = {}
     setmetatable(self, meta)
-    self.__cobj = core.new_bmfont_label(...)
+    self.__cobj = core.new_bmfont_label(label, path, line_width or 0)
     return self
 end
 
