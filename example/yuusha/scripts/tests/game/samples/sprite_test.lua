@@ -122,6 +122,30 @@ local function load_spine(self)
     end
 end
 
+local function load_zorder(self)
+    print("run sprite_zorder_test" ..
+          "same result should be given even we add the children randomly")
+
+    local zorders = {100, 0, -1, 0, 1}
+    local offset_x = 30
+    local pos = {
+        {x = WINDOW_WIDTH/2, y = WINDOW_HEIGHT/2},
+        {x = WINDOW_WIDTH/2 - offset_x, y = WINDOW_HEIGHT/2 + 50},
+        {x = WINDOW_WIDTH/2 - offset_x, y = WINDOW_HEIGHT/2 + 100},
+        {x = WINDOW_WIDTH/2 + offset_x, y = WINDOW_HEIGHT/2 - 50},
+        {x = WINDOW_WIDTH/2 + offset_x, y = WINDOW_HEIGHT/2 + 50},
+    }
+
+    for i, v in shuffle_pairs(zorders) do
+        local order = zorders[i]
+        local p = pos[i]
+        local name = string.format("smile_middle_zorder_%d.png", order)
+        local s = sprite.new("ui.png", name)
+        s:set_pos(p.x, p.y)
+        self:add_child(s, order)
+    end
+end
+
 function sprite_test:ctor()
     self.bar = nuk_node.new()
 end
