@@ -37,12 +37,10 @@ local function pmain()
         _G[mod_name] = mod
     end
 
-    local util = require "seal.util"
-    local device = require "seal.device"
-    local sprite = require "seal.sprite"
-    inject("util", util)
-    inject("device", device)
-    inject("sprite", sprite)
+    inject("util", require "seal.util")
+    inject("device", require "seal.device")
+    inject("sprite", require "seal.sprite")
+    inject("sprite_frame", require "seal.sprite_frame")
 
     local game = require "game"
     require("seal.engine").start(game)

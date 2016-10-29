@@ -41,7 +41,7 @@ end
 
 local tests = {
     { name = "hello world", sameple_name = "hello_world" },
-    { name = "sprite srt test", sameple_name = "sprite_srt" },
+    { name = "sprite test", sameple_name = "sprite_test" },
 }
 
 local function draw_menu(self)
@@ -70,10 +70,17 @@ local function draw_menu(self)
     menu.nk_end()
 end
 
+local function draw_current(self)
+	if self.current and self.current.draw then
+		self.current:draw()
+	end
+end
+
 function stage:draw()
 	if device.is_pc() then
 		nuk_node.draw_start()
     	draw_menu(self)
+    	draw_current(self)
     	nuk_node.draw_end()
     end
 
