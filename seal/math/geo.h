@@ -67,8 +67,6 @@ struct glyph {
     struct vertex bl;
     struct vertex tr;
     struct vertex br;
-    
-    GLuint tex_id;
 };
 
 struct rect {

@@ -64,6 +64,64 @@ local function load_anim(self)
     self:add_child(s)
 end
 
+local function load_glyph(self)
+    local s = sprite.new("ui.png", "smile_middle.png")
+    s:set_pos(1, 200)
+    s:set_anchor(0, 0.5)
+    s:set_bbox_visible(true)
+    self:add_child(s)
+
+    local s2 = sprite.new("ui.png", "smile_middle.png")
+    s2:set_pos(WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
+    s2:set_bbox_visible(true)
+    self:add_child(s2)
+end
+
+local function load_spine(self)
+    local test_cases = {
+        {
+            atlas = "res/spine_anim/spineboy.atlas",
+            json = "res/spine_anim/spineboy.json",
+            loop = true,
+            anim_name = 'walk',
+            x = 30, y = WINDOW_HEIGHT/2,
+            scale = 0.2
+        },
+        {
+            atlas = "res/spine_anim/spineboy.atlas",
+            json = "res/spine_anim/spineboy.json",
+            loop = false,
+            anim_name = 'death',
+            x = 200, y = WINDOW_HEIGHT/2,
+            scale = 0.2
+        },
+        {
+            atlas = "res/spine_anim/spineboy.atlas",
+            json = "res/spine_anim/spineboy.json",
+            loop = true,
+            anim_name = 'run',
+            x = WINDOW_WIDTH/2 - 30, y = WINDOW_HEIGHT/2,
+            scale = 0.2
+        },
+
+        {
+            atlas = "res/spine_anim/powerup.atlas",
+            json = "res/spine_anim/powerup.json",
+            anim_name = 'animation',
+            x = WINDOW_WIDTH/2 - 30, y = WINDOW_HEIGHT/2 + 100,
+            scale = 0.2
+        },
+
+    }
+    for i = 1, #test_cases do
+        local c = test_cases[i]
+        local spine = sprite.new_spine(c.atlas, c.json, c.scale)
+        spine:set_pos(c.x, c.y)
+        spine:set_spine_anim(c.anim_name, 0, c.loop)
+        self:add_child(spine)
+    end
+end
+
 function sprite_test:ctor()
     self.bar = nuk_node.new()
 end

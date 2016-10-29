@@ -58,6 +58,148 @@ static bool hash_equal(void* a, void* b)
     return strcmp(a, b) == 0;
 }
 
+
+static void transform_vertex(struct primitive_vertex* v,
+                             struct affine* transform)
+{
+    v->position[0] += transform->x;
+    v->position[1] += transform->y;
+}
+
+static void sprite_update_primitive_line_transform(struct sprite* self,
+                                                   struct affine* transform)
+{
+    for (int i = 0; i < 2; ++i) {
+        transform_vertex(&self->__expand.primitive_data.primitive_vertex[i],
+                         transform);
+    }
+}
+
+static void sprite_update_primitive_rect_transform(struct sprite* self,
+                                                   struct affine* transform)
+{
+    for (int i = 0; i < 4; ++i) {
+        transform_vertex(&self->__expand.primitive_data.primitive_vertex[i],
+                         transform);
+    }
+}
+
+static void sprite_sort_zorder(struct sprite* self)
+{
+    if (self->dirty & SPRITE_ZORDER_DIRTY) {
+        int n = array_size(self->children);
+        for (int i = 0; i < n-1; ++i) {
+            for (int j = i+1; j < n; ++j) {
+                struct sprite* a = array_at(self->children, i);
+                struct sprite* b = array_at(self->children, j);
+                if (a && b && a->zorder > b->zorder) {
+                    array_swap(self->children, i, j);
+                }
+            }
+        }
+
+        self->dirty &= (~SPRITE_ZORDER_DIRTY);
+    }
+}
+
+static void sprite_update_anim(struct sprite* self, float dt)
+{
+    if (self->type == SPRITE_TYPE_PIC) {
+        struct anim* anim = self->__expand.sprite_data.anim;
+        if (anim) {
+            anim_update(anim, dt);
+            sprite_set_sprite_frame(self, anim_current_frame(anim));
+        }
+    }
+}
+
+static void sprite_update_transform(struct sprite* self)
+{
+    // pass the dirty flags to the children
+    for (int i = 0; i < array_size(self->children); ++i) {
+        struct sprite* child = (struct sprite*)array_at(self->children, i);
+        if (child) {
+            // we should only pass the SRT dirty to the children
+            child->dirty |= (self->dirty & SPRITE_SRT_DIRTY);
+        }
+    }
+
+    // TODO: we could improve performance by seprating transform from SRT,
+    // but for simpler implemention, we have use SRT_DIRTY right now. :)
+    if (self->dirty & SPRITE_SRT_DIRTY) {
+
+        struct affine* local = &self->local_srt;
+        af_srt(local, self->x, self->y, self->scale_x, self->scale_y, self->rotation);
+
+        struct affine tmp;
+        af_identify(&tmp);
+        af_concat(&tmp, &self->local_srt);
+
+        if (self->parent) {
+            af_concat(&tmp, &(self->parent->world_srt));
+        }
+
+        // TODO: refactor here someday. doesn't have any good idea right now.
+        if (self->type == SPRITE_TYPE_PRIMITVE) {
+            switch (self->__expand.primitive_data.primitive_type) {
+                case PRIMITIVE_LINE:
+                    sprite_update_primitive_line_transform(self, &tmp);
+                    break;
+                case PRIMITIVE_RECT:
+                    sprite_update_primitive_rect_transform(self, &tmp);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            float w0 = self->width * (1-self->anchor_x);
+            float w1 = self->width * (0-self->anchor_x);
+
+            float h0 = self->height * (1-self->anchor_y);
+            float h1 = self->height * (0-self->anchor_y);
+            float a = tmp.a;
+            float b = tmp.b;
+            float c = tmp.c;
+            float d = tmp.d;
+            float tx = tmp.x;
+            float ty = tmp.y;
+
+            float x0 = a * w1 + c * h1 + tx;
+            float y0 = d * h1 + b * w1 + ty;
+            float x1 = a * w0 + c * h1 + tx;
+            float y1 = d * h1 + b * w0 + ty;
+            float x2 = a * w0 + c * h0 + tx;
+            float y2 = d * h0 + b * w0 + ty;
+            float x3 = a * w1 + c * h0 + tx;
+            float y3 = d * h0 + b * w1 + ty;
+
+            struct glyph* g = &self->__expand.sprite_data.glyph;
+            SET_VERTEX_POS(g->bl, x0, y0);
+            SET_VERTEX_POS(g->br, x1, y1);
+            SET_VERTEX_POS(g->tr, x2, y2);
+            SET_VERTEX_POS(g->tl, x3, y3);
+
+            self->width = fabs(x1 - x0);
+            self->height = fabs(y3 - y1);
+        }
+        self->world_srt = tmp;
+    }
+    self->dirty &= (~SPRITE_SRT_DIRTY);
+}
+
+static void sprite_update_color(struct sprite* self)
+{
+    if (self->dirty & SPRITE_COLOR_DIRTY)
+    {
+        struct glyph* g = &self->__expand.sprite_data.glyph;
+        SET_VERTEX_COLOR_UINT(g->bl, self->color);
+        SET_VERTEX_COLOR_UINT(g->br, self->color);
+        SET_VERTEX_COLOR_UINT(g->tr, self->color);
+        SET_VERTEX_COLOR_UINT(g->tl, self->color);
+        self->dirty &= (~SPRITE_COLOR_DIRTY);
+    }
+}
+
 struct sprite_frame_cache* sprite_frame_cache_new()
 {
     struct sprite_frame_cache* c = STRUCT_NEW(sprite_frame_cache);
@@ -153,9 +295,9 @@ static void sprite_init(struct sprite* self,
     self->parent = NULL;
     self->dirty = SPRITE_ALL_DIRTY;
     self->zorder = 0;
-    self->scale_x = self->scale_y = 1;
-    self->rotation = 0;
-    self->x = self->y = 0;
+    self->scale_x = self->scale_y = 1.0f;
+    self->rotation = 0.0f;
+    self->x = self->y = 0.0f;
     self->anchor_x = self->anchor_y = 0.5f;
     self->width = width;
     self->height = height;
@@ -191,8 +333,6 @@ static void sprite_set_glyph(struct sprite* self, struct rect* rect,
         SET_VERTEX_UV(g->tl, uv->u,         uv->v + uv->h);
         SET_VERTEX_UV(g->tr, uv->u + uv->w, uv->v + uv->h);
     }
-    
-    g->tex_id = tex_id;
 }
 
 struct sprite* sprite_new(struct sprite_frame* frame)
@@ -200,11 +340,16 @@ struct sprite* sprite_new(struct sprite_frame* frame)
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_PIC;
     s->__expand.sprite_data.anim = NULL;
+    s->__expand.sprite_data.frame = frame;
     sprite_init(s, SPRITE_TYPE_PIC, frame->source_rect.width, frame->source_rect.height);
-    sprite_set_sprite_frame(s, frame);
+
+    sprite_set_glyph(s, &frame->frame_rect, &frame->uv, frame->tex_id);
+
+    // TODO: should we do it here? can this make the glyph right?
+    // update the sprite once, so that we can get glyph right after we new it
+    // sprite_update_transform(s);
     return s;
 }
-
 
 struct sprite* sprite_new_label(const char* label)
 {
@@ -470,143 +615,6 @@ void sprite_set_text(struct sprite* self, const char* label)
     }
 }
 
-static void transform_vertex(struct primitive_vertex* v, struct affine* transform)
-{
-    v->position[0] += transform->x;
-    v->position[1] += transform->y;
-}
-
-static void sprite_update_primitive_line_transform(struct sprite* self, struct affine* transform)
-{
-//    for (int i = 0; i < 2; ++i) {
-//        transform_vertex(&self->primitive_vertex[i], transform);
-//    }
-}
-
-static void sprite_update_primitive_rect_transform(struct sprite* self, struct affine* transform)
-{
-//    for (int i = 0; i < 4; ++i) {
-//        transform_vertex(&self->primitive_vertex[i], transform);
-//    }
-}
-
-static void sprite_sort_zorder(struct sprite* self)
-{
-    if (self->dirty & SPRITE_ZORDER_DIRTY) {
-        int n = array_size(self->children);
-        for (int i = 0; i < n-1; ++i) {
-            for (int j = i+1; j < n; ++j) {
-                struct sprite* a = array_at(self->children, i);
-                struct sprite* b = array_at(self->children, j);
-                if (a && b && a->zorder > b->zorder) {
-                    array_swap(self->children, i, j);
-                }
-            }
-        }
-
-        self->dirty &= (~SPRITE_ZORDER_DIRTY);
-    }
-}
-
-static void sprite_update_anim(struct sprite* self, float dt)
-{
-    if (self->type == SPRITE_TYPE_PIC) {
-        struct anim* anim = self->__expand.sprite_data.anim;
-        if (anim) {
-            anim_update(anim, dt);
-            sprite_set_sprite_frame(self, anim_current_frame(anim));
-        }
-    }
-}
-
-static void sprite_update_transform(struct sprite* self)
-{
-    // pass the dirty flags to the children
-    for (int i = 0; i < array_size(self->children); ++i) {
-        struct sprite* child = (struct sprite*)array_at(self->children, i);
-        if (child) {
-            // we should only pass the SRT dirty to the children
-            child->dirty |= (self->dirty & SPRITE_SRT_DIRTY);
-        }
-    }
-    
-    // TODO: we could improve performance by seprating transform from SRT,
-    // but for simpler implemention, we have use SRT_DIRTY right now. :)
-    if (self->dirty & SPRITE_SRT_DIRTY) {
-        
-        struct affine* local = &self->local_srt;
-        af_srt(local, self->x, self->y, self->scale_x, self->scale_y, self->rotation);
-        
-        struct affine tmp;
-        af_identify(&tmp);
-        af_concat(&tmp, &self->local_srt);
-
-        if (self->parent) {
-            af_concat(&tmp, &(self->parent->world_srt));
-        }
-
-        // TODO: refactor here someday. doesn't have any good idea right now.
-        if (self->type == SPRITE_TYPE_PRIMITVE) {
-//            switch (self->primitive_type) {
-//                case PRIMITIVE_LINE:
-//                    sprite_update_primitive_line_transform(self, &tmp);
-//                    break;
-//                case PRIMITIVE_RECT:
-//                    sprite_update_primitive_rect_transform(self, &tmp);
-//                    break;
-//                default:
-//                    break;
-//            }
-        } else {
-            float w0 = self->width * (1-self->anchor_x);
-            float w1 = self->width * (0-self->anchor_x);
-
-            float h0 = self->height * (1-self->anchor_y);
-            float h1 = self->height * (0-self->anchor_y);
-            float a = tmp.a;
-            float b = tmp.b;
-            float c = tmp.c;
-            float d = tmp.d;
-            float tx = tmp.x;
-            float ty = tmp.y;
-
-            float x0 = a * w1 + c * h1 + tx;
-            float y0 = d * h1 + b * w1 + ty;
-            float x1 = a * w0 + c * h1 + tx;
-            float y1 = d * h1 + b * w0 + ty;
-            float x2 = a * w0 + c * h0 + tx;
-            float y2 = d * h0 + b * w0 + ty;
-            float x3 = a * w1 + c * h0 + tx;
-            float y3 = d * h0 + b * w1 + ty;
-
-            struct glyph* g = &self->__expand.sprite_data.glyph;
-            SET_VERTEX_POS(g->bl, x0, y0);
-            SET_VERTEX_POS(g->br, x1, y1);
-            SET_VERTEX_POS(g->tr, x2, y2);
-            SET_VERTEX_POS(g->tl, x3, y3);
-            
-            self->width = fabs(x1 - x0);
-            self->height = fabs(y3 - y1);
-        }
-
-        self->dirty &= (~SPRITE_SRT_DIRTY);
-        self->world_srt = tmp;
-    }
-}
-
-static void sprite_update_color(struct sprite* self)
-{
-    if (self->dirty & SPRITE_COLOR_DIRTY)
-    {
-        struct glyph* g = &self->__expand.sprite_data.glyph;
-        SET_VERTEX_COLOR_UINT(g->bl, self->color);
-        SET_VERTEX_COLOR_UINT(g->br, self->color);
-        SET_VERTEX_COLOR_UINT(g->tr, self->color);
-        SET_VERTEX_COLOR_UINT(g->tl, self->color);
-        self->dirty &= (~SPRITE_COLOR_DIRTY);
-    }
-}
-
 void sprite_add_child(struct sprite* self, struct sprite* child, int zorder)
 {
     s_assert(child && child != self);
@@ -717,8 +725,10 @@ static void sprite_draw_spine(struct sprite* self, float dt)
 
 static void sprite_draw_primitive(struct sprite* self)
 {
-//    render_switch(R, RENDER_TYPE_PRIMITIVE);
-//    primitive_render_func_draw(R, self->primitive_type, self);
+    render_switch(R, RENDER_TYPE_PRIMITIVE);
+    primitive_render_func_draw(R,
+                               self->__expand.primitive_data.primitive_type,
+                               self);
 }
 
 static void sprite_draw(struct sprite* self, float dt)

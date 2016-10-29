@@ -181,30 +181,7 @@
 --     print("run sprite_spine_test")
 --     root:cleanup()
 
---     local test_cases = {
---         {
---             atlas = "res/spine_anim/spineboy.atlas",
---             json = "res/spine_anim/spineboy.json",
---             anim_name = 'walk', x = 30, y = 0, scale = 0.2
---         },
---         {
---             atlas = "res/spine_anim/spineboy.atlas",
---             json = "res/spine_anim/spineboy.json",
---             anim_name = 'run', x = WINDOW_WIDTH/2 - 30, y = WINDOW_HEIGHT/2, scale = 0.2
---         },
---         {
---             atlas = "res/spine_anim/powerup.atlas",
---             json = "res/spine_anim/powerup.json",
---             anim_name = 'animation', x = WINDOW_WIDTH/2 - 30, y = WINDOW_HEIGHT/2 + 100, scale = 0.2
---         },
---     }
---     for i = 1, #test_cases do
---         local c = test_cases[i]
---         local spine = sprite.new_spine(c.atlas, c.json, c.scale)
---         spine:set_pos(c.x, c.y)
---         spine:set_spine_anim(c.anim_name, 0, true)
---         root:add_child(spine)
---     end
+
 -- end
 
 -- local function sprite_loader_test()
@@ -220,17 +197,7 @@
 --     print("run sprite_loader_test")
 --     root:cleanup()
 
---     local s = sprite.new("anim_pirate.png", "attack_0.png")
---     s:set_pos(0, 0)
---     s:set_anchor(0, 0)
---     s:set_bbox_visible(true)
---     root:add_child(s)
 
---     local s2 = sprite.new("anim_pirate.png", "attack_0.png")
---     s2:set_pos(300, 100)
---     s2:set_anchor(0, 0.5)
---     s2:set_bbox_visible(true)
---     root:add_child(s2)
 -- end
 
 -- local function sprite_action_test()

@@ -76,8 +76,8 @@ void sprite_frame_tostring(struct sprite_frame* self, char* buff);
 
 struct sprite_data {
     struct sprite_frame* frame;
-    struct glyph glyph; // glphy information for rect sprites, this may waste some bytes.
     struct anim* anim; // for sprite's anim.
+    struct glyph glyph; // glphy information for rect sprites, this may waste some bytes.
 };
 
 struct primitive_data {
