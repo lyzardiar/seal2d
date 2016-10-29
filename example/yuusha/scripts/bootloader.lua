@@ -39,8 +39,10 @@ local function pmain()
 
     local util = require "seal.util"
     local device = require "seal.device"
+    local sprite = require "seal.sprite"
     inject("util", util)
     inject("device", device)
+    inject("sprite", sprite)
 
     local game = require "game"
     require("seal.engine").start(game)

@@ -17,6 +17,8 @@
 #define NK_INCLUDE_FONT_BAKING
 #define NK_INCLUDE_DEFAULT_FONT
 #define NK_IMPLEMENTATION
+// nuklear features
+#define NK_BUTTON_TRIGGER_ON_RELEASE
 
 #include "nuklear.h"
 #define NK_GLFW_GL3_IMPLEMENTATION
