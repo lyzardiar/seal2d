@@ -95,6 +95,7 @@ struct bmfont_data {
     // for sprite bmfont.
     struct bmfont* bmfont;
     char* text;
+    int line_width;
 };
 
 struct spine_data {
@@ -140,7 +141,7 @@ void sprite_init_render(struct render* render);
 
 struct sprite* sprite_new(struct sprite_frame* frame);
 struct sprite* sprite_new_label(const char* label);
-struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path);
+struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path, int line_width);
 struct sprite* sprite_new_container(struct rect* r);
 struct sprite* sprite_new_spine(const char* atlas_path, const char* spine_data_path, float scale);
 struct sprite* sprite_new_clip(struct rect* r);
@@ -180,5 +181,8 @@ void sprite_remove_all_child(struct sprite* self);
 void sprite_set_text(struct sprite* self, const char* label);
 
 struct glyph* sprite_get_glyph(struct sprite* self);
+
+// for debug usage
+void sprite_dump_children(struct sprite* self);
 
 #endif

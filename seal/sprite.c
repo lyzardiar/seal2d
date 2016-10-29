@@ -216,14 +216,17 @@ struct sprite* sprite_new_label(const char* label)
     return s;
 }
 
-struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path)
+struct sprite* sprite_new_bmfont_label(const char* label,
+                                       const char* fnt_path,
+                                       int line_width)
 {
-    struct rect r = {0, 0, 200, 200};
+    struct rect r = {0, 0, line_width, 0};
     struct sprite* s = sprite_new_container(&r);
     s->type = SPRITE_TYPE_BMFONT_LABEL;
     
     struct bmfont* bmfont = bmfont_cache_get(GAME->bmfont_cache, fnt_path);
 
+    s->__expand.bmfont_data.line_width = line_width;
     s->__expand.bmfont_data.text = NULL;
     s->__expand.bmfont_data.bmfont = bmfont;
     sprite_set_text(s, label);
@@ -375,8 +378,9 @@ void sprite_free(struct sprite* self)
 
 void sprite_set_text(struct sprite* self, const char* label)
 {
-    char* text = self->__expand.bmfont_data.text;
-    struct bmfont* bmfont = self->__expand.bmfont_data.bmfont;
+    struct bmfont_data* __expaned_data = &self->__expand.bmfont_data;
+    char* text = __expaned_data->text;
+    struct bmfont* bmfont = __expaned_data->bmfont;
     if (text && (!strcmp(text, label))) {
         return;
     }
@@ -397,12 +401,16 @@ void sprite_set_text(struct sprite* self, const char* label)
         float x = 0.0f;
         float y = 0.0f;
         
-        float width = 500;
-        
+        int width = __expaned_data->line_width;
+        int height = bmfont->common.lineHeight;
+        bool auto_calc_width = width == 0;
+
+        // TODO: we should have an bmfont render, cause it wastes a lot of sprite visit
+        // to render a simple label, anyway it's simpler right now. :)
         for (int i = 0; i < len; ++i) {
             
             // TODO: currently we only support ** ENGLISH **, we need have a UTF-8 character split function
-            // to split this label into characters, so that we were able to support Chinese, Japanese..
+            // to split this label into characters, so that we were able to support Chinese, Japanese..O
             char c = label[i];
             snprintf(label_key, 128, "%s_%c", fnt_path, c);
             
@@ -437,11 +445,18 @@ void sprite_set_text(struct sprite* self, const char* label)
             
             // coord caculation
             x += character->xadvance;
-            if (x > width) {
-                x = 0;
-                y -= bmfont->common.lineHeight;
+            if (!auto_calc_width) {
+                if ( x > width) {
+                    x = 0;
+                    y -= bmfont->common.lineHeight;
+                    height += bmfont->common.lineHeight;
+                }
+            } else {
+                width = x;
             }
         }
+
+        sprite_set_size(self, width, height);
         
         int label_count = strlen(label);
         if (!text) {
@@ -860,4 +875,22 @@ void sprite_set_size(struct sprite* self, float width, float height)
 struct glyph* sprite_get_glyph(struct sprite* self)
 {
     return &self->__expand.sprite_data.glyph;
+}
+
+void sprite_dump_children(struct sprite* self)
+{
+    struct array* children = self->children;
+    for (int i = 0; i < array_size(children); ++i) {
+        struct sprite* s = array_at(children, i);
+        if (s) {
+            printf("[sprite] : addr(%p)"
+                   "__id(%d) \n"
+                   "children(%lu) \n",
+                    s,
+                    s->__id,
+                    s->children != NULL ? array_size(s->children) : 0);
+        } else {
+            printf("[sprite] : NULL\n");
+        }
+    }
 }

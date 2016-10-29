@@ -120,7 +120,8 @@ int lsprite_new_bmfont_label(lua_State* L)
 {
     const char* label = luaL_checkstring(L, 1);
     const char* fnt_path = luaL_checkstring(L, 2);
-    struct sprite* sprite = sprite_new_bmfont_label(label, fnt_path);
+    lua_Integer line_width = luaL_checkinteger(L, 3);
+    struct sprite* sprite = sprite_new_bmfont_label(label, fnt_path, line_width);
     lua_pushlightuserdata(L, sprite);
     return 1;
 }
