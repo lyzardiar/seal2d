@@ -751,8 +751,9 @@ static void sprite_after_visit(struct sprite* self)
 void sprite_visit(struct sprite* self, float dt)
 {
     sprite_sort_zorder(self);
-    sprite_update_anim(self, dt);
+
     sprite_update_transform(self);
+    sprite_update_anim(self, dt);
     sprite_update_color(self);
     sprite_draw(self, dt);
 
@@ -785,7 +786,13 @@ void sprite_clean_clip(struct sprite* self)
 
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame)
 {
-    sprite_set_glyph(self, &frame->source_rect, &frame->uv, frame->tex_id);
+    struct glyph* g = sprite_get_glyph(self);
+    struct uv* uv = &frame->uv;
+    SET_VERTEX_UV(g->bl, uv->u,         uv->v);
+    SET_VERTEX_UV(g->br, uv->u + uv->w, uv->v);
+    SET_VERTEX_UV(g->tl, uv->u,         uv->v + uv->h);
+    SET_VERTEX_UV(g->tr, uv->u + uv->w, uv->v + uv->h);
+
     self->__expand.sprite_data.frame = frame;
     
     self->dirty |= SPRITE_FRAME_DIRTY;
