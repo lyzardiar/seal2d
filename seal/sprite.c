@@ -510,10 +510,12 @@ static void sprite_sort_zorder(struct sprite* self)
 
 static void sprite_update_anim(struct sprite* self, float dt)
 {
-    struct anim* anim = self->__expand.sprite_data.anim;
-    if (self->type == SPRITE_TYPE_PIC && anim) {
-        anim_update(anim, dt);
-        sprite_set_sprite_frame(self, anim_current_frame(anim));
+    if (self->type == SPRITE_TYPE_PIC) {
+        struct anim* anim = self->__expand.sprite_data.anim;
+        if (anim) {
+            anim_update(anim, dt);
+            sprite_set_sprite_frame(self, anim_current_frame(anim));
+        }
     }
 }
 
@@ -751,7 +753,6 @@ static void sprite_after_visit(struct sprite* self)
 void sprite_visit(struct sprite* self, float dt)
 {
     sprite_sort_zorder(self);
-
     sprite_update_transform(self);
     sprite_update_anim(self, dt);
     sprite_update_color(self);
