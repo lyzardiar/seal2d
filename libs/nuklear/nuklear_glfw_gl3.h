@@ -13,7 +13,12 @@
 #ifndef NK_GLFW_GL3_H_
 #define NK_GLFW_GL3_H_
 
+#ifdef WIN32
+#include <GL/glew.h>
+#else
 #include <OpenGL/gl3.h>
+#endif
+
 #include "GLFW/glfw3.h"
 
 enum nk_glfw_init_state{

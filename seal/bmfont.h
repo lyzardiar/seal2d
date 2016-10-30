@@ -3,6 +3,10 @@
 
 #include <stdio.h>
 
+#ifdef WIN32
+#include <stdint.h>
+#endif
+
 struct Hashmap;
 struct sprite;
 

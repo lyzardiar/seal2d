@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5F6F2BC1-6D82-435C-8CB1-5DA31D76D758}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Seal2D</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\libs\nuklear;$(SolutionDir)..\..\..\libs\nanovg\src;$(SolutionDir)..\..\..\libs\lua-zlib;$(SolutionDir)..\..\..\libs\zlib\win32\include;$(SolutionDir)..\..\..\libs\freetype-2.6.2\win32\include\freetype2;$(SolutionDir)..\..\..\libs\lua-5.3.2\src;$(SolutionDir)..\..\..\libs\spine\include;$(SolutionDir)..\..\..\libs\glfw\win32\include;$(SolutionDir)..\..\..\libs\gles\win32\include\OGLES;$(SolutionDir)..\..\..\seal;$(SolutionDir)..\..\..\seal\base;$(SolutionDir)..\..\..\seal\binding;$(SolutionDir)..\..\..\seal\math;$(SolutionDir)..\..\..\seal\renders;$(SolutionDir)..\..\..\seal\image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4244;4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\..\libs\glfw\win32\prebuilt;$(SolutionDir)..\..\..\libs\gles\win32\prebuilt;$(SolutionDir)..\..\..\libs\zlib\win32\prebuilt;$(SolutionDir)..\..\..\libs\freetype-2.6.2\win32\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;glew32.lib;opengl32.lib;freetype.lib;libzlib.lib;wsock32.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\libs\glfw\win32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lapi.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lauxlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lbaselib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lbitlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lcode.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lcorolib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lctype.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldblib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldebug.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldo.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldump.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lfunc.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lgc.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\linit.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\liolib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\llex.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lmathlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lmem.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\loadlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lobject.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lopcodes.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\loslib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lparser.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstate.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstring.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstrlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltable.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltablib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltm.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lundump.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lutf8lib.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lvm.c" />
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lzio.c" />
+    <ClCompile Include="..\..\..\libs\lua-cjson\fpconv.c" />
+    <ClCompile Include="..\..\..\libs\lua-cjson\lua_cjson.c" />
+    <ClCompile Include="..\..\..\libs\lua-cjson\strbuf.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\auxiliar.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\buffer.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\compat.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\except.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\inet.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\io.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\luasocket.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\mime.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\options.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\select.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\tcp.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\timeout.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\udp.c" />
+    <ClCompile Include="..\..\..\libs\lua-socket\src\wsocket.c" />
+    <ClCompile Include="..\..\..\libs\lua-zlib\ioapi.c" />
+    <ClCompile Include="..\..\..\libs\lua-zlib\ioapi_mem.c" />
+    <ClCompile Include="..\..\..\libs\lua-zlib\lua_zlib.c" />
+    <ClCompile Include="..\..\..\libs\lua-zlib\unzip.c" />
+    <ClCompile Include="..\..\..\libs\nanovg\src\nanovg.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Animation.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\AnimationState.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\AnimationStateData.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Atlas.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\AtlasAttachmentLoader.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Attachment.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\AttachmentLoader.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Bone.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\BoneData.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\BoundingBoxAttachment.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Event.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\EventData.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\extension.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\IkConstraint.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\IkConstraintData.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Json.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\MeshAttachment.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\PathAttachment.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\PathConstraint.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\PathConstraintData.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\RegionAttachment.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Skeleton.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\SkeletonBinary.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\SkeletonBounds.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\SkeletonData.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\SkeletonJson.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Skin.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Slot.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\SlotData.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\TransformConstraint.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\TransformConstraintData.c" />
+    <ClCompile Include="..\..\..\libs\spine\src\spine\VertexAttachment.c" />
+    <ClCompile Include="..\..\..\seal\action.c" />
+    <ClCompile Include="..\..\..\seal\anim.c" />
+    <ClCompile Include="..\..\..\seal\base\array.c" />
+    <ClCompile Include="..\..\..\seal\base\hashmap.c" />
+    <ClCompile Include="..\..\..\seal\binding\laction.c" />
+    <ClCompile Include="..\..\..\seal\binding\lnanovg.c" />
+    <ClCompile Include="..\..\..\seal\binding\lnuklear.c" />
+    <ClCompile Include="..\..\..\seal\binding\lopen.c" />
+    <ClCompile Include="..\..\..\seal\binding\lplatform.c" />
+    <ClCompile Include="..\..\..\seal\binding\lseal_core.c" />
+    <ClCompile Include="..\..\..\seal\binding\lsprite.c" />
+    <ClCompile Include="..\..\..\seal\binding\ltexture.c" />
+    <ClCompile Include="..\..\..\seal\bmfont.c" />
+    <ClCompile Include="..\..\..\seal\camera.c" />
+    <ClCompile Include="..\..\..\seal\image\lodepng.c" />
+    <ClCompile Include="..\..\..\seal\lua_handler.c" />
+    <ClCompile Include="..\..\..\seal\math\affine.c" />
+    <ClCompile Include="..\..\..\seal\math\geo.c" />
+    <ClCompile Include="..\..\..\seal\math\matrix.c" />
+    <ClCompile Include="..\..\..\seal\memory.c" />
+    <ClCompile Include="..\..\..\seal\platform\fs.c" />
+    <ClCompile Include="..\..\..\seal\platform\platform.c" />
+    <ClCompile Include="..\..\..\seal\platform\timer.c" />
+    <ClCompile Include="..\..\..\seal\render.c" />
+    <ClCompile Include="..\..\..\seal\renders\primitive_render.c" />
+    <ClCompile Include="..\..\..\seal\renders\spine_render.c" />
+    <ClCompile Include="..\..\..\seal\renders\sprite_render.c" />
+    <ClCompile Include="..\..\..\seal\scheduler.c" />
+    <ClCompile Include="..\..\..\seal\seal.c" />
+    <ClCompile Include="..\..\..\seal\shader.c" />
+    <ClCompile Include="..\..\..\seal\spine_anim.c" />
+    <ClCompile Include="..\..\..\seal\sprite.c" />
+    <ClCompile Include="..\..\..\seal\texture.c" />
+    <ClCompile Include="..\..\..\seal\ttf_font.c" />
+    <ClCompile Include="..\..\..\seal\window.c" />
+    <ClCompile Include="Seal2D.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lapi.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lauxlib.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lcode.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lctype.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ldebug.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ldo.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lfunc.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lgc.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\llex.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\llimits.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lmem.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lobject.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lopcodes.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lparser.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lprefix.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lstate.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lstring.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ltable.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ltm.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lua.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lua.hpp" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\luaconf.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lualib.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lundump.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lvm.h" />
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lzio.h" />
+    <ClInclude Include="..\..\..\libs\lua-cjson\fpconv.h" />
+    <ClInclude Include="..\..\..\libs\lua-cjson\strbuf.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\auxiliar.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\buffer.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\compat.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\except.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\inet.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\io.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\luasocket.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\mime.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\options.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\pierror.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\select.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\socket.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\tcp.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\timeout.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\udp.h" />
+    <ClInclude Include="..\..\..\libs\lua-socket\src\wsocket.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\ioapi.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\ioapi_mem.h" />
+    <ClInclude Include="..\..\..\libs\lua-zlib\unzip.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\fontstash.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg_gl.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg_gl_utils.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\stb_image.h" />
+    <ClInclude Include="..\..\..\libs\nanovg\src\stb_truetype.h" />
+    <ClInclude Include="..\..\..\libs\nuklear\nuklear.h" />
+    <ClInclude Include="..\..\..\libs\nuklear\nuklear_glfw_gl3.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Animation.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\AnimationState.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\AnimationStateData.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Atlas.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\AtlasAttachmentLoader.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Attachment.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\AttachmentLoader.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Bone.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\BoneData.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\BoundingBoxAttachment.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Event.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\EventData.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\extension.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\IkConstraint.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\IkConstraintData.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\MeshAttachment.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\PathAttachment.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\PathConstraint.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\PathConstraintData.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\RegionAttachment.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Skeleton.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\SkeletonBinary.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\SkeletonBounds.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\SkeletonData.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\SkeletonJson.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Skin.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Slot.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\SlotData.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\spine.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\TransformConstraint.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\TransformConstraintData.h" />
+    <ClInclude Include="..\..\..\libs\spine\include\spine\VertexAttachment.h" />
+    <ClInclude Include="..\..\..\libs\spine\src\spine\Json.h" />
+    <ClInclude Include="..\..\..\libs\spine\src\spine\kvec.h" />
+    <ClInclude Include="..\..\..\seal\action.h" />
+    <ClInclude Include="..\..\..\seal\anim.h" />
+    <ClInclude Include="..\..\..\seal\base\array.h" />
+    <ClInclude Include="..\..\..\seal\base\hashmap.h" />
+    <ClInclude Include="..\..\..\seal\base\list.h" />
+    <ClInclude Include="..\..\..\seal\binding\lopen.h" />
+    <ClInclude Include="..\..\..\seal\bmfont.h" />
+    <ClInclude Include="..\..\..\seal\camera.h" />
+    <ClInclude Include="..\..\..\seal\event.h" />
+    <ClInclude Include="..\..\..\seal\image\lodepng.h" />
+    <ClInclude Include="..\..\..\seal\lua_handler.h" />
+    <ClInclude Include="..\..\..\seal\math\affine.h" />
+    <ClInclude Include="..\..\..\seal\math\geo.h" />
+    <ClInclude Include="..\..\..\seal\math\matrix.h" />
+    <ClInclude Include="..\..\..\seal\memory.h" />
+    <ClInclude Include="..\..\..\seal\platform\fs.h" />
+    <ClInclude Include="..\..\..\seal\platform\platform.h" />
+    <ClInclude Include="..\..\..\seal\platform\render_opengl.h" />
+    <ClInclude Include="..\..\..\seal\platform\timer.h" />
+    <ClInclude Include="..\..\..\seal\render.h" />
+    <ClInclude Include="..\..\..\seal\renders\primitive_render.h" />
+    <ClInclude Include="..\..\..\seal\renders\spine_render.h" />
+    <ClInclude Include="..\..\..\seal\renders\sprite_render.h" />
+    <ClInclude Include="..\..\..\seal\scheduler.h" />
+    <ClInclude Include="..\..\..\seal\seal.h" />
+    <ClInclude Include="..\..\..\seal\shader.h" />
+    <ClInclude Include="..\..\..\seal\spine_anim.h" />
+    <ClInclude Include="..\..\..\seal\sprite.h" />
+    <ClInclude Include="..\..\..\seal\texture.h" />
+    <ClInclude Include="..\..\..\seal\ttf_font.h" />
+    <ClInclude Include="..\..\..\seal\util.h" />
+    <ClInclude Include="..\..\..\seal\window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\seal\platform\fs.m" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

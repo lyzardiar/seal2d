@@ -18,3 +18,10 @@ Icon
 *build/
 
 xcshareddata/
+
+# vs
+Debug
+*.vs
+*.opendb
+*.db
+*.user

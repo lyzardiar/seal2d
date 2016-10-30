@@ -1,0 +1,804 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="App">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{4f5c36a9-9b89-4f30-89c6-7155ffa7fefa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\seal">
+      <UniqueIdentifier>{ba344edf-37ac-4a5b-8632-e3afb3a0d5b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\seal\base">
+      <UniqueIdentifier>{14f805e5-bd68-4687-8706-5aec3d1c3cca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\seal\binding">
+      <UniqueIdentifier>{c44d8f22-b192-4c72-a22e-dd9738232af0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\seal\image">
+      <UniqueIdentifier>{fa0a969c-071a-410f-83fc-10446124005d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\seal\math">
+      <UniqueIdentifier>{6a58a47e-6b90-4fc7-ba10-67792a363ff4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\seal\platform">
+      <UniqueIdentifier>{bf22296b-b3c6-4a1d-861b-6148c9aa9f39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\seal\renders">
+      <UniqueIdentifier>{b8f224e5-e6a2-4a93-9ada-bae46035249c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Libs">
+      <UniqueIdentifier>{c1dc8cf3-5095-471c-8015-ec9c74e7eeb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Libs\lua">
+      <UniqueIdentifier>{79a59ffa-4343-4d3e-a6fb-41db85fa0e41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Libs\spine">
+      <UniqueIdentifier>{d1ad768a-76c7-4bbd-96e9-2345d0b271fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Libs\lua-zlib">
+      <UniqueIdentifier>{b7ba27b2-36d1-434e-9448-48249015e563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Libs\spine\include">
+      <UniqueIdentifier>{2df6ad10-c315-478a-8b54-7ebc6d742de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Libs\spine\src">
+      <UniqueIdentifier>{0f9b74a6-18bc-40f2-ada7-bcc9b1355cc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Libs\nuklear">
+      <UniqueIdentifier>{bc6e055a-7ffb-40e5-bdff-d1ed7d8266bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Libs\nanovg">
+      <UniqueIdentifier>{618e916e-643f-4886-9699-2ca4d079c464}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Libs\lua-cjson">
+      <UniqueIdentifier>{c228fc65-206d-4fc3-b901-750fba5c4406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Libs\lua-socket">
+      <UniqueIdentifier>{c7f8dc4c-6244-4df5-9b7a-f2c46620c358}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\seal\camera.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\lua_handler.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\memory.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\render.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\scheduler.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\seal.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\shader.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\spine_anim.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\sprite.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\texture.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\ttf_font.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\window.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\action.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\anim.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\bmfont.c">
+      <Filter>Engine\seal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\base\array.c">
+      <Filter>Engine\seal\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\base\hashmap.c">
+      <Filter>Engine\seal\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\laction.c">
+      <Filter>Engine\seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\lnanovg.c">
+      <Filter>Engine\seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\lnuklear.c">
+      <Filter>Engine\seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\lopen.c">
+      <Filter>Engine\seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\lplatform.c">
+      <Filter>Engine\seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\lseal_core.c">
+      <Filter>Engine\seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\lsprite.c">
+      <Filter>Engine\seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\binding\ltexture.c">
+      <Filter>Engine\seal\binding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\image\lodepng.c">
+      <Filter>Engine\seal\image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\math\matrix.c">
+      <Filter>Engine\seal\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\math\affine.c">
+      <Filter>Engine\seal\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\math\geo.c">
+      <Filter>Engine\seal\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\platform\timer.c">
+      <Filter>Engine\seal\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\renders\sprite_render.c">
+      <Filter>Engine\seal\renders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\renders\primitive_render.c">
+      <Filter>Engine\seal\renders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\renders\spine_render.c">
+      <Filter>Engine\seal\renders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lundump.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lutf8lib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lvm.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lzio.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lapi.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lauxlib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lbaselib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lbitlib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lcode.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lcorolib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lctype.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldblib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldebug.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldo.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ldump.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lfunc.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lgc.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\linit.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\liolib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\llex.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lmathlib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lmem.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\loadlib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lobject.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lopcodes.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\loslib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lparser.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstate.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstring.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\lstrlib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltable.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltablib.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-5.3.2\src\ltm.c">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-zlib\lua_zlib.c">
+      <Filter>Engine\Libs\lua-zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-zlib\unzip.c">
+      <Filter>Engine\Libs\lua-zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-zlib\ioapi.c">
+      <Filter>Engine\Libs\lua-zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-zlib\ioapi_mem.c">
+      <Filter>Engine\Libs\lua-zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Animation.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\AnimationState.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\AnimationStateData.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Atlas.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\AtlasAttachmentLoader.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Attachment.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\AttachmentLoader.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Bone.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\BoneData.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\BoundingBoxAttachment.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Event.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\EventData.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\extension.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\IkConstraint.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\IkConstraintData.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Json.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\MeshAttachment.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\PathAttachment.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\PathConstraint.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\PathConstraintData.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\RegionAttachment.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Skeleton.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\SkeletonBinary.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\SkeletonBounds.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\SkeletonData.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\SkeletonJson.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Skin.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\Slot.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\SlotData.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\TransformConstraint.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\TransformConstraintData.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\spine\src\spine\VertexAttachment.c">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\nanovg\src\nanovg.c">
+      <Filter>Engine\Libs\nanovg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\platform\platform.c">
+      <Filter>Engine\seal\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-cjson\lua_cjson.c">
+      <Filter>Engine\Libs\lua-cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-cjson\strbuf.c">
+      <Filter>Engine\Libs\lua-cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-cjson\fpconv.c">
+      <Filter>Engine\Libs\lua-cjson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\options.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\select.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\tcp.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\timeout.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\udp.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\wsocket.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\auxiliar.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\buffer.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\compat.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\except.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\inet.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\io.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\luasocket.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\libs\lua-socket\src\mime.c">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\seal\platform\fs.c">
+      <Filter>Engine\seal\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="Seal2D.c">
+      <Filter>App</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\seal\bmfont.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\camera.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\event.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\lua_handler.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\memory.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\render.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\scheduler.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\seal.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\shader.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\spine_anim.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\sprite.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\texture.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\ttf_font.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\util.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\window.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\action.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\anim.h">
+      <Filter>Engine\seal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\base\array.h">
+      <Filter>Engine\seal\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\base\hashmap.h">
+      <Filter>Engine\seal\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\base\list.h">
+      <Filter>Engine\seal\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\binding\lopen.h">
+      <Filter>Engine\seal\binding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\image\lodepng.h">
+      <Filter>Engine\seal\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\math\geo.h">
+      <Filter>Engine\seal\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\math\matrix.h">
+      <Filter>Engine\seal\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\math\affine.h">
+      <Filter>Engine\seal\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\platform\timer.h">
+      <Filter>Engine\seal\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\platform\fs.h">
+      <Filter>Engine\seal\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\platform\platform.h">
+      <Filter>Engine\seal\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\platform\render_opengl.h">
+      <Filter>Engine\seal\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\renders\spine_render.h">
+      <Filter>Engine\seal\renders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\renders\sprite_render.h">
+      <Filter>Engine\seal\renders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\seal\renders\primitive_render.h">
+      <Filter>Engine\seal\renders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lua.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lua.hpp">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\luaconf.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lualib.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lundump.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lvm.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lzio.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lapi.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lauxlib.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lcode.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lctype.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ldebug.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ldo.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lfunc.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lgc.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\llex.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\llimits.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lmem.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lobject.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lopcodes.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lparser.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lprefix.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lstate.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\lstring.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ltable.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-5.3.2\src\ltm.h">
+      <Filter>Engine\Libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\ioapi_mem.h">
+      <Filter>Engine\Libs\lua-zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\unzip.h">
+      <Filter>Engine\Libs\lua-zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-zlib\ioapi.h">
+      <Filter>Engine\Libs\lua-zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\src\spine\Json.h">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\src\spine\kvec.h">
+      <Filter>Engine\Libs\spine\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\IkConstraint.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\IkConstraintData.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\MeshAttachment.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\PathAttachment.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\PathConstraint.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\PathConstraintData.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\RegionAttachment.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Skeleton.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\SkeletonBinary.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\SkeletonBounds.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\SkeletonData.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\SkeletonJson.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Skin.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Slot.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\SlotData.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\spine.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\TransformConstraint.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\TransformConstraintData.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\VertexAttachment.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Animation.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\AnimationState.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\AnimationStateData.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Atlas.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\AtlasAttachmentLoader.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Attachment.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\AttachmentLoader.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Bone.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\BoneData.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\BoundingBoxAttachment.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\Event.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\EventData.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\spine\include\spine\extension.h">
+      <Filter>Engine\Libs\spine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nuklear\nuklear.h">
+      <Filter>Engine\Libs\nuklear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nuklear\nuklear_glfw_gl3.h">
+      <Filter>Engine\Libs\nuklear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg.h">
+      <Filter>Engine\Libs\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg_gl.h">
+      <Filter>Engine\Libs\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\nanovg_gl_utils.h">
+      <Filter>Engine\Libs\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\stb_image.h">
+      <Filter>Engine\Libs\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\stb_truetype.h">
+      <Filter>Engine\Libs\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\nanovg\src\fontstash.h">
+      <Filter>Engine\Libs\nanovg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-cjson\strbuf.h">
+      <Filter>Engine\Libs\lua-cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-cjson\fpconv.h">
+      <Filter>Engine\Libs\lua-cjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\auxiliar.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\buffer.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\compat.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\except.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\inet.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\io.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\luasocket.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\mime.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\options.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\pierror.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\select.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\socket.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\tcp.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\timeout.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\udp.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\libs\lua-socket\src\wsocket.h">
+      <Filter>Engine\Libs\lua-socket</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\seal\platform\fs.m">
+      <Filter>Engine\seal\platform</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -15,6 +15,16 @@
 
     #define PLAT_WIN (1)
 
+	#ifndef M_PI
+	#define M_PI       3.14159265358979323846
+	#endif
+
+#include <winsock2.h>
+
+int gettimeofday(struct timeval * val, struct timezone *z);
+int strcasecmp(char *s1, char *s2);
+int strncasecmp(char *s1, char *s2, register int n);
+
 #elif __APPLE__
     #include "TargetConditionals.h"
     #if TARGET_IPHONE_SIMULATOR
