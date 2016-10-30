@@ -17,11 +17,6 @@ const char* fs_sandbox_root_path()
 
 unsigned char* fs_read(const char* path, size_t* size, int extra_byte)
 {
-    return (unsigned char*)fs_reads(path, size);
-}
-
-char* fs_reads(const char* path, size_t* size)
-{
     FILE* fp = fopen(path, "rb");
     assert(fp);
     int descriptor = _fileno(fp);
@@ -31,7 +26,7 @@ char* fs_reads(const char* path, size_t* size)
         assert(0);
     }
     size_t len = stat_buf.st_size;
-    char* buff = malloc(len +1);
+    char* buff = malloc(len + 1);
     size_t rs = fread(buff, 1, len, fp);
     buff[len] = 0;
     fclose(fp);
@@ -41,6 +36,11 @@ char* fs_reads(const char* path, size_t* size)
     }
 
     return buff;
+}
+
+char* fs_reads(const char* path)
+{
+    return (char*)fs_read(path, NULL, 0);
 }
 
 size_t fs_writes(const char* path, const char* string)

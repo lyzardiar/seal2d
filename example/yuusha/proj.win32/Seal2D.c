@@ -199,13 +199,12 @@ int main(int argc, char *argv[])
         dt = current - last;
 
         if (dt < interval) {
-            Sleep((interval - dt) * 1000);
+            Sleep(interval - dt);
         }
     }
 
     seal_destroy();
 
     exit_glfw(window);
-    system("pause");
     return 0;
 }
