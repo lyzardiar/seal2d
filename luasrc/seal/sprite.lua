@@ -74,6 +74,13 @@ function sprite.new_clip(...)
     return self
 end
 
+function sprite.new_scale9(frame, rect)
+    local self = {}
+    setmetatable(self, meta)
+    self.__cobj = core.new_scale9(frame, rect)
+    return self
+end
+
 function sprite:cleanup(...)
     self:remove_all_child(...)
     self:clean_handler()

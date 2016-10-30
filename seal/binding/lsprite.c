@@ -228,9 +228,24 @@ int lsprite_new_clip(lua_State* L)
 {
     struct rect r;
     check_rect(L, &r);
-
+    
     struct sprite* s = sprite_new_clip(&r);
     lua_pushlightuserdata(L, s);
+    return 1;
+}
+
+int lsprite_new_scale9(lua_State* L)
+{
+    struct sprite_frame* frame = lua_touserdata(L, 1);
+    
+    struct rect r;
+    r.x = (int)getfield_i(L, "x");
+    r.y = (int)getfield_i(L, "y");
+    r.width = (int)getfield_i(L, "w");
+    r.height = (int)getfield_i(L, "h");
+    
+    struct sprite* sprite = sprite_newscale9(frame, &r);
+    lua_pushlightuserdata(L, sprite);
     return 1;
 }
 
@@ -462,6 +477,7 @@ int luaopen_seal_sprite(lua_State* L)
         { "new_spine", lsprite_new_spine },
         { "new_primitive", lsprite_new_primitive },
         { "new_clip", lsprite_new_clip },
+        { "new_scale9", lsprite_new_scale9 },
         { "free", lsprite_free },
         { "set_text", lsprite_set_text },
         { "register_handler", lsprite_register_handler },
