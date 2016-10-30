@@ -244,15 +244,9 @@ static void sprite_update_color(struct sprite* self)
             case SPRITE_TYPE_SCALE9:
             {
                 struct scale9_data* data = &(self->__expand.scale9_data);
-                sprite_set_color(data->tl, self->color);
-                sprite_set_color(data->tc, self->color);
-                sprite_set_color(data->tr, self->color);
-                sprite_set_color(data->ml, self->color);
-                sprite_set_color(data->mc, self->color);
-                sprite_set_color(data->mr, self->color);
-                sprite_set_color(data->bl, self->color);
-                sprite_set_color(data->bc, self->color);
-                sprite_set_color(data->br, self->color);
+                for (int i = 0; i < 9; ++i){
+                    sprite_set_color(data->sprites[i], self->color);
+                }
                 break;
             }
             default:
@@ -673,27 +667,10 @@ void sprite_free(struct sprite* self)
         case SPRITE_TYPE_SCALE9:
         {
             struct scale9_data* data = &(self->__expand.scale9_data);
-            s_free(data->tl->__expand.sprite_data.frame);
-            data->tl->__expand.sprite_data.frame = NULL;
-            s_free(data->tc->__expand.sprite_data.frame);
-            data->tc->__expand.sprite_data.frame = NULL;
-            s_free(data->tr->__expand.sprite_data.frame);
-            data->tr->__expand.sprite_data.frame = NULL;
-            
-            s_free(data->ml->__expand.sprite_data.frame);
-            data->ml->__expand.sprite_data.frame = NULL;
-            s_free(data->mc->__expand.sprite_data.frame);
-            data->mc->__expand.sprite_data.frame = NULL;
-            s_free(data->mr->__expand.sprite_data.frame);
-            data->mr->__expand.sprite_data.frame = NULL;
-            
-            s_free(data->bl->__expand.sprite_data.frame);
-            data->bl->__expand.sprite_data.frame = NULL;
-            s_free(data->bc->__expand.sprite_data.frame);
-            data->bc->__expand.sprite_data.frame = NULL;
-            s_free(data->br->__expand.sprite_data.frame);
-            data->br->__expand.sprite_data.frame = NULL;
-            
+            for (int i = 0; i < 9; ++i){
+                s_free(data->sprites[i]->__expand.sprite_data.frame);
+                data->sprites[i]->__expand.sprite_data.frame = NULL;
+            }
             break;
         }
 

@@ -108,9 +108,14 @@ struct spine_data {
 struct scale9_data {
     // for scale9
     // simple implements
-    struct sprite   *tl, *tc, *tr,
-                    *ml, *mc, *mr,
-                    *bl, *bc, *br;
+    union {
+        struct{
+            struct sprite   *tl, *tc, *tr,
+                            *ml, *mc, *mr,
+                            *bl, *bc, *br;
+        };
+        struct sprite* sprites[9];
+    };
     
     struct sprite_frame* frame;
     struct rect inset;
