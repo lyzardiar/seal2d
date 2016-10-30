@@ -19,4 +19,9 @@ Icon
 
 xcshareddata/
 
+# vs
 Debug
+*.vs
+*.opendb
+*.db
+*.user
