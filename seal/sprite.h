@@ -33,6 +33,7 @@ enum sprite_type {
     SPRITE_TYPE_MESH,
     SPRITE_TYPE_TILE_MAP,
     SPRITE_TYPE_PARTICLE,
+    SPRITE_TYPE_SCALE9,
 
     // sprite container
     SPRITE_TYPE_CLIP,
@@ -72,6 +73,7 @@ void sprite_frame_free(struct sprite_frame* self);
 
 void sprite_frame_set_texture_id(struct sprite_frame* self, GLuint tex_id);
 void sprite_frame_init_uv(struct sprite_frame* self, float texture_width, float texture_height);
+void sprite_frame_init_subuv(struct sprite_frame* self, struct sprite_frame* parent);
 void sprite_frame_tostring(struct sprite_frame* self, char* buff);
 
 struct sprite_data {
@@ -101,6 +103,17 @@ struct bmfont_data {
 struct spine_data {
     // for spine.
     struct spine_anim* spine_anim;
+};
+
+struct scale9_data {
+    // for scale9
+    // simple implements
+    struct sprite   *tl, *tc, *tr,
+                    *ml, *mc, *mr,
+                    *bl, *bc, *br;
+    
+    struct sprite_frame* frame;
+    struct rect inset;
 };
 
 struct sprite {
@@ -134,6 +147,7 @@ struct sprite {
         struct primitive_data primitive_data;
         struct bmfont_data bmfont_data;
         struct spine_data spine_data;
+        struct scale9_data scale9_data;
     } __expand;
 };
 
@@ -147,6 +161,7 @@ struct sprite* sprite_new_spine(const char* atlas_path, const char* spine_data_p
 struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* vertex, float width, color line_color);
 struct sprite* sprite_new_rect(struct rect* r, unsigned int rect_flag, color fill_color, color outline_color);
+struct sprite* sprite_newscale9(struct sprite_frame* frame, struct rect* r);
 
 void sprite_free(struct sprite* self);
 

@@ -6,6 +6,7 @@
 #include "util.h"
 
 #include "array.h"
+#include "sprite.h"
 
 typedef void* DATA_TYPE;
 struct array {
@@ -47,10 +48,10 @@ struct array* array_copy(struct array* self) {
         printf("0x%x ", array_at(a, i));
     }
     
+    char info[256] = "";
     for (int i = 0; i < self->n; ++i) {
         struct sprite_frame* f = array_at(a, i);
-        char info[256] = "";
-        sprite_frame_tostring(f, info);
+        sprite_frame_tostring(f, (char*)info);
         printf("frame = %s\n", info);
     }
     

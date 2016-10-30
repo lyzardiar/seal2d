@@ -113,6 +113,51 @@ static void sprite_update_anim(struct sprite* self, float dt)
     }
 }
 
+static void sprite_update_scale9(struct sprite* self)
+{
+    if (self->type == SPRITE_TYPE_SCALE9) {
+        struct sprite_frame* frame = self->__expand.scale9_data.frame;
+        struct rect* inset = &(self->__expand.scale9_data.inset);
+        int width = frame->source_size.width;
+        int height = frame->source_size.height;
+        
+        float ox = -self->width * self->anchor_x;
+        float oy = self->height * self->anchor_y;
+        
+        struct scale9_data* data = &(self->__expand.scale9_data);
+        
+        int l = inset->x;
+        int c = inset->width;
+        int r = width - (inset->x + inset->width);
+        int p = self->width - r;
+        float ps = (self->width - (l + r)) * 1.0f / c;
+        
+        int t = inset->y;
+        int m = inset->height;
+        int b = height - (inset->y + inset->height);
+        int q = self->height - b;
+        float qs = (self->height - (t + b)) * 1.0f / m;
+        
+        sprite_set_scale_x(data->tc, ps);
+        sprite_set_scale_x(data->mc, ps);
+        sprite_set_scale_x(data->bc, ps);
+        
+        sprite_set_scale_y(data->ml, qs);
+        sprite_set_scale_y(data->mc, qs);
+        sprite_set_scale_y(data->mr, qs);
+        
+        sprite_set_pos(data->tl, ox+0, oy+0);
+        sprite_set_pos(data->tc, ox+l, oy+0);
+        sprite_set_pos(data->tr, ox+p, oy+0);
+        sprite_set_pos(data->ml, ox+0, oy-t);
+        sprite_set_pos(data->mc, ox+l, oy-t);
+        sprite_set_pos(data->mr, ox+p, oy-t);
+        sprite_set_pos(data->bl, ox+0, oy-q);
+        sprite_set_pos(data->bc, ox+l, oy-q);
+        sprite_set_pos(data->br, ox+p, oy-q);
+    }
+}
+
 static void sprite_update_transform(struct sprite* self)
 {
     // pass the dirty flags to the children
@@ -127,7 +172,6 @@ static void sprite_update_transform(struct sprite* self)
     // TODO: we could improve performance by seprating transform from SRT,
     // but for simpler implemention, we have use SRT_DIRTY right now. :)
     if (self->dirty & SPRITE_SRT_DIRTY) {
-
         struct affine* local = &self->local_srt;
         af_srt(local, self->x, self->y, self->scale_x, self->scale_y, self->rotation);
 
@@ -151,7 +195,11 @@ static void sprite_update_transform(struct sprite* self)
                 default:
                     break;
             }
-        } else {
+        }
+        else if (self->type == SPRITE_TYPE_SCALE9) {
+            sprite_update_scale9(self);
+        }
+        else {
             float w0 = self->width * (1-self->anchor_x);
             float w1 = self->width * (0-self->anchor_x);
 
@@ -189,13 +237,34 @@ static void sprite_update_transform(struct sprite* self)
 
 static void sprite_update_color(struct sprite* self)
 {
-    if (self->dirty & SPRITE_COLOR_DIRTY)
-    {
-        struct glyph* g = &self->__expand.sprite_data.glyph;
-        SET_VERTEX_COLOR_UINT(g->bl, self->color);
-        SET_VERTEX_COLOR_UINT(g->br, self->color);
-        SET_VERTEX_COLOR_UINT(g->tr, self->color);
-        SET_VERTEX_COLOR_UINT(g->tl, self->color);
+    if (self->dirty & SPRITE_COLOR_DIRTY) {
+        
+        // todo: other type wants his bev
+        switch(self->type) {
+            case SPRITE_TYPE_SCALE9:
+            {
+                struct scale9_data* data = &(self->__expand.scale9_data);
+                sprite_set_color(data->tl, self->color);
+                sprite_set_color(data->tc, self->color);
+                sprite_set_color(data->tr, self->color);
+                sprite_set_color(data->ml, self->color);
+                sprite_set_color(data->mc, self->color);
+                sprite_set_color(data->mr, self->color);
+                sprite_set_color(data->bl, self->color);
+                sprite_set_color(data->bc, self->color);
+                sprite_set_color(data->br, self->color);
+                break;
+            }
+            default:
+            {
+                struct glyph* g = &self->__expand.sprite_data.glyph;
+                SET_VERTEX_COLOR_UINT(g->bl, self->color);
+                SET_VERTEX_COLOR_UINT(g->br, self->color);
+                SET_VERTEX_COLOR_UINT(g->tr, self->color);
+                SET_VERTEX_COLOR_UINT(g->tl, self->color);
+                break;
+            }
+        }
         self->dirty &= (~SPRITE_COLOR_DIRTY);
     }
 }
@@ -234,7 +303,7 @@ struct sprite_frame* sprite_frame_cache_get(struct sprite_frame_cache* self,
 
 struct sprite_frame* sprite_frame_new(const char* key)
 {
-     struct sprite_frame* f = STRUCT_NEW(sprite_frame);
+    struct sprite_frame* f = STRUCT_NEW(sprite_frame);
     memset(f, 0, sizeof(struct sprite_frame));
     
     size_t len = strlen(key);
@@ -263,6 +332,13 @@ void sprite_frame_init_uv(struct sprite_frame* self,
     self->uv.v = 1.0f - (frame_rect->y + frame_rect->height) / texture_height; // left corner is (0, 0)
     self->uv.w = frame_rect->width / texture_width;
     self->uv.h = frame_rect->height / texture_height;
+}
+
+void sprite_frame_init_subuv(struct sprite_frame* self, struct sprite_frame* parent)
+{
+    int tex_width = parent->frame_rect.width / parent->uv.w;
+    int tex_height = parent->frame_rect.height / parent->uv.h;
+    sprite_frame_init_uv(self, tex_width, tex_height);
 }
 
 void sprite_frame_tostring(struct sprite_frame* self, char* buff)
@@ -481,6 +557,85 @@ struct sprite* sprite_new_rect(struct rect* rect,
     return s;
 }
 
+static
+struct sprite*
+sprite_newscale9_item(
+    struct sprite* self,
+    int x, int y, int width, int height,
+    int tex_width, int tex_height,
+    GLuint tex_id,
+    const char* tag
+)
+{
+    struct sprite_frame* frame = sprite_frame_new("");
+    frame->frame_rect.x = x;
+    frame->frame_rect.y = y;
+    frame->frame_rect.width = width;
+    frame->frame_rect.height = height;
+    
+    frame->source_rect = frame->frame_rect;
+    
+    frame->source_size.width = width;
+    frame->source_size.height = height;
+    
+    frame->tex_id = tex_id;
+    
+    sprite_frame_init_uv(frame, tex_width, tex_height);
+    frame->__initialized = true;
+    
+    struct sprite* s = sprite_new(frame);
+    sprite_set_anchor(s, 0, 1);
+    sprite_add_child(self, s, 0);
+    return s;
+}
+
+struct sprite*
+sprite_newscale9(struct sprite_frame* frame, struct rect* inset)
+{
+    int t_width = frame->frame_rect.width / frame->uv.w;
+    int t_height = frame->frame_rect.height / frame->uv.h;
+    
+    int width = frame->source_size.width;
+    int height = frame->source_size.height;
+    
+    struct rect rect = {0, 0, width, height};
+    struct sprite* s = sprite_new_container(&rect);
+    sprite_set_anchor(s, 0.5f, 0.5f);
+    s->type = SPRITE_TYPE_SCALE9;
+    
+    int x = frame->frame_rect.x;
+    int y = frame->frame_rect.y;
+    
+    int l = inset->x;
+    int c = inset->width;
+    int r = width - (inset->x + inset->width);
+    int p = l + c;
+    
+    int t = inset->y;
+    int m = inset->height;
+    int b = height - (inset->y + inset->height);
+    int q = t + m;
+    
+    GLuint tex_id = frame->tex_id;
+    struct scale9_data* data = &(s->__expand.scale9_data);
+    data->frame = frame;
+    data->inset = *inset;
+    
+    data->tl = sprite_newscale9_item(s, x+0, y+0, l, t, t_width, t_height, tex_id, "tlf");
+    data->tc = sprite_newscale9_item(s, x+l, y+0, c, t, t_width, t_height, tex_id, "tcf");
+    data->tr = sprite_newscale9_item(s, x+p, y+0, r, t, t_width, t_height, tex_id, "trf");
+    
+    data->ml = sprite_newscale9_item(s, x+0, y+t, l, m, t_width, t_height, tex_id, "mlf");
+    data->mc = sprite_newscale9_item(s, x+l, y+t, c, m, t_width, t_height, tex_id, "mcf");
+    data->mr = sprite_newscale9_item(s, x+p, y+t, r, m, t_width, t_height, tex_id, "mrf");
+    
+    data->bl = sprite_newscale9_item(s, x+0, y+q, l, b, t_width, t_height, tex_id, "blf");
+    data->bc = sprite_newscale9_item(s, x+l, y+q, c, b, t_width, t_height, tex_id, "bcf");
+    data->br = sprite_newscale9_item(s, x+p, y+q, r, b, t_width, t_height, tex_id, "brf");
+    
+    return s;
+}
+
 void sprite_free(struct sprite* self)
 {
     switch (self->type) {
@@ -506,12 +661,39 @@ void sprite_free(struct sprite* self)
             }
             break;
         }
-
+            
         case SPRITE_TYPE_PRIMITVE:
         {
             if (self->__expand.primitive_data.primitive_vertex) {
                 s_free(self->__expand.primitive_data.primitive_vertex);
             }
+            break;
+        }
+            
+        case SPRITE_TYPE_SCALE9:
+        {
+            struct scale9_data* data = &(self->__expand.scale9_data);
+            s_free(data->tl->__expand.sprite_data.frame);
+            data->tl->__expand.sprite_data.frame = NULL;
+            s_free(data->tc->__expand.sprite_data.frame);
+            data->tc->__expand.sprite_data.frame = NULL;
+            s_free(data->tr->__expand.sprite_data.frame);
+            data->tr->__expand.sprite_data.frame = NULL;
+            
+            s_free(data->ml->__expand.sprite_data.frame);
+            data->ml->__expand.sprite_data.frame = NULL;
+            s_free(data->mc->__expand.sprite_data.frame);
+            data->mc->__expand.sprite_data.frame = NULL;
+            s_free(data->mr->__expand.sprite_data.frame);
+            data->mr->__expand.sprite_data.frame = NULL;
+            
+            s_free(data->bl->__expand.sprite_data.frame);
+            data->bl->__expand.sprite_data.frame = NULL;
+            s_free(data->bc->__expand.sprite_data.frame);
+            data->bc->__expand.sprite_data.frame = NULL;
+            s_free(data->br->__expand.sprite_data.frame);
+            data->br->__expand.sprite_data.frame = NULL;
+            
             break;
         }
 

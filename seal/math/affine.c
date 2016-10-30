@@ -84,11 +84,11 @@ void af_concat(struct affine* m1, struct affine* m2)
 {
     float a = m1->a*m2->a + m1->b*m2->c;
     float b = m1->a*m2->b + m1->b*m2->d;
-    float x = m1->a*m2->x + m1->b*m2->y + m1->x;
+    float x = m1->x*m2->a + m1->y*m2->c + m2->x;
     
     float c = m1->c*m2->a + m1->d*m2->c;
     float d = m1->c*m2->b + m1->d*m2->d;
-    float y = m1->c*m2->x + m1->d*m2->y + m1->y;
+    float y = m1->x*m2->b + m1->y*m2->d + m2->y;
     
     m1->a = a;
     m1->b = b;
