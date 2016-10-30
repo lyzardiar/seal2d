@@ -1,6 +1,9 @@
 #include "timer.h"
 
+#ifdef WIN32
+#else
 #include <sys/time.h>
+#endif
 long gettime() {
     struct timeval time;
     gettimeofday(&time, NULL);
