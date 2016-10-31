@@ -123,7 +123,11 @@ struct bmfont* bmfont_new(const char* bmfont_data)
                     c->letter[0] = ' ';
                     c->letter[1] = 0;
                 } else {
-                    c->letter[strlen(c->letter) - 1] = 0;
+                    int len = strlen(c->letter);
+#ifdef WIN32
+                    if (c->letter[len - 1] == '\r') len--;
+#endif
+                    c->letter[len - 1] = 0;
                 }
                 
                 hashmapPut(characters, c->letter, c);
