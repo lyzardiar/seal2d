@@ -22,6 +22,22 @@ local function pmain()
         for _, path in ipairs(script_search_path) do
             package.path = package.path .. ";" .. root .. "/" .. path
         end
+    elseif plat == 'win' then
+        local script_search_path = {
+            "?.lua",
+            "../../scripts/?.lua",
+            "../../../../luasrc/?.lua",
+            "../../../../luasrc/seal/?.lua",
+            "../../../../luasrc/thirdparty/socket/?.lua",
+            "../../../../luasrc/thirdparty/cov/?.lua;",
+            "../../../../luasrc/thirdparty/luaunit/?.lua;",
+            "../../res/?.lua",
+        }
+        local root = platform.get_sandbox_root_path()
+        print("win root path is ", root)
+        for _, path in ipairs(script_search_path) do
+            package.path = package.path .. ";" .. root .. path
+        end
     else
         assert(false, "other platform should write the load function.")
     end

@@ -246,10 +246,26 @@ void seal_load_string(const char* script_data)
 void seal_load_file(const char* script_path)
 {
 #ifdef PLAT_DESKTOP
-    if(luaL_dofile(GAME->lstate, script_path)) {
-        fprintf(stderr, "run start script Failed. %s \n",
-                lua_tostring(GAME->lstate, -1));
+    const char* buff = fs_reads(script_path);
+
+    if (luaL_loadbuffer(GAME->lstate, buff, strlen(buff), script_path)) {
+        fprintf(stderr, "load start script Failed. %s \n",
+            lua_tostring(GAME->lstate, -1));
+        lua_pop(GAME->lstate, 1);
     }
+    else {
+        if (lua_pcall(GAME->lstate, 0, LUA_MULTRET, 0)) {
+            fprintf(stderr, "run start script Failed. %s \n",
+                lua_tostring(GAME->lstate, -1));
+        }
+    }    
+
+    seal_free(buff);
+
+    //if(luaL_dofile(GAME->lstate, script_path)) {
+    //    fprintf(stderr, "run start script Failed. %s \n",
+    //            lua_tostring(GAME->lstate, -1));
+    //}
 #endif
 
 #ifdef PLAT_IOS

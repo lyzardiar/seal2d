@@ -47,7 +47,7 @@ int lplatform_get_platform(lua_State* L)
 #elif PLAT_IOS
     lua_pushstring(L, "ios");
 #elif PLAT_WIN
-    lua_pushstring(L, "win32");
+    lua_pushstring(L, "win");
 #endif
     return 1;
 }
