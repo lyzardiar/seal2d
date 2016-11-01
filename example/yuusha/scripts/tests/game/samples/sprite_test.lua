@@ -147,24 +147,10 @@ local function load_zorder(self)
 end
 
 local function load_scale9(self)
+    local s2 = sprite.new_scale9("ui.png", "scale9_example.png")
+    s2:set_pos(WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
 
-    local s2 = sprite.new("ui.png", "smile_middle.png")
-    s2:set_pos(WINDOW_WIDTH/4, WINDOW_HEIGHT/2)
-    s2:set_bbox_visible(true)
-    self:add_child(s2)
-
-    -- local s2 = sprite.new("ui.png", "smile_middle.png")
-    -- s2:set_pos(WINDOW_WIDTH/4, WINDOW_HEIGHT/2)
-    -- s2:set_bbox_visible(true)
-    -- s2:set_scale(0.5)
-    -- self:add_child(s2)
-
-    local __frame = sprite_frame.get("ui.png", "smile_middle.png")
-    local s2 = sprite.new_scale9(__frame, { x=20, y = 20, w = 20, h = 20 })
-    s2:set_pos(WINDOW_WIDTH/4 + 200, WINDOW_HEIGHT/2)
-
-    s2:set_color(255, 0, 0, 255)
-
+    -- s2:set_color(255, 0, 0, 255)
     s2:set_size(200, 200)
 
     self:add_child(s2)

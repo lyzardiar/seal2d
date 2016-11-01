@@ -8,6 +8,14 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":26,"h":50},
 	"sourceSize": {"w":26,"h":50}
 },
+"scale9_example.png":
+{
+	"frame": {"x":2,"y":308,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
 "smile_middle.png":
 {
 	"frame": {"x":104,"y":206,"w":100,"h":100},
@@ -63,6 +71,6 @@
 	"format": "RGBA8888",
 	"size": {"w":256,"h":512},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:5d4901ef5306f0ddd5d1047726b51a20:1/1$"
+	"smartupdate": "$TexturePacker:SmartUpdate:b97b5a43c42dc92801f65cc639ad6a2c:1/1$"
 }
 }

@@ -74,10 +74,16 @@ function sprite.new_clip(...)
     return self
 end
 
-function sprite.new_scale9(frame, rect)
+function sprite.new_scale9(texture_name, frame_name, rect)
     local self = {}
     setmetatable(self, meta)
-    self.__cobj = core.new_scale9(frame, rect)
+    local frame = sprite_frame.get(texture_name, frame_name)
+    local r = rect
+    if not r then -- estimate the rect if not provied.
+        local w, h = core.get_sprite_frame_size(frame)
+        r = {x = w/2, y = h/2, w = w/10, h = h/10}
+    end
+    self.__cobj = core.new_scale9(frame, r)
     return self
 end
 

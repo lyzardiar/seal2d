@@ -99,6 +99,13 @@ int lsprite_set_texture_id(lua_State* L)
     return 0;
 }
 
+int lsprite_frame_size(lua_State* L)
+{
+    struct sprite_frame* self = lua_touserdata(L, 1);
+    lua_pushinteger(L, self->frame_rect.width);
+    lua_pushinteger(L, self->frame_rect.height);
+    return 2;
+}
 
 int lsprite_new(lua_State* L)
 {
@@ -469,6 +476,7 @@ int luaopen_seal_sprite(lua_State* L)
         { "load_sprite_frame", lsprite_load_spriteframe },
         { "unload_sprite_frame", lsprite_unload_spriteframe },
         { "set_frame_texture_id", lsprite_set_texture_id },
+        { "get_sprite_frame_size", lsprite_frame_size},
 
         { "new", lsprite_new },
         { "new_label", lsprite_new_label },
