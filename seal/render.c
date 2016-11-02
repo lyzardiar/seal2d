@@ -11,6 +11,7 @@
 #include "shader.h"
 #include "camera.h"
 
+EXTERN_GAME;
 #define RENDER_INVALID (-1)
 
 extern void sprite_render_func_init(struct render* R);
@@ -54,6 +55,7 @@ struct render* render_new()
 {
     struct render* r = STRUCT_NEW(render);
     r->last = r->current = RENDER_INVALID;
+    r->masks = 0;
 
     sprite_render_func_init(r);
     primitive_render_func_init(r);
@@ -85,6 +87,34 @@ void render_set_mvp(GLuint program, float* mat)
     glUniformMatrix4fv(projection, 1, GL_FALSE, mat);
 }
 
+void render_set_scissors(struct render* self, int x, int y, int width, int height)
+{
+    s_assert(width > 0 && height > 0);
+
+    self->scissors.x = x;
+    self->scissors.y = y;
+    self->scissors.width = width;
+    self->scissors.height = height;
+
+    self->masks |= RENDER_MASK_SCISSORS;
+}
+
+void render_scissors_test(struct render* self)
+{
+    if (self->masks & RENDER_MASK_SCISSORS) {
+        glEnable(GL_SCISSOR_TEST);
+        glScissor(self->scissors.x, self->scissors.y,
+                  self->scissors.width, self->scissors.height);
+    }
+}
+
+void render_clean_scissors(struct render* self)
+{
+    glDisable(GL_SCISSOR_TEST);
+    glScissor(0, 0, GAME->config.window_width, GAME->config.window_height);
+    self->masks &= (~RENDER_MASK_SCISSORS);
+}
+
 void render_clear(struct render* self, color c)
 {
     float r = ((c >> 24) & 0xff) / 255.0;
@@ -93,7 +123,7 @@ void render_clear(struct render* self, color c)
     float a = ((c      ) & 0xff) / 255.0;
 
     glClearColor(r, g, b, a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

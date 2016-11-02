@@ -480,11 +480,11 @@ struct sprite* sprite_new_clip(struct rect* r)
     struct sprite* s = STRUCT_NEW(sprite);
     s->type = SPRITE_TYPE_CLIP;
     
-//    sprite_init(s, r->width, r->height);
-//    sprite_set_glyph(s, r, NULL, 0);
-//    
-//    s->x = r->x;
-//    s->y = r->y;
+    sprite_init(s, SPRITE_TYPE_CLIP, r->width, r->height);
+    sprite_set_glyph(s, r, NULL, 0);
+
+    s->x = r->x;
+    s->y = r->y;
     return s;
 }
 
@@ -678,9 +678,9 @@ void sprite_free(struct sprite* self)
 
 void sprite_set_text(struct sprite* self, const char* label)
 {
-    struct bmfont_data* __expaned_data = &self->bmfont_data;
-    char* text = __expaned_data->text;
-    struct bmfont* bmfont = __expaned_data->bmfont;
+    struct bmfont_data* bmfont_data = &self->bmfont_data;
+    char* text = bmfont_data->text;
+    struct bmfont* bmfont = bmfont_data->bmfont;
     if (text && (!strcmp(text, label))) {
         return;
     }
@@ -701,7 +701,7 @@ void sprite_set_text(struct sprite* self, const char* label)
         float x = 0.0f;
         float y = 0.0f;
         
-        int width = __expaned_data->line_width;
+        int width = bmfont_data->line_width;
         int height = bmfont->common.lineHeight;
         bool auto_calc_width = width == 0;
 
@@ -870,6 +870,12 @@ static void sprite_draw_pic(struct sprite* self)
     sprite_render_func_draw(R, self);
 }
 
+static void sprite_draw_clip(struct sprite* self)
+{
+    render_flush(R);
+    render_set_scissors(R, self->x, self->y, self->width, self->height);
+}
+
 static void sprite_draw_spine(struct sprite* self, float dt)
 {
     struct spine_anim* anim = self->spine_data.spine_anim;
@@ -896,6 +902,9 @@ static void sprite_draw(struct sprite* self, float dt)
         case SPRITE_TYPE_PIC:
             sprite_draw_pic(self);
             break;
+        case SPRITE_TYPE_CLIP:
+            sprite_draw_clip(self);
+            break;
         case SPRITE_TYPE_SPINE:
             sprite_draw_spine(self, dt);
             break;
@@ -912,7 +921,20 @@ static void sprite_draw(struct sprite* self, float dt)
 
 static void sprite_after_visit(struct sprite* self)
 {
+    if (!self->visible) {
+        return;
+    }
 
+    switch (self->type) {
+        case SPRITE_TYPE_CLIP:
+        {
+            render_flush(R);
+            render_clean_scissors(R);
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 void sprite_visit(struct sprite* self, float dt)
@@ -937,17 +959,6 @@ void sprite_visit(struct sprite* self, float dt)
 void sprite_draw_label(struct sprite* self)
 {
 
-}
-
-void sprite_draw_clip(struct sprite* self)
-{
-//    struct rect r = {self->world_srt.x, self->world_srt.y, self->width, self->height};
-//    render_set_scissors(R, &r);
-}
-
-void sprite_clean_clip(struct sprite* self)
-{
-//    render_clear_scissors(R);
 }
 
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame)

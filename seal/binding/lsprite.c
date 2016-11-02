@@ -234,8 +234,11 @@ int lsprite_new_primitive(lua_State* L) {
 int lsprite_new_clip(lua_State* L)
 {
     struct rect r;
-    check_rect(L, &r);
-    
+    r.x = (int)getfield_i(L, "x");
+    r.y = (int)getfield_i(L, "y");
+    r.width = (int)getfield_i(L, "w");
+    r.height = (int)getfield_i(L, "h");
+
     struct sprite* s = sprite_new_clip(&r);
     lua_pushlightuserdata(L, s);
     return 1;

@@ -141,10 +141,6 @@ void spine_render_func_draw(struct render* R, void* object)
     SET_VERTEX_UV(data[5], uv[2], 1.0 - uv[3]);
 
     for (int i = 0; i < 6; ++i) {
-//        printf("color = %d, %d, %d, %d\n", color[0],
-//               color[1],
-//               color[2],
-//               color[3]);
         SET_VERTEX_COLOR(data[i],
                          color[0], color[1],
                          color[2], color[3]);
@@ -180,6 +176,7 @@ void spine_render_func_flush(struct render* R)
     glVertexAttribPointer(loc_color, 4, GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_SIZE, VERTEX_OFFSET_COLOR);
     glVertexAttribPointer(loc_uv, 2, GL_FLOAT, GL_FALSE, VERTEX_SIZE, VERTEX_OFFSET_UV);
 
+    
     int n = render_context_nbatches(&ctx->__super);
     for (int i = 0; i < n; ++i) {
         struct render_batch* b = ctx->__super.batches + i;

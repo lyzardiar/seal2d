@@ -15,6 +15,8 @@
 
 #define INVALID_ATTR_LOCATION (-1)
 
+#define RENDER_MASK_SCISSORS (1 << 0)
+
 struct render;
 
 enum RENDER_TYPE {
@@ -102,6 +104,9 @@ struct render {
     int current;            // current render type.
 
     int drawcall;
+
+    unsigned int masks;
+    struct rect scissors;
 };
 
 struct render* render_new();
@@ -110,6 +115,9 @@ void render_free(struct render* self);
 void* render_get_context(struct render* self, enum RENDER_TYPE type);
 void render_set_object(struct render* self, struct render_object* object);
 void render_set_mvp(GLuint program, float* mat);
+void render_scissors_test(struct render* self);
+void render_set_scissors(struct render* self, int x, int y, int width, int height);
+void render_clean_scissors(struct render* self);
 
 void render_clear(struct render* self, color c);
 void render_switch(struct render* self, enum RENDER_TYPE type);

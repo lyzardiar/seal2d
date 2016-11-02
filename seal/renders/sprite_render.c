@@ -41,10 +41,11 @@ void sprite_render_func_flush(struct render* R)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context->buffer->vibo);
     int n = context->current_batch_index;
     unsigned long offset = 0;
+    render_scissors_test(R);
     for (int i = 0; i < n; ++i) {
         struct render_batch* b = context->batches + i;
         glBindTexture(GL_TEXTURE_2D, b->tex_id);
-        glDrawElements(GL_TRIANGLES, (b->n_objects)*6, GL_UNSIGNED_SHORT, (void*)offset);//);
+        glDrawElements(GL_TRIANGLES, (b->n_objects)*6, GL_UNSIGNED_SHORT, (void*)offset);
         offset += b->n_objects * 6 * 2;
         sprite_render_batch_reset(b);
         R->drawcall++;

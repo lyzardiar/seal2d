@@ -64,6 +64,29 @@ local function load_anim(self)
     self:add_child(s)
 end
 
+local function load_clip(self)
+    local clip = sprite.new_clip({ x = 100, y = 100, w = 400, h = 200})
+    clip:set_anchor(0, 0)
+    -- clip:set_bbox_visible(true)
+    self:add_child(clip)
+
+    local cases = {
+        { x = 0, y = 0 }, --left bottom corner
+        { x = 350, y = 0 }, -- see half face on the right
+        { x = 0, y = 200}, -- we can't see this
+        { x = 200, y = 100}, -- we can see one in the center
+        { x = 350, y = 150}
+    }
+    for i = 1, #cases do
+        local c = cases[i]
+        local s = sprite.new("ui.png", "smile_middle.png") -- size 100x100
+        s:set_pos(c.x, c.y)
+        s:set_anchor(0, 0)
+        -- s:set_bbox_visible(true)
+        clip:add_child(s)
+    end
+end
+
 local function load_glyph(self)
     local s = sprite.new("ui.png", "smile_middle.png")
     s:set_pos(1, 200)
@@ -172,6 +195,7 @@ local test_cases = {
     {name = "srt test", load_func = load_srt},
     {name = "anchor test", load_func = load_anchor},
     {name = "animation test", load_func = load_anim},
+    {name = "clip test", load_func = load_clip},
     {name = "spine test", load_func = load_spine },
     {name = "glyph test", load_func = load_glyph },
     {name = "zorder test", load_func = load_zorder},
