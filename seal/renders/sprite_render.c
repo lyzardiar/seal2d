@@ -92,13 +92,13 @@ void sprite_render_func_draw(struct render* R, void* object)
     struct vertex_buffer* buffer = context->buffer;
     int offset = buffer->offset;
     struct vertex* data = buffer->data + offset;
-    struct glyph* glyph = &sprite->__expand.sprite_data.glyph;
+    struct glyph* glyph = &sprite->sprite_data.glyph;
     data[0] = glyph->tr;
     data[1] = glyph->tl;
     data[2] = glyph->bl;
     data[3] = glyph->br;
 
-    int new_tex_id = sprite->__expand.sprite_data.frame->tex_id;
+    int new_tex_id = sprite->sprite_data.frame->tex_id;
 
     struct render_batch* cur_batch = context->current_batch;
     if (new_tex_id == cur_batch->tex_id) {

@@ -147,13 +147,13 @@ struct sprite {
 
     // specific sprite data
     enum sprite_type type;
-    union sprite_expand {
+    union {
         struct sprite_data sprite_data;
         struct primitive_data primitive_data;
         struct bmfont_data bmfont_data;
         struct spine_data spine_data;
         struct scale9_data scale9_data;
-    } __expand;
+    };
 };
 
 void sprite_init_render(struct render* render);
