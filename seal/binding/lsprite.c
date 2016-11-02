@@ -251,7 +251,7 @@ int lsprite_new_scale9(lua_State* L)
     r.width = (int)getfield_i(L, "w");
     r.height = (int)getfield_i(L, "h");
     
-    struct sprite* sprite = sprite_newscale9(frame, &r);
+    struct sprite* sprite = sprite_new_scale9(frame, &r);
     lua_pushlightuserdata(L, sprite);
     return 1;
 }

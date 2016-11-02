@@ -166,7 +166,7 @@ struct sprite* sprite_new_spine(const char* atlas_path, const char* spine_data_p
 struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* vertex, float width, color line_color);
 struct sprite* sprite_new_rect(struct rect* r, unsigned int rect_flag, color fill_color, color outline_color);
-struct sprite* sprite_newscale9(struct sprite_frame* frame, struct rect* r);
+struct sprite* sprite_new_scale9(struct sprite_frame* frame, struct rect* r);
 
 void sprite_free(struct sprite* self);
 

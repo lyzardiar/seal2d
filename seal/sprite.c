@@ -551,15 +551,12 @@ struct sprite* sprite_new_rect(struct rect* rect,
     return s;
 }
 
-static
-struct sprite*
-sprite_newscale9_item(
-    struct sprite* self,
-    int x, int y, int width, int height,
-    int tex_width, int tex_height,
-    GLuint tex_id,
-    const char* tag
-)
+static struct sprite* sprite_new_scale9_item(struct sprite* self,
+                                             int x, int y,
+                                             int width, int height,
+                                             int tex_width, int tex_height,
+                                             GLuint tex_id,
+                                             const char* tag)
 {
     struct sprite_frame* frame = sprite_frame_new("");
     frame->frame_rect.x = x;
@@ -583,8 +580,7 @@ sprite_newscale9_item(
     return s;
 }
 
-struct sprite*
-sprite_newscale9(struct sprite_frame* frame, struct rect* inset)
+struct sprite* sprite_new_scale9(struct sprite_frame* frame, struct rect* inset)
 {
     int t_width = frame->frame_rect.width / frame->uv.w;
     int t_height = frame->frame_rect.height / frame->uv.h;
@@ -615,17 +611,17 @@ sprite_newscale9(struct sprite_frame* frame, struct rect* inset)
     data->frame = frame;
     data->inset = *inset;
     
-    data->tl = sprite_newscale9_item(s, x+0, y+0, l, t, t_width, t_height, tex_id, "tlf");
-    data->tc = sprite_newscale9_item(s, x+l, y+0, c, t, t_width, t_height, tex_id, "tcf");
-    data->tr = sprite_newscale9_item(s, x+p, y+0, r, t, t_width, t_height, tex_id, "trf");
+    data->tl = sprite_new_scale9_item(s, x+0, y+0, l, t, t_width, t_height, tex_id, "tlf");
+    data->tc = sprite_new_scale9_item(s, x+l, y+0, c, t, t_width, t_height, tex_id, "tcf");
+    data->tr = sprite_new_scale9_item(s, x+p, y+0, r, t, t_width, t_height, tex_id, "trf");
     
-    data->ml = sprite_newscale9_item(s, x+0, y+t, l, m, t_width, t_height, tex_id, "mlf");
-    data->mc = sprite_newscale9_item(s, x+l, y+t, c, m, t_width, t_height, tex_id, "mcf");
-    data->mr = sprite_newscale9_item(s, x+p, y+t, r, m, t_width, t_height, tex_id, "mrf");
+    data->ml = sprite_new_scale9_item(s, x+0, y+t, l, m, t_width, t_height, tex_id, "mlf");
+    data->mc = sprite_new_scale9_item(s, x+l, y+t, c, m, t_width, t_height, tex_id, "mcf");
+    data->mr = sprite_new_scale9_item(s, x+p, y+t, r, m, t_width, t_height, tex_id, "mrf");
     
-    data->bl = sprite_newscale9_item(s, x+0, y+q, l, b, t_width, t_height, tex_id, "blf");
-    data->bc = sprite_newscale9_item(s, x+l, y+q, c, b, t_width, t_height, tex_id, "bcf");
-    data->br = sprite_newscale9_item(s, x+p, y+q, r, b, t_width, t_height, tex_id, "brf");
+    data->bl = sprite_new_scale9_item(s, x+0, y+q, l, b, t_width, t_height, tex_id, "blf");
+    data->bc = sprite_new_scale9_item(s, x+l, y+q, c, b, t_width, t_height, tex_id, "bcf");
+    data->br = sprite_new_scale9_item(s, x+p, y+q, r, b, t_width, t_height, tex_id, "brf");
     
     return s;
 }
