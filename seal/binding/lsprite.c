@@ -99,6 +99,13 @@ int lsprite_set_texture_id(lua_State* L)
     return 0;
 }
 
+int lsprite_frame_size(lua_State* L)
+{
+    struct sprite_frame* self = lua_touserdata(L, 1);
+    lua_pushinteger(L, self->frame_rect.width);
+    lua_pushinteger(L, self->frame_rect.height);
+    return 2;
+}
 
 int lsprite_new(lua_State* L)
 {
@@ -227,8 +234,11 @@ int lsprite_new_primitive(lua_State* L) {
 int lsprite_new_clip(lua_State* L)
 {
     struct rect r;
-    check_rect(L, &r);
-    
+    r.x = (int)getfield_i(L, "x");
+    r.y = (int)getfield_i(L, "y");
+    r.width = (int)getfield_i(L, "w");
+    r.height = (int)getfield_i(L, "h");
+
     struct sprite* s = sprite_new_clip(&r);
     lua_pushlightuserdata(L, s);
     return 1;
@@ -244,7 +254,7 @@ int lsprite_new_scale9(lua_State* L)
     r.width = (int)getfield_i(L, "w");
     r.height = (int)getfield_i(L, "h");
     
-    struct sprite* sprite = sprite_newscale9(frame, &r);
+    struct sprite* sprite = sprite_new_scale9(frame, &r);
     lua_pushlightuserdata(L, sprite);
     return 1;
 }
@@ -329,7 +339,7 @@ int lsprite_set_anim_interval(lua_State* L)
 {
     struct sprite* self = __self(L);
     float interval = luaL_checknumber(L, 2);
-    anim_set_interval(self->__expand.sprite_data.anim, interval);
+    anim_set_interval(self->sprite_data.anim, interval);
     return 0;
 }
 
@@ -469,6 +479,7 @@ int luaopen_seal_sprite(lua_State* L)
         { "load_sprite_frame", lsprite_load_spriteframe },
         { "unload_sprite_frame", lsprite_unload_spriteframe },
         { "set_frame_texture_id", lsprite_set_texture_id },
+        { "get_sprite_frame_size", lsprite_frame_size},
 
         { "new", lsprite_new },
         { "new_label", lsprite_new_label },

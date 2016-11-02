@@ -147,13 +147,13 @@ struct sprite {
 
     // specific sprite data
     enum sprite_type type;
-    union sprite_expand {
+    union {
         struct sprite_data sprite_data;
         struct primitive_data primitive_data;
         struct bmfont_data bmfont_data;
         struct spine_data spine_data;
         struct scale9_data scale9_data;
-    } __expand;
+    };
 };
 
 void sprite_init_render(struct render* render);
@@ -166,7 +166,7 @@ struct sprite* sprite_new_spine(const char* atlas_path, const char* spine_data_p
 struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* vertex, float width, color line_color);
 struct sprite* sprite_new_rect(struct rect* r, unsigned int rect_flag, color fill_color, color outline_color);
-struct sprite* sprite_newscale9(struct sprite_frame* frame, struct rect* r);
+struct sprite* sprite_new_scale9(struct sprite_frame* frame, struct rect* r);
 
 void sprite_free(struct sprite* self);
 

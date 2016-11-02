@@ -108,7 +108,7 @@ void primitive_render_func_draw(struct render* R,
     struct sprite* sprite = (struct sprite*) object;
 
     struct primitive_render_batch* cur_batch = context->current_batch;
-    struct primitive_vertex* v = sprite->__expand.primitive_data.primitive_vertex;
+    struct primitive_vertex* v = sprite->primitive_data.primitive_vertex;
     switch (primitive_type) {
         case PRIMITIVE_LINE:
             {
