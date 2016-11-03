@@ -31,8 +31,12 @@
 #include "platform.h"
 
 #if defined PLAT_DESKTOP
-    #include <OpenGL/gl3.h>
 
+#if PLAT_WIN
+#include "GL/glew.h"
+#else
+    #include <OpenGL/gl3.h>
+#endif
 
 #elif defined PLAT_IOS
 

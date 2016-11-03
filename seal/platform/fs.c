@@ -83,7 +83,7 @@ unsigned char* fs_read(const char* path, size_t* size, int extra_byte)
         assert(0);
     }
     size_t len = stat_buf.st_size;
-    char* buff = seal_malloc(len + 1);
+    char* buff = seal_malloc(len + 1, __FILE__, __LINE__);
     size_t rs = fread(buff, 1, len, fp);
     buff[len] = 0;
     fclose(fp);

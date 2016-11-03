@@ -30,8 +30,9 @@
 #include "seal_base.h"
 
 // Header dependenceis here
+#include "platform/render_opengl.h"
+#include "math/geo.h"
 
-// #include "math/geo.h"
 // #include "shader.h"
 // #include "sprite.h"
 
@@ -52,6 +53,7 @@ enum RENDER_TYPE {
     RENDER_TYPE_SPRITE = 0,
     RENDER_TYPE_PRIMITIVE,
     RENDER_TYPE_SPINE,
+    RENDER_TYPE_MESH,
 
     RENDER_MAX,
 };

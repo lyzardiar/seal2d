@@ -56,9 +56,9 @@ int lplatform_print_hook(lua_State* L)
     #if defined (SDK_DEBUG_LOG)
         // use #ifdef to prevent -wunsed
         const char    * msg     = lua_tostring(L, 1);
+        LOGP_LUA("%s", msg);
     #endif
 
-        LOGP_LUA ("%s", msg);
         // printf("[LUA]: %s\n", msg);
         return 1;
 }

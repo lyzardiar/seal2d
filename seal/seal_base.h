@@ -37,8 +37,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <unistd.h>
-#include <sys/time.h>
 #include <sys/stat.h>
 
 // WC: Hardcoding is preferred to keep cross-platform compatibilithy
@@ -54,6 +52,10 @@
 #include <android/asset_manager_jni.h>
 #endif
 
+#ifndef _WIN32
+#include <unistd.h>
+#include <sys/time.h>
+#endif
 
 #endif
 
