@@ -6,8 +6,7 @@
 //  Copyright © 2016年 levelmax. All rights reserved.
 //
 
-#include "sprite_render.h"
-#include "camera.h"
+#include "../seal.h"
 
 EXTERN_GAME;
 

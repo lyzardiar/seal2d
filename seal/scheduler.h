@@ -1,6 +1,11 @@
 #ifndef scheduler_h
 #define scheduler_h
 
+#include "seal_base.h"
+
+// WC - todo fix
+
+
 struct Hashmap;
 struct array;
 struct action;

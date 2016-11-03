@@ -44,8 +44,10 @@ int fs_exists(const char* filename)
     return 1;
 }
 
+
 const char* fs_full_path(const char* filename)
 {
+#if defined (SEAL_USE_FSWRITE)
     static char* full_path[256] = { 0 };
 
     // todo: should cache full path
@@ -63,15 +65,22 @@ const char* fs_full_path(const char* filename)
         }
     }
     return filename;
+#endif
+    return NULL;
+
 }
 
 const char* fs_sandbox_root_path()
 {
+#if defined (SEAL_USE_FSWRITE)
     return fs_get_write_path();
+#endif
+    return NULL;
 }
 
 unsigned char* fs_read(const char* path, size_t* size, int extra_byte)
 {
+#if defined (SEAL_USE_FSWRITE)
     const char* full_path = fs_full_path(path);
 
     FILE* fp = fopen(full_path, "rb");
@@ -83,7 +92,7 @@ unsigned char* fs_read(const char* path, size_t* size, int extra_byte)
         assert(0);
     }
     size_t len = stat_buf.st_size;
-    char* buff = seal_malloc(len + 1);
+    char* buff = malloc (len + 1);
     size_t rs = fread(buff, 1, len, fp);
     buff[len] = 0;
     fclose(fp);
@@ -92,6 +101,8 @@ unsigned char* fs_read(const char* path, size_t* size, int extra_byte)
         *size = rs;
     }
     return buff;
+#endif
+    return NULL;
 }
 
 char* fs_reads(const char* path)
@@ -99,6 +110,7 @@ char* fs_reads(const char* path)
     return (char*)fs_read(path, NULL, 0);
 }
 
+#if defined (SEAL_USE_FSWRITE)
 size_t fs_writes(const char* path, const char* string)
 {
     return fs_writef(path, string, strlen(string));
@@ -113,7 +125,9 @@ size_t fs_writef(const char* path, const void* data, size_t size)
     fwrite(data, size, 1, fp);
     fclose(fp);
 }
+#endif
 
+#if defined (SEAL_USE_FSWRITE)
 const char* fs_get_write_path()
 {
     if (writable_path[0] == '\0') {
@@ -129,3 +143,4 @@ const char* fs_get_write_path()
 
     return writable_path;
 }
+#endif

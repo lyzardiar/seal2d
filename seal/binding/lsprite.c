@@ -1,14 +1,4 @@
-#include <string.h>
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
-
-#include "lopen.h"
-#include "anim.h"
-#include "sprite.h"
-#include "memory.h"
-#include "util.h"
-#include "lua_handler.h"
+#include "../seal.h"
 
 EXTERN_GAME;
 
@@ -163,6 +153,7 @@ int lsprite_new_container(lua_State* L)
     return 1;
 }
 
+#if defined (SEAL_USE_SPINE)
 int lsprite_new_spine(lua_State* L)
 {
     const char* atlas_path = luaL_checkstring(L, 1);
@@ -174,6 +165,7 @@ int lsprite_new_spine(lua_State* L)
 
     return 1;
 }
+#endif
 
 static int new_line(lua_State* L)
 {
@@ -247,13 +239,13 @@ int lsprite_new_clip(lua_State* L)
 int lsprite_new_scale9(lua_State* L)
 {
     struct sprite_frame* frame = lua_touserdata(L, 1);
-    
+
     struct rect r;
     r.x = (int)getfield_i(L, "x");
     r.y = (int)getfield_i(L, "y");
     r.width = (int)getfield_i(L, "w");
     r.height = (int)getfield_i(L, "h");
-    
+
     struct sprite* sprite = sprite_new_scale9(frame, &r);
     lua_pushlightuserdata(L, sprite);
     return 1;
@@ -324,6 +316,7 @@ int lsprite_set_anim(lua_State* L)
     return 0;
 }
 
+#if defined (SEAL_USE_SPINE)
 int lsprite_set_spine_anim(lua_State* L)
 {
     struct sprite* self = __self(L);
@@ -334,6 +327,8 @@ int lsprite_set_spine_anim(lua_State* L)
     sprite_set_spine_anim(self, anim_name, track, loop);
     return 0;
 }
+#endif
+
 
 int lsprite_set_anim_interval(lua_State* L)
 {
@@ -485,7 +480,9 @@ int luaopen_seal_sprite(lua_State* L)
         { "new_label", lsprite_new_label },
         { "new_bmfont_label", lsprite_new_bmfont_label },
         { "new_container", lsprite_new_container },
+    #if defined (SEAL_USE_SPINE)
         { "new_spine", lsprite_new_spine },
+    #endif
         { "new_primitive", lsprite_new_primitive },
         { "new_clip", lsprite_new_clip },
         { "new_scale9", lsprite_new_scale9 },
@@ -495,7 +492,9 @@ int luaopen_seal_sprite(lua_State* L)
         { "clean_handler", lsprite_clean_handler },
         { "run_action", lsprite_run_action },
         { "set_anim", lsprite_set_anim },
+    #if defined (SEAL_USE_SPINE)
         { "set_spine_anim", lsprite_set_spine_anim },
+    #endif
         { "set_anim_interval", lsprite_set_anim_interval },
         { "set_visible", lsprite_set_visible },
         { "set_pos", lsprite_set_pos },

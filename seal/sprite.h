@@ -1,14 +1,38 @@
+/*
+ * Copyright (C) 2016 Tang Yiyang
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See BELOW for details.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
 #ifndef __seal__sprite__
 #define __seal__sprite__
-#include <stdbool.h>
 
-#include "base/array.h"
+#include "seal_base.h"
 
-#include "math/matrix.h"
+// Header dependencies
+#include "math/affine.h"
 #include "math/geo.h"
 
-#include "texture.h"
-#include "affine.h"
 
 #define FILL_OUTLINE (1)
 #define FILL_SOLID   (1)
@@ -18,7 +42,9 @@ struct render;
 struct touch_event;
 struct array;
 struct bmfont;
+#if defined (SEAL_USE_SPINE)
 struct spine_anim;
+#endif
 struct action;
 
 enum sprite_type {
@@ -28,7 +54,9 @@ enum sprite_type {
     SPRITE_TYPE_PRIMITVE, // contains line, rect, polygon, bezier line
 
     // muti sprite
+#if defined (SEAL_USE_SPINE)
     SPRITE_TYPE_SPINE,
+#endif
     SPRITE_TYPE_BMFONT_LABEL,
     SPRITE_TYPE_MESH,
     SPRITE_TYPE_TILE_MAP,
@@ -100,10 +128,13 @@ struct bmfont_data {
     int line_width;
 };
 
+#if defined (SEAL_USE_SPINE)
 struct spine_data {
     // for spine.
     struct spine_anim* spine_anim;
 };
+#endif
+
 
 struct scale9_data {
     // for scale9
@@ -116,7 +147,7 @@ struct scale9_data {
         };
         struct sprite* sprites[9];
     };
-    
+
     struct sprite_frame* frame;
     struct rect inset;
 };
@@ -151,7 +182,9 @@ struct sprite {
         struct sprite_data sprite_data;
         struct primitive_data primitive_data;
         struct bmfont_data bmfont_data;
+    #if defined (SEAL_USE_SPINE)
         struct spine_data spine_data;
+    #endif
         struct scale9_data scale9_data;
     };
 };
@@ -162,7 +195,9 @@ struct sprite* sprite_new(struct sprite_frame* frame);
 struct sprite* sprite_new_label(const char* label);
 struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path, int line_width);
 struct sprite* sprite_new_container(struct rect* r);
+#if defined (SEAL_USE_SPINE)
 struct sprite* sprite_new_spine(const char* atlas_path, const char* spine_data_path, float scale);
+#endif
 struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* vertex, float width, color line_color);
 struct sprite* sprite_new_rect(struct rect* r, unsigned int rect_flag, color fill_color, color outline_color);
@@ -177,7 +212,9 @@ bool sprite_contains(struct sprite* self, float x, float y);
 void sprite_run_action(struct sprite* self, struct action* action);
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame);
 void sprite_set_anim(struct sprite* self, struct anim* anim);
+#if defined (SEAL_USE_SPINE)
 void sprite_set_spine_anim(struct sprite* self, const char* anim_name, int track, bool loop);
+#endif
 
 // common
 void sprite_set_visible(struct sprite* self, bool visible);

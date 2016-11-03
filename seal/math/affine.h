@@ -1,7 +1,7 @@
 #ifndef __seal__affine__
 #define __seal__affine__
 
-#include "seal.h"
+#include "../seal_base.h"
 
 // [a, b, x]   [X]   [X']
 // [c, d, y] * [Y] = [Y']

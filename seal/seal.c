@@ -1,39 +1,30 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include <math.h>
-#include <float.h>
-#include <stddef.h>
+/*
+ * Copyright (C) 2016 Tang Yiyang
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See BELOW for details.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
-#include "lualib.h"
-#include "lauxlib.h"
 
-#include "math/matrix.h"
 #include "seal.h"
-#include "geo.h"
-#include "window.h"
-#include "shader.h"
-#include "sprite.h"
-#include "bmfont.h"
-#include "camera.h"
-#include "render.h"
-#include "scheduler.h"
-#include "lua_handler.h"
-
-#include "util.h"
-#include "lopen.h"
-#include "ttf_font.h"
-#include "event.h"
-#include "platform/fs.h"
-#include "unzip.h"
-
-#ifdef WIN32
-
-#else 
-#include <sys/time.h>
-#include <unistd.h>
-#endif
 
 extern void luaopen_lua_extensions(lua_State *L);
 extern void nuk_init(void* winctx);
@@ -245,7 +236,7 @@ void seal_load_string(const char* script_data)
 
 void seal_load_file(const char* script_path)
 {
-#ifdef PLAT_DESKTOP
+#if defined PLAT_DESKTOP
     const char* buff = fs_reads(script_path);
 
     if (luaL_loadbuffer(GAME->lstate, buff, strlen(buff), script_path)) {
@@ -258,7 +249,7 @@ void seal_load_file(const char* script_path)
             fprintf(stderr, "run start script Failed. %s \n",
                 lua_tostring(GAME->lstate, -1));
         }
-    }    
+    }
 
     seal_free(buff);
 
@@ -266,12 +257,16 @@ void seal_load_file(const char* script_path)
     //    fprintf(stderr, "run start script Failed. %s \n",
     //            lua_tostring(GAME->lstate, -1));
     //}
-#endif
 
-#ifdef PLAT_IOS
+#elif defined PLAT_IOS
     char* script_file_data = fs_reads(script_path);
     seal_load_string(script_file_data);
     s_free(script_file_data);
+
+#elif defined PLAT_ANDROID
+
+    // WC - TODO
+
 #endif
 
 }
@@ -384,7 +379,7 @@ void seal_draw()
     lua_pushvalue(L, DRAW_FUNC_INDEX);
     seal_call(L, 0, 0);
     lua_settop(L, TOP_FUNC_INDEX);
-    
+
     CHECK_GL_ERROR
 }
 

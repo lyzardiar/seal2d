@@ -1,5 +1,5 @@
-#include "lauxlib.h"
-#include "platform/platform.h"
+#include "../seal.h"
+
 // core engine part
 extern int luaopen_seal_core(lua_State* L);
 extern int luaopen_seal_platform(lua_State* L);
@@ -8,8 +8,10 @@ extern int luaopen_seal_sprite(lua_State* L);
 extern int luaopen_seal_action(lua_State* L);
 
 // third part part.
+#if defined (SEAL_USE_LUASOCKET)
 extern int luaopen_socket_core(lua_State *L);
 extern int luaopen_mime_core(lua_State *L);
+#endif
 extern int luaopen_cjson(lua_State* L);
 extern int luaopen_zlib(lua_State* L);
 
@@ -23,23 +25,23 @@ void stackDump (lua_State *L)
     for (i = 1; i <= top; i++) {  /* repeat for each level */
         int t = lua_type(L, i);
         switch (t) {
-                
+
             case LUA_TSTRING:  /* strings */
                 printf("`%s'", lua_tostring(L, i));
                 break;
-                
+
             case LUA_TBOOLEAN:  /* booleans */
                 printf(lua_toboolean(L, i) ? "true" : "false");
                 break;
-                
+
             case LUA_TNUMBER:  /* numbers */
                 printf("%g", lua_tonumber(L, i));
                 break;
-                
+
             default:  /* other values */
                 printf("%s", lua_typename(L, t));
                 break;
-                
+
         }
         printf("    ");  /* put a separator */
     }
@@ -138,9 +140,11 @@ void luaopen_lua_extensions(lua_State *L)
         { "texure_core", luaopen_seal_texture },
         { "sprite_core", luaopen_seal_sprite },
         { "action_core", luaopen_seal_action },
-        
+
+    #if defined (SEAL_USE_LUASOCKET)
         { "socket.core", luaopen_socket_core },
         { "mime.core", luaopen_mime_core },
+    #endif
         { "cjson", luaopen_cjson },
         { "zlib", luaopen_zlib },
 
@@ -151,7 +155,7 @@ void luaopen_lua_extensions(lua_State *L)
 
         {NULL, NULL}
     };
-    
+
     luaL_Reg* lib = lua_modules;
     lua_getglobal(L, "package");
     lua_getfield(L, -1, "preload");

@@ -1,7 +1,7 @@
 #ifndef __seal__lopen__
 #define __seal__lopen__
 
-#include "lauxlib.h"
+#include "../seal_base.h"
 
 void stackDump (lua_State* L);
 

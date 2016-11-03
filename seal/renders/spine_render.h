@@ -1,7 +1,7 @@
 #ifndef spine_render_h
 #define spine_render_h
 
-#include "render.h"
+#include "../seal_base.h"
 
 struct spine_render_context {
     struct render_context __super;

@@ -1,12 +1,4 @@
-#include "platform/platform.h"
-
-#include "lua.h"
-#include "lauxlib.h"
-#include "memory.h"
-
-#include "lopen.h"
-#include "seal.h"
-#include "lua_handler.h"
+#include "../seal.h"
 
 #ifdef PLAT_DESKTOP
 
@@ -79,14 +71,14 @@ int lnk_begin(lua_State* L)
     struct nk_panel* panel = lua_touserdata(L, 2);
     luaL_checktype(L, 3, LUA_TTABLE);
     lua_pushvalue(L, 3);
-    
+
     struct nk_rect rect = {
         getfield_i(L, "x"),
         getfield_i(L, "y"),
         getfield_i(L, "w"),
         getfield_i(L, "h"),
     };
-    
+
     lua_pop(L, 1);
     uint32_t flags = luaL_checkinteger(L, 4);
 
@@ -130,13 +122,13 @@ int lnk_button_label(lua_State* L)
 
 int lnk_option_label(lua_State* L)
 {
-    
+
     return 1;
 }
 
 int lnk_property_int(lua_State* L)
 {
-    
+
     return 0;
 }
 
@@ -162,9 +154,9 @@ int luaopen_nuklear_core(lua_State* L)
         { "nk_property_int", lnk_property_int },
         { NULL, NULL },
     };
-    
+
     luaL_newlib(L, lib);
-    
+
     return 1;
 }
 #else

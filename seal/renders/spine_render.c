@@ -1,5 +1,4 @@
-#include "spine_render.h"
-#include "camera.h"
+#include "../seal.h"
 
 EXTERN_GAME;
 

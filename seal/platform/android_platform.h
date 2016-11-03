@@ -24,28 +24,19 @@
  */
 
 
-#ifndef __seal__camera__
-#define __seal__camera__
+#ifndef ANDROID_PLATFORM_H
+#define ANDROID_PLATFORM_H
 
-#include "math/matrix.h"
+#include "../seal_base.h"
 
-enum CAMERA_DIRTY_FLAG {
-    TRANSLATE_DIRTY = 1,
-    SCALE_DIRTY = 2,
-};
-struct camera {
-    float x, y;
-    float scale_x, scale_y;
-    float width, height;
-    float scale;
-    struct mat4* camer_mat;
-    int dirty;
-};
-
-struct camera* camera_new(float width, float height);
-void camera_free(struct camera* c);
-
-void camera_pos(struct camera* self, float x, float y);
-void camera_scale(struct camera* self, float sx, float sy);
-void camera_update(struct camera* self);
+#if defined (SDK_DEBUG_LOG)
+#define LOGP(...)       ((void) __android_log_print (ANDROID_LOG_ERROR, "SEAL2D: ", __VA_ARGS__))
+#define LOGP_LUA(...)   ((void) __android_log_print (ANDROID_LOG_ERROR, "SEAL2D(LUA): ", __VA_ARGS__))
+#else
+#define LOGP(...)       /**/
+#define LOGP_LUA(...)   /**/
 #endif
+
+#endif /* ANDROID_PLATFORM_H */
+
+

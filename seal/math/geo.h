@@ -2,7 +2,7 @@
 #define __seal__geo__
 
 #include <stdbool.h>
-#include "platform/render_opengl.h"
+#include "../platform/render_opengl.h"
 
 typedef unsigned long color;
 
@@ -67,6 +67,8 @@ struct glyph {
     struct vertex bl;
     struct vertex tr;
     struct vertex br;
+
+    GLuint tex_id;
 };
 
 struct rect {
