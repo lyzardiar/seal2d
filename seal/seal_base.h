@@ -39,9 +39,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <sys/time.h>
-
-
-
+#include <sys/stat.h>
 
 // WC: Hardcoding is preferred to keep cross-platform compatibilithy
 // Different platforms has very different ways of specifying compiler flags such as -I
@@ -50,6 +48,11 @@
 #include "../libs/lua-zlib/unzip.h"
 #include "../libs/nanovg/src/nanovg.h"
 #include "../libs/spine/include/spine/spine.h"  // 这个项目的头文件用的是相对目录，加上-I ...
+
+#if defined (__ANDROID__)
+#include <android/log.h>
+#include <android/asset_manager_jni.h>
+#endif
 
 
 #endif

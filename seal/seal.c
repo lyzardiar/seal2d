@@ -236,7 +236,7 @@ void seal_load_string(const char* script_data)
 
 void seal_load_file(const char* script_path)
 {
-#ifdef PLAT_DESKTOP
+#if defined PLAT_DESKTOP
     const char* buff = fs_reads(script_path);
 
     if (luaL_loadbuffer(GAME->lstate, buff, strlen(buff), script_path)) {
@@ -249,7 +249,7 @@ void seal_load_file(const char* script_path)
             fprintf(stderr, "run start script Failed. %s \n",
                 lua_tostring(GAME->lstate, -1));
         }
-    }    
+    }
 
     seal_free(buff);
 
@@ -257,12 +257,16 @@ void seal_load_file(const char* script_path)
     //    fprintf(stderr, "run start script Failed. %s \n",
     //            lua_tostring(GAME->lstate, -1));
     //}
-#endif
 
-#ifdef PLAT_IOS
+#elif defined PLAT_IOS
     char* script_file_data = fs_reads(script_path);
     seal_load_string(script_file_data);
     s_free(script_file_data);
+
+#elif defined PLAT_ANDROID
+
+    // WC - TODO
+
 #endif
 
 }

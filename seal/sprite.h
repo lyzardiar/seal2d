@@ -42,7 +42,9 @@ struct render;
 struct touch_event;
 struct array;
 struct bmfont;
+#if defined (SEAL_USE_SPINE)
 struct spine_anim;
+#endif
 struct action;
 
 enum sprite_type {
@@ -52,7 +54,9 @@ enum sprite_type {
     SPRITE_TYPE_PRIMITVE, // contains line, rect, polygon, bezier line
 
     // muti sprite
+#if defined (SEAL_USE_SPINE)
     SPRITE_TYPE_SPINE,
+#endif
     SPRITE_TYPE_BMFONT_LABEL,
     SPRITE_TYPE_MESH,
     SPRITE_TYPE_TILE_MAP,
@@ -124,10 +128,13 @@ struct bmfont_data {
     int line_width;
 };
 
+#if defined (SEAL_USE_SPINE)
 struct spine_data {
     // for spine.
     struct spine_anim* spine_anim;
 };
+#endif
+
 
 struct scale9_data {
     // for scale9
@@ -140,7 +147,7 @@ struct scale9_data {
         };
         struct sprite* sprites[9];
     };
-    
+
     struct sprite_frame* frame;
     struct rect inset;
 };
@@ -175,7 +182,9 @@ struct sprite {
         struct sprite_data sprite_data;
         struct primitive_data primitive_data;
         struct bmfont_data bmfont_data;
+    #if defined (SEAL_USE_SPINE)
         struct spine_data spine_data;
+    #endif
         struct scale9_data scale9_data;
     };
 };
@@ -186,7 +195,9 @@ struct sprite* sprite_new(struct sprite_frame* frame);
 struct sprite* sprite_new_label(const char* label);
 struct sprite* sprite_new_bmfont_label(const char* label, const char* fnt_path, int line_width);
 struct sprite* sprite_new_container(struct rect* r);
+#if defined (SEAL_USE_SPINE)
 struct sprite* sprite_new_spine(const char* atlas_path, const char* spine_data_path, float scale);
+#endif
 struct sprite* sprite_new_clip(struct rect* r);
 struct sprite* sprite_new_line(float* vertex, float width, color line_color);
 struct sprite* sprite_new_rect(struct rect* r, unsigned int rect_flag, color fill_color, color outline_color);
@@ -201,7 +212,9 @@ bool sprite_contains(struct sprite* self, float x, float y);
 void sprite_run_action(struct sprite* self, struct action* action);
 void sprite_set_sprite_frame(struct sprite* self, struct sprite_frame* frame);
 void sprite_set_anim(struct sprite* self, struct anim* anim);
+#if defined (SEAL_USE_SPINE)
 void sprite_set_spine_anim(struct sprite* self, const char* anim_name, int track, bool loop);
+#endif
 
 // common
 void sprite_set_visible(struct sprite* self, bool visible);

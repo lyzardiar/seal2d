@@ -27,15 +27,9 @@
 #include "seal.h"
 
 // WC - todo fix
-#include "render.h"
-#include "renders/spine_render.h"
-#include "texture.h"
-#include "platform/fs.h"
-#include "math/geo.h"
-
 #include "spine/spine.h"
-#include "spine_anim.h"
 
+#if defined (SEAL_USE_SPINE)
 EXTERN_GAME;
 
 void _spAtlasPage_createTexture (spAtlasPage* self, const char* path)
@@ -183,3 +177,5 @@ void spine_get_boundingbox(struct spine_anim* self, struct rect* r)
 {
 
 }
+#endif
+

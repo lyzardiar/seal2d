@@ -8,8 +8,10 @@ extern int luaopen_seal_sprite(lua_State* L);
 extern int luaopen_seal_action(lua_State* L);
 
 // third part part.
+#if defined (SEAL_USE_LUASOCKET)
 extern int luaopen_socket_core(lua_State *L);
 extern int luaopen_mime_core(lua_State *L);
+#endif
 extern int luaopen_cjson(lua_State* L);
 extern int luaopen_zlib(lua_State* L);
 
@@ -139,8 +141,10 @@ void luaopen_lua_extensions(lua_State *L)
         { "sprite_core", luaopen_seal_sprite },
         { "action_core", luaopen_seal_action },
 
+    #if defined (SEAL_USE_LUASOCKET)
         { "socket.core", luaopen_socket_core },
         { "mime.core", luaopen_mime_core },
+    #endif
         { "cjson", luaopen_cjson },
         { "zlib", luaopen_zlib },
 

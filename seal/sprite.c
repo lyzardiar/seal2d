@@ -458,6 +458,7 @@ struct sprite* sprite_new_container(struct rect* r)
     return s;
 }
 
+#if defined (SEAL_USE_SPINE)
 struct sprite* sprite_new_spine(const char* atlas_path,
                                 const char* spine_data_path,
                                 float scale)
@@ -474,6 +475,7 @@ struct sprite* sprite_new_spine(const char* atlas_path,
     s->spine_data.spine_anim = spine_anim;
     return s;
 }
+#endif
 
 struct sprite* sprite_new_clip(struct rect* r)
 {
@@ -644,6 +646,7 @@ void sprite_free(struct sprite* self)
             }
         }
 
+    #if defined (SEAL_USE_SPINE)
         case SPRITE_TYPE_SPINE:
         {
             if (self->spine_data.spine_anim) {
@@ -651,6 +654,7 @@ void sprite_free(struct sprite* self)
             }
             break;
         }
+    #endif
 
         case SPRITE_TYPE_PRIMITVE:
         {
@@ -876,6 +880,7 @@ static void sprite_draw_clip(struct sprite* self)
     render_set_scissors(R, self->x, self->y, self->width, self->height);
 }
 
+#if defined (SEAL_USE_SPINE)
 static void sprite_draw_spine(struct sprite* self, float dt)
 {
     struct spine_anim* anim = self->spine_data.spine_anim;
@@ -883,6 +888,7 @@ static void sprite_draw_spine(struct sprite* self, float dt)
     spine_anim_update(anim, dt);
     spine_anim_draw(anim, R, self->world_srt.x, self->world_srt.y);
 }
+#endif
 
 static void sprite_draw_primitive(struct sprite* self)
 {
@@ -905,9 +911,11 @@ static void sprite_draw(struct sprite* self, float dt)
         case SPRITE_TYPE_CLIP:
             sprite_draw_clip(self);
             break;
+    #if defined (SEAL_USE_SPINE)
         case SPRITE_TYPE_SPINE:
             sprite_draw_spine(self, dt);
             break;
+    #endif
         case SPRITE_TYPE_PRIMITVE:
             sprite_draw_primitive(self);
             break;
@@ -988,10 +996,12 @@ void sprite_set_anim(struct sprite* self, struct anim* anim)
     }
 }
 
+#if defined (SEAL_USE_SPINE)
 void sprite_set_spine_anim(struct sprite* self, const char* anim_name, int track, bool loop)
 {
     spine_anim_set_anim(self->spine_data.spine_anim, anim_name, track, loop);
 }
+#endif
 
 void sprite_set_visible(struct sprite* self, bool visible)
 {
