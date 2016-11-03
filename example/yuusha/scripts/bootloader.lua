@@ -58,6 +58,10 @@ local function pmain()
     inject("sprite", require "seal.sprite")
     inject("sprite_frame", require "seal.sprite_frame")
 
+    -- hook print, save the origin print to __print
+    __print = print
+    print = require("platform_core").__print
+
     local game = require "game"
     require("seal.engine").start(game)
 end

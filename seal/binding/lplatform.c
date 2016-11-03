@@ -48,6 +48,14 @@ int lplatform_get_platform(lua_State* L)
     return 1;
 }
 
+
+int lplatform_print_hook(lua_State* L)
+{
+    const char* msg = lua_tostring(L, 1);
+    printf("[LUA]: %s\n", msg);
+    return 1;
+}
+
 int luaopen_seal_platform(lua_State* L)
 {
 #ifdef luaL_checkversion
@@ -59,6 +67,7 @@ int luaopen_seal_platform(lua_State* L)
         { "get_write_path", lplatform_get_write_path},
         { "get_sandbox_root_path", lplatform_get_sandbox_dir},
         { "get_platform", lplatform_get_platform},
+        { "__print", lplatform_print_hook},
         { NULL, NULL },
     };
 

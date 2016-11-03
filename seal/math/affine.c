@@ -1,6 +1,7 @@
 #include <math.h>
 #include <float.h>
 
+#include "memory.h"
 #include "affine.h"
 
 struct affine* af_alloc()
