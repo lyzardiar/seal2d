@@ -1,10 +1,5 @@
 #include "seal.h"
 
-#include "memory.h"
-#include "event.h"
-
-#include "window.h"
-
 EXTERN_GAME;
 #ifdef PLAT_DESKTOP
 struct window* win_alloc()
@@ -35,7 +30,7 @@ void glfw_mouse_button_callback(GLFWwindow* window,
                 GAME->window->is_touch_down = 1;
             }
             break;
-            
+
         case GLFW_RELEASE: {
                 struct touch_event e = {TOUCH_END,
                     GAME->window->cursor_x,
@@ -46,7 +41,7 @@ void glfw_mouse_button_callback(GLFWwindow* window,
                 GAME->window->is_touch_down = 0;
             }
             break;
-            
+
         default:
             break;
     }

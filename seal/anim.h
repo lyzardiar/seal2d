@@ -1,7 +1,10 @@
 #ifndef anim_h
 #define anim_h
 
-#include "array.h"
+#include "seal_base.h"
+
+// WC - todo fix
+#include "base/array.h"
 
 struct sprite_frame;
 

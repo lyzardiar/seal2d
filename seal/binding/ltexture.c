@@ -1,8 +1,4 @@
-#include "lua.h"
-#include "lauxlib.h"
-
-#include "seal.h"
-#include "texture.h"
+#include "../seal.h"
 
 EXTERN_GAME;
 
@@ -10,14 +6,14 @@ int ltexture_cache_load(lua_State* L)
 {
 //TODO:     we have process the only the `image` currently
 //          *****+image [ui.png]
-    
+
 //          +format [RGBA8888]
 //
 //          +size+h [256.0]
 //          |    +w [256.0]
 //          +version [1.0]
 //          +scale [1]
-    
+
     struct texture_cache* cache = GAME->texture_cache;
     const char* file_name = luaL_checkstring(L, -1);
     if (file_name) {
@@ -25,7 +21,7 @@ int ltexture_cache_load(lua_State* L)
         lua_pushinteger(L, tex->id);
         return 1;
     }
-    
+
     return 0;
 }
 
@@ -49,7 +45,7 @@ int luaopen_seal_texture(lua_State* L)
         { "unload_from_cache", ltexture_cache_unload},
         { NULL, NULL },
     };
-    
+
     luaL_newlib(L, lib);
     return 1;
 }

@@ -1,7 +1,7 @@
 #ifndef bmfont_h
 #define bmfont_h
 
-#include <stdio.h>
+#include "seal_base.h"
 
 #ifdef WIN32
 #include <stdint.h>
@@ -28,7 +28,7 @@ struct charc {
 struct bmfont{
     struct info {
 /* we only need the spacing right now */
-        
+
 //        char face[BM_FACE_NAME_LEN];
 //        size_t size;
 //        int bold;
@@ -44,7 +44,7 @@ struct bmfont{
             int y;
         } spacing;
     } info;
-    
+
     struct common {
         int lineHeight;
         int base;
@@ -53,12 +53,12 @@ struct bmfont{
         int pages;
         int packed;
     } common;
-    
+
     struct page {
         int id;
         char file[PAGE_FILE_NAME_LEN];
     }page;
-    
+
     char fnt_file[PAGE_FILE_NAME_LEN];
     struct Hashmap* characters;
 };

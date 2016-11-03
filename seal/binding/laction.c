@@ -1,15 +1,4 @@
-#include "lopen.h"
-
-#include "lua.h"
-#include "lauxlib.h"
-
-#include "seal.h"
-#include "base/array.h"
-
-#include "action.h"
-#include "lua_handler.h"
-
-EXTERN_GAME;
+#include "../seal.h"
 
 int laction_move_to(lua_State* L)
 {

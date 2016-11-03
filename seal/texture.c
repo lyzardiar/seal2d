@@ -1,16 +1,30 @@
-#include <stdio.h>
-#include <stdlib.h>
+/*
+ * Copyright (C) 2016 Tang Yiyang
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See BELOW for details.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
-#include "memory.h"
 
-#include "platform/fs.h"
-#include "image/lodepng.h"
-#include "base/hashmap.h"
-
-#include "util.h"
-#include "shader.h"
-
-#include "texture.h"
+#include "seal.h"
 
 struct bitmap {
     void* data;
@@ -68,7 +82,7 @@ void texture_cache_unload(struct texture_cache* self, const char* key)
         texture_unload(tex);
     } else {
         fprintf(stderr, "texture %s has already been removed", key);
-    }   
+    }
 }
 
 struct texture* texture_load_from_png(const char* file_path)
@@ -77,8 +91,8 @@ struct texture* texture_load_from_png(const char* file_path)
         fprintf(stderr, "texure, texture_load_from_png, file_path is nil?");
         return NULL;
     }
-    
-    // load png data into memory 
+
+    // load png data into memory
     size_t file_size = 0;
     unsigned char* origin_data = fs_read(file_path, &file_size, 0);
 
@@ -86,7 +100,7 @@ struct texture* texture_load_from_png(const char* file_path)
     unsigned int width = 0;
     unsigned int height = 0;
     unsigned int error = 0;
-    
+
     error = lodepng_decode32(&pixel_data,
                              &width, &height,
                              origin_data, file_size);
@@ -95,9 +109,9 @@ struct texture* texture_load_from_png(const char* file_path)
         fprintf(stderr, "error %u: %s\n", error, lodepng_error_text(error));
         return NULL;
     }
-    
+
     struct texture* tex = texture_load_from_mem(pixel_data, width, height, GL_RGBA);
- 
+
     // TODO: third party use the standard malloc, we may replace that with s_malloc some day.
     free(pixel_data);
     return tex;
@@ -115,21 +129,21 @@ struct texture* texture_load_from_mem(const unsigned char* pixel,
     tex->id = 0;
     glGenTextures(1, &tex->id);
     s_assert(tex->id != 0);
-        
+
     glBindTexture(GL_TEXTURE_2D, tex->id);
     glTexImage2D(GL_TEXTURE_2D, 0, mode,
                  width, height,
                  0, mode,
                  GL_UNSIGNED_BYTE, pixel);
-    
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    
+
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glBindTexture(GL_TEXTURE_2D, 0);
-    
+
     tex->width = width;
     tex->height = height;
     tex->ref = 1;
@@ -149,11 +163,11 @@ void texture_append(struct texture* self,
 {
     s_assert(w <= self->width);
     s_assert(h <= self->height);
-    
+
     if (self->row_height == 0) {
         self->row_height = h;
     }
-    
+
     unsigned int new_x = self->cursor_x + w;
     if (new_x >= self->width) {
         self->cursor_y += self->row_height;
@@ -169,9 +183,9 @@ void texture_append(struct texture* self,
                     self->cursor_x, self->cursor_y,
                     w, h, mode,
                     GL_UNSIGNED_BYTE, pixel);
-    
+
     glBindTexture(GL_TEXTURE_2D, 0);
-    
+
     self->cursor_x = new_x % self->width;
 }
 

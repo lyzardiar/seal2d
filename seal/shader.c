@@ -1,14 +1,29 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
+/*
+ * Copyright (C) 2016 Tang Yiyang
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See BELOW for details.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
-#include "platform/render_opengl.h"
-
-#include "shader.h"
-#include "memory.h"
-#include "render.h"
-
-#include "platform/fs.h"
+#include "seal.h"
 
 
 #ifdef PLAT_DESKTOP
@@ -49,7 +64,7 @@ static const char* vs_primitive = STRINGFY(#version 330\n)STRINGFY(\n
     layout(location = 1) in vec4 vertex_color; \n
     out vec4 frag_color;\n
     uniform mat4 mvp;\n
-                                                                   
+
     void main() {\n
        gl_Position.xy = (mvp * vec4(vertex_pos.x, vertex_pos.y, 0.0f, 1.0f)).xy;\n
        gl_Position.z = 0.0;\n
@@ -61,7 +76,7 @@ static const char* vs_primitive = STRINGFY(#version 330\n)STRINGFY(\n
 static const char* fs_primitive = STRINGFY(#version 330\n)STRINGFY(
    in vec4 frag_color;\n
    out vec4 color;\n
-   
+
    void main() {\n
        color = frag_color;\n
    }\n
@@ -129,9 +144,9 @@ static const char* fs_primitive = STRINGFY(\n
 void shader_set_uniform_object(struct shader* self,
                                enum BUILT_IN_UNIFORMS type,
                                float* v)
-{    
+{
     struct uniform_buffer_object* object = &(self->uniform_buffer_objects[type]);
-    
+
     enum UNIFORM_ATTRIBUTE_TYPE attr_type = self->uniforms[type].attr_type;
     switch (attr_type) {
         case UNIFORM_1F:
@@ -170,15 +185,15 @@ static GLuint create_program(GLuint vs, GLuint fs)
     GLuint program = glCreateProgram();
     glAttachShader(program, vs);
     glAttachShader(program, fs);
-    
+
     glLinkProgram(program);
-    
+
     GLint status;
     glGetProgramiv (program, GL_LINK_STATUS, &status);
     if (status == GL_FALSE) {
         GLint infoLogLength;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
-        
+
         GLchar strInfoLog[4096] = "";
         glGetProgramInfoLog(program, infoLogLength, NULL, strInfoLog);
         fprintf(stderr, "Linker failure: %s\n", strInfoLog);
@@ -201,21 +216,21 @@ static GLuint create_shader(GLenum shader_type, const char* shader_data)
     {
         GLint infoLogLength;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
-        
+
         GLchar strInfoLog[4096] = "";
         glGetShaderInfoLog(shader, infoLogLength, NULL, strInfoLog);
-        
+
         const char *strShaderType = NULL;
         switch(shader_type) {
             case GL_VERTEX_SHADER: strShaderType = "vertex"; break;
             case GL_FRAGMENT_SHADER: strShaderType = "fragment"; break;
             default: strShaderType = "unkown"; break;
         }
-        
+
         fprintf(stderr, "Compile failure in %s shader:\n%s\n shader_src = %s",
                 strShaderType, strInfoLog, shader_data);
     }
-    
+
     return shader;
 }
 
@@ -234,7 +249,7 @@ static void shader_load_all(struct shader* self)
         int index = i*2;
         GLuint vs = create_shader(GL_VERTEX_SHADER, shaders[index]);
         GLuint fs = create_shader(GL_FRAGMENT_SHADER, shaders[index+1]);
-        
+
         GLuint program = create_program(vs, fs);
         self->shader_programs[i] = program;
     }
@@ -244,12 +259,12 @@ struct shader* shader_new()
 {
     struct shader* shader = STRUCT_NEW(shader);
     memset(shader->shader_programs, 0, MAX_SHADER*sizeof(GLuint));
-    
+
     shader_load_all(shader);
-    
+
     set_builtin_uniform(shader->uniforms[BUILT_IN_MIX_COLOR],
                         BUILT_IN_MIX_COLOR, UNIFORM_4F, "mix_color");
-    
+
     return shader;
 }
 
@@ -258,14 +273,14 @@ void shader_free(struct shader* self)
     s_free(self);
 }
 
-void shader_set_uniform(struct shader* self, 
-                        GLint program, 
+void shader_set_uniform(struct shader* self,
+                        GLint program,
                         enum BUILT_IN_UNIFORMS type, void* v)
 {
     const char* name = self->uniforms[type].name;
-    
+
     GLint location = glGetUniformLocation(program, name);
-    
+
     switch (self->uniforms[type].attr_type) {
         case UNIFORM_1F:
             glUniform1f(location, ((float*)v)[0]);

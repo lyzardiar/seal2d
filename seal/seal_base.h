@@ -24,28 +24,32 @@
  */
 
 
-#ifndef __seal__camera__
-#define __seal__camera__
+#ifndef __seal_base__
+#define __seal_base__
 
-#include "math/matrix.h"
+// System libs and external dependencies, in ALPHABETICAL ordr
 
-enum CAMERA_DIRTY_FLAG {
-    TRANSLATE_DIRTY = 1,
-    SCALE_DIRTY = 2,
-};
-struct camera {
-    float x, y;
-    float scale_x, scale_y;
-    float width, height;
-    float scale;
-    struct mat4* camer_mat;
-    int dirty;
-};
+#include <assert.h>
+#include <float.h>
+#include <math.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <unistd.h>
+#include <sys/time.h>
 
-struct camera* camera_new(float width, float height);
-void camera_free(struct camera* c);
 
-void camera_pos(struct camera* self, float x, float y);
-void camera_scale(struct camera* self, float sx, float sy);
-void camera_update(struct camera* self);
+
+
+// WC: Hardcoding is preferred to keep cross-platform compatibilithy
+// Different platforms has very different ways of specifying compiler flags such as -I
+#include "../libs/lua-5.3.2/src/lua.h"
+#include "../libs/lua-5.3.2/src/lauxlib.h"
+#include "../libs/lua-zlib/unzip.h"
+#include "../libs/nanovg/src/nanovg.h"
+#include "../libs/spine/include/spine/spine.h"  // 这个项目的头文件用的是相对目录，加上-I ...
+
+
 #endif

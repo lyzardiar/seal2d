@@ -1,8 +1,8 @@
 #ifndef __seal__array__
 #define __seal__array__
 
-#include <stdio.h>
-#include <stdbool.h>
+#include "../seal_base.h"
+
 
 struct array;
 

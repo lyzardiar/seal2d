@@ -44,6 +44,10 @@ int strncasecmp(char *s1, char *s2, register int n);
 #elif __ANDROID__
     #define PLAT_ANDROID (6)
 
+    // WC - 这个头文件不应该在这里。。。。
+    // 最好每个platform一个头文件，比较干净
+    #include <sys/time.h>
+
 #elif __linux__
     #define PLAT_LINUX (7)
 
@@ -61,7 +65,7 @@ int strncasecmp(char *s1, char *s2, register int n);
     #define PLAT_DESKTOP
 #endif
 
-#if defined (PLAT_IOS) || defined (PALT_ANDROID)
+#if defined (PLAT_IOS) || defined (PLAT_ANDROID)
     #define PLAT_MOBILE
 #endif
 

@@ -1,7 +1,7 @@
 #ifndef __seal__action__
 #define __seal__action__
 
-#include "lua_handler.h"
+#include "seal_base.h"
 
 struct sprite;
 struct Hashmap;
