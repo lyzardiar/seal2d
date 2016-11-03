@@ -1,7 +1,10 @@
 #ifndef primitive_render_h
 #define primitive_render_h
 
-#include "render.h"
+#include "../seal_base.h"
+
+// Header dependencies here
+#include "../render.h"
 
 enum primitive_type {
     PRIMITIVE_INVALID = -1,

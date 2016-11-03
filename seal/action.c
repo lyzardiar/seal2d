@@ -1,8 +1,30 @@
-#include <math.h>
+/*
+ * Copyright (C) 2016 Tang Yiyang
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See BELOW for details.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 
 #include "seal.h"
-#include "sprite.h"
-#include "action.h"
 
 void action_interval_init(struct action_interval* self, float duration)
 {
@@ -124,9 +146,25 @@ bool action_update(struct action* self, struct sprite* sprite, float dt)
         return true;
     }
 
-    ACTION_UPDATE_FUNC update_func = action_update_func[self->type];
-    s_assert(update_func);
-    return update_func(self, sprite, dt);
+    switch (self->type) {
+        case ACTION_MOVE_TO:
+            {
+                struct action_move* data = (struct action_move*)self->data;
+                struct action_interval* super = &data->__super;
+
+                if (!action_interval_update(&data->__super, dt)) {
+                    float dx = (data->to_x - data->start_x)*dt/super->duration;
+                    float dy = (data->to_y - data->start_y)*dt/super->duration;
+                    sprite_set_pos(sprite, sprite->x + dx, sprite->y + dy);
+                } else {
+                    action_stop(self);
+                }
+            }
+            break;
+
+        default:
+            break;
+    }
 }
 
 void action_free(struct action* action)
@@ -146,14 +184,18 @@ static struct action* action_new(enum action_type type)
 
 struct action* move_to(float duration, float to_x, float to_y)
 {
-    struct action* move = action_new(ACTION_MOVE_TO);
-    struct action_move* interal = &move->__internal.action_move;
+    struct action* action = action_new(ACTION_MOVE_TO);
 
-    action_interval_init(&(move->__internal.action_move.__super), duration);
-    interal->to_x = to_x;
-    interal->to_y = to_y;
-    interal->from_x = interal->from_y = 0;
-    return move;
+    struct action_move* data = STRUCT_NEW(action_move);
+    data->to_x = to_x;
+    data->to_y = to_y;
+    data->start_x = data->start_y = 0;
+    data->__super.current = 0;
+    data->__super.duration = duration;
+
+    action->data = data;
+
+    return action;
 }
 
 struct action* scale_to(float duration, float to_x, float to_y)

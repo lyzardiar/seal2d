@@ -1,5 +1,4 @@
-#include "primitive_render.h"
-#include "camera.h"
+#include "../seal.h"
 
 EXTERN_GAME;
 
@@ -72,7 +71,7 @@ void primitive_render_func_flush(struct render* R)
                 R->drawcall++;
             }
                 break;
-                
+
             default:
                 break;
         }
@@ -136,6 +135,8 @@ void primitive_render_func_draw(struct render* R,
 
         case PRIMITIVE_RECT:
             {
+                struct primitive_vertex* v = sprite->primitive_vertex;
+
                 // use two triangel to draw the fill rect
 //                if (sprite->rect_flag & FILL_SOLID) {
                     data[0] = v[0];
@@ -179,7 +180,7 @@ void primitive_render_func_init(struct render* R)
     struct primitive_render_context* context = STRUCT_NEW(primitive_render_context);
     glGenVertexArrays(1, &context->vao);
     glBindVertexArray(context->vao);
-    
+
     glGenBuffers(1, &context->vbo);
 
     context->state.program = -1;
@@ -209,6 +210,6 @@ void primitive_render_func_init(struct render* R)
         context
     };
     render_set_object(R, &object);
-    
+
     CHECK_GL_ERROR;
 }

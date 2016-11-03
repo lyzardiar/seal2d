@@ -1,12 +1,4 @@
-#include <stdlib.h>
-#include <string.h>
-
-#include "seal.h"
-#include "memory.h"
-#include "util.h"
-
-#include "array.h"
-#include "sprite.h"
+#include "../seal.h"
 
 typedef void* DATA_TYPE;
 struct array {
@@ -22,11 +14,12 @@ struct array* array_new(int cap) {
     struct array* a = STRUCT_NEW(array);
     a->n = 0;
     a->cap = cap;
-    
+
     a->data = (DATA_TYPE*)s_malloc(sizeof(DATA_TYPE) * (a->cap));
     memset(a->data, 0, a->cap);
     return a;
 }
+
 
 struct array* array_copy(struct array* self) {
     struct array* a = STRUCT_NEW(array);
@@ -36,25 +29,24 @@ struct array* array_copy(struct array* self) {
     a->data = (DATA_TYPE*)s_malloc(sizeof(DATA_TYPE) * (a->cap));
 
     memcpy(a->data, self->data, self->n * sizeof(DATA_TYPE));
-    
-    
+
+
     printf("the origin data is: \n");
     for (int i = 0; i < self->n; ++i) {
         printf("0x%x ", array_at(self, i));
     }
-    
+
     printf("\n the other is :\n");
     for (int i = 0; i < self->n; ++i) {
         printf("0x%x ", array_at(a, i));
     }
-    
-    char info[256] = "";
+
     for (int i = 0; i < self->n; ++i) {
         struct sprite_frame* f = array_at(a, i);
         sprite_frame_tostring(f, (char*)info);
         printf("frame = %s\n", info);
     }
-    
+
     return a;
 }
 
@@ -67,9 +59,9 @@ void array_push_back(struct array* self, void* data) {
     size_t cap = self->cap;
     if(self->n+1 > cap*3/4) {
         cap *= 2;
-        
+
         self->data = (DATA_TYPE*)s_realloc(self->data, sizeof(DATA_TYPE) * cap);
-        
+
         self->cap = cap;
     }
     self->data[self->n++] = data;
@@ -112,14 +104,14 @@ void array_clear(struct array* self, bool cleanup) {
     if (self->n == 0) {
         return;
     }
-    
+
     if (cleanup) {
         for (size_t i = 0; i < self->n; ++i) {
             void* p = array_at(self, i);
             s_free(p);
         }
     }
-    
+
     self->n = 0;
     memset(self->data, 0, self->cap);
 }

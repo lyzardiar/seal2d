@@ -1,8 +1,8 @@
 #ifndef __seal__timer__
 #define __seal__timer__
 
-#include "seal.h"
+#include "../seal_base.h"
 
-long gettime();
+extern long gettime();
 
 #endif

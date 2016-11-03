@@ -1,7 +1,7 @@
 #ifndef __yuusha__matrix__
 #define __yuusha__matrix__
 
-#include "seal.h"
+#include "../seal.h"
 
 struct mat4 {
     float m[16];

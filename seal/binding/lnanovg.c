@@ -1,11 +1,5 @@
-#include "platform/platform.h"
-
-#include "lopen.h"
-#include "lua.h"
-#include "lauxlib.h"
-
-#include "platform/render_opengl.h"
-#include "nanovg.h"
+#include "../seal.h"
+// #include "nanovg.h"
 
 #ifdef PLAT_DESKTOP
     #ifdef __APPLE__

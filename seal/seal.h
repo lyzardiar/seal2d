@@ -1,14 +1,68 @@
+/*
+ * Copyright (C) 2016 Tang Yiyang
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See BELOW for details.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
 #ifndef __seal__seal__
 #define __seal__seal__
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
+
+#include "seal_base.h"
+
+// project headers - in ALPHABETICAL order
+#include "base/array.h"
+#include "base/hashmap.h"
+#include "base/list.h"
+#include "binding/lopen.h"
+#include "image/lodepng.h"
+#include "math/affine.h"
+#include "math/geo.h"
+#include "math/matrix.h"
+#include "platform/fs.h"
 #include "platform/platform.h"
+#include "platform/render_opengl.h"
+#include "platform/timer.h"
+#include "renders/primitive_render.h"
+#include "renders/spine_render.h"
+#include "renders/sprite_render.h"
 
-#include "lua.h"
-
+#include "action.h"
+#include "anim.h"
+#include "bmfont.h"
+#include "camera.h"
+#include "event.h"
+#include "lua_handler.h"
 #include "memory.h"
+#include "render.h"
+#include "scheduler.h"
+#include "shader.h"
+#include "spine_anim.h"
+#include "sprite.h"
+#include "texture.h"
+#include "ttf_font.h"
 #include "util.h"
+#include "window.h"
+
 
 struct camera;
 struct sprite_batch;
@@ -34,16 +88,16 @@ struct game_config {
     int window_width;
     int window_height;
     const char* app_name;
-    
+
     const char* nk_gui_font_path;
     int nk_gui_font_size;
 };
 
 struct game {
     lua_State* lstate;
-    
+
     struct game_config config;
-    
+
     // core render context
     float global_dt;
     struct camera* global_camera;

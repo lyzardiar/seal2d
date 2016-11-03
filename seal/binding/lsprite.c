@@ -1,14 +1,4 @@
-#include <string.h>
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
-
-#include "lopen.h"
-#include "anim.h"
-#include "sprite.h"
-#include "memory.h"
-#include "util.h"
-#include "lua_handler.h"
+#include "../seal.h"
 
 EXTERN_GAME;
 

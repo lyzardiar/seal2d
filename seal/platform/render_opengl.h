@@ -1,25 +1,27 @@
 #ifndef render_opengl_h
 #define render_opengl_h
 
+// WC - todo fix
 #include "platform.h"
 
-#ifdef PLAT_DESKTOP 
-#ifdef WIN32
-#include "GL/glew.h"
-#else
+#if defined PLAT_DESKTOP
     #include <OpenGL/gl3.h>
-#endif
-#endif
 
-#ifdef PLAT_IOS
+
+#elif defined PLAT_IOS
+
     #import <OpenGLES/ES2/glext.h>
 
     #define glBindVertexArray glBindVertexArrayOES
     #define glGenVertexArrays glGenVertexArraysOES
     #define glDeleteVertexArrays glDeleteVertexArraysOES
 
-#endif
+#elif defined PLAT_ANDROID
 
+    #import <GLES2/gl2.h>
+
+
+#endif
 
 
 #endif

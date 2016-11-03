@@ -1,7 +1,7 @@
 #ifndef sprite_render_h
 #define sprite_render_h
 
-#include "render.h"
+#include "../seal_base.h"
 
 struct sprite_render_context {
     struct vertex_buffer* buffer;

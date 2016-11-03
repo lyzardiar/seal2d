@@ -1,9 +1,5 @@
-#include <string.h>
+#include "../seal.h"
 
-#include "lopen.h"
-#include "memory.h"
-
-#include "platform/fs.h"
 
 int lplatform_write_s(lua_State* L)
 {
@@ -65,7 +61,7 @@ int luaopen_seal_platform(lua_State* L)
         { "get_platform", lplatform_get_platform},
         { NULL, NULL },
     };
-    
+
     luaL_newlib(L, lib);
     return 1;
 }
