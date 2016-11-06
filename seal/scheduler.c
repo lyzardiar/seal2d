@@ -81,7 +81,8 @@ static bool scheduler_stop_target_foreach(void* key, void* value, void* context)
 void scheduler_stop_target(struct scheduler* self,
                            struct sprite* sprite)
 {
-    printf("stop target = %p\n", sprite);
+    // TODO: we could easily improve here by import another hash-map which
+    // make sprite as the key before we do the actual iteration
     self->__removing_target = sprite;
     hashmapForEach(self->entries, scheduler_stop_target_foreach, self);
 }

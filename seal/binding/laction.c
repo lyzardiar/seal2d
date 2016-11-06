@@ -74,14 +74,16 @@ int laction_sequence(lua_State* L)
     lua_len(L, -1);
     int cnt = lua_tointeger(L, -1);
     lua_pop(L, 1);
-    struct array* actions = array_new(cnt);
+
+    struct action* actions[ACTION_SEQUENCE_MAX] = {NULL};
+
     for (int i = 0; i < cnt; ++i) {
         lua_rawgeti(L, -1, i+1);
-        array_push_back(actions, lua_touserdata(L, -1));
+        actions[i] = lua_touserdata(L, -1);
         lua_pop(L, 1);
     }
 
-    lua_pushlightuserdata(L, sequence(actions));
+    lua_pushlightuserdata(L, sequence(actions, cnt));
     return 1;
 }
 
@@ -93,7 +95,7 @@ int laction_call_func(lua_State* L)
                                                         L,
                                                         call,
                                                         1);
-    call->__internal.action_call.lua_func = handler;
+    call->action_call.lua_func = handler;
     lua_pushlightuserdata(L, call);
     return 1;
 }

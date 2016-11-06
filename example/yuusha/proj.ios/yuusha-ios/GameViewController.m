@@ -78,8 +78,9 @@
 {
     [EAGLContext setCurrentContext:self.context];
 
+    CGRect rect = [self.view bounds];
     seal_load_game_config();
-    seal_init_graphics();
+    seal_init_graphics(rect.size.width, rect.size.height);
     seal_start_game();
 }
 

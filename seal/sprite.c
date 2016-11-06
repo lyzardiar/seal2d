@@ -455,6 +455,9 @@ struct sprite* sprite_new_container(struct rect* r)
     s->type = SPRITE_TYPE_CONTAINER;
 
     sprite_init(s, SPRITE_TYPE_CONTAINER, r->width, r->height);
+    sprite_set_glyph(s, r, NULL, 0);
+    s->x = r->x;
+    s->y = r->y;
     return s;
 }
 
@@ -808,7 +811,8 @@ void sprite_remove_all_child(struct sprite* self)
 {
     scheduler_stop_target(GAME->scheduler, self);
     struct array* children = self->children;
-    for (int i = 0 ;i < array_size(children); ++i) {
+    int n = array_size(children);
+    for (int i = n-1; i >= 0; --i) {
         sprite_remove_child(self, array_at(children, i));
     }
 }

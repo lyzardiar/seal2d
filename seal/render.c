@@ -118,15 +118,16 @@ void render_scissors_test(struct render* self)
 {
     if (self->masks & RENDER_MASK_SCISSORS) {
         glEnable(GL_SCISSOR_TEST);
-        glScissor(self->scissors.x, self->scissors.y,
-                  self->scissors.width, self->scissors.height);
+        glScissor(self->scissors.x*GAME->config.scale_factor,
+                  self->scissors.y*GAME->config.scale_factor,
+                  self->scissors.width*GAME->config.scale_factor,
+                  self->scissors.height*GAME->config.scale_factor);
     }
 }
 
 void render_clean_scissors(struct render* self)
 {
     glDisable(GL_SCISSOR_TEST);
-    glScissor(0, 0, GAME->config.window_width, GAME->config.window_height);
     self->masks &= (~RENDER_MASK_SCISSORS);
 }
 

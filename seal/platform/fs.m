@@ -57,7 +57,7 @@ unsigned char* fs_read(const char* path, size_t* size, int extra_byte) {
     s_assert(extra_byte == 0 || extra_byte == 1);
     FILE* fp = fopen(full_path, "r");
     if (!fp) {
-        fprintf(stderr, "s_read, can't open file path = %s.\n", full_path);
+        LOGP("s_read, can't open file path = %s.\n", full_path);
         return NULL;
     }
     fseek(fp, 0L, SEEK_END);

@@ -35,13 +35,11 @@ struct bitmap {
 
 static int hash_str(void* key)
 {
-    printf("key = %s, len = %d\n", (char*)key, strlen((char*)key));
     return hashmapHash(key, strlen((char*)key));
 }
 
 static bool hash_equal(void* a, void* b)
 {
-    printf("hash equal a = %s, b = %s\n", (char*)a, (char*)b);
     return strcmp((char*)a, (char*)b) == 0;
 }
 

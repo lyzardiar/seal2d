@@ -46,7 +46,6 @@
 struct touch_event {
     int type;
     int x, y;
-    bool responsed;
     bool swallowd;
 };
 

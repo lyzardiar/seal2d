@@ -42,10 +42,10 @@ struct camera* camera_new(float width, float height)
     c->height = height;
     c->dirty = 0;
 
-    c->camer_mat = orth_matrix(-GAME->config.window_width/2,
-                               -GAME->config.window_height/2,
-                               GAME->config.window_width/2,
-                               GAME->config.window_height/2,
+    c->camer_mat = orth_matrix(-width/2,
+                               -height/2,
+                               width/2,
+                               height/2,
                                -1.0f, 1.0f);
     return c;
 }

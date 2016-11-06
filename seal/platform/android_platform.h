@@ -28,11 +28,18 @@
 #define ANDROID_PLATFORM_H
 
 #include "../seal_base.h"
+#include "android/android_gl.h"
 
 #if defined (SDK_DEBUG_LOG)
+#define LOGI(...)       ((void) __android_log_print (ANDROID_LOG_INFO, "SEAL2D: ", __VA_ARGS__))
+#define LOGW(...)       ((void) __android_log_print (ANDROID_LOG_WARN, "SEAL2D: ", __VA_ARGS__))
+#define LOGV(...)       ((void) __android_log_print (ANDROID_LOG_VERBOSE, "SEAL2D: ", __VA_ARGS__))
 #define LOGP(...)       ((void) __android_log_print (ANDROID_LOG_ERROR, "SEAL2D: ", __VA_ARGS__))
 #define LOGP_LUA(...)   ((void) __android_log_print (ANDROID_LOG_ERROR, "SEAL2D(LUA): ", __VA_ARGS__))
 #else
+#define LOGI(...) ((void*)0)
+#define LOGW(...) ((void*)0)
+#define LOGV(...) ((void*)0)
 #define LOGP(...)       /**/
 #define LOGP_LUA(...)   /**/
 #endif

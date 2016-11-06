@@ -50,6 +50,8 @@
 #if defined (__ANDROID__)
 #include <android/log.h>
 #include <android/asset_manager_jni.h>
+
+#include "platform/android_platform.h"
 #endif
 
 #ifndef _WIN32

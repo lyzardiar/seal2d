@@ -77,13 +77,6 @@ struct lua_handler;
 struct nuk_node;
 struct scheduler;
 
-enum GAME_STATE {
-    GAME_STATE_INIT = 0,
-    GAME_STATE_RUNNING,
-    GAME_STATE_PAUSED,
-    GAME_STATE_STOPPED,
-};
-
 struct game_config {
     int window_width;
     int window_height;
@@ -91,6 +84,10 @@ struct game_config {
 
     const char* nk_gui_font_path;
     int nk_gui_font_size;
+
+    int fb_width;
+    int fb_height;
+    float scale_factor;
 };
 
 struct game {
@@ -117,7 +114,6 @@ struct game {
     struct scheduler* scheduler;
 
     struct timeval __last_update;
-    int game_state;
 };
 
 #define EXTERN_GAME extern struct game* GAME;
@@ -137,7 +133,7 @@ struct game {
 
 // main game state functions
 struct game* seal_load_game_config();
-void seal_init_graphics();
+void seal_init_graphics(int w, int h);
 void seal_load_string(const char* script_data);
 void seal_load_file(const char* script_path);
 void seal_start_game();

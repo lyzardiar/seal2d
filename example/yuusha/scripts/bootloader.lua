@@ -1,3 +1,20 @@
+local function hook()
+    local platform = require("platform_core")
+
+    -- hook print, save the origin print to __print
+    if platform.get_platform() == 'android' then
+        __print = print
+        print = platform.__print
+    end
+
+    local loaders = package.loaders or {}
+    table.insert(loaders, platform.__loader)
+    package.loaders = loaders
+
+    -- uncomment this would trigger lplatform_lua_loader
+    -- local not_exist = require "not_exist_file"
+end
+
 local function pmain()
     local platform = require("platform_core")
     local script_search_path = {
@@ -38,6 +55,10 @@ local function pmain()
         for _, path in ipairs(script_search_path) do
             package.path = package.path .. ";" .. root .. path
         end
+    elseif plat == 'android' then
+        for _, path in ipairs(script_search_path) do
+            package.path = package.path .. ";" .. path
+        end
     else
         assert(false, "other platform should write the load function.")
     end
@@ -54,13 +75,11 @@ local function pmain()
     end
 
     inject("util", require "seal.util")
+        hook()
+
     inject("device", require "seal.device")
     inject("sprite", require "seal.sprite")
     inject("sprite_frame", require "seal.sprite_frame")
-
-    -- hook print, save the origin print to __print
-    __print = print
-    print = require("platform_core").__print
 
     local game = require "game"
     require("seal.engine").start(game)

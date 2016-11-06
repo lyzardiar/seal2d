@@ -85,6 +85,7 @@ struct action_ease_in {
 struct action_sequence {
     void* sequence[ACTION_SEQUENCE_MAX];
     int running_index;
+    int n;
 };
 
 struct action_call_lua_func {
@@ -95,14 +96,14 @@ struct action {
     unsigned long __id;
     enum action_type type;
     enum action_state state;
-    union action_data {
+    union {
         struct action_move action_move;
         struct action_scale action_sacle;
         struct action_fade_to action_fade_to;
         struct action_ease_in action_ease_in;
         struct action_sequence action_sequence;
         struct action_call_lua_func action_call;
-    } __internal;
+    };
 };
 
 
@@ -113,7 +114,7 @@ struct action* move_to(float duration, float to_x, float to_y);
 struct action* scale_to(float duration, float to_x, float to_y);
 struct action* fade_to(float duration, unsigned char to);
 struct action* ease_in(struct action* action, float rate);
-struct action* sequence(struct array* actions);
+struct action* sequence(struct action* actions[], int n);
 struct action* call_lua_func();
 
 void action_play(struct action* self, struct sprite* target);

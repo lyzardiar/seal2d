@@ -34,6 +34,8 @@
 // extra_byte: 0 or 1, if you were to read a string, we ensure another byte
 // which is set '\0' to make a c-string.
 
+int fs_exists(const char* filename);
+
 const char* fs_full_path(const char* filename);
 const char* fs_sandbox_root_path();
 
@@ -45,6 +47,7 @@ size_t fs_writes(const char* path, const char* string);
 size_t fs_writef(const char* path, const void* data, size_t size);
 
 const char* fs_get_write_path();
+void fs_set_write_path(const char* path);
 #endif
 
 

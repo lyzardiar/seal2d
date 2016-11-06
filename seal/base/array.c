@@ -96,9 +96,9 @@ void array_push_back(struct array* self, void* data) {
 
 void array_remove(struct array* self, void* data)
 {
+    int n = self->n;
     int found = -1;
-    for (int i = 0; i < self->n; ++i)
-    {
+    for (int i = 0; i < n; ++i) {
         if (array_at(self, i) == data) {
             found = i;
             break;
@@ -106,9 +106,15 @@ void array_remove(struct array* self, void* data)
     }
     if (found >= 0) {
         self->data[found] = NULL;
+        // shift the array after we move the element.
+        // TODO: could we use mmove to improve?
+        for (int i = found; i < n-1; ++i) {
+            self->data[i] = self->data[i+1];
+        }
+        --self->n;
     }
-
 }
+
 void array_set(struct array* self, size_t index, void* data) {
     s_assert(index < self->n);
     self->data[index] = data;

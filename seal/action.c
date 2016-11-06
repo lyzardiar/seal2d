@@ -44,7 +44,7 @@ bool action_interval_update(struct action_interval* self, float dt)
 
 static bool action_move_update(struct action* self, struct sprite* sprite, float dt)
 {
-    struct action_move* move = &self->__internal.action_move;
+    struct action_move* move = &self->action_move;
     struct action_interval* super = &move->__super;
 
     float ratio = super->current / super->duration;
@@ -56,7 +56,7 @@ static bool action_move_update(struct action* self, struct sprite* sprite, float
 
 static bool action_scale_update(struct action* self, struct sprite* sprite, float dt)
 {
-    struct action_scale* scale = &self->__internal.action_sacle;
+    struct action_scale* scale = &self->action_sacle;
     struct action_interval* super = &scale->__super;
 
     float ratio = super->current / super->duration;
@@ -70,7 +70,7 @@ static bool action_scale_update(struct action* self, struct sprite* sprite, floa
 
 static bool action_fade_update(struct action* self, struct sprite* sprite, float dt)
 {
-    struct action_fade_to* fade = &self->__internal.action_fade_to;
+    struct action_fade_to* fade = &self->action_fade_to;
     struct action_interval* super = &fade->__super;
 
     float ratio = super->current / super->duration;
@@ -82,7 +82,7 @@ static bool action_fade_update(struct action* self, struct sprite* sprite, float
 
 static bool action_ease_in_update(struct action* self, struct sprite* sprite, float dt)
 {
-    struct action_ease_in* ease_in = &self->__internal.action_ease_in;
+    struct action_ease_in* ease_in = &self->action_ease_in;
     struct action_interval* super = &ease_in->__super;
 
     float time = powf(super->current, ease_in->rate);
@@ -93,36 +93,34 @@ static bool action_ease_in_update(struct action* self, struct sprite* sprite, fl
 
 static bool action_sequence_update(struct action* self, struct sprite* sprite, float dt)
 {
-//    struct action_sequence* seq = self->__child;
-//
-//    struct array* action_seq = seq->seqence;
-//    int running_index = seq->running_index;
-//    struct action* running = array_at(action_seq, running_index);
-//    if(action_update(running, sprite, dt)) {
-//        // action finished
-//        seq->running_index++;
-//
-//        if (seq->running_index < array_size(action_seq)) {
-//            // play the next action
-//            struct action* next = array_at(action_seq,
-//                                           seq->running_index);
-//            action_play(next, sprite);
-//            return false;
-//        } else {
-//            // all the sequence has finished :)
-//            action_stop(self);
-//            return true;
-//        }
-//    } else {
-//        // current action is running, pass
-//        return false;
-//    }
+    struct action_sequence* seq = &self->action_sequence;
+
+    int running_index = seq->running_index;
+    struct action* running = seq->sequence[running_index];
+    if(action_update(running, sprite, dt)) {
+       // action finished
+       seq->running_index++;
+
+       if (seq->running_index < seq->n) {
+           // play the next action
+           struct action* next = seq->sequence[running_index+1];
+           action_play(next, sprite);
+           return false;
+       } else {
+           // all the sequence has finished :)
+           action_stop(self);
+           return true;
+       }
+   } else {
+       // current action is running, pass
+       return false;
+   }
     return true;
 }
 
 static bool action_call_update(struct action* self, struct sprite* sprite, float dt)
 {
-    struct action_call_lua_func* call = &self->__internal.action_call;
+    struct action_call_lua_func* call = &self->action_call;
     s_assert(call->lua_func > 0);
     seal_call_func(self, NULL, NULL, true);
     action_stop(self);
@@ -168,66 +166,69 @@ static struct action* action_new(enum action_type type)
 struct action* move_to(float duration, float to_x, float to_y)
 {
     struct action* move = action_new(ACTION_MOVE_TO);
-    struct action_move* interal = &move->__internal.action_move;
+    struct action_move* internal = &move->action_move;
 
-    action_interval_init(&(move->__internal.action_move.__super), duration);
-    interal->to_x = to_x;
-    interal->to_y = to_y;
-    interal->from_x = interal->from_y = 0;
+    action_interval_init(&(move->action_move.__super), duration);
+    internal->to_x = to_x;
+    internal->to_y = to_y;
+    internal->from_x = internal->from_y = 0;
     return move;
 }
 
 struct action* scale_to(float duration, float to_x, float to_y)
 {
     struct action* scale = action_new(ACTION_SCALE_TO);
-    struct action_scale* interal = &scale->__internal.action_sacle;
+    struct action_scale* internal = &scale->action_sacle;
 
-    action_interval_init(&(scale->__internal.action_sacle.__super), duration);
-    interal->to_x = to_x;
-    interal->to_y = to_y;
-    interal->from_x = interal->from_y = 0;
+    action_interval_init(&(scale->action_sacle.__super), duration);
+    internal->to_x = to_x;
+    internal->to_y = to_y;
+    internal->from_x = internal->from_y = 0;
     return scale;
 }
 
 struct action* fade_to(float duration, unsigned char to)
 {
     struct action* fade = action_new(ACTION_FADE_TO);
-    struct action_fade_to* interal = &fade->__internal.action_fade_to;
+    struct action_fade_to* internal = &fade->action_fade_to;
 
-    action_interval_init(&(fade->__internal.action_fade_to.__super), duration);
-    interal->from = 255;
-    interal->to = to;
+    action_interval_init(&(fade->action_fade_to.__super), duration);
+    internal->from = 255;
+    internal->to = to;
     return fade;
 }
 
 struct action* ease_in(struct action* action, float rate)
 {
     struct action* ease_in = action_new(ACTION_EASE_IN);
-    struct action_ease_in* interal = &ease_in->__internal.action_ease_in;
+    struct action_ease_in* internal = &ease_in->action_ease_in;
 
-    action_interval_init(&ease_in->__internal.action_ease_in.__super,
+    action_interval_init(&ease_in->action_ease_in.__super,
                          ((struct action_interval*)action)->duration);
-    interal->rate = rate;
-    interal->wrapped = action;
+    internal->rate = rate;
+    internal->wrapped = action;
     return ease_in;
 }
 
-struct action* sequence(struct array* actions)
+struct action* sequence(struct action* actions[], int n)
 {
-    return NULL;
-//    struct action_sequence* sequence = STRUCT_NEW(action_sequence);
-//    sequence->seqence = actions;
-//    sequence->running_index = -1;
+    struct action* sequence = action_new(ACTION_SEQUENCE);
+    struct action_sequence* internal = &sequence->action_sequence;
+    for (int i = 0; i < n; ++i)
+    {
+        internal->sequence[i] = actions[i];
+    }
+    internal->n = n;
+    internal->running_index = -1;
 
-//    return action_new(ACTION_SEQUENCE, sequence);
+    return sequence;
 }
 
 struct action* call_lua_func()
 {
-    return NULL;
-//    struct action_call_lua_func* call = STRUCT_NEW(action_call_lua_func);
-//    call->lua_func = -1;
-//    return action_new(ACTION_CALL, call);
+    struct action* call = action_new(ACTION_CALL);
+    call->action_call.lua_func = -1;
+    return call;
 }
 
 void action_play(struct action* self, struct sprite* target)
@@ -243,7 +244,7 @@ void action_play(struct action* self, struct sprite* target)
     switch (self->type) {
         case ACTION_MOVE_TO:
         {
-            struct action_move* move = &self->__internal.action_move;
+            struct action_move* move = &self->action_move;
 
             move->from_x = target->x;
             move->from_y = target->y;
@@ -252,7 +253,7 @@ void action_play(struct action* self, struct sprite* target)
 
         case ACTION_SCALE_TO:
         {
-            struct action_scale* scale = &self->__internal.action_sacle;
+            struct action_scale* scale = &self->action_sacle;
 
             scale->from_x = target->scale_x;
             scale->from_y = target->scale_y;
@@ -261,7 +262,7 @@ void action_play(struct action* self, struct sprite* target)
 
         case ACTION_FADE_TO:
         {
-            struct action_fade_to* fade = &self->__internal.action_fade_to;
+            struct action_fade_to* fade = &self->action_fade_to;
 
             fade->from = target->color & 0xff;
             break;
@@ -275,12 +276,10 @@ void action_play(struct action* self, struct sprite* target)
 
         case ACTION_SEQUENCE:
         {
-//            struct action_sequence* sequence =
-//                                (struct action_sequence*)self->__child;
-//            sequence->running_index = 0;
-//            struct action* running = array_at(sequence->seqence,
-//                                              sequence->running_index);
-//            action_play(running, target);
+            struct action_sequence* seq = &self->action_sequence;
+            seq->running_index = 0;
+            struct action* running = seq->sequence[seq->running_index];
+            action_play(running, target);
             break;
         }
         case ACTION_CALL:

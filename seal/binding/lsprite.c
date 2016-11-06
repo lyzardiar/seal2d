@@ -126,6 +126,7 @@ int lsprite_new_bmfont_label(lua_State* L)
 static void check_rect(lua_State* L, struct rect* r)
 {
     lua_Number x, y, width, height;
+    printf("lua_gettop(L) = %d\n", lua_gettop(L));
     if(lua_gettop(L) == 4) {
         x = luaL_checknumber(L, 1);
         y = luaL_checknumber(L, 2);

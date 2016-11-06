@@ -56,7 +56,7 @@ GLFWwindow* init_glfw(int window_width, int window_height, const char* title)
 
     glfwSetMouseButtonCallback(window, glfw_mouse_button_callback);
     glfwSetCursorPosCallback(window, glfw_mouse_pos_callback);
-
+    glfwSetFramebufferSizeCallback(window, glfw_framebuffer_size_callback);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
@@ -84,8 +84,12 @@ int main(int argc, char *argv[])
                                    window_height,
                                    game->config.app_name);
     game->window->ctx = window;
-    
-    seal_init_graphics();
+    int fb_width, fb_height;
+    glfwGetFramebufferSize(window, &fb_width, &fb_height);
+    game->config.scale_factor = fb_width / window_width;
+    game->config.fb_width = fb_width;
+    game->config.fb_height = fb_height;
+    seal_init_graphics(window_width, window_height);
     seal_start_game();
 
     while (!glfwWindowShouldClose(window)) {
@@ -94,6 +98,7 @@ int main(int argc, char *argv[])
 
         seal_update();
         seal_draw();
+        glViewport(0, 0, game->config.fb_width, game->config.fb_height);
         glfwSwapBuffers(window);
 
         long current = gettime();

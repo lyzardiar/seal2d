@@ -5,7 +5,7 @@ extern void stackDump (lua_State *L);
 int lsealinject(lua_State* L)
 {
     if(!lua_istable(L, -1)) {
-        fprintf(stderr, "seal.start require a table to start.");
+        LOGP_LUA("seal.start require a table to start.");
         exit(1);
     }
 
